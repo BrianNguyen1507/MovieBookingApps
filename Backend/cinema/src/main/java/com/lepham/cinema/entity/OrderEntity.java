@@ -19,17 +19,17 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "order_code")
+    @Column(name = "order_code",nullable = false)
     String orderCode;
-    @Column(name = "seat")
+    @Column(name = "seat",nullable = false)
     int seat;
-    @Column(name = "sumtotal")
+    @Column(name = "sumtotal",nullable = false)
     int sumTotal;
-    @Column(name = "date")
+    @Column(name = "date",nullable = false)
     Date date;
-    @Column(name = "quantity_ticket")
+    @Column(name = "quantity_ticket",nullable = false)
     double quantityTicket;
-    @Column(name = "payment_method")
+    @Column(name = "payment_method",nullable = false)
     double paymentMethod;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

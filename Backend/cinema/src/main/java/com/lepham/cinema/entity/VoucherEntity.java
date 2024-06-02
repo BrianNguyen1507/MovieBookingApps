@@ -19,23 +19,21 @@ public class VoucherEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "title")
+    @Column(name = "title",nullable = false)
     String title;
     @Column(name = "content")
     String content;
-    @Column(name = "type_discount")
-    int type_discount;
-    @Column(name = "min_limit")
+    @Column(name = "type_discount",nullable = false)
+    int typeDiscount;
+    @Column(name = "min_limit",nullable = false)
     double minLimit;
-    @Column(name = "quantity")
-    int quantity;
-    @Column(name = "discount")
+    @Column(name = "discount",nullable = false)
     double discount;
+    @Column(name = "quantity",nullable = false)
+    int quantity;
+    @Column(name = "expired_date",nullable = false)
+    Date expired;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(name = "account_voucher",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "voucher_id")
-    )
-    List<AccountEntity> accounts;
+    @OneToMany(mappedBy = "voucher")
+    List<AccountVoucher> accounts;
 }

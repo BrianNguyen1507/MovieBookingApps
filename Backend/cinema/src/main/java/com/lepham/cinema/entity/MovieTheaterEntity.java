@@ -20,9 +20,9 @@ public class MovieTheaterEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "name")
+    @Column(name = "name",nullable = false)
     String name;
-    @Column(name = "address")
+    @Column(name = "address",nullable = false)
     String address;
 
     @OneToMany(mappedBy = "movieTheater", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
