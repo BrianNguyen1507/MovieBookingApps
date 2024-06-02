@@ -10,5 +10,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoomResponse {
     long id;
-
+    int number;
+    int[][] seat;
+    MovieTheaterResponse movieTheater;
 }
