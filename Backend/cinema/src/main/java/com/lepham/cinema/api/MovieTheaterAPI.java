@@ -46,7 +46,7 @@ public class MovieTheaterAPI {
     @DeleteMapping(value = "/deleteMovieTheater")
     APIResponse<?> deleteMovieTheater(@RequestParam("id") long id){
         movieTheaterService.deleteMovieTheater(id);
-        return APIResponse.<MovieTheaterResponse>builder()
+        return APIResponse.builder()
                 .message("Delete successful")
                 .build();
     }

@@ -46,8 +46,8 @@ public class FilmEntity {
     @Column(name = "base_price")
     double basePrice;
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "films")
-    List<RoomEntity> rooms;
+    @OneToMany(mappedBy = "film")
+    List<MovieScheduleEntity> schedules;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "film_category",

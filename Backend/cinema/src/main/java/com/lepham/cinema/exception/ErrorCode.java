@@ -23,6 +23,7 @@ public enum ErrorCode {
     PASSWORD_INVALID(1011,"Password invalid",HttpStatus.BAD_REQUEST),
     CATEGORY_NOT_FOUND(1012,"Category not found",HttpStatus.BAD_REQUEST),
     FILM_NOT_FOUND(1013,"Film not found",HttpStatus.BAD_REQUEST),
+    ROOM_EXISTS(1014,"Room was existed in movie theater",HttpStatus.BAD_REQUEST),
     ;
 
 
