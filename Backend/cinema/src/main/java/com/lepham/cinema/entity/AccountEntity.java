@@ -21,19 +21,19 @@ public class AccountEntity {
     long id;
     @Column(name = "avatar")
     byte[] avatar;
-    @Column(name = "full_name")
+    @Column(name = "full_name",nullable = false)
     String fullName;
-    @Column(name = "phone")
+    @Column(name = "phone",nullable = false)
     String phone;
     @Column(name = "gender")
     String gender;
     @Column(name = "day_of_birth")
     Date dayOfBirth;
-    @Column(name = "email")
+    @Column(name = "email",nullable = false)
     String email;
-    @Column(name = "password")
+    @Column(name = "password" ,nullable = false)
     String password;
-    @Column(name="role")
+    @Column(name="role",nullable = false)
     String role;
     @Column(name = "one_time_password")
     String otp;
@@ -45,7 +45,7 @@ public class AccountEntity {
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<OrderEntity> orders;
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "accounts")
-    List<VoucherEntity> vouchers;
+    @OneToMany(mappedBy = "account")
+    List<AccountVoucher> vouchers;
 
 }

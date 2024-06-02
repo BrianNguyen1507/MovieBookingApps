@@ -4,29 +4,26 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "movie_schedule")
-public class MovieScheduleEntity {
+@Table(name = "account_voucher")
+public class AccountVoucher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name="id")
     long id;
-    @Column(name = "time",nullable = false)
-    Date time;
+    @Column(name = "quantity",nullable = false)
+    int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
-    RoomEntity room;
+    @JoinColumn(name = "account_id")
+    AccountEntity account;
 
     @ManyToOne
-    @JoinColumn(name = "film_id")
-    FilmEntity film;
-
+    @JoinColumn(name = "voucher_id")
+    VoucherEntity voucher;
 }

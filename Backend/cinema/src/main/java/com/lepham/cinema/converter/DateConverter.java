@@ -27,4 +27,7 @@ public abstract class DateConverter {
     public static String toStringYMDTime(Date date){
         return  sdfYMDTime.format(date);
     }
+    public static String toStringDMYTime(Date dateYMD){
+        return sdfDMYTime.format(dateYMD);
+    }
 }

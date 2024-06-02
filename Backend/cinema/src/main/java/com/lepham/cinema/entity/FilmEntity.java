@@ -21,18 +21,18 @@ public class FilmEntity {
     long id;
     @Column(name = "title")
     String title;
-    @Column(name = "duration", length = 30)
+    @Column(name = "duration", length = 30,nullable = false)
     String duration;
-    @Column(name = "description", length = 65535)
+    @Column(name = "description", length = 65535,nullable = false)
     @Lob
     byte[] description;
     @Column(name = "release_date")
     Date releaseDate;
-    @Column(name = "director")
+    @Column(name = "director",nullable = false)
     String director;
-    @Column(name = "actor")
+    @Column(name = "actor",nullable = false)
     String actor;
-    @Column(name = "poster",length = 16777215)
+    @Column(name = "poster",length = 16777215,nullable = false)
     @Lob
     byte[] poster;
     @Column(name = "trailer")
@@ -41,9 +41,9 @@ public class FilmEntity {
     String country;
     @Column(name = "language", length = 30)
     String language;
-    @Column(name = "active")
+    @Column(name = "active",nullable = false)
     int active;
-    @Column(name = "base_price")
+    @Column(name = "base_price",nullable = false)
     double basePrice;
 
     @OneToMany(mappedBy = "film")

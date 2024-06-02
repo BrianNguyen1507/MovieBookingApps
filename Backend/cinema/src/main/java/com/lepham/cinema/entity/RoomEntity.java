@@ -21,9 +21,9 @@ public class RoomEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "number")
+    @Column(name = "number",nullable = false)
     int number;
-    @Column(name = "seat",length = 1000)
+    @Column(name = "seat",length = 1000,nullable = false)
     int[][] seat;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

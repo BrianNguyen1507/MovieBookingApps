@@ -18,9 +18,9 @@ public class FoodEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "name")
+    @Column(name = "name",nullable = false)
     String name;
-    @Column(name = "price")
+    @Column(name = "price",nullable = false)
     double price;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
