@@ -1,5 +1,5 @@
+import {saveAuthenticated} from '../authenticate/authenticate.js'
 const apiurl = 'http://localhost:8083/cinema/login';
-
 async function signin(email, password) {
   try {
     const signInData = JSON.stringify({ email, password });
@@ -38,7 +38,15 @@ $('#signInForm').submit(async function(event) {
   if (result === true) {
     const role = sessionStorage.getItem('role');
     if (role === "ADMIN") {
-      window.location.href = './';
+      Swal.fire({
+        title: 'Sign in Success!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        setTimeout(function() {
+          window.location.href('./');
+        }, 1000); 
+      });
     } else {
       displayErrorMessage("Invalid account");
     }
@@ -52,8 +60,3 @@ function displayErrorMessage(message) {
   $('#errorMessageModal').modal('show');
 }
 
-async function saveAuthenticated(auth, token, role) {
-  sessionStorage.setItem('authenticated', auth);
-  sessionStorage.setItem('token', token);
-  sessionStorage.setItem('role', role);
-}
