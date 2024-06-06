@@ -1,4 +1,3 @@
-import {saveAuthenticated} from '../authenticate/authenticate.js'
 const apiurl = 'http://localhost:8083/cinema/login';
 async function signin(email, password) {
   try {
@@ -8,28 +7,32 @@ async function signin(email, password) {
       method: 'POST',
       contentType: 'application/json',
       data: signInData,
-      error: function(xhr, status, error) {
-        console.error('Error:', error);
-        notification("Sorry! An unexpected problem occurred");
-      }
+    }).fail((xhr, status, error) => {
+      console.error('Error:', error);
+      Swal.fire({
+        title: 'Error',
+        text: xhr.responseJSON.message || "An unexpected error occurred" ,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      throw new Error(xhr.responseJSON.message );
     });
 
     if (response.code !== 1000 && response.code !== 1001) {
       return response.message;
     }
-    
-    const token = response.result.token;
-    const auth = response.result.authenticated;
-    const role = response.result.role;
-    await saveAuthenticated(auth, token, role);
+
+    const { token, authenticated, role } = response.result;
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('authenticated', authenticated);
+    sessionStorage.setItem('role', role);
     return true;
   } catch (error) {
     console.error('Exception:', error);
-    return error.responseJSON.message;
   }
 }
 
-$('#signInForm').submit(async function(event) {
+$('#signInForm').submit(async function (event) {
   event.preventDefault();
   const email = $('#floatingInput').val();
   const password = $('#floatingPassword').val();
@@ -38,20 +41,24 @@ $('#signInForm').submit(async function(event) {
   if (result === true) {
     const role = sessionStorage.getItem('role');
     if (role === "ADMIN") {
+      
       Swal.fire({
         title: 'Sign in Success!',
         icon: 'success',
         confirmButtonText: 'OK'
       }).then(() => {
-        setTimeout(function() {
-          window.location.href('./');
-        }, 1000); 
+        window.location.href = './';
       });
+      setTimeout(() => {
+        window.location.href = './';
+      }, 3000);
+      $('#floatingInput').val('');
+      $('#floatingPassword').val('');
     } else {
       displayErrorMessage("Invalid account");
     }
   } else {
-    displayErrorMessage(result); 
+    displayErrorMessage(result);
   }
 });
 
@@ -59,4 +66,3 @@ function displayErrorMessage(message) {
   $('#errorMessageText').text(message);
   $('#errorMessageModal').modal('show');
 }
-

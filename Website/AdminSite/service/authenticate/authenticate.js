@@ -6,3 +6,6 @@ async function saveAuthenticated(auth, token) {
   export async function getUserToken() {
     return sessionStorage.getItem('token');
   }
+
+  
+  
