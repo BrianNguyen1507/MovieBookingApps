@@ -22,7 +22,7 @@ public class FilmEntity {
     @Column(name = "title")
     String title;
     @Column(name = "duration", length = 30,nullable = false)
-    String duration;
+    int duration;
     @Column(name = "description", length = 65535,nullable = false)
     @Lob
     byte[] description;

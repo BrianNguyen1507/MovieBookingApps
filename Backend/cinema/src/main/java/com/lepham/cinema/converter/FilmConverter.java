@@ -2,6 +2,7 @@ package com.lepham.cinema.converter;
 
 import com.lepham.cinema.dto.request.FilmRequest;
 import com.lepham.cinema.dto.response.FilmResponse;
+import com.lepham.cinema.dto.response.FilmScheduleResponse;
 import com.lepham.cinema.entity.FilmEntity;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ import java.text.ParseException;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FilmConverter {
 
@@ -54,5 +54,12 @@ public class FilmConverter {
         entity.setTitle(request.getTitle());
         entity.setCategories(categoryConverter.toListEntities(request.getCategories()));
         return entity;
+    }
+    public FilmScheduleResponse toFilmScheduleResponse(FilmEntity entity){
+        FilmScheduleResponse response = new FilmScheduleResponse();
+        response.setId(entity.getId());
+        response.setTitle(entity.getTitle());
+        response.setReleaseDate(DateConverter.toStringDMYTime(entity.getReleaseDate()));
+        return response;
     }
 }

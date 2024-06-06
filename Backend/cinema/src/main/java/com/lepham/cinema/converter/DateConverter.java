@@ -10,6 +10,8 @@ public abstract class DateConverter {
     private static final SimpleDateFormat sdfYMDTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final SimpleDateFormat sdfDMYTime = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
+    private static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+
     public static Date stringParseYMD(String date) throws ParseException {
         return sdfYMD.parse(sdfYMD.format(sdfDMY.parse(date)));
     }
@@ -29,5 +31,9 @@ public abstract class DateConverter {
     }
     public static String toStringDMYTime(Date dateYMD){
         return sdfDMYTime.format(dateYMD);
+    }
+
+    public static String toTime(Date date){
+        return sdfTime.format(date);
     }
 }
