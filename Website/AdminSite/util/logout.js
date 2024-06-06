@@ -1,12 +1,20 @@
-export function logOut(){
-    window.location.href='signin.html';
-    return localStorage.clear();
-}
+$(document).on("click", "#logoutButton", async function(event) {
+    try {
+        const confirmation = await Swal.fire({
+            title: "Are you sure?",
+            text: "Do you really want to log out?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, log out",
+            cancelButtonText: "No, cancel",
+        });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const logoutButton = document.getElementById("logoutButton");
-
-    logoutButton.addEventListener("click", () => {
-        logOut();
-    });
+        if (confirmation.isConfirmed) {
+            event.preventDefault();
+            sessionStorage.clear();
+            window.location.href = "./signin.html";
+        }
+    } catch (error) {
+        console.error(error);
+    }
 });
