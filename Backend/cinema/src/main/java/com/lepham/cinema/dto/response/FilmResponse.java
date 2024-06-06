@@ -18,7 +18,7 @@ import java.util.List;
 public class FilmResponse {
     long id;
     String title;
-    String duration;
+    int duration;
     byte[] description;
     String releaseDate;
     String director;

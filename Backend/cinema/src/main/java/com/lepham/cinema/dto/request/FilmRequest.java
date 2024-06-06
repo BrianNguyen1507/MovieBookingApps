@@ -17,7 +17,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FilmRequest {
     String title;
-    String duration;
+    int duration;
     byte[] description;
     String releaseDate;
     String director;

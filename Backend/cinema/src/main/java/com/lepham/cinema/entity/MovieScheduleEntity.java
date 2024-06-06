@@ -18,8 +18,8 @@ public class MovieScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "time",nullable = false)
-    Date time;
+    @Column(name = "time_start",nullable = false)
+    Date timeStart;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
