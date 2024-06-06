@@ -4,7 +4,6 @@ const apiUrl = 'http://localhost:8083/cinema/deleteCategory?id=';
 const tokenUser = await getUserToken();
 async function deleteCategoryById(categoryId) {
   try {
-   
     const response = await fetch(`${apiUrl}${categoryId}`, {
       method: 'DELETE',
       headers: {
@@ -75,7 +74,6 @@ const UpdateCategory = (id) => {
 };
 
 const url = 'http://localhost:8083/cinema/getAllCategory';
-
 async function getAndDisplayCategories() {
   try {
     const token = await getUserToken();
@@ -86,11 +84,6 @@ async function getAndDisplayCategories() {
         'Authorization': `Bearer ${token}`
       }
     });
-
-    if (!response.ok) {
-      console.error('Network response was not ok');
-      return;
-    }
 
     const categories = await response.json();
     if (categories.code !== 1000) {
@@ -123,13 +116,38 @@ async function getAndDisplayCategories() {
 
       deleteButton.addEventListener('click', async () => {
         try {
-          const result = await deleteCategoryById(category.id);
-          if (result) {
-            tbody.removeChild(row);
+          const confirmation = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete this category?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel'
+          });
+      
+          if (confirmation.isConfirmed) {
+            const result = await deleteCategoryById(category.id);
+            if (result) {
+              tbody.removeChild(row);
+              Swal.fire({
+                title: 'Deleted!',
+                text: 'Category has been deleted.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+              });
+            } else {
+              Swal.fire({
+                title: 'Error!',
+                text: 'Failed to delete the category.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
+            }
+          } else {
             Swal.fire({
-              title: 'Deleted!',
-              text: 'Category has been deleted.',
-              icon: 'success',
+              title: 'Cancelled',
+              text: 'Category deletion was cancelled.',
+              icon: 'info',
               confirmButtonText: 'OK'
             });
           }
@@ -142,10 +160,9 @@ async function getAndDisplayCategories() {
           });
         }
       });
-
       editButton.addEventListener('click', async () => {
         try {
-            // Assuming UpdateCategory is an asynchronous function
+           
             const result = await UpdateCategory(category.id);
             if (result) {
                 Swal.fire({
@@ -164,12 +181,10 @@ async function getAndDisplayCategories() {
         }
     });
     ;
-
       tbody.appendChild(row);
     });
   } catch (error) {
     console.error('Error fetching and displaying categories:', error);
   }
 }
-
 getAndDisplayCategories();

@@ -41,9 +41,9 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
     <style>
-       .selected {
-      background-color: lightblue;
-    }
+      .selected {
+        background-color: lightblue;
+      }
     </style>
   </head>
 
@@ -70,58 +70,43 @@
 
       <!-- Content Start -->
       <div class="content">
-       <!-- Navbar Start -->
-       <div class="navbar-container"></div>
-       <!-- Navbar End -->
-
+        <!-- Navbar Start -->
+        <div class="navbar-container"></div>
+        <!-- Navbar End -->
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
           <div class="row g-4">
-            <div class="col-sm-12">
-              <div class="bg-light rounded h-100 p-4">
-                <h2 class="mb-4">Thêm thể loại mới</h2>
-                <form id="AddCategoryForm">
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label"
-                      >Tên thể loại</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="categoriesInput"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    class="btn btn-primary btn-outline-dark"
-                  >
-                    Thêm
-                  </button>
-                </form>
-                <div id="errorMessageText"></div>
-              </div>
+            <div>
+              <button class="btn btn-primary" id="btn-add-voucher">Thêm Voucher</button>
             </div>
             <div class="bg-light rounded h-100 p-4">
-              <h6 class="mb-4">DANH SÁCH THỂ LOẠI</h6>
-              <table class="table" id="categories-table">
+              <h6 class="mb-4">DANH SÁCH VOUCHER KHUYẾN MÃI</h6>
+              <table
+                class="table text-start align-middle table-bordered table-hover mb-0"
+                id="voucher-table"
+              >
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Tên thể loại</th>
+                    <th scope="col">Voucher</th>
+                    <th scope="col">Tiêu đề</th>
+                    <th scope="col">Nội dung</th>
+                    <th scope="col">Hạn mức</th>
+                    <th scope="col">Giảm giá</th>
+                    <th scope="col">Loại</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Ngày hết hạn</th>
                     <th scope="col">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- Categories -->
+                  <!-- voucher items  -->
                 </tbody>
               </table>
-              
             </div>
           </div>
           <div></div>
         </div>
         <!-- Form End -->
-
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
           <div class="bg-light rounded-top p-4">
@@ -148,9 +133,9 @@
     <script type="module" src="./util/logout.js"></script>
     <script type="module" src="./util/loadNavBar.js"></script>
     <script type="module" src="./util/loadSideBar.js"></script>
-    <script type="module" src="./service/category/updateCategory.js"></script>
-    <script type="module" src="./service/category/addCategory.js"></script>
-    <script type="module" src="./service/category/getCategory.js"></script>
+
+    <script type="module" src="./service/voucher/ableFormVoucher.js"></script>
+    <script type="module" src="./service/voucher/getAllVoucher.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/chart/chart.min.js"></script>
@@ -160,9 +145,9 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-     <!-- jQuery -->
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
   </body>
