@@ -1,4 +1,5 @@
 import { getUserToken } from "../authenticate/authenticate.js";
+import { Room } from "../../models/room.js";
 const url = "http://localhost:8083/cinema/getAllRoomByTheaterId?theaterId=";
 export async function getRoomById(id) {
   try {
@@ -19,14 +20,9 @@ export async function getRoomById(id) {
     const tbody = document.querySelector("#room-table tbody");
     tbody.innerHTML = "";
 
-    roomData.result.forEach((room, index) => {
+    roomData.result.forEach((roomItem, index) => {
+      const room = new Room(roomItem.id, roomItem.number, roomItem.seat);
       const row = document.createElement("tr");
-
-      const checkboxCell = document.createElement("td");
-      const checkbox = document.createElement("input");
-      checkbox.setAttribute("type", "checkbox");
-      checkboxCell.appendChild(checkbox);
-      row.appendChild(checkboxCell);
 
       const indexCell = document.createElement("td");
       indexCell.textContent = index + 1;
@@ -39,7 +35,7 @@ export async function getRoomById(id) {
       const seatsCell = document.createElement("td");
       seatsCell.textContent = `${countEmptySeats(room.seat)}/${
         room.seat.flat().length
-      } ghế   trống`;
+      } ghế trống`;
       row.appendChild(seatsCell);
 
       const actionCell = document.createElement("td");

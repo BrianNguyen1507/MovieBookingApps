@@ -1,5 +1,5 @@
 import { getUserToken } from '../authenticate/authenticate.js';
-
+import { displayErrorMessage } from '../../util/common.js';
 const apiUrl = 'http://localhost:8083/cinema/addCategory';
 
 async function addCategory(categoryName) {
@@ -48,7 +48,3 @@ $('#AddCategoryForm').submit(async function(event) {
   }
 });
 
-function displayErrorMessage(message) {
-  $('#errorMessageText').text(message);
-  $('#errorMessageModal').modal('show');
-}

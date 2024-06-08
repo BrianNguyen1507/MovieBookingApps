@@ -40,10 +40,12 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
+       
         <!-- Spinner End -->
-        <div class="sidebar-container"></div>
+        <div  class="sidebar-container"></div>
         <!-- Content Start -->
         <div class="content">
+
             <!-- Navbar Start -->
             <div class="navbar-container"></div>
             <!-- Navbar End -->
@@ -353,7 +355,13 @@
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script>
+        // Sidebar Toggler
+    $('.sidebar-toggler').click(function () {
+        $('.sidebar, .content').toggleClass("open");
+        return false;
+    });
+    </script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
