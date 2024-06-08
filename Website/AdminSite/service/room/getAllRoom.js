@@ -1,5 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 const url = "http://localhost:8083/cinema/getAllRoom";
+import { Room } from "../../models/room.js";
 export async function getAllRoom() {
   try {
     const token = await getUserToken();
@@ -19,14 +20,11 @@ export async function getAllRoom() {
     const tbody = document.querySelector("#room-table tbody");
     tbody.innerHTML = "";
 
-    roomData.result.forEach((room, index) => {
+    roomData.result.forEach((roomItem, index) => {
+      const room = new Room(roomItem.id, roomItem.number, roomItem.seat)
       const row = document.createElement("tr");
 
-      const checkboxCell = document.createElement("td");
-      const checkbox = document.createElement("input");
-      checkbox.setAttribute("type", "checkbox");
-      checkboxCell.appendChild(checkbox);
-      row.appendChild(checkboxCell);
+     
 
       const indexCell = document.createElement("td");
       indexCell.textContent = index + 1;

@@ -1,4 +1,5 @@
 const apiurl = 'http://localhost:8083/cinema/login';
+import { displayErrorMessage } from '../../util/common.js';
 async function signin(email, password) {
   try {
     const signInData = JSON.stringify({ email, password });
@@ -41,7 +42,6 @@ $('#signInForm').submit(async function (event) {
   if (result === true) {
     const role = sessionStorage.getItem('role');
     if (role === "ADMIN") {
-      
       Swal.fire({
         title: 'Sign in Success!',
         icon: 'success',
@@ -62,7 +62,3 @@ $('#signInForm').submit(async function (event) {
   }
 });
 
-function displayErrorMessage(message) {
-  $('#errorMessageText').text(message);
-  $('#errorMessageModal').modal('show');
-}
