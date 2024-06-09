@@ -1,74 +1,5 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 import { Category } from "../../models/categories.js";
-const apiUrl = "http://localhost:8083/cinema/deleteCategory?id=";
-const tokenUser = await getUserToken();
-async function deleteCategoryById(categoryId) {
-  try {
-    const response = await fetch(`${apiUrl}${categoryId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${tokenUser}`,
-      },
-    });
-
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message);
-    }
-
-    return true;
-  } catch (error) {
-    console.error("Error deleting category:", error);
-    throw error;
-  }
-}
-const UpdateCategory = (id) => {
-  Swal.fire({
-    title: "Cập nhật thể loại",
-    html: `
-      <div class="input-group">
-          <span class="input-group-text" id="basic-addon3">Tên thể loại</span>
-          <input type="text" class="form-control" id="editcategory" aria-describedby="basic-addon3 basic-addon4">
-      </div>
-      `,
-    showCancelButton: true,
-    confirmButtonText: "Cập nhật",
-    showLoaderOnConfirm: true,
-    preConfirm: () => {
-      const name = document.getElementById("editcategory").value;
-      return fetch("http://localhost:8083/cinema/updateCategory", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-
-          Authorization: `Bearer ${tokenUser}`,
-        },
-        body: JSON.stringify({
-          id,
-          name,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          Swal.showValidationMessage(`Cập nhật thể loại thất bại: ${error}`);
-        });
-    },
-    allowOutsideClick: () => !Swal.isLoading(),
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        icon: "success",
-        title: `Cập nhật thể loại thành công`,
-      });
-      getAndDisplayCategories();
-    }
-  });
-};
 
 const url = "http://localhost:8083/cinema/getAllCategory";
 async function getAndDisplayCategories() {
@@ -160,7 +91,7 @@ async function getAndDisplayCategories() {
       });
       editButton.addEventListener("click", async () => {
         try {
-          const result = await UpdateCategory(category.id);
+          const result = await UpdateCategory(category.id, category.name);
           if (result) {
             Swal.fire({
               title: "Update Success!",
@@ -184,3 +115,73 @@ async function getAndDisplayCategories() {
   }
 }
 getAndDisplayCategories();
+
+const apiUrl = "http://localhost:8083/cinema/deleteCategory?id=";
+const tokenUser = await getUserToken();
+async function deleteCategoryById(categoryId) {
+  try {
+    const response = await fetch(`${apiUrl}${categoryId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${tokenUser}`,
+      },
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    throw error;
+  }
+}
+const UpdateCategory = (id, name) => {
+  Swal.fire({
+    title: "Cập nhật thể loại",
+    html: `
+      <div class="input-group">
+          <span class="input-group-text" id="basic-addon3">Tên thể loại</span>
+          <input type="text" class="form-control" value = "${name}" id="editcategory" aria-describedby="basic-addon3 basic-addon4">
+      </div>
+      `,
+    showCancelButton: true,
+    confirmButtonText: "Cập nhật",
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      const name = document.getElementById("editcategory").value;
+      return fetch("http://localhost:8083/cinema/updateCategory", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization: `Bearer ${tokenUser}`,
+        },
+        body: JSON.stringify({
+          id,
+          name,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          Swal.showValidationMessage(`Cập nhật thể loại thất bại: ${error}`);
+        });
+    },
+    allowOutsideClick: () => !Swal.isLoading(),
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        icon: "success",
+        title: `Cập nhật thể loại thành công`,
+      });
+      getAndDisplayCategories();
+    }
+  });
+};

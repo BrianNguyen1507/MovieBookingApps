@@ -97,7 +97,7 @@ async function getAndDisplayTheater() {
         }
       });
       editButton.addEventListener("click", () => {
-        UpdateTheater(theater.id);
+        UpdateTheater(theater.id, theater.name, theater.address);
         getAndDisplayTheater();
       });
 
@@ -133,17 +133,17 @@ async function deleteTheaeterById(theaterId) {
     throw error;
   }
 }
-const UpdateTheater = (id) => {
+const UpdateTheater = (id, name, address) => {
   Swal.fire({
     title: "Cập nhật thông tin chi nhánh rạp chiếu",
     html: `
       <div class="input-group">
           <span class="input-group-text" id="basic-addon3">Tên chi nhánh</span>
-          <input type="text" class="form-control" id="editTheaterName" aria-describedby="basic-addon3 basic-addon4">
+          <input type="text" class="form-control" value= "${name}" id="editTheaterName" aria-describedby="basic-addon3 basic-addon4">
       </div>
       <div class="input-group">
           <span class="input-group-text" id="basic-addon3">Địa chi</span>
-          <input type="text" class="form-control" id="editTheaterAddress" aria-describedby="basic-addon3 basic-addon4">
+          <input type="text" class="form-control"  value= "${address}" id="editTheaterAddress" aria-describedby="basic-addon3 basic-addon4">
       </div>
       `,
     showCancelButton: true,

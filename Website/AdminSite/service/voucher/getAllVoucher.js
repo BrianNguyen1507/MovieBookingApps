@@ -70,7 +70,7 @@ async function getAndDisplayvoucher() {
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
-        <button class="btn btn-primary btn-edit" data-id="${voucher.id}">Edit</button>
+       <button class="btn btn-primary" id="btn-edit" data-id="${voucher.id}">Edit</button>
         <button class="btn btn-danger btn-del" data-id="${voucher.id}">Delete</button>
       `;
 
