@@ -1,6 +1,5 @@
 export class Movie {
   constructor(
-    id,
     title,
     duration,
     description,
@@ -14,7 +13,6 @@ export class Movie {
     basePrice,
     categories
   ) {
-    this.id = id;
     this.title = title;
     this.duration = duration;
     this.description = description;

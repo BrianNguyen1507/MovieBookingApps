@@ -1,6 +1,10 @@
 import { Movie } from "../../models/movie.js";
 import { fetchCategories } from "./getCategoryList.js";
-import { formatToDmyHsm, handleFileSelect } from "../../util/converter.js";
+import {
+  formatToDmy,
+  handleFileSelect,
+  stringToBase64,
+} from "../../util/converter.js";
 import { addMovie } from "./addFilm.js";
 $(document).on("click", "#btn-add-movie", async function (event) {
   try {
@@ -24,7 +28,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
                 </div>
                 <div class="col-md-6">
                   <label for="releaseDateInput" class="form-label">Ngày phát hành</label>
-                  <input type="datetime-local" class="form-control" id="releaseDateInput">
+                  <input type="date" class="form-control" id="releaseDateInput">
                 </div>
                 <div class="col-md-6">
                   <label for="directorInput" class="form-label">Đạo diễn</label>
@@ -92,7 +96,16 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           const countryInput = $("#countryInput").val().trim();
           const languageInput = $("#languageInput").val().trim();
           const basePriceInput = parseFloat($("#basePriceInput").val());
-          const categoriesInput = $("#floatingCategory").val();
+          const selectedOptions = $("#floatingCategory")
+            .find(":selected")
+            .map(function () {
+              return {
+                id: parseInt($(this).val()),
+                name: $(this).text(),
+              };
+            })
+            .get();
+          const categoriesInput = selectedOptions;
 
           if (
             !movieTitleInput ||
@@ -106,7 +119,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
             !countryInput ||
             !languageInput ||
             isNaN(basePriceInput) ||
-            !categoriesInput.length
+            !categoriesInput
           ) {
             Swal.showValidationMessage(
               "All fields are required and must be valid."
@@ -147,11 +160,10 @@ $(document).on("click", "#btn-add-movie", async function (event) {
 
     if (isConfirmed) {
       const movie = new Movie(
-        0,
         value.movieTitleInput,
         value.movieDurationInput,
-        value.movieDescriptionInput,
-        formatToDmyHsm(value.releaseDateInput),
+        stringToBase64(value.movieDescriptionInput),
+        formatToDmy(value.releaseDateInput),
         value.directorInput,
         value.actorInput,
         value.posterBase64,
