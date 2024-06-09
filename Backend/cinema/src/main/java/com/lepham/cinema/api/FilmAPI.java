@@ -22,14 +22,21 @@ public class FilmAPI {
 
     FilmService filmService;
 
-    @GetMapping(value = "getAllFilm")
+    @GetMapping(value = "/getAllFilm")
     APIResponse<List<FilmResponse>> getAllFilm(@RequestParam("step") int step){
         return APIResponse.<List<FilmResponse>>builder()
                 .result(filmService.getAllFilm(step))
                 .build();
     }
 
-    @PostMapping(value = "addFilm")
+    @GetMapping(value = "/getFilmById")
+    APIResponse<FilmResponse> getFilmById(@RequestParam("id") long id){
+        return APIResponse.<FilmResponse>builder()
+                .result(filmService.getFilmById(id))
+                .build();
+    }
+
+    @PostMapping(value = "/addFilm")
     APIResponse<FilmResponse> addFilm(@RequestBody FilmRequest request) throws ParseException {
         return APIResponse.<FilmResponse>builder()
                 .result(filmService.addFilm(request))
