@@ -52,6 +52,13 @@ public class FilmService implements IFilmService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
+    public FilmResponse getFilmById(long id) {
+        FilmEntity filmEntity = filmRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.FILM_NOT_FOUND));
+        return filmConverter.toFilmResponse(filmEntity);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse addFilm(FilmRequest request) throws ParseException {
        FilmEntity entity = filmConverter.toFilmEntity(request);
        return filmConverter.toFilmResponse(filmRepository.save(entity));

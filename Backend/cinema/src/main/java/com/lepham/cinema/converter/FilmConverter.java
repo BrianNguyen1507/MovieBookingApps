@@ -24,7 +24,7 @@ public class FilmConverter {
     public FilmResponse toFilmResponse(FilmEntity entity){
         return FilmResponse.builder()
                 .id(entity.getId())
-                .releaseDate(DateConverter.toStringYMDTime(entity.getReleaseDate()))
+                .releaseDate(DateConverter.toStringDMY(entity.getReleaseDate()))
                 .actor(entity.getActor())
                 .title(entity.getTitle())
                 .country(entity.getCountry())
@@ -49,7 +49,7 @@ public class FilmConverter {
         entity.setBasePrice(request.getBasePrice());
         entity.setLanguage(request.getLanguage());
         entity.setPoster(request.getPoster());
-        entity.setReleaseDate(DateConverter.toYMDTime(request.getReleaseDate()));
+        entity.setReleaseDate(DateConverter.stringParseYMD(request.getReleaseDate()));
         entity.setTrailer(request.getTrailer());
         entity.setTitle(request.getTitle());
         entity.setCategories(categoryConverter.toListEntities(request.getCategories()));

@@ -24,6 +24,7 @@ public interface VoucherConverter {
     }
     default VoucherResponse toResponse(VoucherEntity entity){
         VoucherResponse response = new VoucherResponse();
+        response.setId(entity.getId());
         response.setContent(entity.getContent());
         response.setDiscount(entity.getDiscount());
         response.setTitle(entity.getTitle());
