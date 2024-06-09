@@ -1,5 +1,4 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-import { Theater, theater } from "../../models/theater.js";
 import { getRoomById } from "../room/getAllRoomId.js";
 import { getAllRoom } from "./getAllRoom.js";
 const url = "http://localhost:8083/cinema/getAllMovieTheater";
@@ -21,12 +20,8 @@ async function getTheater() {
 
     const selectElement = document.querySelector("#floatingSelect");
 
-    theaterData.result.forEach((theaterItem) => {
-      const theater = new Theater(
-        theaterItem.id,
-        theaterItem.name,
-        theaterItem.address
-      );
+    theaterData.result.forEach((theater) => {
+     
 
       const option = document.createElement("option");
       option.value = theater.id;

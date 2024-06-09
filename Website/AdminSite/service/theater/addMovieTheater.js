@@ -7,7 +7,7 @@ const apiUrl = "http://localhost:8083/cinema/addMovieTheater";
 async function addTheater(theaterName, theaterAddress) {
   try {
     const tokenUser = await getUserToken();
-    const theater = new Theater(theaterName, theaterAddress); 
+    const theater = new Theater(0,theaterName, theaterAddress); 
     const response = await $.ajax({
       url: apiUrl,
       method: "POST",

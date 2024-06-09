@@ -20,8 +20,8 @@ export async function getAllRoom() {
     const tbody = document.querySelector("#room-table tbody");
     tbody.innerHTML = "";
 
-    roomData.result.forEach((roomItem, index) => {
-      const room = new Room(roomItem.id, roomItem.number, roomItem.seat)
+    roomData.result.forEach((room, index) => {
+      
       const row = document.createElement("tr");
 
      

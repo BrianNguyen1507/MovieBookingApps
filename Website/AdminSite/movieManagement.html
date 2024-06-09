@@ -77,31 +77,13 @@
         <div class="container-fluid pt-4 px-4">
           <div class="row g-4">
             <div>
-              <button class="btn btn-primary"  id="btn-add-voucher">Thêm Voucher</button>
+              <button class="btn btn-primary" id="btn-add-movie">
+                Thêm Phim mới
+              </button>
             </div>
             <div class="bg-light rounded h-100 p-4">
-              <h6 class="mb-4">DANH SÁCH VOUCHER KHUYẾN MÃI</h6>
-              <table
-                class="table text-start align-middle table-bordered table-hover mb-0"
-                id="voucher-table"
-              >
-                <thead>
-                  <tr>
-                    <th scope="col">Voucher</th>
-                    <th scope="col">Tiêu đề</th>
-                    <th scope="col">Nội dung</th>
-                    <th scope="col">Hạn mức</th>
-                    <th scope="col">Giảm giá</th>
-                    <th scope="col">Loại</th>
-                    <th scope="col">Số lượng</th>
-                    <th scope="col">Ngày hết hạn</th>
-                    <th scope="col">Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- voucher items  -->
-                </tbody>
-              </table>
+              <h6 class="mb-4">DANH SÁCH PHIM</h6>
+              <div id="movie-list" class="p-3 d-flex flex-wrap"></div>
             </div>
           </div>
           <div></div>
@@ -130,13 +112,12 @@
     </div>
 
     <!-- JavaScript Libraries -->
-   
+  
+    <script type="module" src="./service/movie/getAllFilm.js"></script>
+    <script type="module" src="./service/movie/movieAddForm.js"></script>
     <script type="module" src="./util/logout.js"></script>
     <script type="module" src="./util/loadNavBar.js"></script>
     <script type="module" src="./util/loadSideBar.js"></script>
-    <script type="module" src="./service/voucher/ableUpdateVoucher.js"></script>
-    <script type="module" src="./service/voucher/ableFormVoucher.js"></script>
-    <script type="module" src="./service/voucher/getAllVoucher.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/chart/chart.min.js"></script>
