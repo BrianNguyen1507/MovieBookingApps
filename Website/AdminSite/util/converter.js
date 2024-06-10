@@ -71,3 +71,10 @@ export function translateDateFormat(inputDate) {
 
   return yyyyMMdd;
 }
+export function extractYouTubeVideoId(url) {
+  const regExp = /[?&]v=([^&]+)/;
+
+  const match = url.match(regExp);
+
+  return match && match[1];
+}

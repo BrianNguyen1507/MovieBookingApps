@@ -1,8 +1,7 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 import { Movie } from "../../models/movie.js";
-import { getMovieById } from "./getFilmById.js";
 
-const url = "http://localhost:8083/cinema/getAllFilm?step=10";
+const url = "http://localhost:8083/cinema/getAllFilm";
 
 async function getAllMovies() {
   try {

@@ -343,3 +343,7 @@
   width: 100%;
   height: 315px;
 }
+.checkbox-wrapper {
+  display: inline-block;
+  margin-right: 10px;
+}
