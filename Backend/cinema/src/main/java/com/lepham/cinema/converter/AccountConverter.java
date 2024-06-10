@@ -21,7 +21,7 @@ public class AccountConverter {
         response.setPhoneNumber(entity.getPhone());
         response.setDayOfBirth(DateConverter.toStringDMY(entity.getDayOfBirth()));
         response.setActive(entity.getActive());
-
+        response.setRole(entity.getRole());
         return response;
     }
 
@@ -34,7 +34,7 @@ public class AccountConverter {
         entity.setDayOfBirth(DateConverter.stringParseYMD(request.getDayOfBirth()));
         entity.setPhone(request.getPhoneNumber());
         entity.setActive(request.getActive());
-
+        entity.setRole(request.getRole());
         return entity;
     }
 }

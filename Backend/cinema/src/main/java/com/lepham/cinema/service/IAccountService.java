@@ -12,7 +12,6 @@ import java.text.ParseException;
 
 public interface IAccountService {
     AccountResponse createAccount(AccountRequest request) throws ParseException, MessagingException, UnsupportedEncodingException;
-
     AccountResponse checkOTP(OTPRequest request);
 
     AccountEntity login(LoginRequest request);

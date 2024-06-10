@@ -6,7 +6,14 @@ import com.lepham.cinema.dto.response.VoucherResponse;
 import java.text.ParseException;
 import java.util.List;
 
-public interface IVoucherService {
+public interface
+
+
+
+
+
+
+IVoucherService {
     List<VoucherResponse> getAllVoucher();
     VoucherResponse addVoucher(VoucherRequest request) throws ParseException;
     VoucherResponse updateVoucher(long id, VoucherRequest request) throws ParseException;
