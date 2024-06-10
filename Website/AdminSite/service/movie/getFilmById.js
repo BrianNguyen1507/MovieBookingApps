@@ -1,10 +1,10 @@
 import {
   base64ToImage,
   base64ToString,
-  formatToYmd,
+  translateDateFormat,
 } from "../../util/converter.js";
 import { getUserToken } from "../authenticate/authenticate.js";
-
+import { fetchCategories } from "./getCategoryList.js";
 const url = "http://localhost:8083/cinema/getFilmById?id=";
 
 export async function getMovieById(id) {
@@ -29,6 +29,7 @@ export async function getMovieById(id) {
 }
 
 function updateMovieInputs(movieData) {
+  const movieTrailer = document.getElementById("movieTrailer");
   const moviePoster = document.getElementById("moviePoster");
   const movieTitleInput = document.getElementById("movieTitleInput");
   const movieDurationInput = document.getElementById("movieDurationInput");
@@ -45,7 +46,7 @@ function updateMovieInputs(movieData) {
   const categorySelect = document.getElementById("floatingCategory");
   movieTitleInput.value = movieData.title;
   movieDurationInput.value = movieData.duration;
-  releaseDateInput.value = formatToYmd(movieData.releaseDate);
+  releaseDateInput.value = translateDateFormat(movieData.releaseDate);
   directorInput.value = movieData.director;
   actorInput.value = movieData.actor;
   countryInput.value = movieData.country;
@@ -53,20 +54,7 @@ function updateMovieInputs(movieData) {
   trailerInput.value = movieData.trailer;
   basePriceInput.value = movieData.basePrice;
   movieDescriptionInput.value = base64ToString(movieData.description);
-  if (movieData.poster) {
-    moviePoster.src = base64ToImage(movieData.poster);
-  } else {
-    moviePoster.src = "";
-  }
-  if (movieData.categories) {
-    categorySelect.innerHTML = "";
-    movieData.categories.forEach((category) => {
-      const option = document.createElement("option");
-      option.value = category.id;
-      option.text = category.name;
-      categorySelect.appendChild(option);
-    });
-  }
+
   if (movieData.trailer) {
     const videoId = extractYouTubeVideoId(movieData.trailer);
     if (videoId) {
@@ -79,6 +67,13 @@ function updateMovieInputs(movieData) {
   } else {
     movieTrailer.src = "";
   }
+
+  if (movieData.poster) {
+    moviePoster.src = base64ToImage(movieData.poster);
+  } else {
+    moviePoster.src = "";
+  }
+  fetchCategories();
 }
 function extractYouTubeVideoId(url) {
   const regExp = /[?&]v=([^&]+)/;

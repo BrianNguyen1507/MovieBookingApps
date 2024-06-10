@@ -1,6 +1,6 @@
 import { Voucher } from "../../models/voucher.js";
 import { addVoucher } from "./addVoucher.js";
-import { formatToDmyHsm } from "../../util/converter.js";
+import { formatToDmyHHmmss } from "../../util/converter.js";
 $(document).on("click", "#btn-add-voucher", async function (event) {
   try {
     const showForm = async () => {
@@ -94,7 +94,7 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
             limitAmountInput,
             discountAmountInput,
             quantityInput,
-            formattedExpiryDate: formatToDmyHsm(expiryDateInput),
+            formattedExpiryDate: formatToDmyHHmmss(expiryDateInput),
           };
         },
       });

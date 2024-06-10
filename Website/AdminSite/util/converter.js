@@ -5,6 +5,18 @@ export const formatToDmy = (dateString) => {
   const yyyy = date.getFullYear();
   return `${dd}-${mm}-${yyyy}`;
 };
+
+export const formatToDmyHHmmss = (dateString) => {
+  const date = new Date(dateString);
+  const dd = String(date.getDate()).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  const HH = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  const ss = String(date.getSeconds()).padStart(2, "0");
+
+  return `${dd}-${mm}-${yyyy} ${HH}:${mm}:${ss}`;
+};
+
 export const formatToYmd = (dateString) => {
   const date = new Date(dateString);
   const dd = String(date.getDate()).padStart(2, "0");
@@ -47,4 +59,15 @@ export function base64ToString(base64) {
 
 export function base64ToImage(base64) {
   return `data:image/jpeg;base64,${base64}`;
+}
+
+export function translateDateFormat(inputDate) {
+  const parts = inputDate.split("-");
+
+  const yyyyMMdd = `${parts[2]}-${parts[1].padStart(
+    2,
+    "0"
+  )}-${parts[0].padStart(2, "0")}`;
+
+  return yyyyMMdd;
 }

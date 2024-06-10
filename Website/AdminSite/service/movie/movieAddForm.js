@@ -50,10 +50,9 @@ $(document).on("click", "#btn-add-movie", async function (event) {
                   <label for="basePriceInput" class="form-label">Giá cơ bản</label>
                   <input type="number" class="form-control" id="basePriceInput">
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 align-items-center">
                   <label for="categoriesInput" class="form-label">Thể loại</label>
-                  <div class="form-floating mb-3">
-                    <select class="form-select" id="floatingCategory" aria-label="Floating label select example" multiple style="height: 100px;"></select>
+                  <div class="form-floating "  id="floatingCategory">
                   </div>
                 </div>
                 <div class="col-md-12">
@@ -97,11 +96,11 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           const languageInput = $("#languageInput").val().trim();
           const basePriceInput = parseFloat($("#basePriceInput").val());
           const selectedOptions = $("#floatingCategory")
-            .find(":selected")
+            .find("input:checked")
             .map(function () {
               return {
                 id: parseInt($(this).val()),
-                name: $(this).text(),
+                name: $(this).next("label").text(),
               };
             })
             .get();
