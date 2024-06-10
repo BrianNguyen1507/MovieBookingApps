@@ -326,3 +326,20 @@
   border-bottom: 1px solid #ccc;
   padding: 5px;
 }
+.selected {
+  background-color: lightblue;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+#moviePoster {
+  max-width: 100%;
+  height: auto;
+}
+
+#movieTrailer {
+  width: 100%;
+  height: 315px;
+}

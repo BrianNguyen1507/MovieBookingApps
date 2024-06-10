@@ -1,5 +1,5 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-import { typeofVouvher } from "../../util/voucherUtil/typeDiscount.js";
+import { typeofVoucher } from "../../util/voucherUtil/typeDiscount.js";
 import { symbolType } from "../../util/voucherUtil/typeDiscount.js";
 import { Voucher } from "../../models/voucher.js";
 const url = "http://localhost:8083/cinema/getAllVoucher";
@@ -26,7 +26,6 @@ async function getAndDisplayvoucher() {
 
     voucher.result.forEach((voucherData, index) => {
       const voucher = new Voucher(
-        voucherData.id,
         voucherData.title,
         voucherData.content,
         voucherData.minLimit,
@@ -55,10 +54,11 @@ async function getAndDisplayvoucher() {
 
       const discount = document.createElement("td");
       discount.textContent =
-        voucher.discount + symbolType(voucher.typeDiscount);
+        voucher.discount + symbolType(voucherData.typeDiscount);
       row.appendChild(discount);
       const typeDiscount = document.createElement("td");
-      typeDiscount.textContent = typeofVouvher(voucher.typeDiscount);
+      typeDiscount.textContent = typeofVoucher(voucherData.typeDiscount);
+
       row.appendChild(typeDiscount);
       const quantity = document.createElement("td");
       quantity.textContent = voucher.quantity;
@@ -70,12 +70,10 @@ async function getAndDisplayvoucher() {
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
-       <button class="btn btn-primary" id="btn-edit" data-id="${voucher.id}">Edit</button>
-        <button class="btn btn-danger btn-del" data-id="${voucher.id}">Delete</button>
+       <button class="btn btn-primary" id="btn-edit"data-type="${voucherData.typeDiscount}" data-minlimit="${voucher.minLimit}" data-title="${voucher.title}" data-content="${voucher.content}" data-quantity="${voucher.quantity}"data-discount="${voucher.discount}"  data-expired="${voucher.expired}"  data-id="${voucherData.id}">Edit</button>
+        <button class="btn btn-danger btn-del" data-id="${voucherData.id}">Delete</button>
       `;
-
       //event
-      const editVoucher = actionCell.querySelector(".btn-edit");
       const deleteVoucher = actionCell.querySelector(".btn-del");
       deleteVoucher.addEventListener("click", async () => {
         try {
@@ -89,7 +87,7 @@ async function getAndDisplayvoucher() {
           });
 
           if (confirmation.isConfirmed) {
-            const result = await DeleteVoucher(voucher.id);
+            const result = await DeleteVoucher(voucherData.id);
             if (result) {
               tbody.removeChild(row);
               Swal.fire({

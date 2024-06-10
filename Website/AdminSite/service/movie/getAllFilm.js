@@ -1,6 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 import { Movie } from "../../models/movie.js";
-import { formatToDmyHsm } from "../../util/converter.js";
+import { getMovieById } from "./getFilmById.js";
 
 const url = "http://localhost:8083/cinema/getAllFilm?step=10";
 
@@ -25,7 +25,6 @@ async function getAllMovies() {
 
     movies.result.forEach((movieData) => {
       const movie = new Movie(
-        movieData.id,
         movieData.title,
         movieData.duration,
         movieData.description,
@@ -45,7 +44,7 @@ async function getAllMovies() {
 
       const movieIdFlag = document.createElement("div");
       movieIdFlag.classList.add("movie-id-flag");
-      movieIdFlag.textContent = "#" + movie.id;
+      movieIdFlag.textContent = "#" + movieData.id;
       movieItem.appendChild(movieIdFlag);
 
       const moviePoster = document.createElement("img");
@@ -59,16 +58,14 @@ async function getAllMovies() {
 
       const movieDateRelease = document.createElement("div");
       movieDateRelease.classList.add("movie-details");
-      movieDateRelease.textContent = `Release Date: ${formatToDmyHsm(
-        movie.releaseDate
-      )}`;
+      movieDateRelease.textContent = `Release Date: ${movie.releaseDate}`;
       movieItem.appendChild(movieDateRelease);
 
       const moreDetailsBtn = document.createElement("button");
       moreDetailsBtn.classList.add("more-details-btn");
       moreDetailsBtn.textContent = "Chi tiết";
       moreDetailsBtn.addEventListener("click", () => {
-        console.log(`More details for movie: ${movie.title}`);
+        window.location.href = `movieDetail.html?id=${movieData.id}`;
       });
       movieItem.appendChild(moreDetailsBtn);
 
