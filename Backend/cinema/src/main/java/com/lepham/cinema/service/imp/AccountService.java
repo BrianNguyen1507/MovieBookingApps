@@ -19,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +66,7 @@ public class AccountService implements IAccountService {
     JavaMailSender mailSender;
 
     @Override
+    @PreAuthorize("permitAll()")
     public AccountResponse createAccount(AccountRequest request) throws ParseException, MessagingException, UnsupportedEncodingException {
         if(!checkEmailValid(request.getEmail())) throw new AppException(ErrorCode.INVALID_EMAIL);
         if(checkEmailExists(request.getEmail())) throw new AppException(ErrorCode.EXISTS_EMAIL);
@@ -83,11 +85,13 @@ public class AccountService implements IAccountService {
         String OTP = generateOTP(6);
         entity.setOtp(OTP);
         entity.setOtpRequestTime(new Date());
+        entity = accountRepository.save(entity);
         sendOTPEmail(entity);
-        return accountConverter.toResponse(accountRepository.save(entity));
+        return accountConverter.toResponse(entity);
     }
 
     @Override
+    @PreAuthorize("permitAll()")
     public AccountResponse checkOTP(OTPRequest request) {
         AccountEntity entity = accountRepository.findByEmail(request.getEmail());
         Calendar calendar = Calendar.getInstance();
@@ -113,6 +117,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    @PreAuthorize("permitAll()")
     public AccountEntity login(LoginRequest request) {
         AccountEntity entity = accountRepository.findByEmail(request.getEmail());
         if(entity==null) throw new AppException(ErrorCode.EMAIL_PASSWORD_INCORRECT);
