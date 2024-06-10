@@ -71,7 +71,8 @@ public class RoomService implements IRoomService {
         if(roomRepository.checkExistsRoom(request.getNumber(),request.getTheaterId())!=null)
             throw new AppException(ErrorCode.ROOM_EXISTS);
         RoomEntity entity = roomRepository.getReferenceById(roomId);
-        entity.setSeat(entity.generateSeat(request.getRow(), request.getColumn()));
+        entity.setRow(request.getRow());
+        entity.setColumn(request.getColumn());
         entity.setNumber(request.getNumber());
         entity.setMovieTheater(movieTheater);
         return roomConverter.toResponse(roomRepository.save(entity),

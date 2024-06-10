@@ -304,6 +304,7 @@ public class MovieScheduleService implements IMovieScheduleService {
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         schedule.setFilm(film);
         schedule.setRoom(room);
+        schedule.setSeat(schedule.generateSeat(room.getRow(),room.getColumn()));
         return schedule;
     }
     List<MovieScheduleEntity> checkSwap(List<MovieScheduleEntity> scheduleEntities,FilmEntity film){
