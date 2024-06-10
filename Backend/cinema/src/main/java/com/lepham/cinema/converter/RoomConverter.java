@@ -11,22 +11,19 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface RoomConverter {
-
-
-
     default RoomEntity toEntity(RoomRequest request, MovieTheaterEntity movieTheater){
         RoomEntity entity = new RoomEntity();
         entity.setNumber(request.getNumber());
         entity.setMovieTheater(movieTheater);
-        entity.setSeat(entity.generateSeat(request.getRow(), request.getColumn()));
+        entity.setRow(request.getRow());
+        entity.setColumn(request.getColumn());
         return entity;
     }
-
-
     default RoomResponse toResponse(RoomEntity entity, MovieTheaterResponse movieTheaterResponse){
         RoomResponse response = new RoomResponse();
         response.setId(entity.getId());
-        response.setSeat(entity.getSeat());
+        response.setRow(entity.getRow());
+        response.setColumn(entity.getColumn());
         response.setNumber(entity.getNumber());
         response.setMovieTheater(movieTheaterResponse);
         return response;

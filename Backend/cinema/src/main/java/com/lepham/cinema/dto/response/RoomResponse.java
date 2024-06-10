@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 public class RoomResponse {
     long id;
     int number;
-    int[][] seat;
+    int row;
+    int column;
     MovieTheaterResponse movieTheater;
 }
