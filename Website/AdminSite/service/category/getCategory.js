@@ -2,7 +2,7 @@ import { getUserToken } from "../authenticate/authenticate.js";
 import { Category } from "../../models/categories.js";
 
 const url = "http://localhost:8083/cinema/getAllCategory";
-async function getAndDisplayCategories() {
+export async function getAndDisplayCategories() {
   try {
     const token = await getUserToken();
     const response = await fetch(url, {

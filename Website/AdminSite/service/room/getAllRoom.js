@@ -20,25 +20,26 @@ export async function getAllRoom() {
     const tbody = document.querySelector("#room-table tbody");
     tbody.innerHTML = "";
 
-    roomData.result.forEach((room, index) => {
-      
-      const row = document.createElement("tr");
+    roomData.result.forEach((item, index) => {
+      const room = new Room(item.id, item.number, item.row, item.column);
 
-     
+      const row = document.createElement("tr");
 
       const indexCell = document.createElement("td");
       indexCell.textContent = index + 1;
       row.appendChild(indexCell);
 
       const numberCell = document.createElement("td");
-      numberCell.textContent = `${room.number}-${room.movieTheater.name} ` ;
+      numberCell.textContent = `${room.number} / ${item.movieTheater.name} `;
       row.appendChild(numberCell);
 
       const seatsCell = document.createElement("td");
-      seatsCell.textContent = `${countEmptySeats(room.seat)}/${
-        room.seat.flat().length
-      } ghế trống`;
+      seatsCell.textContent = `${room.row * room.col} ghế`;
       row.appendChild(seatsCell);
+
+      const descriptionCell = document.createElement("td");
+      descriptionCell.textContent = `${item.movieTheater.name} - ${item.movieTheater.address}`;
+      row.appendChild(descriptionCell);
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
@@ -54,15 +55,5 @@ export async function getAllRoom() {
     console.error("Error fetching and displaying rooms:", error);
   }
 }
-function countEmptySeats(seatsArray) {
-  let emptySeatCount = 0;
-  for (let i = 0; i < seatsArray.length; i++) {
-    for (let j = 0; j < seatsArray[i].length; j++) {
-      if (seatsArray[i][j] === 0) {
-        emptySeatCount++;
-      }
-    }
-  }
-  return emptySeatCount;
-}
+
 getAllRoom();

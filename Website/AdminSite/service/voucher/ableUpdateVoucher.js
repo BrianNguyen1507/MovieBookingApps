@@ -1,6 +1,7 @@
 import { Voucher } from "../../models/voucher.js";
 import { updateVoucher } from "./updateVoucher.js";
 import { formatToDmyHHmmss } from "../../util/converter.js";
+import { screenSizeWith } from "../../constant/screenSize.js";
 
 $(document).on("click", "#btn-edit", async function (event) {
   try {
@@ -18,47 +19,61 @@ $(document).on("click", "#btn-edit", async function (event) {
 
     const showForm = async () => {
       return await Swal.fire({
+        width: screenSizeWith(),
         title: "Cập nhật Voucher Giảm giá",
         html: `
-          <div class="col-sm-12">
+        <div class="container">
+          <div class="row">
+          <div class="col-sm-12 col-md-6">
             <div class="bg-light rounded h-100 p-4">
-              <form id="updateVoucherForm">
-                <div class="mb-3">
-                  <label for="voucherTitleInput" class="form-label">Tiêu đề</label>
-                  <input type="text" value="${voucherTitle}" class="form-control" id="voucherTitleInput">
-                </div>
-                <div class="mb-3">
-                  <label for="voucherContentInput" class="form-label">Nội dung</label>
-                  <input type="text" value="${voucherContent}" class="form-control" id="voucherContentInput">
-                </div>
-                <div class="mb-3">
-                  <label for="discountTypeInput" class="form-label">Loại giảm giá</label>
-                  <select class="form-select" id="discountTypeInput">
-                    <option id="percentageOption" value="1">Phần trăm</option>
-                    <option id="fixedAmountOption" value="2">Số tiền cố định</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="limitAmountInput" class="form-label">Hạn mức</label>
-                  <input type="number" value="${voucherMinLimit}" class="form-control" id="limitAmountInput">
-                </div>
-                <div class="mb-3">
-                  <label for="discountAmountInput" class="form-label">Giảm giá (%)</label>
-                  <input type="number" value="${voucherDiscount}" class="form-control" id="discountAmountInput">
-                </div>
-                <div class="mb-3">
-                  <label for="quantityInput" class="form-label">Số lượng</label>
-                  <input type="number" value="${voucherQuantity}" class="form-control" id="quantityInput">
-                </div>
-                <div class="mb-3">
-                  <label for="expiryDateInput" class="form-label">Ngày hết hạn</label>
-                  <input type="date" class="form-control" id="expiryDateInput">
-                </div>
-              </form>
-              <div id="errorMessageText" style="color: red;"></div>
+                <form id="updateVoucherForm">
+                  <div class="mb-3">
+                    <label for="voucherTitleInput" class="form-label">Tiêu đề</label>
+                    <input type="text" value="${voucherTitle}" class="form-control" id="voucherTitleInput">
+                  </div>
+                  <div class="mb-3">
+                    <label for="voucherContentInput" class="form-label">Nội dung</label>
+                    <input type="text" value="${voucherContent}" class="form-control" id="voucherContentInput">
+                  </div>
+                  <div class="mb-3">
+                    <label for="discountTypeInput" class="form-label">Loại giảm giá</label>
+                    <select class="form-select" id="discountTypeInput">
+                      <option id="percentageOption" value="1">Phần trăm</option>
+                      <option id="fixedAmountOption" value="2">Số tiền cố định</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+            </div>
+        
+            <div class="col-sm-12 col-md-6">
+            <div class="bg-light rounded h-100 p-4">
+                <form id="updateVoucherForm">
+                  <div class="mb-3">
+                    <label for="limitAmountInput" class="form-label">Hạn mức</label>
+                    <input type="number" value="${voucherMinLimit}" class="form-control" id="limitAmountInput">
+                  </div>
+                  <div class="mb-3">
+                    <label for="discountAmountInput" class="form-label">Giảm giá (%)</label>
+                    <input type="number" value="${voucherDiscount}" class="form-control" id="discountAmountInput">
+                  </div>
+                  <div class="mb-3">
+                    <label for="quantityInput" class="form-label">Số lượng</label>
+                    <input type="number" value="${voucherQuantity}" class="form-control" id="quantityInput">
+                  </div>
+                  <div class="mb-3">
+                    <label for="expiryDateInput" class="form-label">Ngày hết hạn</label>
+                    <input type="date" class="form-control" id="expiryDateInput">
+                  </div>
+                </form>
+              
+              </div>
             </div>
           </div>
+            <div id="errorMessageText" style="color: red;"></div>
+        </div>
         `,
+
         didOpen: () => {
           const selectElement = $("#discountTypeInput");
           selectElement.val(voucherTypeDiscount);
