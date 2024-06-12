@@ -1,7 +1,7 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 const url = "http://localhost:8083/cinema/getAllMovieTheater";
 import { Theater } from "../../models/theater.js";
-async function getAndDisplayTheater() {
+export async function getAndDisplayTheater() {
   try {
     const token = await getUserToken();
     const response = await fetch(url, {

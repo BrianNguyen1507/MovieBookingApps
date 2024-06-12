@@ -21,7 +21,12 @@ export async function getRoomById(id) {
     tbody.innerHTML = "";
 
     roomData.result.forEach((roomItem, index) => {
-      const room = new Room(roomItem.id, roomItem.number, roomItem.seat);
+      const room = new Room(
+        roomItem.id,
+        roomItem.number,
+        roomItem.row,
+        roomItem.column
+      );
       const row = document.createElement("tr");
 
       const indexCell = document.createElement("td");
@@ -33,10 +38,12 @@ export async function getRoomById(id) {
       row.appendChild(numberCell);
 
       const seatsCell = document.createElement("td");
-      seatsCell.textContent = `${countEmptySeats(room.seat)}/${
-        room.seat.flat().length
-      } ghế trống`;
+      seatsCell.textContent = `${room.row * room.col}`;
       row.appendChild(seatsCell);
+
+      const descriptionCell = document.createElement("td");
+      descriptionCell.textContent = `${roomItem.movieTheater.name} - ${roomItem.movieTheater.address}`;
+      row.appendChild(descriptionCell);
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
@@ -51,15 +58,4 @@ export async function getRoomById(id) {
   } catch (error) {
     console.error("Error fetching and displaying rooms:", error);
   }
-}
-function countEmptySeats(seatsArray) {
-  let emptySeatCount = 0;
-  for (let i = 0; i < seatsArray.length; i++) {
-    for (let j = 0; j < seatsArray[i].length; j++) {
-      if (seatsArray[i][j] === 0) {
-        emptySeatCount++;
-      }
-    }
-  }
-  return emptySeatCount;
 }
