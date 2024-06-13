@@ -8,6 +8,11 @@ import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
 import com.lepham.cinema.repository.CategoryRepository;
 import com.lepham.cinema.service.ICategoryService;
+import com.lepham.cinema.validator.StringValidator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +35,7 @@ public class CategoryService implements ICategoryService {
 
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("permitAll()")
     public List<CategoryResponse> getAllCategory() {
         List<CategoryEntity> entities = categoryRepository.findAll();
         return categoryConverter.toListCategoryRequest(entities) ;

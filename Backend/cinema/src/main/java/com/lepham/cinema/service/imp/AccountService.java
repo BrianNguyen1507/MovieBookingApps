@@ -70,17 +70,15 @@ public class AccountService implements IAccountService {
     public AccountResponse createAccount(AccountRequest request) throws ParseException, MessagingException, UnsupportedEncodingException {
         if(!checkEmailValid(request.getEmail())) throw new AppException(ErrorCode.INVALID_EMAIL);
         if(checkEmailExists(request.getEmail())) throw new AppException(ErrorCode.EXISTS_EMAIL);
-        else{
-            AccountEntity entity = accountRepository.findByEmail(request.getEmail());
-            if (entity!=null){
-                accountRepository.delete(entity);
-            }
-        }
+
         if(checkPasswordValid(request.getPassword())) throw new AppException(ErrorCode.PASSWORD_INVALID);
         if(!checkPhoneValid(request.getPhoneNumber())) throw new AppException(ErrorCode.INVALID_PHONE);
-        if(!isValidDayOfBirth(request.getDayOfBirth())) throw new AppException(ErrorCode.INVALID_DOB);
 
         AccountEntity entity = accountConverter.toEntity(request);
+        AccountEntity entityExists = accountRepository.findByEmail(request.getEmail());
+        if (entityExists!=null){
+            entity.setId(entityExists.getId());
+        }
         entity.setPassword(passwordEncoder.encode(request.getPassword()));
         String OTP = generateOTP(6);
         entity.setOtp(OTP);
@@ -143,20 +141,6 @@ public class AccountService implements IAccountService {
         }
         Matcher matcher = phonePattern.matcher(phoneNumber);
         return matcher.matches();
-    }
-    boolean isValidDayOfBirth(String dateOfBirth) {
-        if (dateOfBirth == null) {
-            return false;
-        }
-        try {
-            String dateYMD = DateConverter.DMYtoStringYMD(dateOfBirth);
-            LocalDate date = LocalDate.parse(dateYMD, DATE_FORMATTER);
-            return date.isBefore(LocalDate.now());
-        } catch (DateTimeParseException e) {
-            return false;
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     boolean checkPasswordValid(String password){

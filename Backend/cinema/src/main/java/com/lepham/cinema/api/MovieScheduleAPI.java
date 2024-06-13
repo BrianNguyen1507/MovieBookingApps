@@ -1,7 +1,6 @@
 package com.lepham.cinema.api;
 
 import com.lepham.cinema.constant.ConstantVariable;
-import com.lepham.cinema.dto.request.ScheduleSortRequest;
 import com.lepham.cinema.dto.request.ShowTimeRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
 import com.lepham.cinema.dto.response.APIResponse;
@@ -9,6 +8,7 @@ import com.lepham.cinema.dto.response.LatestDateResponse;
 import com.lepham.cinema.dto.response.MovieScheduleResponse;
 import com.lepham.cinema.dto.response.ShowTimeResponse;
 import com.lepham.cinema.service.imp.MovieScheduleService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,13 +34,13 @@ public class MovieScheduleAPI {
                 .build();
     }
     @PostMapping(value = "/getShowTimeRemaining")
-    APIResponse<List<ShowTimeResponse>> getShowTimeRemaining(@RequestBody ShowTimesRequest request) throws ParseException {
+    APIResponse<List<ShowTimeResponse>> getShowTimeRemaining(@RequestBody @Valid ShowTimesRequest request) throws ParseException {
         return APIResponse.<List<ShowTimeResponse>>builder()
                 .result(movieScheduleService.getEstimateShowTimeRemaining(request))
                 .build();
     }
     @PostMapping(value = "/autoSortSchedule")
-    APIResponse<List<MovieScheduleResponse>> autoSortSchedule(@RequestBody ShowTimesRequest request
+    APIResponse<List<MovieScheduleResponse>> autoSortSchedule(@RequestBody @Valid ShowTimesRequest request
             , @RequestParam("roomId") long roomId) throws ParseException {
         return APIResponse.<List<MovieScheduleResponse>>builder()
                 .result(movieScheduleService.autoSortSchedule(request,roomId))

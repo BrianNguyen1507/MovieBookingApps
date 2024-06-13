@@ -9,6 +9,7 @@ import com.lepham.cinema.dto.response.AuthenticationResponse;
 import com.lepham.cinema.service.imp.AccountService;
 import com.lepham.cinema.service.imp.AuthenticationService;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,7 +31,7 @@ public class AccountAPI {
     AuthenticationService authenticationService;
 
     @PostMapping(value = "/register")
-    public APIResponse<AccountResponse> createAccount(@RequestBody AccountRequest request) throws ParseException, MessagingException, UnsupportedEncodingException {
+    public APIResponse<AccountResponse> createAccount(@RequestBody @Valid AccountRequest request) throws ParseException, MessagingException, UnsupportedEncodingException {
         return APIResponse.<AccountResponse>builder()
                 .result(accountService.createAccount(request))
                 .build();

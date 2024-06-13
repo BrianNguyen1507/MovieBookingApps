@@ -24,6 +24,9 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(1012,"Category not found",HttpStatus.BAD_REQUEST),
     FILM_NOT_FOUND(1013,"Film not found",HttpStatus.BAD_REQUEST),
     ROOM_EXISTS(1014,"Room was existed in movie theater",HttpStatus.BAD_REQUEST),
+    CATEGORY_NAME_INVALID(1015,"Request has category name is empty ",HttpStatus.BAD_REQUEST),
+    STRING_IS_EMPTY(1016,"String is empty",HttpStatus.BAD_REQUEST),
+    DURATION_INVALID(1017,"Duration is in 90 to 150 minute",HttpStatus.BAD_REQUEST),
     ;
 
 

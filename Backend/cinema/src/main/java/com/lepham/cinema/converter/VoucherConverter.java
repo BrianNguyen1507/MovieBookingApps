@@ -19,7 +19,7 @@ public interface VoucherConverter {
         entity.setQuantity(request.getQuantity());
         entity.setMinLimit(request.getMinLimit());
         entity.setTypeDiscount(request.getTypeDiscount());
-        entity.setExpired(DateConverter.toYMDTime(request.getExpired()));
+        entity.setExpired(request.getExpired());
         return entity;
     }
     default VoucherResponse toResponse(VoucherEntity entity){
@@ -31,7 +31,7 @@ public interface VoucherConverter {
         response.setQuantity(entity.getQuantity());
         response.setMinLimit(entity.getMinLimit());
         response.setTypeDiscount(entity.getTypeDiscount());
-        response.setExpired(DateConverter.toStringDMYTime(entity.getExpired()));
+        response.setExpired(entity.getExpired());
         return response;
     }
     default void updateVoucher(@MappingTarget VoucherEntity entity, VoucherRequest request) throws ParseException {
@@ -41,6 +41,6 @@ public interface VoucherConverter {
         entity.setQuantity(request.getQuantity());
         entity.setMinLimit(request.getMinLimit());
         entity.setTypeDiscount(request.getTypeDiscount());
-        entity.setExpired(DateConverter.toYMDTime(request.getExpired()));
+        entity.setExpired(request.getExpired());
     }
 }

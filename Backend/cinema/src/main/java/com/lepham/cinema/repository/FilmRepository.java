@@ -13,5 +13,7 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
 
     @Query(value = "SELECT f FROM FilmEntity f WHERE f.active =1 order by f.releaseDate desc ")
     List<FilmEntity> findAllByActive();
+
+    List<FilmEntity> findAllByHide(boolean hide);
 }
 

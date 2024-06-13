@@ -3,6 +3,8 @@ package com.lepham.cinema.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,7 +14,7 @@ public class AccountResponse {
     String phoneNumber;
     String gender;
     String email;
-    String dayOfBirth;
+    LocalDate dayOfBirth;
     String role;
     int active;
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class FilmEntity {
     @Lob
     byte[] description;
     @Column(name = "release_date")
-    Date releaseDate;
+    LocalDate releaseDate;
     @Column(name = "director",nullable = false)
     String director;
     @Column(name = "actor",nullable = false)
@@ -45,6 +46,10 @@ public class FilmEntity {
     int active;
     @Column(name = "base_price",nullable = false)
     double basePrice;
+    @Column(name = "hide",nullable = false)
+    boolean hide;
+    @Column(name = "classify",nullable = false,length = 5)
+    String classify;
 
     @OneToMany(mappedBy = "film")
     List<MovieScheduleEntity> schedules;

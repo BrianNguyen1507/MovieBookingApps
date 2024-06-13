@@ -2,7 +2,7 @@ import { getUserToken } from "../authenticate/authenticate.js";
 
 const urlcategory = "http://localhost:8083/cinema/getAllCategory";
 
-export async function fetchCategories() {
+export async function fetchCategories(filmCategory) {
   try {
     const token = await getUserToken();
     const response = await fetch(urlcategory, {
@@ -12,7 +12,7 @@ export async function fetchCategories() {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    console.log(filmCategory);
     const categories = await response.json();
     console.log(categories);
     if (categories.code !== 1000) {
@@ -23,15 +23,23 @@ export async function fetchCategories() {
       const containerElement = $("#floatingCategory");
       containerElement.empty();
       categories.result.forEach((categoryData) => {
-        const checkboxWrapper = $("<div></div>");
         const checkbox = $("<input>")
-          .attr("type", "checkbox")
-          .attr("id", `category-${categoryData.id}`)
-          .attr("name", "categories")
-          .attr("value", categoryData.id);
+        .attr("type", "checkbox")
+        .attr("id", `category-${categoryData.id}`)
+        .attr("name", "categories")
+        .attr("value", categoryData.id);
+        if(filmCategory!=null){
+          filmCategory.forEach((category) => {
+            if(category.id==categoryData.id){
+              console.log("haha")
+              checkbox.prop("checked", true);  
+            }
+          });
+        }
+        const checkboxWrapper = $("<div></div>");    
         const label = $("<label></label>")
           .attr("for", `category-${categoryData.id}`)
-          .text(categoryData.name);
+          .text(categoryData.name); 
 
         checkboxWrapper.append(checkbox);
         checkboxWrapper.append(label);

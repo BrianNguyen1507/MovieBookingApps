@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,5 +14,5 @@ import lombok.extern.slf4j.Slf4j;
 public class FilmScheduleResponse {
     long id;
     String title;
-    String releaseDate;
+    LocalDate releaseDate;
 }

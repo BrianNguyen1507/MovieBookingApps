@@ -89,13 +89,13 @@ public class MovieScheduleService implements IMovieScheduleService {
         for (FilmEntity film : filmEntities) {
             if (!entities.contains(film)) {
                 Calendar cdFilm = Calendar.getInstance();
-                cdFilm.setTime(film.getReleaseDate());
+                cdFilm.setTime(DateConverter.localDateToDate(film.getReleaseDate()));
                 if (cdEnd.get(Calendar.DAY_OF_YEAR) >= cdFilm.get(Calendar.DAY_OF_YEAR)) {
                     ShowTimeResponse showTime = new ShowTimeResponse();
                     FilmScheduleResponse filmResponse = new FilmScheduleResponse();
                     filmResponse.setId(film.getId());
                     filmResponse.setTitle(film.getTitle());
-                    filmResponse.setReleaseDate(DateConverter.toStringDMY(film.getReleaseDate()));
+                    filmResponse.setReleaseDate(film.getReleaseDate());
 
                     // check release date between date start and date end
                     boolean checkReleaseDate = cdFilm.get(Calendar.DAY_OF_YEAR) <= cdEnd.get(Calendar.DAY_OF_YEAR)
@@ -107,7 +107,7 @@ public class MovieScheduleService implements IMovieScheduleService {
                     int limitMax = 0;
                     for (FilmEntity filmLimit : filmEntities) {
                         Calendar cdFilmLimit = Calendar.getInstance();
-                        cdFilmLimit.setTime(filmLimit.getReleaseDate());
+                        cdFilmLimit.setTime(DateConverter.localDateToDate(filmLimit.getReleaseDate()));
                         if (!entities.contains(filmLimit)) {
                             if (cdFilmLimit.get(Calendar.DAY_OF_YEAR) > cdFilm.get(Calendar.DAY_OF_YEAR)) {
                                 limitMax += getDayByCalendar(cdFilmLimit, cdEnd) + 1;
@@ -157,7 +157,7 @@ public class MovieScheduleService implements IMovieScheduleService {
                 else{
                     MovieScheduleEntity schedule = saveSchedule(showTime.getIdFilm(), idRoom);
                     Calendar cdShowTime = Calendar.getInstance();
-                    cdShowTime.setTime(schedule.getFilm().getReleaseDate());
+                    cdShowTime.setTime(DateConverter.localDateToDate(schedule.getFilm().getReleaseDate()));
                     Calendar cdStart = Calendar.getInstance();
                     cdStart.setTime(DateConverter.stringParseYMD(request.getDateStart()));
                     if(cdShowTime.get(Calendar.DAY_OF_YEAR)-cdStart.get(Calendar.DAY_OF_YEAR)<=i+1){

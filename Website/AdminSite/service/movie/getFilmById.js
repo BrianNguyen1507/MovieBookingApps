@@ -23,6 +23,8 @@ export async function getMovieById(id) {
       throw new Error(`Failed to get movie with ${id}`);
     }
     updateMovieInputs(movies.result);
+    console.log(movies.result.categories);
+    fetchCategories(movies.result.categories);
   } catch (error) {
     console.error("Error fetching:", error);
   }
@@ -73,7 +75,9 @@ function updateMovieInputs(movieData) {
   } else {
     moviePoster.src = "";
   }
-  fetchCategories();
+
+ 
+
 }
 function extractYouTubeVideoId(url) {
   const regExp = /[?&]v=([^&]+)/;

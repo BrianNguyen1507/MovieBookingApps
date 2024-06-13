@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -19,14 +20,15 @@ public class FilmResponse {
     long id;
     String title;
     int duration;
-    byte[] description;
-    String releaseDate;
+    LocalDate releaseDate;
     String director;
     String actor;
-    byte[] poster;
     String trailer;
     String country;
     String language;
     double basePrice;
+    String classify;
     List<CategoryResponse> categories;
+    byte[] description;
+    byte[] poster;
 }

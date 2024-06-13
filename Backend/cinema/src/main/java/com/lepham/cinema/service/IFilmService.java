@@ -7,7 +7,8 @@ import java.text.ParseException;
 import java.util.List;
 
 public interface IFilmService {
-    List<FilmResponse> getAllFilm(int step);
+    List<FilmResponse> getAllFilmByStep(int step);
+    List<FilmResponse> getAllFilm();
     FilmResponse getFilmById(long id);
     FilmResponse addFilm(FilmRequest request) throws ParseException;
     FilmResponse updateFilm(long id,FilmRequest request) throws ParseException;
