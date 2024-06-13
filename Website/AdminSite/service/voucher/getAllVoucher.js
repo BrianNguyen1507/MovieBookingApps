@@ -6,7 +6,7 @@ const url = "http://localhost:8083/cinema/getAllVoucher";
 
 const token = await getUserToken();
 
-async function getAndDisplayvoucher() {
+export async function getAndDisplayvoucher() {
   try {
     const response = await fetch(url, {
       method: "GET",

@@ -47,7 +47,7 @@
     </style>
   </head>
 
-  <body>
+  <body data-page="movieManagement">
     <div class="container-xxl position-relative bg-white d-flex p-0">
       <!-- Spinner Start -->
       <div
@@ -75,33 +75,34 @@
         <!-- Navbar End -->
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
-          <div class="row g-4">
-            <div>
-              <button class="btn btn-primary" id="btn-add-movie">
+          <div class="row g-4 align-items-center pt-4 pb-4">
+            <div class="col-auto">
+              <button class="btn btn-primary px-4 py-2" id="btn-add-movie">
                 Thêm Phim mới
               </button>
             </div>
-            <div class="bg-light rounded h-100 p-4">
-              <h6 class="mb-4">DANH SÁCH PHIM</h6>
-              <div id="movie-list" class="p-3 d-flex flex-wrap"></div>
+            <div class="col">
+              <form class="d-flex ms-4">
+                <input
+                  id="search-movie"
+                  class="form-control border-3 border-primary px-4 py-2"
+                  type="search"
+                  placeholder="Search"
+                />
+              </form>
             </div>
           </div>
+
+          <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">DANH SÁCH PHIM</h6>
+            <div id="movie-list" class="p-3 d-flex flex-wrap"></div>
+          </div>
+        </div>
+        <div>
           <div></div>
         </div>
         <!-- Form End -->
-        <!-- Footer Start -->
-        <div class="container-fluid pt-4 px-4">
-          <div class="bg-light rounded-top p-4">
-            <div class="row">
-              <div class="col-12 col-sm-6 text-center text-sm-start">
-                &copy; <a href="#">Movie Booking Tickets</a>, All Right
-                Reserved.
-              </div>
-              <div class="col-12 col-sm-6 text-center text-sm-end"></div>
-            </div>
-          </div>
-        </div>
-        <!-- Footer End -->
+        <div class="footer-bar"></div>
       </div>
       <!-- Content End -->
 
@@ -112,7 +113,10 @@
     </div>
 
     <!-- JavaScript Libraries -->
-  
+ <script src="./service/authenticate/init.js"></script>
+
+    <script type="module" src="./event/searchTyping.js"></script>
+    <script type="module" src="./util/loadFooter.js"></script>
     <script type="module" src="./service/movie/getAllFilm.js"></script>
     <script type="module" src="./service/movie/movieAddForm.js"></script>
     <script type="module" src="./util/logout.js"></script>

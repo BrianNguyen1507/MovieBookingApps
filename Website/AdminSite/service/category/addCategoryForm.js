@@ -52,9 +52,7 @@ $(document).on("click", "#btn-add-category", async function (event) {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          setTimeout(function () {
-            window.location.reload();
-          }, 300);
+          getAndDisplayCategories();
         });
       } else {
         Swal.fire({

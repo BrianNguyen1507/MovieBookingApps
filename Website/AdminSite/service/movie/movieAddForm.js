@@ -7,6 +7,7 @@ import {
 } from "../../util/converter.js";
 import { addMovie } from "./addFilm.js";
 import { screenSizeWith } from "../../constant/screenSize.js";
+import { getAllMovies } from "./getAllFilm.js";
 $(document).on("click", "#btn-add-movie", async function (event) {
   try {
     const showForm = async () => {
@@ -196,9 +197,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          setTimeout(function () {
-            window.location.reload();
-          }, 300);
+          getAllMovies();
         });
       } else {
         Swal.fire({

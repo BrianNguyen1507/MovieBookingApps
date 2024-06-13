@@ -2,6 +2,7 @@ import { Voucher } from "../../models/voucher.js";
 import { updateVoucher } from "./updateVoucher.js";
 import { formatToDmyHHmmss } from "../../util/converter.js";
 import { screenSizeWith } from "../../constant/screenSize.js";
+import { getAndDisplayvoucher } from "./getAllVoucher.js";
 
 $(document).on("click", "#btn-edit", async function (event) {
   try {
@@ -161,9 +162,7 @@ $(document).on("click", "#btn-edit", async function (event) {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          setTimeout(function () {
-            window.location.reload();
-          }, 300);
+          getAndDisplayvoucher();
         });
       } else {
         Swal.fire({

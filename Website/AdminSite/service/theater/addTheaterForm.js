@@ -58,9 +58,7 @@ $(document).on("click", "#btn-add-theater", async function (event) {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          setTimeout(function () {
-            window.location.reload();
-          }, 300);
+          getAndDisplayTheater();
         });
       } else {
         Swal.fire({
