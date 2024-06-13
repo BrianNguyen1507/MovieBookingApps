@@ -4,6 +4,7 @@ import com.lepham.cinema.dto.request.MovieTheaterRequest;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.MovieTheaterResponse;
 import com.lepham.cinema.service.imp.MovieTheaterService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,7 +30,7 @@ public class MovieTheaterAPI {
     }
 
     @PostMapping(value = "/addMovieTheater")
-    APIResponse<MovieTheaterResponse> addMovieTheater(@RequestBody MovieTheaterRequest request){
+    APIResponse<MovieTheaterResponse> addMovieTheater(@RequestBody @Valid MovieTheaterRequest request){
         return APIResponse.<MovieTheaterResponse>builder()
                 .result(movieTheaterService.addMovieTheater(request))
                 .build();
@@ -37,7 +38,7 @@ public class MovieTheaterAPI {
 
     @PutMapping(value = "/updateMovieTheater")
     APIResponse<MovieTheaterResponse> updateMovieTheater(@RequestParam("id") long id
-            , @RequestBody MovieTheaterRequest request){
+            , @RequestBody @Valid MovieTheaterRequest request){
         return APIResponse.<MovieTheaterResponse>builder()
                 .result(movieTheaterService.updateMovieTheater(id,request))
                 .build();

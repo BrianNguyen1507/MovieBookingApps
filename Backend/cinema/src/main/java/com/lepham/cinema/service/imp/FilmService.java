@@ -38,7 +38,7 @@ public class FilmService implements IFilmService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public List<FilmResponse> getAllFilm(int step) {
+    public List<FilmResponse> getAllFilmByStep(int step) {
         //Find by step
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.DAY_OF_YEAR,calendar.get(Calendar.DAY_OF_YEAR)-step);
@@ -52,8 +52,16 @@ public class FilmService implements IFilmService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
+    public List<FilmResponse> getAllFilm() {
+        List<FilmEntity> entities = filmRepository.findAllByHide(false);
+        return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse getFilmById(long id) {
         FilmEntity filmEntity = filmRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.FILM_NOT_FOUND));
+        if(filmEntity.isHide())throw new AppException(ErrorCode.FILM_NOT_FOUND);
         return filmConverter.toFilmResponse(filmEntity);
     }
 
@@ -61,6 +69,7 @@ public class FilmService implements IFilmService {
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse addFilm(FilmRequest request) throws ParseException {
        FilmEntity entity = filmConverter.toFilmEntity(request);
+       entity.setHide(false);
        return filmConverter.toFilmResponse(filmRepository.save(entity));
     }
 
@@ -76,7 +85,7 @@ public class FilmService implements IFilmService {
         entity.setBasePrice(request.getBasePrice());
         entity.setLanguage(request.getLanguage());
         entity.setPoster(request.getPoster());
-        entity.setReleaseDate(DateConverter.toYMDTime(request.getReleaseDate()));
+        entity.setReleaseDate(request.getReleaseDate());
         entity.setTrailer(request.getTrailer());
         entity.setTitle(request.getTitle());
         entity.setCategories(categoryConverter.toListEntities(request.getCategories()));
@@ -88,7 +97,8 @@ public class FilmService implements IFilmService {
     public void deleteFilm(long id) {
         FilmEntity entity = filmRepository.findById(id).orElseThrow(()->
                 new AppException(ErrorCode.FILM_NOT_FOUND));
-        filmRepository.delete(entity);
+        entity.setHide(true);
+        filmRepository.save(entity);
     }
 
 

@@ -19,7 +19,7 @@ public class AccountConverter {
         response.setGender(entity.getGender());
         response.setFullName(entity.getFullName());
         response.setPhoneNumber(entity.getPhone());
-        response.setDayOfBirth(DateConverter.toStringDMY(entity.getDayOfBirth()));
+        response.setDayOfBirth(entity.getDayOfBirth());
         response.setActive(entity.getActive());
         response.setRole(entity.getRole());
         return response;
@@ -31,7 +31,7 @@ public class AccountConverter {
         entity.setGender(request.getGender());
         entity.setEmail(request.getEmail());
         entity.setFullName(request.getFullName());
-        entity.setDayOfBirth(DateConverter.stringParseYMD(request.getDayOfBirth()));
+        entity.setDayOfBirth(request.getDayOfBirth());
         entity.setPhone(request.getPhoneNumber());
         entity.setActive(request.getActive());
         entity.setRole(request.getRole());

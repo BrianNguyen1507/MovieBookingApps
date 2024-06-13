@@ -2,6 +2,9 @@ package com.lepham.cinema.converter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public abstract class DateConverter {
@@ -35,5 +38,10 @@ public abstract class DateConverter {
 
     public static String toTime(Date date){
         return sdfTime.format(date);
+    }
+    public static Date localDateToDate(LocalDate localDate){
+        ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
+
+       return  Date.from(zonedDateTime.toInstant());
     }
 }

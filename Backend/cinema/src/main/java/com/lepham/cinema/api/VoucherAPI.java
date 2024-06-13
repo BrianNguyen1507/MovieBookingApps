@@ -4,6 +4,7 @@ import com.lepham.cinema.dto.request.VoucherRequest;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.VoucherResponse;
 import com.lepham.cinema.service.imp.VoucherService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,7 +31,7 @@ public class VoucherAPI {
     }
 
     @PostMapping(value = "/addVoucher")
-    APIResponse<VoucherResponse> addVoucher(@RequestBody VoucherRequest request) throws ParseException {
+    APIResponse<VoucherResponse> addVoucher(@RequestBody @Valid VoucherRequest request) throws ParseException {
         return APIResponse.<VoucherResponse>builder()
                 .result(voucherService.addVoucher(request))
                 .build();
@@ -38,7 +39,7 @@ public class VoucherAPI {
 
     @PutMapping(value = "/updateVoucher")
     APIResponse<VoucherResponse> updateVoucher(@RequestParam("id") long id
-            ,@RequestBody VoucherRequest request) throws ParseException {
+            ,@RequestBody @Valid VoucherRequest request) throws ParseException {
 
         return APIResponse.<VoucherResponse>builder()
                 .result(voucherService.updateVoucher(id,request))

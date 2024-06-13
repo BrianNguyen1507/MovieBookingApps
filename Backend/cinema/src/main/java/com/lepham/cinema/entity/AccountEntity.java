@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class AccountEntity {
     @Column(name = "gender")
     String gender;
     @Column(name = "day_of_birth")
-    Date dayOfBirth;
+    LocalDate dayOfBirth;
     @Column(name = "email",nullable = false)
     String email;
     @Column(name = "password" ,nullable = false)

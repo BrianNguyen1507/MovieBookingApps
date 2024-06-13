@@ -1,5 +1,6 @@
 package com.lepham.cinema.dto.request;
 
+import com.lepham.cinema.validator.StringConstraint;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NonNull
 public class MovieTheaterRequest {
+    @StringConstraint(message = "STRING_IS_EMPTY")
     String name;
+    @StringConstraint(message = "STRING_IS_EMPTY")
     String address;
 }

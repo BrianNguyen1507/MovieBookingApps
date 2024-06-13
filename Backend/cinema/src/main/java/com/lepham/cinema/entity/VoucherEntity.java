@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class VoucherEntity {
     @Column(name = "quantity",nullable = false)
     int quantity;
     @Column(name = "expired_date",nullable = false)
-    Date expired;
+    LocalDate expired;
 
     @OneToMany(mappedBy = "voucher")
     List<AccountVoucher> accounts;

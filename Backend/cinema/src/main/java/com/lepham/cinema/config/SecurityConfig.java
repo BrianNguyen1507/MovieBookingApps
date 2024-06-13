@@ -34,6 +34,7 @@ public class SecurityConfig {
             "/cinema/register",
             "/cinema/activeAccount",
             "/cinema/login",
+            "/cinema/getAllCategory",
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

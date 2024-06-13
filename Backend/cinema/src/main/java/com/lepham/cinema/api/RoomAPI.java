@@ -5,6 +5,7 @@ import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.MovieTheaterResponse;
 import com.lepham.cinema.dto.response.RoomResponse;
 import com.lepham.cinema.service.imp.RoomService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -36,7 +37,7 @@ public class RoomAPI {
     }
 
     @PostMapping(value = "/addRoom")
-    APIResponse<RoomResponse> getAllRoom(@RequestBody RoomRequest request){
+    APIResponse<RoomResponse> getAllRoom(@RequestBody @Valid RoomRequest request){
         return APIResponse.<RoomResponse>builder()
                 .result(roomService.addRoom(request))
                 .build();
@@ -44,7 +45,7 @@ public class RoomAPI {
 
     @PutMapping(value = "/updateRoom")
     APIResponse<RoomResponse> getAllRoom(@RequestParam("id") long id
-            , @RequestBody RoomRequest request){
+            , @RequestBody @Valid RoomRequest request){
         return APIResponse.<RoomResponse>builder()
                 .result(roomService.updateRoom(id,request))
                 .build();

@@ -4,6 +4,7 @@ import com.lepham.cinema.dto.request.CategoryRequest;
 import com.lepham.cinema.dto.response.CategoryResponse;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.service.imp.CategoryService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -33,14 +34,14 @@ public class CategoryAPI {
     }
 
     @PostMapping(value = "/addCategory")
-    APIResponse<CategoryResponse> create(@RequestBody CategoryRequest request){
+    APIResponse<CategoryResponse> create(@RequestBody @Valid CategoryRequest request){
         return APIResponse.<CategoryResponse>builder()
                 .result(categoryService.create(request))
                 .build();
     }
 
     @PutMapping(value = "/updateCategory")
-    APIResponse<CategoryResponse> update(@RequestBody CategoryRequest request){
+    APIResponse<CategoryResponse> update(@RequestBody @Valid CategoryRequest request){
         return APIResponse.<CategoryResponse>builder()
                 .result(categoryService.update(request))
                 .build();

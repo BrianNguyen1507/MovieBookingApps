@@ -1,8 +1,11 @@
 package com.lepham.cinema.dto.request;
 
+import com.lepham.cinema.validator.DobConstraint;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -16,8 +19,11 @@ public class AccountRequest {
     String phoneNumber;
     String gender;
     String email;
+    @Size(min = 6,message = "PASSWORD_INVALID")
     String password;
-    String dayOfBirth;
+
+    @DobConstraint(min = 16,message = "INVALID_DOB")
+    LocalDate dayOfBirth;
 
     @Builder.Default
     int active =0;

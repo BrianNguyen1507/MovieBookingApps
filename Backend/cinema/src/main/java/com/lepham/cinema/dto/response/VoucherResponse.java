@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +20,5 @@ public class VoucherResponse {
     double minLimit;
     double discount;
     int quantity;
-    String expired;
+    LocalDate expired;
 }
