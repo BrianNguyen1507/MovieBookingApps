@@ -12,9 +12,7 @@ export async function fetchCategories(filmCategory) {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(filmCategory);
     const categories = await response.json();
-    console.log(categories);
     if (categories.code !== 1000) {
       throw new Error("Failed to fetch categories");
     }
@@ -24,22 +22,21 @@ export async function fetchCategories(filmCategory) {
       containerElement.empty();
       categories.result.forEach((categoryData) => {
         const checkbox = $("<input>")
-        .attr("type", "checkbox")
-        .attr("id", `category-${categoryData.id}`)
-        .attr("name", "categories")
-        .attr("value", categoryData.id);
-        if(filmCategory!=null){
+          .attr("type", "checkbox")
+          .attr("id", `category-${categoryData.id}`)
+          .attr("name", "categories")
+          .attr("value", categoryData.id);
+        if (filmCategory != null) {
           filmCategory.forEach((category) => {
-            if(category.id==categoryData.id){
-              console.log("haha")
-              checkbox.prop("checked", true);  
+            if (category.id == categoryData.id) {
+              checkbox.prop("checked", true);
             }
           });
         }
-        const checkboxWrapper = $("<div></div>");    
+        const checkboxWrapper = $("<div></div>").addClass("checkbox-wrapper");
         const label = $("<label></label>")
           .attr("for", `category-${categoryData.id}`)
-          .text(categoryData.name); 
+          .text(categoryData.name);
 
         checkboxWrapper.append(checkbox);
         checkboxWrapper.append(label);

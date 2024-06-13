@@ -1,6 +1,7 @@
 import {
   base64ToImage,
   base64ToString,
+  extractYouTubeVideoId,
   translateDateFormat,
 } from "../../util/converter.js";
 import { getUserToken } from "../authenticate/authenticate.js";
@@ -23,7 +24,6 @@ export async function getMovieById(id) {
       throw new Error(`Failed to get movie with ${id}`);
     }
     updateMovieInputs(movies.result);
-    console.log(movies.result.categories);
     fetchCategories(movies.result.categories);
   } catch (error) {
     console.error("Error fetching:", error);
@@ -45,7 +45,9 @@ function updateMovieInputs(movieData) {
   const movieDescriptionInput = document.getElementById(
     "movieDescriptionInput"
   );
-  const categorySelect = document.getElementById("floatingCategory");
+  const posterInput = document.getElementById("posterinput");
+  const posterBase64 = $("#posterInputUpload").data("base64") || "";
+
   movieTitleInput.value = movieData.title;
   movieDurationInput.value = movieData.duration;
   releaseDateInput.value = translateDateFormat(movieData.releaseDate);
@@ -56,7 +58,7 @@ function updateMovieInputs(movieData) {
   trailerInput.value = movieData.trailer;
   basePriceInput.value = movieData.basePrice;
   movieDescriptionInput.value = base64ToString(movieData.description);
-
+  posterInput.value = movieData.poster;
   if (movieData.trailer) {
     const videoId = extractYouTubeVideoId(movieData.trailer);
     if (videoId) {
@@ -75,14 +77,4 @@ function updateMovieInputs(movieData) {
   } else {
     moviePoster.src = "";
   }
-
- 
-
-}
-function extractYouTubeVideoId(url) {
-  const regExp = /[?&]v=([^&]+)/;
-
-  const match = url.match(regExp);
-
-  return match && match[1];
 }

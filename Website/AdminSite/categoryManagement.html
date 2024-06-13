@@ -41,13 +41,13 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
     <style>
-       .selected {
-      background-color: lightblue;
-    }
+      .selected {
+        background-color: lightblue;
+      }
     </style>
   </head>
 
-  <body>
+  <body data-page="categoryManagement">
     <div class="container-xxl position-relative bg-white d-flex p-0">
       <!-- Spinner Start -->
       <div
@@ -70,35 +70,18 @@
 
       <!-- Content Start -->
       <div class="content">
-       <!-- Navbar Start -->
-       <div class="navbar-container"></div>
-       <!-- Navbar End -->
+        <!-- Navbar Start -->
+        <div class="navbar-container"></div>
+        <!-- Navbar End -->
 
         <!-- Form Start -->
         <div class="container-fluid pt-4 px-4">
           <div class="row g-4">
             <div class="col-sm-12">
-              <div class="bg-light rounded h-100 p-4">
-                <h2 class="mb-4">Thêm thể loại mới</h2>
-                <form id="AddCategoryForm">
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label"
-                      >Tên thể loại</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="categoriesInput"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    class="btn btn-primary btn-outline-dark"
-                  >
-                    Thêm
-                  </button>
-                </form>
-                <div id="errorMessageText"></div>
+              <div>
+                <button class="btn btn-primary" id="btn-add-category">
+                  Thêm thể loại
+                </button>
               </div>
             </div>
             <div class="bg-light rounded h-100 p-4">
@@ -107,34 +90,20 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Tên thể loại</th>
-                    <th scope="col">Thao tác</th>
+                    <th scope="col" style="text-align: center">Tên thể loại</th>
+                    <th scope="col" style="text-align: right">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
                   <!-- Categories -->
                 </tbody>
               </table>
-              
             </div>
           </div>
           <div></div>
         </div>
         <!-- Form End -->
-
-        <!-- Footer Start -->
-        <div class="container-fluid pt-4 px-4">
-          <div class="bg-light rounded-top p-4">
-            <div class="row">
-              <div class="col-12 col-sm-6 text-center text-sm-start">
-                &copy; <a href="#">Movie Booking Tickets</a>, All Right
-                Reserved.
-              </div>
-              <div class="col-12 col-sm-6 text-center text-sm-end"></div>
-            </div>
-          </div>
-        </div>
-        <!-- Footer End -->
+        <div class="footer-bar"></div>
       </div>
       <!-- Content End -->
 
@@ -145,11 +114,12 @@
     </div>
 
     <!-- JavaScript Libraries -->
-  
+ <script src="./service/authenticate/init.js"></script>
+    <script type="module" src="./util/loadFooter.js"></script>
     <script type="module" src="./util/logout.js"></script>
     <script type="module" src="./util/loadNavBar.js"></script>
     <script type="module" src="./util/loadSideBar.js"></script>
-    <script type="module" src="./service/category/addCategory.js"></script>
+    <script type="module" src="./service/category/addCategoryForm.js"></script>
     <script type="module" src="./service/category/getCategory.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -160,13 +130,10 @@
     <script src="lib/tempusdominus/js/moment.min.js"></script>
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-     <!-- jQuery -->
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
-
-   
   </body>
 </html>

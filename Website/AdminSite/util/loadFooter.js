@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("./util/navbar.html")
+  fetch("./util/footer.html")
     .then((response) => response.text())
     .then((html) => {
-      document.querySelectorAll(".navbar-container").forEach((container) => {
+      document.querySelectorAll(".footer-bar").forEach((container) => {
         container.innerHTML = html;
       });
     });

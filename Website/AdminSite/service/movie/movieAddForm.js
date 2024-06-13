@@ -6,6 +6,8 @@ import {
   stringToBase64,
 } from "../../util/converter.js";
 import { addMovie } from "./addFilm.js";
+import { screenSizeWith } from "../../constant/screenSize.js";
+import { getAllMovies } from "./getAllFilm.js";
 $(document).on("click", "#btn-add-movie", async function (event) {
   try {
     const showForm = async () => {
@@ -13,64 +15,78 @@ $(document).on("click", "#btn-add-movie", async function (event) {
         fetchCategories();
       });
       return await Swal.fire({
+        width: screenSizeWith(),
         title: "Thêm Phim Mới",
         html: `
-          <div class="col-sm-12">
-            <div class="bg-light rounded h-100 p-4">
-              <form id="AddMovieForm" class="row g-4">
-                <div class="col-md-6">
-                  <label for="movieTitleInput" class="form-label">Tiêu đề</label>
-                  <input type="text" class="form-control" id="movieTitleInput">
-                </div>
-                <div class="col-md-6">
-                  <label for="movieDurationInput" class="form-label">Thời lượng (phút)</label>
-                  <input type="number" class="form-control" id="movieDurationInput">
-                </div>
-                <div class="col-md-6">
-                  <label for="releaseDateInput" class="form-label">Ngày phát hành</label>
-                  <input type="date" class="form-control" id="releaseDateInput">
-                </div>
-                <div class="col-md-6">
-                  <label for="directorInput" class="form-label">Đạo diễn</label>
-                  <input type="text" class="form-control" id="directorInput">
-                </div>
-                <div class="col-md-6">
-                  <label for="actorInput" class="form-label">Diễn viên</label>
-                  <input type="text" class="form-control" id="actorInput">
-                </div>
-                <div class="col-md-6">
-                  <label for="countryInput" class="form-label">Quốc gia</label>
-                  <input type="text" class="form-control" id="countryInput">
-                </div>
-                <div class="col-md-6">
-                  <label for="languageInput" class="form-label">Ngôn ngữ</label>
-                  <input type="text" class="form-control" id="languageInput">
-                </div>
-                <div class="col-md-6">
-                  <label for="basePriceInput" class="form-label">Giá cơ bản</label>
-                  <input type="number" class="form-control" id="basePriceInput">
-                </div>
-                <div class="col-md-12 align-items-center">
-                  <label for="categoriesInput" class="form-label">Thể loại</label>
-                  <div class="form-floating "  id="floatingCategory">
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <label for="trailerInput" class="form-label">Trailer URL</label>
-                  <input type="text" class="form-control" placeholder="Example:https://www.youtube.com/watch?v=123456" id="trailerInput">
-                </div>
-                <div class="col-md-12">
-                  <label for="posterInput" class="form-label">Poster</label>
-                  <input type="file" class="form-control" id="posterInput">
-                </div>
-                <div class="col-md-12">
-                  <label for="movieDescriptionInput" class="form-label">Mô tả</label>
-                  <textarea class="form-control" id="movieDescriptionInput"></textarea>
-                </div>
-              </form>
-              <div id="errorMessageText" style="color: red;"></div>
-            </div>
+<div class="container">
+  <div class="row">
+    <!-- First Column -->
+    <div class="col-sm-12 col-md-6">
+      <div class="bg-light rounded h-100 p-4">
+        <form id="AddMovieForm" class="row g-4">
+          <div class="col-md-6">
+            <label for="movieTitleInput" class="form-label">Tiêu đề</label>
+            <input type="text" class="form-control" id="movieTitleInput">
           </div>
+          <div class="col-md-6">
+            <label for="movieDurationInput" class="form-label">Thời lượng (phút)</label>
+            <input type="number" class="form-control" id="movieDurationInput">
+          </div>
+          <div class="col-md-6">
+            <label for="releaseDateInput" class="form-label">Ngày phát hành</label>
+            <input type="date" class="form-control" id="releaseDateInput">
+          </div>
+          <div class="col-md-6">
+            <label for="directorInput" class="form-label">Đạo diễn</label>
+            <input type="text" class="form-control" id="directorInput">
+          </div>
+          <div class="col-md-6">
+            <label for="actorInput" class="form-label">Diễn viên</label>
+            <input type="text" class="form-control" id="actorInput">
+          </div>
+          <div class="col-md-6">
+            <label for="countryInput" class="form-label">Quốc gia</label>
+            <input type="text" class="form-control" id="countryInput">
+          </div>
+            <div class="col-md-12">
+            <label for="movieDescriptionInput" class="form-label">Mô tả</label>
+            <textarea class="form-control" id="movieDescriptionInput"></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6">
+      <div class="bg-light rounded h-100 p-4">
+        <form id="AddMovieForm" class="row g-4">
+          <div class="col-md-6">
+            <label for="languageInput" class="form-label">Ngôn ngữ</label>
+            <input type="text" class="form-control" id="languageInput">
+          </div>
+          <div class="col-md-6">
+            <label for="basePriceInput" class="form-label">Giá cơ bản</label>
+            <input type="number" class="form-control" id="basePriceInput">
+          </div>
+          <div class="col-md-12 align-items-center">
+            <label for="categoriesInput" class="form-label">Thể loại</label>
+            <div class="form-floating" id="floatingCategory"></div>
+          </div>
+          <div class="col-md-12">
+            <label for="trailerInput" class="form-label">Trailer URL</label>
+            <input type="text" class="form-control" placeholder="Example:https://www.youtube.com/watch?v=123456" id="trailerInput">
+          </div>
+          <div class="col-md-12">
+            <label for="posterInput" class="form-label">Poster</label>
+            <input type="file" class="form-control" id="posterInput">
+          </div>
+        
+          <div id="errorMessageText" style="color: red;"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
         `,
         didOpen: () => {
           $("#posterInput").on("change", handleFileSelect);
@@ -181,9 +197,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          setTimeout(function () {
-            window.location.reload();
-          }, 300);
+          getAllMovies();
         });
       } else {
         Swal.fire({

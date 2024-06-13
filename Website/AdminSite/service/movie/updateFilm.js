@@ -1,18 +1,18 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-import { displayErrorMessage } from "../../util/common.js";
-const apiUrl = "http://localhost:8083/cinema/addCategory";
 
-export async function addCategory(categoryName) {
+const apiUrl = "http://localhost:8083/cinema/updateFilm?id=";
+
+export async function updateMovie(id, movie) {
   try {
     const tokenUser = await getUserToken();
     const response = await $.ajax({
-      url: apiUrl,
-      method: "POST",
+      url: apiUrl + id,
+      method: "PUT",
       contentType: "application/json",
       headers: {
         Authorization: `Bearer ${tokenUser}`,
       },
-      data: JSON.stringify({ name: categoryName }),
+      data: JSON.stringify(movie),
     });
 
     if (response.code !== 1000) {

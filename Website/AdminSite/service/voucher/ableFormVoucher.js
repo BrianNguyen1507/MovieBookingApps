@@ -1,13 +1,18 @@
 import { Voucher } from "../../models/voucher.js";
 import { addVoucher } from "./addVoucher.js";
 import { formatToDmyHHmmss } from "../../util/converter.js";
+import { screenSizeWith } from "../../constant/screenSize.js";
+import { getAndDisplayvoucher } from "./getAllVoucher.js";
 $(document).on("click", "#btn-add-voucher", async function (event) {
   try {
     const showForm = async () => {
       return await Swal.fire({
+        width: screenSizeWith(),
         title: "Thêm Voucher Giảm giá",
         html: `
-          <div class="col-sm-12">
+          <div class="container">
+          <div class="row">
+          <div class="col-sm-12 col-md-6">
             <div class="bg-light rounded h-100 p-4">
               <form id="AddVoucherForm">
                 <div class="mb-3">
@@ -25,6 +30,14 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
                     <option value="2">Số tiền cố định</option>
                   </select>
                 </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-6">
+            <div class="bg-light rounded h-100 p-4">
+              <form id="AddVoucherForm">
+                
                 <div class="mb-3">
                   <label for="limitAmountInput" class="form-label">Hạn mức</label>
                   <input type="number" class="form-control" id="limitAmountInput">
@@ -42,8 +55,11 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
                   <input type="datetime-local" class="form-control" id="expiryDateInput">
                 </div>
               </form>
-              <div id="errorMessageText" style="color: red;"></div>
+              <div "></div>
             </div>
+          </div>
+          </div>
+            <div id="errorMessageText" style="color: red;"></div>
           </div>
         `,
         showCancelButton: true,
@@ -122,9 +138,7 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          setTimeout(function () {
-            window.location.reload();
-          }, 300);
+          getAndDisplayvoucher();
         });
       } else {
         Swal.fire({
