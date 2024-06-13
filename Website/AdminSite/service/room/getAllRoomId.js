@@ -38,7 +38,7 @@ export async function getRoomById(id) {
       row.appendChild(numberCell);
 
       const seatsCell = document.createElement("td");
-      seatsCell.textContent = `${room.row * room.col}`;
+      seatsCell.textContent = `${room.row * room.col} ghế`;
       row.appendChild(seatsCell);
 
       const descriptionCell = document.createElement("td");

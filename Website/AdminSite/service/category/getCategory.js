@@ -31,9 +31,13 @@ export async function getAndDisplayCategories() {
 
       const nameCell = document.createElement("td");
       nameCell.textContent = category.name;
+      nameCell.style.textAlign = "center";
+      nameCell.style.fontWeight = "bold";
+
       row.appendChild(nameCell);
 
       const actionCell = document.createElement("td");
+      actionCell.style.textAlign = "right";
       actionCell.innerHTML = `
         <button class="btn btn-primary" data-id="${category.id}">Edit</button>
         <button class="btn btn-danger" data-id="${category.id}">Delete</button>

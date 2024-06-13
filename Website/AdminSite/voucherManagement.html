@@ -47,7 +47,7 @@
     </style>
   </head>
 
-  <body>
+  <body data-page="voucherManagement">
     <div class="container-xxl position-relative bg-white d-flex p-0">
       <!-- Spinner Start -->
       <div
@@ -77,7 +77,9 @@
         <div class="container-fluid pt-4 px-4">
           <div class="row g-4">
             <div>
-              <button class="btn btn-primary"  id="btn-add-voucher">Thêm Voucher</button>
+              <button class="btn btn-primary" id="btn-add-voucher">
+                Thêm Voucher
+              </button>
             </div>
             <div class="bg-light rounded h-100 p-4">
               <h6 class="mb-4">DANH SÁCH VOUCHER KHUYẾN MÃI</h6>
@@ -107,19 +109,7 @@
           <div></div>
         </div>
         <!-- Form End -->
-        <!-- Footer Start -->
-        <div class="container-fluid pt-4 px-4">
-          <div class="bg-light rounded-top p-4">
-            <div class="row">
-              <div class="col-12 col-sm-6 text-center text-sm-start">
-                &copy; <a href="#">Movie Booking Tickets</a>, All Right
-                Reserved.
-              </div>
-              <div class="col-12 col-sm-6 text-center text-sm-end"></div>
-            </div>
-          </div>
-        </div>
-        <!-- Footer End -->
+        <div class="footer-bar"></div>
       </div>
       <!-- Content End -->
 
@@ -128,10 +118,11 @@
         ><i class="bi bi-arrow-up"></i
       ></a>
     </div>
-
     <!-- JavaScript Libraries -->
-   
+ <script src="./service/authenticate/init.js"></script>
+
     <script type="module" src="./util/logout.js"></script>
+    <script type="module" src="./util/loadFooter.js"></script>
     <script type="module" src="./util/loadNavBar.js"></script>
     <script type="module" src="./util/loadSideBar.js"></script>
     <script type="module" src="./service/voucher/ableUpdateVoucher.js"></script>

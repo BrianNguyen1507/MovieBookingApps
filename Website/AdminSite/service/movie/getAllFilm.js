@@ -3,7 +3,7 @@ import { Movie } from "../../models/movie.js";
 
 const url = "http://localhost:8083/cinema/getAllFilm";
 
-async function getAllMovies() {
+export async function getAllMovies() {
   try {
     const token = await getUserToken();
     const response = await fetch(url, {

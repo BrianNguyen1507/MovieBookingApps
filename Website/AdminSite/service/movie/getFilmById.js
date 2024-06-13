@@ -2,7 +2,6 @@ import {
   base64ToImage,
   base64ToString,
   extractYouTubeVideoId,
-  stringToBase64,
   translateDateFormat,
 } from "../../util/converter.js";
 import { getUserToken } from "../authenticate/authenticate.js";

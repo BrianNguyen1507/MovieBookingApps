@@ -47,7 +47,7 @@
     </style>
   </head>
 
-  <body>
+  <body data-page="theaterManagement">
     <div class="container-xxl position-relative bg-white d-flex p-0">
       <!-- Spinner Start -->
       <div
@@ -101,19 +101,7 @@
           <div></div>
         </div>
         <!-- Form End -->
-        <!-- Footer Start -->
-        <div class="container-fluid pt-4 px-4">
-          <div class="bg-light rounded-top p-4">
-            <div class="row">
-              <div class="col-12 col-sm-6 text-center text-sm-start">
-                &copy; <a href="#">Movie Booking Tickets</a>, All Right
-                Reserved.
-              </div>
-              <div class="col-12 col-sm-6 text-center text-sm-end"></div>
-            </div>
-          </div>
-        </div>
-        <!-- Footer End -->
+        <div class="footer-bar"></div>
       </div>
       <!-- Content End -->
 
@@ -124,7 +112,8 @@
     </div>
 
     <!-- JavaScript Libraries -->
-
+ <script src="./service/authenticate/init.js"></script>
+    <script type="module" src="./util/loadFooter.js"></script>
     <script type="module" src="./util/logout.js"></script>
     <script type="module" src="./util/loadNavBar.js"></script>
     <script type="module" src="./util/loadSideBar.js"></script>
