@@ -1,8 +1,10 @@
 package com.lepham.cinema.api;
 
+import com.lepham.cinema.dto.request.AccountVoucherRequest;
 import com.lepham.cinema.dto.request.VoucherRequest;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.VoucherResponse;
+import com.lepham.cinema.service.imp.AccountVoucherService;
 import com.lepham.cinema.service.imp.VoucherService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -18,13 +20,14 @@ import java.util.List;
 @RequestMapping("/cinema")
 @RequiredArgsConstructor
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VoucherAPI {
 
     VoucherService voucherService;
+    AccountVoucherService accountVoucherService;
 
     @GetMapping(value = "/getAllVoucher")
-    APIResponse<List<VoucherResponse>> getAllVoucher(){
+    APIResponse<List<VoucherResponse>> getAllVoucher() {
         return APIResponse.<List<VoucherResponse>>builder()
                 .result(voucherService.getAllVoucher())
                 .build();
@@ -39,19 +42,25 @@ public class VoucherAPI {
 
     @PutMapping(value = "/updateVoucher")
     APIResponse<VoucherResponse> updateVoucher(@RequestParam("id") long id
-            ,@RequestBody @Valid VoucherRequest request) throws ParseException {
+            , @RequestBody @Valid VoucherRequest request) throws ParseException {
 
         return APIResponse.<VoucherResponse>builder()
-                .result(voucherService.updateVoucher(id,request))
+                .result(voucherService.updateVoucher(id, request))
                 .build();
 
     }
 
     @DeleteMapping(value = "/deleteVoucher")
-    APIResponse<?> deleteVoucher(@RequestParam("id") long id){
+    APIResponse<?> deleteVoucher(@RequestParam("id") long id) {
         voucherService.deleteVoucher(id);
         return APIResponse.builder()
                 .message("Delete successful")
                 .build();
+    }
+
+    @PostMapping(value = "/giftVoucher")
+    APIResponse<?> giftVoucher(@RequestBody @Valid AccountVoucherRequest request) {
+        accountVoucherService.gift(request);
+        return APIResponse.builder().message("Gift Voucher Success!").build();
     }
 }

@@ -35,6 +35,12 @@ public class FoodAPI {
                 .build();
     }
 
+    @PutMapping("/updateFood")
+    APIResponse<FoodResponse> updateFood(@RequestParam("id") long id,@RequestBody FoodRequest request) throws Exception {
+        return APIResponse.<FoodResponse>builder()
+                .result(service.updateFood(id,request))
+                .build();
+    }
 
     @PutMapping("/hideFood")
     APIResponse<?> hideFood(@RequestParam("id") long id) throws Exception {

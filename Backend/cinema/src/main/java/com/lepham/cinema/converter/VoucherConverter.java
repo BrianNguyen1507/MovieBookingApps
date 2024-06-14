@@ -43,4 +43,5 @@ public interface VoucherConverter {
         entity.setTypeDiscount(request.getTypeDiscount());
         entity.setExpired(request.getExpired());
     }
+
 }

@@ -33,8 +33,15 @@ public class FoodService implements IFoodService {
     }
 
     @Override
-    public FoodResponse updateFood(FoodRequest request) {
-        return null;
+    @PreAuthorize("hasRole('ADMIN')")
+    public FoodResponse updateFood(long id, FoodRequest request) {
+        FoodEntity foodEntity = repository.getReferenceById(id);
+        foodEntity.setName(request.getName());
+        foodEntity.setPrice(request.getPrice());
+        foodEntity.setImage(request.getImage());
+        FoodResponse foodResponse = converter.toFoodResponse(repository.save(foodEntity));
+        foodResponse.setImage(foodEntity.getImage());
+        return foodResponse;
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IFoodService {
     List<FoodResponse> getAllFood();
-    FoodResponse updateFood(FoodRequest request);
+    FoodResponse updateFood(long id,FoodRequest request);
     FoodResponse addFood(FoodRequest request);
     void deleteFood(long id);
 }
