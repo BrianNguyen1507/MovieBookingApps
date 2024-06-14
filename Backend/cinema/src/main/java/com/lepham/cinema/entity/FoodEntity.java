@@ -18,12 +18,17 @@ public class FoodEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "name",nullable = false)
+    @Column(name = "image", length = 1677)
+    @Lob
+    byte[] image;
+    @Column(name = "name", nullable = false)
     String name;
-    @Column(name = "price",nullable = false)
+    @Column(name = "price", nullable = false)
     double price;
+    @Column(name = "hide", nullable = false)
+    boolean hide;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "food_order",
             joinColumns = @JoinColumn(name = "food_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id")
