@@ -9,7 +9,10 @@
 
     <!-- Favicon -->
     <link href="img/ico.png" rel="icon" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -69,13 +72,16 @@
         <div class="navbar-container"></div>
         <!-- Navbar End -->
         <!-- Recent Sales Start -->
+
         <div class="container-fluid pt-4 px-4">
+          <div class="col-auto">
+            <button class="btn btn-primary px-4 py-2 mb-3" id="btn-add-room">
+              Thêm phòng chiếu mới
+            </button>
+          </div>
           <div class="bg-light text-center rounded p-4">
             <div class="d-flex align-items-center justify-content-between mb-4">
               <h6 class="mb-0">Danh sách Phòng chiếu</h6>
-              <button class="btn btn-primary px-4 py-2" id="btn-add-room">
-                Thêm phòng chiếu mới
-              </button>
             </div>
             <div class="form-floating mb-3">
               <select
@@ -120,7 +126,7 @@
     </div>
 
     <!-- JavaScript Libraries -->
- <script src="./service/authenticate/init.js"></script>
+    <script src="./service/authenticate/init.js"></script>
     <script type="module" src="./util/logout.js"></script>
     <script type="module" src="./util/loadFooter.js"></script>
     <script type="module" src="./util/loadNavBar.js"></script>
