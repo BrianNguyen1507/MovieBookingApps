@@ -34,6 +34,8 @@ public class VoucherEntity {
     int quantity;
     @Column(name = "expired_date",nullable = false)
     LocalDate expired;
+    @Column(name = "hide")
+    boolean hide;
 
     @OneToMany(mappedBy = "voucher")
     List<AccountVoucher> accounts;

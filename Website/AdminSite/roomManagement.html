@@ -9,7 +9,7 @@
 
     <!-- Favicon -->
     <link href="img/ico.png" rel="icon" />
-
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -73,6 +73,9 @@
           <div class="bg-light text-center rounded p-4">
             <div class="d-flex align-items-center justify-content-between mb-4">
               <h6 class="mb-0">Danh sách Phòng chiếu</h6>
+              <button class="btn btn-primary px-4 py-2" id="btn-add-room">
+                Thêm phòng chiếu mới
+              </button>
             </div>
             <div class="form-floating mb-3">
               <select
@@ -125,6 +128,7 @@
     <script type="module" src="./service/room/getAllRoom.js"></script>
     <script type="module" src="./service/room/getAllRoomId.js"></script>
     <script type="module" src="./service/room/getTheaterList.js"></script>
+    <script type="module" src="./service/room/addRoomForm.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/chart/chart.min.js"></script>

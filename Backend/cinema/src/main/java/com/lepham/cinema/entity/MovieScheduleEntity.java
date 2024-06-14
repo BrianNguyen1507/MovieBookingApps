@@ -24,7 +24,7 @@ public class MovieScheduleEntity {
     int[][] seat;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id" )
     RoomEntity room;
 
     @ManyToOne

@@ -4,6 +4,7 @@ import com.lepham.cinema.converter.CategoryConverter;
 import com.lepham.cinema.dto.request.CategoryRequest;
 import com.lepham.cinema.dto.response.CategoryResponse;
 import com.lepham.cinema.entity.CategoryEntity;
+import com.lepham.cinema.entity.FilmEntity;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
 import com.lepham.cinema.repository.CategoryRepository;
@@ -35,7 +36,7 @@ public class CategoryService implements ICategoryService {
 
 
     @Override
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<CategoryResponse> getAllCategory() {
         List<CategoryEntity> entities = categoryRepository.findAll();
         return categoryConverter.toListCategoryRequest(entities) ;
@@ -64,7 +65,9 @@ public class CategoryService implements ICategoryService {
     public void delete(long id) {
         CategoryEntity entity = categoryRepository.findById(id)
                 .orElseThrow(()->new AppException(ErrorCode.CATEGORY_NOT_FOUND));
-
-        categoryRepository.delete(entity);
+        List<FilmEntity> filmEntities = entity.getFilms();
+        filmEntities.forEach(film->film.getCategories().remove(entity));
+        entity.getFilms().clear();
+        categoryRepository.deleteById(id);
     }
 }

@@ -18,10 +18,10 @@ public class FoodEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "image", length = 1677)
+    @Column(name = "image",length = 1677)
     @Lob
     byte[] image;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name",nullable = false)
     String name;
     @Column(name = "price", nullable = false)
     double price;

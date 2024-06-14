@@ -29,22 +29,28 @@ public class RoomAPI {
                 .result(roomService.getAllRoom())
                 .build();
     }
+    @GetMapping(value = "/getRoomById")
+    APIResponse<RoomResponse> getRoomById(@RequestParam("id") long id){
+        return APIResponse.<RoomResponse>builder()
+                .result(roomService.getRoomById(id))
+                .build();
+    }
     @GetMapping(value = "/getAllRoomByTheaterId")
-    APIResponse<List<RoomResponse>> getAllRoom(@RequestParam("theaterId") long theaterId){
+    APIResponse<List<RoomResponse>> getAllRoomByTheaterId(@RequestParam("theaterId") long theaterId){
         return APIResponse.<List<RoomResponse>>builder()
                 .result(roomService.getAllRoomByTheater(theaterId))
                 .build();
     }
 
     @PostMapping(value = "/addRoom")
-    APIResponse<RoomResponse> getAllRoom(@RequestBody @Valid RoomRequest request){
+    APIResponse<RoomResponse> addRoom(@RequestBody @Valid RoomRequest request){
         return APIResponse.<RoomResponse>builder()
                 .result(roomService.addRoom(request))
                 .build();
     }
 
     @PutMapping(value = "/updateRoom")
-    APIResponse<RoomResponse> getAllRoom(@RequestParam("id") long id
+    APIResponse<RoomResponse> updateRoom(@RequestParam("id") long id
             , @RequestBody @Valid RoomRequest request){
         return APIResponse.<RoomResponse>builder()
                 .result(roomService.updateRoom(id,request))
