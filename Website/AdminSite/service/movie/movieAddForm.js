@@ -67,6 +67,13 @@ $(document).on("click", "#btn-add-movie", async function (event) {
             <label for="basePriceInput" class="form-label">Giá cơ bản</label>
             <input type="number" class="form-control" id="basePriceInput">
           </div>
+           <div class="col-md-12 align-items-center">
+            <label for="classfityInput" class="form-label">Phân loại: </label>
+            <select name="classfityInput" class="form-floating" id="classfityInput">
+              <option value="123">123</option>
+              <option value="123">123</option>
+            </select>
+          </div>
           <div class="col-md-12 align-items-center">
             <label for="categoriesInput" class="form-label">Thể loại</label>
             <div class="form-floating" id="floatingCategory"></div>
@@ -111,6 +118,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           const countryInput = $("#countryInput").val().trim();
           const languageInput = $("#languageInput").val().trim();
           const basePriceInput = parseFloat($("#basePriceInput").val());
+          const classfityInput = $("#classfityInput").val();
           const selectedOptions = $("#floatingCategory")
             .find("input:checked")
             .map(function () {
@@ -123,6 +131,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           const categoriesInput = selectedOptions;
 
           if (
+            !classfityInput ||
             !movieTitleInput ||
             isNaN(movieDurationInput) ||
             !movieDescriptionInput ||
@@ -166,19 +175,20 @@ $(document).on("click", "#btn-add-movie", async function (event) {
             languageInput,
             basePriceInput,
             categoriesInput,
+            classfityInput,
           };
         },
       });
     };
 
     const { isConfirmed, value } = await showForm();
-
+    console.log(value.releaseDateInput);
     if (isConfirmed) {
       const movie = new Movie(
         value.movieTitleInput,
         value.movieDurationInput,
         stringToBase64(value.movieDescriptionInput),
-        formatToDmy(value.releaseDateInput),
+        value.releaseDateInput,
         value.directorInput,
         value.actorInput,
         value.posterBase64,
@@ -186,7 +196,8 @@ $(document).on("click", "#btn-add-movie", async function (event) {
         value.countryInput,
         value.languageInput,
         value.basePriceInput,
-        value.categoriesInput
+        value.categoriesInput,
+        value.classfityInput
       );
       const result = await addMovie(movie);
 

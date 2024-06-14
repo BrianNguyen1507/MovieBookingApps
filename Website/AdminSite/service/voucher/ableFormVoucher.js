@@ -52,7 +52,7 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
                 </div>
                 <div class="mb-3">
                   <label for="expiryDateInput" class="form-label">Ngày hết hạn</label>
-                  <input type="datetime-local" class="form-control" id="expiryDateInput">
+                  <input type="date" class="form-control" id="expiryDateInput">
                 </div>
               </form>
               <div "></div>
@@ -110,7 +110,7 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
             limitAmountInput,
             discountAmountInput,
             quantityInput,
-            formattedExpiryDate: formatToDmyHHmmss(expiryDateInput),
+            expiryDateInput,
           };
         },
       });
@@ -126,7 +126,7 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
         value.limitAmountInput,
         value.discountAmountInput,
         value.quantityInput,
-        value.formattedExpiryDate
+        value.expiryDateInput
       );
 
       const result = await addVoucher(voucher);

@@ -11,7 +11,8 @@ export class Movie {
     country,
     language,
     basePrice,
-    categories
+    categories,
+    classify
   ) {
     this.title = title;
     this.duration = duration;
@@ -25,5 +26,6 @@ export class Movie {
     this.language = language;
     this.basePrice = basePrice;
     this.categories = categories;
+    this.classify = classify;
   }
 }
