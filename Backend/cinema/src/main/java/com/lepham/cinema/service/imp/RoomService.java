@@ -35,10 +35,17 @@ public class RoomService implements IRoomService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<RoomResponse> getAllRoom() {
-        List<RoomEntity> entities = roomRepository.findAll();
+        List<RoomEntity> entities = roomRepository.findAllByHide(false);
         return entities.stream().map(entity ->
                 roomConverter.toResponse(entity,movieTheaterConverter.toResponse(entity.getMovieTheater())))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public RoomResponse getRoomById(long id) {
+        RoomEntity room = roomRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+        return roomConverter.toResponse(room,movieTheaterConverter.toResponse(room.getMovieTheater()));
     }
 
     @Override
@@ -53,12 +60,12 @@ public class RoomService implements IRoomService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public RoomResponse addRoom(RoomRequest request) {
-
         MovieTheaterEntity movieTheater = theaterRepository.findById(request.getTheaterId())
                 .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
         RoomEntity entity = roomConverter.toEntity(request,movieTheater);
         if(roomRepository.checkExistsRoom(request.getNumber(),request.getTheaterId())!=null)
             throw new AppException(ErrorCode.ROOM_EXISTS);
+        entity.setHide(false);
         return roomConverter.toResponse(roomRepository.save(entity),
                 movieTheaterConverter.toResponse(entity.getMovieTheater()));
     }
@@ -83,6 +90,12 @@ public class RoomService implements IRoomService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteRoom(long id) {
         RoomEntity entity = roomRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
-        roomRepository.delete(entity);
+        if(entity.getMovieTheater()==null&&entity.getSchedules()==null){
+            roomRepository.delete(entity);
+        }
+        else{
+            entity.setHide(true);
+            roomRepository.save(entity);
+        }
     }
 }

@@ -24,6 +24,8 @@ public class MovieTheaterEntity {
     String name;
     @Column(name = "address",nullable = false)
     String address;
+    @Column(name = "hide")
+    boolean hide;
 
     @OneToMany(mappedBy = "movieTheater", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     List<RoomEntity> rooms = new ArrayList<RoomEntity>();

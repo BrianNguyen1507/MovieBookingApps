@@ -27,8 +27,10 @@ public class RoomEntity {
     int row;
     @Column(name = "seat_amount",nullable = false)
     int column;
+    @Column(name = "hide")
+    boolean hide;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "theater_id", nullable = false)
     MovieTheaterEntity movieTheater;
 

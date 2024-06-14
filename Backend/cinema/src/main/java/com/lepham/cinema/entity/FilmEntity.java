@@ -51,10 +51,10 @@ public class FilmEntity {
     @Column(name = "classify",nullable = false,length = 5)
     String classify;
 
-    @OneToMany(mappedBy = "film")
+    @OneToMany(mappedBy = "film",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<MovieScheduleEntity> schedules;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     @JoinTable(name = "film_category",
         joinColumns = @JoinColumn(name = "film_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
