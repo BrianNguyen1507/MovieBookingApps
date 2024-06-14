@@ -1,6 +1,6 @@
 import { Voucher } from "../../models/voucher.js";
 import { updateVoucher } from "./updateVoucher.js";
-import { formatToDmyHHmmss } from "../../util/converter.js";
+import { DateConverter, formatToDmyHHmmss } from "../../util/converter.js";
 import { screenSizeWith } from "../../constant/screenSize.js";
 import { getAndDisplayvoucher } from "./getAllVoucher.js";
 
@@ -15,9 +15,7 @@ $(document).on("click", "#btn-edit", async function (event) {
     const voucherMinLimit = $(this).data("minlimit");
 
     const voucherTypeDiscount = $(this).data("type");
-
-    console.log(voucherTypeDiscount);
-
+    const formattedDate = DateConverter(voucherExpired);
     const showForm = async () => {
       return await Swal.fire({
         width: screenSizeWith(),
@@ -64,7 +62,7 @@ $(document).on("click", "#btn-edit", async function (event) {
                   </div>
                   <div class="mb-3">
                     <label for="expiryDateInput" class="form-label">Ngày hết hạn</label>
-                    <input type="date" class="form-control" id="expiryDateInput">
+                    <input type="date" class="form-control" value="${formattedDate}"  id="expiryDateInput">
                   </div>
                 </form>
               
@@ -78,7 +76,6 @@ $(document).on("click", "#btn-edit", async function (event) {
         didOpen: () => {
           const selectElement = $("#discountTypeInput");
           selectElement.val(voucherTypeDiscount);
-          console.log(voucherExpired);
           const expiryDateInput = $("#expiryDateInput");
           const formattedDate = new Date(voucherExpired)
             .toISOString()
@@ -134,7 +131,7 @@ $(document).on("click", "#btn-edit", async function (event) {
             minLimit: limitAmountInput,
             discount: discountAmountInput,
             quantity: quantityInput,
-            expiryDate: formatToDmyHHmmss(expiryDateInput),
+            expiryDate: expiryDateInput,
           };
         },
       });

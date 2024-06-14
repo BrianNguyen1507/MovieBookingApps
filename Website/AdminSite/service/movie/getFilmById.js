@@ -47,7 +47,7 @@ function updateMovieInputs(movieData) {
   );
   const posterInput = document.getElementById("posterinput");
   const posterBase64 = $("#posterInputUpload").data("base64") || "";
-
+  
   movieTitleInput.value = movieData.title;
   movieDurationInput.value = movieData.duration;
   releaseDateInput.value = translateDateFormat(movieData.releaseDate);

@@ -78,3 +78,8 @@ export function extractYouTubeVideoId(url) {
 
   return match && match[1];
 }
+
+export function DateConverter(dateTime) {
+  const date = dateTime.split("T")[0];
+  return date;
+}
