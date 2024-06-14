@@ -1,5 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 import { Room } from "../../models/room.js";
+
 const url = "http://localhost:8083/cinema/getAllRoomByTheaterId?theaterId=";
 export async function getRoomById(id) {
   try {
@@ -38,7 +39,7 @@ export async function getRoomById(id) {
       row.appendChild(numberCell);
 
       const seatsCell = document.createElement("td");
-      seatsCell.textContent = `${room.row * room.col} ghế`;
+      seatsCell.textContent = `${room.row * room.column} ghế`;
       row.appendChild(seatsCell);
 
       const descriptionCell = document.createElement("td");
@@ -47,13 +48,82 @@ export async function getRoomById(id) {
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
-         <button class="btn btn-dark btn-room-detail" data-id="${room.id}">Detail</button>
           <button class="btn btn-primary btn-room-edit" data-id="${room.id}">Edit</button>
           <button class="btn btn-danger btn-room-delete" data-id="${room.id}">Delete</button>
         `;
       row.appendChild(actionCell);
 
       tbody.appendChild(row);
+
+      const deleteButton = actionCell.querySelector(".btn-danger");
+  deleteButton.addEventListener("click", async () => {
+    try {
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to delete this category?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel",
+      });
+
+      if (confirmation.isConfirmed) {
+        const result = await deleteRoom(room.id);
+        if (result) {
+          tbody.removeChild(row);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Category has been deleted.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to delete the category.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } else {
+        Swal.fire({
+          title: "Cancelled",
+          text: "Category deletion was cancelled.",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  });
+  async function deleteRoom(id) {
+    const url = "http://localhost:8083/cinema/deleteRoom?id=";
+    try {
+      const token = await getUserToken();
+      const response = await fetch(url + id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const room = await response.json();
+      if (room.code !== 1000) {
+        return;
+      }
+      return room;
+    } catch (error) {
+      console.error("Error fetching and displaying theaters:", error);
+    }
+  }
+
     });
   } catch (error) {
     console.error("Error fetching and displaying rooms:", error);

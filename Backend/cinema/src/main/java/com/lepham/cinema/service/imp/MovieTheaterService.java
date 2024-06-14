@@ -30,7 +30,7 @@ public class MovieTheaterService implements IMovieTheaterService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<MovieTheaterResponse> getAllMovieTheater() {
-        List<MovieTheaterEntity> entities = movieTheaterRepository.findAll();
+        List<MovieTheaterEntity> entities = movieTheaterRepository.findAllByHide(false);
         return entities.stream().map(movieTheaterConverter::toResponse).collect(Collectors.toList());
     }
 
@@ -38,6 +38,7 @@ public class MovieTheaterService implements IMovieTheaterService {
     @PreAuthorize("hasRole('ADMIN')")
     public MovieTheaterResponse addMovieTheater(MovieTheaterRequest request) {
         MovieTheaterEntity entity = movieTheaterConverter.toEntity(request);
+        entity.setHide(false);
         return movieTheaterConverter.toResponse(movieTheaterRepository.save(entity));
     }
 
@@ -55,6 +56,7 @@ public class MovieTheaterService implements IMovieTheaterService {
     public void deleteMovieTheater(long id) {
         MovieTheaterEntity entity = movieTheaterRepository.findById(id)
                 .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
-        movieTheaterRepository.delete(entity);
+        entity.setHide(true);
+        movieTheaterRepository.save(entity);
     }
 }

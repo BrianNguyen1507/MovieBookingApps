@@ -33,7 +33,7 @@ public class VoucherService implements IVoucherService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<VoucherResponse> getAllVoucher() {
-        return voucherRepository.findAll()
+        return voucherRepository.findAllByHide(false)
                 .stream()
                 .map(voucherConverter::toResponse)
                 .collect(Collectors.toList());
@@ -43,6 +43,7 @@ public class VoucherService implements IVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     public VoucherResponse addVoucher(VoucherRequest request) throws ParseException {
         VoucherEntity entity = voucherConverter.toEntity(request);
+        entity.setHide(false);
         return voucherConverter.toResponse(voucherRepository.save(entity));
     }
 
@@ -51,7 +52,6 @@ public class VoucherService implements IVoucherService {
     public VoucherResponse updateVoucher(long id, VoucherRequest request) throws ParseException {
         VoucherEntity entity = voucherRepository.findById(id)
                 .orElseThrow(()-> new AppException(ErrorCode.NULL_EXCEPTION));
-
         voucherConverter.updateVoucher(entity,request);
         return voucherConverter.toResponse(voucherRepository.save(entity));
     }
@@ -61,6 +61,13 @@ public class VoucherService implements IVoucherService {
     public void deleteVoucher(long id) {
         VoucherEntity entity = voucherRepository.findById(id)
                 .orElseThrow(()-> new AppException(ErrorCode.NULL_EXCEPTION));
-        voucherRepository.delete(entity);
+        if(entity.getAccounts()==null){
+            voucherRepository.delete(entity);
+        }
+        else{
+            entity.setHide(true);
+            voucherRepository.save(entity);
+        }
+
     }
 }

@@ -16,6 +16,7 @@ public class AccountVoucher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     long id;
+
     @Column(name = "quantity",nullable = false)
     int quantity;
 

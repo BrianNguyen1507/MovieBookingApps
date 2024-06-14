@@ -100,6 +100,4 @@ public class FilmService implements IFilmService {
         entity.setHide(true);
         filmRepository.save(entity);
     }
-
-
 }
