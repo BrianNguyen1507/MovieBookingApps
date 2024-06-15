@@ -21,6 +21,6 @@ public class CategoryEntity {
     @Column(name = "name",nullable = false)
     String name;
 
-    @ManyToMany (mappedBy = "categories",cascade = CascadeType.PERSIST)
+    @ManyToMany (mappedBy = "categories")
     List<FilmEntity> films;
 }
