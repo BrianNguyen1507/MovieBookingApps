@@ -42,7 +42,7 @@ public class FoodAPI {
                 .build();
     }
 
-    @PutMapping("/hideFood")
+    @DeleteMapping("/deleteFood")
     APIResponse<?> hideFood(@RequestParam("id") long id) throws Exception {
         service.deleteFood(id);
         return APIResponse.builder()

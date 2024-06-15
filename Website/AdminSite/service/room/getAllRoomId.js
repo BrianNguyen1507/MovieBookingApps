@@ -35,7 +35,7 @@ export async function getRoomById(id) {
       row.appendChild(indexCell);
 
       const numberCell = document.createElement("td");
-      numberCell.textContent = room.number;
+      numberCell.textContent = `Room ${room.number}`;
       row.appendChild(numberCell);
 
       const seatsCell = document.createElement("td");
@@ -48,14 +48,12 @@ export async function getRoomById(id) {
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
-          <button class="btn btn-primary btn-room-edit" data-id="${room.id}">Edit</button>
+          <button class="btn btn-primary btn-room-edit" id="btn-add-room" data-id="${room.id}">Edit</button>
           <button class="btn btn-danger btn-room-delete" data-id="${room.id}">Delete</button>
         `;
       row.appendChild(actionCell);
-
       tbody.appendChild(row);
-
-      const deleteButton = actionCell.querySelector(".btn-danger");
+      const deleteButton = actionCell.querySelector(".btn-room-delete");
       deleteButton.addEventListener("click", async () => {
         try {
           const confirmation = await Swal.fire({
