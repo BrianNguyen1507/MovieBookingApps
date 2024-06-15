@@ -54,13 +54,13 @@ public class FilmEntity {
     @OneToMany(mappedBy = "film",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<MovieScheduleEntity> schedules;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     @JoinTable(name = "film_category",
         joinColumns = @JoinColumn(name = "film_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     List<CategoryEntity> categories;
 
-    @OneToMany(mappedBy = "films", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "films", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     List<OrderEntity> orders;
 }

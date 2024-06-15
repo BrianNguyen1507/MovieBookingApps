@@ -1,18 +1,18 @@
 import { Movie } from "../../models/movie.js";
 import { fetchCategories } from "./getCategoryList.js";
-import { handleFileSelect, stringToBase64 } from "../../util/converter.js";
+import {
+  formatToDmy,
+  handleFileSelect,
+  stringToBase64,
+} from "../../util/converter.js";
 import { addMovie } from "./addFilm.js";
 import { screenSizeWith } from "../../constant/screenSize.js";
 import { getAllMovies } from "./getAllFilm.js";
-import { populateSelectWithOptions } from "../../util/loadclassity.js";
-import { classify } from "../../models/classify.js";
-
 $(document).on("click", "#btn-add-movie", async function (event) {
   try {
     const showForm = async () => {
       $(document).ready(function () {
         fetchCategories();
-        populateSelectWithOptions();
       });
       return await Swal.fire({
         width: screenSizeWith(),
@@ -48,14 +48,6 @@ $(document).on("click", "#btn-add-movie", async function (event) {
             <label for="countryInput" class="form-label">Quốc gia</label>
             <input type="text" class="form-control" id="countryInput">
           </div>
-          <div class="col-md-6">
-            <label for="languageInput" class="form-label">Ngôn ngữ</label>
-            <input type="text" class="form-control" id="languageInput">
-          </div>
-          <div class="col-md-6">
-            <label for="basePriceInput" class="form-label">Giá cơ bản</label>
-            <input type="number" class="form-control" id="basePriceInput">
-          </div>
             <div class="col-md-12">
             <label for="movieDescriptionInput" class="form-label">Mô tả</label>
             <textarea class="form-control" id="movieDescriptionInput"></textarea>
@@ -67,9 +59,19 @@ $(document).on("click", "#btn-add-movie", async function (event) {
     <div class="col-sm-12 col-md-6">
       <div class="bg-light rounded h-100 p-4">
         <form id="AddMovieForm" class="row g-4">
-            <div class="col-md-12 align-items-center">
-            <label for="classifyInput" class="form-label">Phân loại: </label>
-            <select name="classifyInput" class="form-floating" id="classifyInput">
+          <div class="col-md-6">
+            <label for="languageInput" class="form-label">Ngôn ngữ</label>
+            <input type="text" class="form-control" id="languageInput">
+          </div>
+          <div class="col-md-6">
+            <label for="basePriceInput" class="form-label">Giá cơ bản</label>
+            <input type="number" class="form-control" id="basePriceInput">
+          </div>
+           <div class="col-md-12 align-items-center">
+            <label for="classfityInput" class="form-label">Phân loại: </label>
+            <select name="classfityInput" class="form-floating" id="classfityInput">
+              <option value="123">123</option>
+              <option value="123">123</option>
             </select>
           </div>
           <div class="col-md-12 align-items-center">
@@ -116,7 +118,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           const countryInput = $("#countryInput").val().trim();
           const languageInput = $("#languageInput").val().trim();
           const basePriceInput = parseFloat($("#basePriceInput").val());
-          const classifyInput = $("#classifyInput").val();
+          const classfityInput = $("#classfityInput").val();
           const selectedOptions = $("#floatingCategory")
             .find("input:checked")
             .map(function () {
@@ -129,7 +131,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
           const categoriesInput = selectedOptions;
 
           if (
-            !classifyInput ||
+            !classfityInput ||
             !movieTitleInput ||
             isNaN(movieDurationInput) ||
             !movieDescriptionInput ||
@@ -173,7 +175,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
             languageInput,
             basePriceInput,
             categoriesInput,
-            classifyInput,
+            classfityInput,
           };
         },
       });
@@ -195,7 +197,7 @@ $(document).on("click", "#btn-add-movie", async function (event) {
         value.languageInput,
         value.basePriceInput,
         value.categoriesInput,
-        value.classifyInput
+        value.classfityInput
       );
       const result = await addMovie(movie);
 
