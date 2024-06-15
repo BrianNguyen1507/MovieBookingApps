@@ -4,6 +4,7 @@ import {
   extractYouTubeVideoId,
   translateDateFormat,
 } from "../../util/converter.js";
+import { populateSelectWithOptions } from "../../util/loadclassity.js";
 import { getUserToken } from "../authenticate/authenticate.js";
 import { fetchCategories } from "./getCategoryList.js";
 const url = "http://localhost:8083/cinema/getFilmById?id=";
@@ -25,6 +26,8 @@ export async function getMovieById(id) {
     }
     updateMovieInputs(movies.result);
     fetchCategories(movies.result.categories);
+    populateSelectWithOptions(movies.result.classify);
+    
   } catch (error) {
     console.error("Error fetching:", error);
   }
@@ -46,8 +49,7 @@ function updateMovieInputs(movieData) {
     "movieDescriptionInput"
   );
   const posterInput = document.getElementById("posterinput");
-  const posterBase64 = $("#posterInputUpload").data("base64") || "";
-  
+
   movieTitleInput.value = movieData.title;
   movieDurationInput.value = movieData.duration;
   releaseDateInput.value = translateDateFormat(movieData.releaseDate);
