@@ -1,7 +1,7 @@
 import { screenSizeWith } from "../../constant/screenSize";
 import { Food } from "../../models/food";
 import { updateFood } from "./updateFood";
-import { base64ToString } from "../../util/converter";
+
 import { addFood } from "./addFood";
 import { updateFoodData } from "./updateFoodData";
 import { getAllFoodDisplay } from "./getAllFoodDisplay";
@@ -10,11 +10,14 @@ $(document).on("click", "#btn-add-food", async function (event) {
   try {
     const showForm = async () => {
       const dataId = this.getAttribute("data-id");
+      const dataName = this.getAttribute("data-name");
+      const dataPrice = this.getAttribute("data-price");
+      const dataImage = this.getAttribute("data-image");
       let action = "Thêm";
       if (dataId != null) {
         action = "Sửa";
         $(document).ready(function () {
-          updateFoodData(dataId);
+          updateFoodData(dataId, dataImage, dataName, dataPrice);
         });
       }
       // Fetch the theaters and populate the select options
@@ -40,7 +43,7 @@ $(document).on("click", "#btn-add-food", async function (event) {
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label for="nameInput" class="form-label">Tên đồ ăn</label>
-                                <input type="text" class="form-control" id="nameInput" />
+                                <input type="text" class="form-control"  id="nameInput" />
                             </div>
                             <div class="mb-3">
                                 <label for="priceInput" class="form-label">Giá</label>
