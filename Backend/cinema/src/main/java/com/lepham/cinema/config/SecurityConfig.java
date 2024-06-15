@@ -27,14 +27,14 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${jwt.signerKey}")
-    String signerKey;
+    CustomJWTDecoder customJWTDecoder;
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/cinema/register",
             "/cinema/activeAccount",
             "/cinema/login",
-            "/cinema/getAllCategory",
+            "/cinema/logout",
+            "/cinema/refresh",
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -42,12 +42,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
-                                .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINTS).permitAll()
                                 .anyRequest()
                                 .authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(customJWTDecoder)
                         .jwtAuthenticationConverter(jwtAuthenticationConverter())
                 )
         );
@@ -68,14 +67,6 @@ public class SecurityConfig {
         return new CorsFilter(urlBasedCorsConfigurationSource);
     }
 
-    @Bean
-    JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKey = new SecretKeySpec(signerKey.getBytes(), "HS256");
-        return NimbusJwtDecoder
-                .withSecretKey(secretKey)
-                .macAlgorithm(MacAlgorithm.HS256)
-                .build();
-    }
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {

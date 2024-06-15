@@ -27,6 +27,7 @@ public enum ErrorCode {
     CATEGORY_NAME_INVALID(1015,"Request has category name is empty ",HttpStatus.BAD_REQUEST),
     STRING_IS_EMPTY(1016,"String is empty",HttpStatus.BAD_REQUEST),
     DURATION_INVALID(1017,"Duration is in 90 to 150 minute",HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     ;
 
 
