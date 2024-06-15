@@ -1,12 +1,10 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-import { Theater } from "../../models/theater.js";
 
-const apiUrl = "http://localhost:8083/cinema/addMovieTheater";
+const apiUrl = "http://localhost:8083/cinema/giftVoucher";
 
-export async function addTheater(theaterName, theaterAddress) {
+export async function giftVoucher(giftVoucher) {
   try {
     const tokenUser = await getUserToken();
-    const theater = new Theater(0, theaterName, theaterAddress);
     const response = await $.ajax({
       url: apiUrl,
       method: "POST",
@@ -14,13 +12,12 @@ export async function addTheater(theaterName, theaterAddress) {
       headers: {
         Authorization: `Bearer ${tokenUser}`,
       },
-      data: JSON.stringify(theater),
+      data: JSON.stringify(giftVoucher),
     });
 
     if (response.code !== 1000) {
       return response.message;
     }
-
     return true;
   } catch (error) {
     console.error("Exception:", error);

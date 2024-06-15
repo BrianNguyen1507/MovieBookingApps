@@ -1,10 +1,10 @@
-import { screenSizeWith } from "../../constant/screenSize";
-import { Food } from "../../models/food";
-import { updateFood } from "./updateFood";
+import { screenSizeWith } from "../../../constant/screenSize";
+import { Food } from "../../../models/food";
+import { updateFood } from "../updateFood";
 
-import { addFood } from "./addFood";
-import { updateFoodData } from "./updateFoodData";
-import { getAllFoodDisplay } from "./getAllFoodDisplay";
+import { addFood } from "../addFood";
+import { updateFoodData } from "../updateFoodData";
+import { getAllFoodDisplay } from "../getAllFoodDisplay";
 
 $(document).on("click", "#btn-add-food", async function (event) {
   try {
@@ -20,8 +20,6 @@ $(document).on("click", "#btn-add-food", async function (event) {
           updateFoodData(dataId, dataImage, dataName, dataPrice);
         });
       }
-      // Fetch the theaters and populate the select options
-
       return await Swal.fire({
         width: screenSizeWith(),
         title: action + " đồ ăn thức uống ",

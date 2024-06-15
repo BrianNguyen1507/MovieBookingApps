@@ -1,26 +1,21 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-import { Theater } from "../../models/theater.js";
 
-const apiUrl = "http://localhost:8083/cinema/addMovieTheater";
+const apiUrl = "http://localhost:8083/cinema/deleteGiftVoucher?id=";
 
-export async function addTheater(theaterName, theaterAddress) {
+export async function deleteGiftVoucher(id) {
   try {
     const tokenUser = await getUserToken();
-    const theater = new Theater(0, theaterName, theaterAddress);
     const response = await $.ajax({
       url: apiUrl,
-      method: "POST",
+      method: "DELETE",
       contentType: "application/json",
       headers: {
         Authorization: `Bearer ${tokenUser}`,
       },
-      data: JSON.stringify(theater),
     });
-
     if (response.code !== 1000) {
       return response.message;
     }
-
     return true;
   } catch (error) {
     console.error("Exception:", error);

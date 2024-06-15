@@ -1,6 +1,7 @@
 /********** Template CSS **********/
 :root {
   --primary: #009cff;
+  --secondary: #d24a28;
   --light: #f3f6f9;
   --dark: #191c24;
 }
@@ -295,14 +296,29 @@
 .movie-id-flag {
   position: absolute;
   top: 10px;
+  font-weight: bold;
   left: 10px;
-  background-color: #009cff;
+  background-color: var(--primary);
   color: #fff;
   padding: 5px;
   margin: 5px;
   border-radius: 3px;
   font-size: 14px;
 }
+
+.movie-id-classify {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-weight: bold;
+  background-color: var(--secondary);
+  color: #fff;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
 .movie-details {
   margin-top: 10px;
   text-align: center;
@@ -386,5 +402,24 @@
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked + label:after {
+  display: block;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  border: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+.dropdown:hover .dropdown-content {
   display: block;
 }

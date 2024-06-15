@@ -88,6 +88,7 @@ public class FilmService implements IFilmService {
         entity.setReleaseDate(request.getReleaseDate());
         entity.setTrailer(request.getTrailer());
         entity.setTitle(request.getTitle());
+        entity.setClassify(request.getClassify());
         entity.setCategories(categoryConverter.toListEntities(request.getCategories()));
         return filmConverter.toFilmResponse(filmRepository.save(entity));
     }

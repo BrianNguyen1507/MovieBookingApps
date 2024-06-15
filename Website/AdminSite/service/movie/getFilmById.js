@@ -27,7 +27,6 @@ export async function getMovieById(id) {
     updateMovieInputs(movies.result);
     fetchCategories(movies.result.categories);
     populateSelectWithOptions(movies.result.classify);
-    
   } catch (error) {
     console.error("Error fetching:", error);
   }
@@ -52,7 +51,7 @@ function updateMovieInputs(movieData) {
 
   movieTitleInput.value = movieData.title;
   movieDurationInput.value = movieData.duration;
-  releaseDateInput.value = translateDateFormat(movieData.releaseDate);
+  releaseDateInput.value = movieData.releaseDate;
   directorInput.value = movieData.director;
   actorInput.value = movieData.actor;
   countryInput.value = movieData.country;
