@@ -20,6 +20,9 @@ public class AccountVoucher {
     @Column(name = "quantity",nullable = false)
     int quantity;
 
+    @Column(name = "hide", nullable = false)
+    boolean hide;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     AccountEntity account;

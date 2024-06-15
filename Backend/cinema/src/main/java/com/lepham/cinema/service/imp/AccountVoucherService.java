@@ -43,11 +43,14 @@ public class AccountVoucherService implements IAccountVoucherService {
             accountVoucherEntity.setVoucher(voucher);
             accountVoucherRepository.save(accountVoucherEntity);
         }
-
-
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
-    public void delete(long id) {
+    public void deleteVoucher(long id) {
+        AccountVoucher entity = accountVoucherRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        entity.setHide(true);
+        accountVoucherRepository.save(entity);
     }
 }

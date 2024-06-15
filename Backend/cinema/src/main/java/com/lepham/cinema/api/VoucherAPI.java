@@ -63,4 +63,10 @@ public class VoucherAPI {
         accountVoucherService.gift(request);
         return APIResponse.builder().message("Gift Voucher Success!").build();
     }
+
+    @PutMapping(value = "/deleteGiftVoucher")
+    APIResponse<?>deleteGiftVoucher(@RequestParam("id") long id) {
+        accountVoucherService.deleteVoucher(id);
+        return APIResponse.builder().message("Delete Gift Voucher successful").build();
+    }
 }

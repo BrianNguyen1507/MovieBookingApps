@@ -13,4 +13,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     boolean checkActive(String email);
     AccountEntity findByEmail(String email);
     List<AccountEntity> findAllByActiveAndRole(int active, String role);
+    AccountEntity findByIdAndActive(long id, int active);
 }

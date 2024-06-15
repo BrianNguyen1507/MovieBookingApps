@@ -344,9 +344,9 @@
   height: 315px;
 }
 .checkbox-wrapper {
-  display: inline-flex; /* Use inline-flex to make the checkboxes display horizontally */
-  align-items: center; /* Align items vertically */
-  margin-right: 10px; /* Adjust margin between checkboxes */
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
 }
 
 .checkbox-wrapper input[type="checkbox"] {
