@@ -37,6 +37,7 @@ public class AuthenticationService {
             return AuthenticationResponse.builder()
                     .token(token)
                     .authenticated(true)
+                    .name(account.getFullName())
                     .role(account.getRole())
                     .email(account.getEmail())
                     .build();
@@ -44,6 +45,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token("")
                 .authenticated(false)
+                .name("")
                 .role("")
                 .email("")
                 .build();
