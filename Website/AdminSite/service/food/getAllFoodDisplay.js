@@ -41,60 +41,59 @@ export async function getAllFoodDisplay() {
 
     const actionCell = document.createElement("td");
     actionCell.innerHTML = `
-          <button class="btn btn-primary btn-room-edit" id="btn-add-food" data-id="${food.id}">Edit</button>
-          <button class="btn btn-danger btn-room-delete" data-id="${food.id}">Delete</button>
+          <button class="btn btn-primary btn-room-edit" id="btn-add-food" data-image="${food.image}" data-price="${food.price}" data-name="${food.name}" data-id="${food.id}">Edit</button>
+          <button class="btn btn-danger btn-room-delete"   data-id="${food.id}">Delete</button>
         `;
     actionCell.style.textAlign = "center";
     row.appendChild(actionCell);
 
-
     const deleteButton = actionCell.querySelector(".btn-danger");
-      deleteButton.addEventListener("click", async () => {
-        try {
-          const confirmation = await Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to delete this food?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel",
-          });
+    deleteButton.addEventListener("click", async () => {
+      try {
+        const confirmation = await Swal.fire({
+          title: "Are you sure?",
+          text: "Do you really want to delete this food?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel",
+        });
 
-          if (confirmation.isConfirmed) {
-            const result = await deleteFood(food.id);
-            if (result) {
-              tbody.removeChild(row);
-              Swal.fire({
-                title: "Deleted!",
-                text: "Food has been deleted.",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Error!",
-                text: "Failed to delete the food.",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
+        if (confirmation.isConfirmed) {
+          const result = await deleteFood(food.id);
+          if (result) {
+            tbody.removeChild(row);
+            Swal.fire({
+              title: "Deleted!",
+              text: "Food has been deleted.",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
           } else {
             Swal.fire({
-              title: "Cancelled",
-              text: "Food deletion was cancelled.",
-              icon: "info",
+              title: "Error!",
+              text: "Failed to delete the food.",
+              icon: "error",
               confirmButtonText: "OK",
             });
           }
-        } catch (error) {
+        } else {
           Swal.fire({
-            title: "Error!",
-            text: error.message,
-            icon: "error",
+            title: "Cancelled",
+            text: "Food deletion was cancelled.",
+            icon: "info",
             confirmButtonText: "OK",
           });
         }
-      });
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    });
 
     tbody.appendChild(row);
   });

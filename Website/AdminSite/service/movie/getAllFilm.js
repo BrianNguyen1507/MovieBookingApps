@@ -48,6 +48,8 @@ export async function getAllMovies() {
 
       const moviePoster = document.createElement("img");
       moviePoster.src = `data:image/png;base64,${movie.poster}`;
+      moviePoster.width = 250;
+      moviePoster.height = 350;
       moviePoster.alt = `${movie.title} Poster`;
       movieItem.appendChild(moviePoster);
 
