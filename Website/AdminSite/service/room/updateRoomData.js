@@ -8,10 +8,10 @@ export async function updateData(id){
     const numberInput = document.querySelector("#numberInput");
     const columnInput = document.querySelector("#columnInput");
     const rowInput = document.querySelector("#rowInput");
-    console.log(room.movieTheater.name);
-    selectElement.value = room.movieTheater.id; // Replace "someOptionValue" with the actual value you want to set for the select element
-    numberInput.value = room.number;               // Replace "123" with the actual value you want to set for the number input
-    columnInput.value = room.column;                 // Replace "A" with the actual value you want to set for the column input
+
+    selectElement.value = room.movieTheater.id;
+    numberInput.value = room.number;             
+    columnInput.value = room.column;              
     rowInput.value = room.row; 
 
 }
