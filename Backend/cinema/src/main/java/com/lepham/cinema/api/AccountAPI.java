@@ -1,13 +1,12 @@
 package com.lepham.cinema.api;
 
-import com.lepham.cinema.dto.request.AccountRequest;
-import com.lepham.cinema.dto.request.LoginRequest;
-import com.lepham.cinema.dto.request.OTPRequest;
+import com.lepham.cinema.dto.request.*;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.AccountResponse;
 import com.lepham.cinema.dto.response.AuthenticationResponse;
 import com.lepham.cinema.service.imp.AccountService;
 import com.lepham.cinema.service.imp.AuthenticationService;
+import com.nimbusds.jose.JOSEException;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -46,6 +45,19 @@ public class AccountAPI {
     public APIResponse<AuthenticationResponse> login(@RequestBody LoginRequest request){
         return APIResponse.<AuthenticationResponse>builder()
                 .result(authenticationService.authenticate(request))
+                .build();
+    }
+    @PostMapping(value = "/logout")
+    public  APIResponse<?> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        return APIResponse.builder()
+                .message("Log out success")
+                .build();
+    }
+    @PostMapping(value = "/refresh")
+    public APIResponse<AuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request) throws ParseException, JOSEException {
+        return APIResponse.<AuthenticationResponse>builder()
+                .result(authenticationService.refreshToken(request))
                 .build();
     }
 }

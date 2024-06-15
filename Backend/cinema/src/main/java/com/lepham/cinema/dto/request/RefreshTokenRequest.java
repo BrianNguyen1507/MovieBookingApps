@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OTPRequest {
-    String email;
-    String otp;
+public class RefreshTokenRequest {
+    String token;
 }

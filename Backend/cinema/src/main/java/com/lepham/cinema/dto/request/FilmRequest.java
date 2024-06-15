@@ -16,6 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NonNull
 public class FilmRequest {
+    @StringConstraint(message = "STRING_IS_EMPTY")
     String title;
     @DurationConstraint(message = "DURATION_INVALID")
     int duration;
