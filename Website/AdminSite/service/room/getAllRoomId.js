@@ -52,9 +52,7 @@ export async function getRoomById(id) {
           <button class="btn btn-danger btn-room-delete" data-id="${room.id}">Delete</button>
         `;
       row.appendChild(actionCell);
-
       tbody.appendChild(row);
-
       const deleteButton = actionCell.querySelector(".btn-room-delete");
       deleteButton.addEventListener("click", async () => {
         try {
