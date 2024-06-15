@@ -35,16 +35,21 @@ export async function getAllMovies() {
         movieData.country,
         movieData.language,
         movieData.basePrice,
-        movieData.categories
+        movieData.categories,
+        movieData.classify
       );
 
       const movieItem = document.createElement("div");
       movieItem.classList.add("movie-item");
-
       const movieIdFlag = document.createElement("div");
       movieIdFlag.classList.add("movie-id-flag");
       movieIdFlag.textContent = "#" + movieData.id;
       movieItem.appendChild(movieIdFlag);
+
+      const movieclassify = document.createElement("div");
+      movieclassify.classList.add("movie-id-classify");
+      movieclassify.textContent = movie.classify;
+      movieItem.appendChild(movieclassify);
 
       const moviePoster = document.createElement("img");
       moviePoster.src = `data:image/png;base64,${movie.poster}`;
@@ -53,7 +58,7 @@ export async function getAllMovies() {
       moviePoster.alt = `${movie.title} Poster`;
       movieItem.appendChild(moviePoster);
 
-      const movieTitle = document.createElement("h5");
+      const movieTitle = document.createElement("h4");
       movieTitle.textContent = movie.title;
       movieItem.appendChild(movieTitle);
 

@@ -1,5 +1,6 @@
+import { classify } from "../../models/classify";
 import { Movie } from "../../models/movie";
-import { formatToDmy, stringToBase64 } from "../../util/converter";
+import { stringToBase64 } from "../../util/converter";
 import { updateMovie } from "./updateFilm";
 
 function getMovieFromForm() {
@@ -14,7 +15,8 @@ function getMovieFromForm() {
   const countryInput = $("#countryInput").val().trim();
   const languageInput = $("#languageInput").val().trim();
   const basePriceInput = parseFloat($("#basePriceInput").val());
-
+  const classifyInputKey = parseInt($("#classifyInput").val(), 10);
+  const classifyInputValue = classify[classifyInputKey];
   const selectedOptions = $("#floatingCategory")
     .find("input:checked")
     .map(function () {
@@ -29,7 +31,7 @@ function getMovieFromForm() {
     movieTitleInput,
     movieDurationInput,
     stringToBase64(movieDescriptionInput),
-    formatToDmy(releaseDateInput),
+    releaseDateInput,
     directorInput,
     actorInput,
     posterInput,
@@ -37,7 +39,8 @@ function getMovieFromForm() {
     countryInput,
     languageInput,
     basePriceInput,
-    selectedOptions
+    selectedOptions,
+    classifyInputValue
   );
 }
 

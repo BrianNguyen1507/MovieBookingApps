@@ -6,7 +6,7 @@ export async function fetchCategories(filmCategory) {
   try {
     const token = await getUserToken();
     const response = await fetch(urlcategory, {
-      method: "GET",
+      method: "GET",  
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

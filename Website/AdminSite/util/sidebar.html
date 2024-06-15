@@ -43,12 +43,17 @@
       <a id="room-link" href="roomManagement.html" class="nav-item nav-link"
         ><i class="fa fa-solid fa-couch"></i> Room</a
       >
-      <a
-        id="voucher-link"
-        href="voucherManagement.html"
-        class="nav-item nav-link"
-        ><i class="fa fa-solid fa-percent"></i> Voucher</a
-      >
+      <div class="nav-item dropdown">
+        <a  id="voucher-link" href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+          ><i class="fa fa-solid fa-percent"></i>Vouchers</a
+        >
+        <div class="dropdown-menu bg-transparent border-0">
+          <a href="voucherManagement.html" class="dropdown-item"
+            >Voucher Management</a
+          >
+          <a href="giftVouchers.html" class="dropdown-item">Gift Vouchers</a>
+        </div>
+      </div>
       <a id="food-link" href="foodManagement.html" class="nav-item nav-link"
         ><i class="fa fa-solid fa-utensils"></i> Food</a
       >

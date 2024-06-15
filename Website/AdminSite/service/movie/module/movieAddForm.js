@@ -1,11 +1,11 @@
-import { Movie } from "../../models/movie.js";
-import { fetchCategories } from "./getCategoryList.js";
-import { handleFileSelect, stringToBase64 } from "../../util/converter.js";
-import { addMovie } from "./addFilm.js";
-import { screenSizeWith } from "../../constant/screenSize.js";
-import { getAllMovies } from "./getAllFilm.js";
-import { populateSelectWithOptions } from "../../util/loadclassity.js";
-import { classify } from "../../models/classify.js";
+import { Movie } from "../../../models/movie.js";
+import { fetchCategories } from "../getCategoryList.js";
+import { handleFileSelect, stringToBase64 } from "../../../util/converter.js";
+import { addMovie } from "../addFilm.js";
+import { screenSizeWith } from "../../../constant/screenSize.js";
+import { getAllMovies } from "../getAllFilm.js";
+import { populateSelectWithOptions } from "../../../util/loadclassity.js";
+import { classify } from "../../../models/classify.js";
 
 $(document).on("click", "#btn-add-movie", async function (event) {
   try {
@@ -180,7 +180,6 @@ $(document).on("click", "#btn-add-movie", async function (event) {
     };
 
     const { isConfirmed, value } = await showForm();
-    console.log(value.releaseDateInput);
     if (isConfirmed) {
       const movie = new Movie(
         value.movieTitleInput,
