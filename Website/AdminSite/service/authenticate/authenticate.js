@@ -1,11 +1,18 @@
-async function saveAuthenticated(auth, token) {
-    sessionStorage.setItem('authenticated', auth);
-    sessionStorage.setItem('token', token);
+export async function getUserToken() {
+  return sessionStorage.getItem("token");
+}
+export async function getName() {
+  const name = await sessionStorage.getItem("name");
+  const role = await sessionStorage.getItem("role");
+  if (!name || !role) {
+    return;
   }
-
-  export async function getUserToken() {
-    return sessionStorage.getItem('token');
+  const targetElementName = document.getElementById("data-name-user");
+  const targetElementRole = document.getElementById("data-role-user");
+  if (targetElementName && targetElementRole) {
+    targetElementRole.textContent = role;
+    targetElementName.textContent = name;
+  } else {
+    targetElementName.textContent = name;
   }
-
-  
-  
+}

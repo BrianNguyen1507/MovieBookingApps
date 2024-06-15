@@ -1,22 +1,29 @@
-document.addEventListener("DOMContentLoaded", function () {
-  fetch("./util/sidebar.html")
-    .then((response) => response.text())
-    .then((html) => {
-      document.querySelectorAll(".sidebar-container").forEach((container) => {
-        container.innerHTML = html;
-        activateCurrentPageLink();
-      });
+import { getName } from "../service/authenticate/authenticate";
 
-      document
-        .querySelector(".sidebar-toggler")
-        .addEventListener("click", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    let sidebarLoading = false;
+    const response = await fetch("./util/sidebar.html");
+    const html = await response.text();
+
+    document.querySelectorAll(".sidebar-container").forEach((container) => {
+      container.innerHTML = html;
+    });
+    sidebarLoading = true;
+    await getName();
+
+    if (sidebarLoading) {
+      document.querySelectorAll(".sidebar-toggler").forEach((toggler) => {
+        toggler.addEventListener("click", function () {
           document.querySelector(".sidebar").classList.toggle("open");
           document.querySelector(".content").classList.toggle("open");
         });
-    })
-    .catch((error) => {
-      console.log("togggle side bar" + error);
-    });
+      });
+    }
+    activateCurrentPageLink();
+  } catch (error) {
+    console.log("Error loading sidebar: " + error);
+  }
 });
 
 function activateCurrentPageLink() {
@@ -27,5 +34,7 @@ function activateCurrentPageLink() {
   const link = document.querySelector(
     `.navbar-nav .nav-link[href="${page}.html"]`
   );
-  link.classList.add("active");
+  if (link) {
+    link.classList.add("active");
+  }
 }
