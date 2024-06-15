@@ -56,73 +56,74 @@ export async function getRoomById(id) {
       tbody.appendChild(row);
 
       const deleteButton = actionCell.querySelector(".btn-danger");
-      deleteButton.addEventListener("click", async () => {
-        try {
-          const confirmation = await Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to delete this category?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel",
-          });
+  deleteButton.addEventListener("click", async () => {
+    try {
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to delete this category?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel",
+      });
 
-          if (confirmation.isConfirmed) {
-            const result = await deleteRoom(room.id);
-            if (result) {
-              tbody.removeChild(row);
-              Swal.fire({
-                title: "Deleted!",
-                text: "Category has been deleted.",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            } else {
-              Swal.fire({
-                title: "Error!",
-                text: "Failed to delete the category.",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          } else {
-            Swal.fire({
-              title: "Cancelled",
-              text: "Category deletion was cancelled.",
-              icon: "info",
-              confirmButtonText: "OK",
-            });
-          }
-        } catch (error) {
+      if (confirmation.isConfirmed) {
+        const result = await deleteRoom(room.id);
+        if (result) {
+          tbody.removeChild(row);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Category has been deleted.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        } else {
           Swal.fire({
             title: "Error!",
-            text: error.message,
+            text: "Failed to delete the category.",
             icon: "error",
             confirmButtonText: "OK",
           });
         }
-      });
-      async function deleteRoom(id) {
-        const url = "http://localhost:8083/cinema/deleteRoom?id=";
-        try {
-          const token = await getUserToken();
-          const response = await fetch(url + id, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          const room = await response.json();
-          if (room.code !== 1000) {
-            return;
-          }
-          return room;
-        } catch (error) {
-          console.error("Error fetching and displaying theaters:", error);
-        }
+      } else {
+        Swal.fire({
+          title: "Cancelled",
+          text: "Category deletion was cancelled.",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
       }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  });
+  async function deleteRoom(id) {
+    const url = "http://localhost:8083/cinema/deleteRoom?id=";
+    try {
+      const token = await getUserToken();
+      const response = await fetch(url + id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const room = await response.json();
+      if (room.code !== 1000) {
+        return;
+      }
+      return room;
+    } catch (error) {
+      console.error("Error fetching and displaying theaters:", error);
+    }
+  }
+
     });
   } catch (error) {
     console.error("Error fetching and displaying rooms:", error);
