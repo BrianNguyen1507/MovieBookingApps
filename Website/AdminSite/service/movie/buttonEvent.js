@@ -1,6 +1,8 @@
 import { classify } from "../../models/classify";
 import { Movie } from "../../models/movie";
 import { stringToBase64 } from "../../util/converter";
+import { deleteMovie } from "./deleteFilm";
+import { getMovieById } from "./getFilmById";
 import { updateMovie } from "./updateFilm";
 
 function getMovieFromForm() {
@@ -15,8 +17,7 @@ function getMovieFromForm() {
   const countryInput = $("#countryInput").val().trim();
   const languageInput = $("#languageInput").val().trim();
   const basePriceInput = parseFloat($("#basePriceInput").val());
-  const classifyInputKey = parseInt($("#classifyInput").val(), 10);
-  const classifyInputValue = classify[classifyInputKey];
+  const classifyInputValue = $("#classifyInput").val();
   const selectedOptions = $("#floatingCategory")
     .find("input:checked")
     .map(function () {
@@ -59,11 +60,37 @@ document.getElementById("btn-edit").addEventListener("click", function () {
   }).then((result) => {
     if (result.isConfirmed) {
       updateMovie(id, movie);
+      getMovieById(id);
       window.location.reload();
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire({
         title: "Cancelled",
         text: "Update operation has been cancelled.",
+        icon: "info",
+      });
+    }
+  });
+});
+
+document.getElementById("btn-del").addEventListener("click", function () {
+  const id = this.getAttribute("data-id");
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to hide this movie?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, hide it!",
+    cancelButtonText: "No, cancel!",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleteMovie(id);
+      window.location.href = "./movieManagement.html";
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire({
+        title: "Cancelled",
+        text: "Hide operation has been cancelled.",
         icon: "info",
       });
     }

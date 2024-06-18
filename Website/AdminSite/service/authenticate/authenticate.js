@@ -1,6 +1,7 @@
 export async function getUserToken() {
   return sessionStorage.getItem("token");
 }
+
 export async function getName() {
   const name = await sessionStorage.getItem("name");
   const role = await sessionStorage.getItem("role");

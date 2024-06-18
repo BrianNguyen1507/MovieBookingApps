@@ -1,4 +1,3 @@
-// Function to refresh token
 function refreshToken() {
   fetch("http://localhost:8083/cinema/refresh", {
     method: "POST",
@@ -14,7 +13,6 @@ function refreshToken() {
       if (data.code !== 1000) {
         console.log("Token refresh failed");
       } else {
-        console.log(`New token: ${data.result.token}`);
         sessionStorage.setItem("token", data.result.token);
       }
     })
@@ -22,7 +20,6 @@ function refreshToken() {
       console.error("Error refreshing token:", error);
     });
 }
-
 setInterval(() => {
   refreshToken();
 }, 3600000);

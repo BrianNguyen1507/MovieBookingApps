@@ -2,6 +2,8 @@ import { getUserToken } from "../authenticate/authenticate.js";
 import { typeofVoucher } from "../../util/voucherUtil/typeDiscount.js";
 import { symbolType } from "../../util/voucherUtil/typeDiscount.js";
 import { Voucher } from "../../models/voucher.js";
+import { deleteVoucher } from "./deleteVoucher.js";
+import { DateConverter } from "../../util/converter.js";
 const url = "http://localhost:8083/cinema/getAllVoucher";
 
 const token = await getUserToken();
@@ -25,6 +27,7 @@ export async function getAndDisplayvoucher() {
     tbody.innerHTML = "";
 
     voucher.result.forEach((voucherData, index) => {
+      const dateFormat = DateConverter(voucherData.expired);
       const voucher = new Voucher(
         voucherData.title,
         voucherData.content,
@@ -70,12 +73,12 @@ export async function getAndDisplayvoucher() {
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
-       <button class="btn btn-primary" id="btn-edit"data-type="${voucherData.typeDiscount}" data-minlimit="${voucher.minLimit}" data-title="${voucher.title}" data-content="${voucher.content}" data-quantity="${voucher.quantity}"data-discount="${voucher.discount}"  data-expired="${voucher.expired}"  data-id="${voucherData.id}">Edit</button>
+       <button class="btn btn-primary" id="btn-edit"data-type="${voucherData.typeDiscount}" data-minlimit="${voucher.minLimit}" data-title="${voucher.title}" data-content="${voucher.content}" data-quantity="${voucher.quantity}"data-discount="${voucher.discount}"  data-expired="${dateFormat}"  data-id="${voucherData.id}">Edit</button>
         <button class="btn btn-danger btn-del" data-id="${voucherData.id}">Delete</button>
       `;
-      //event
-      const deleteVoucher = actionCell.querySelector(".btn-del");
-      deleteVoucher.addEventListener("click", async () => {
+      //event del
+      const deleteVoucherButton = actionCell.querySelector(".btn-del");
+      deleteVoucherButton.addEventListener("click", async () => {
         try {
           const confirmation = await Swal.fire({
             title: "Are you sure?",
@@ -87,7 +90,7 @@ export async function getAndDisplayvoucher() {
           });
 
           if (confirmation.isConfirmed) {
-            const result = await DeleteVoucher(voucherData.id);
+            const result = await deleteVoucher(voucherData.id);
             if (result) {
               tbody.removeChild(row);
               Swal.fire({
@@ -121,9 +124,7 @@ export async function getAndDisplayvoucher() {
           });
         }
       });
-
       row.appendChild(actionCell);
-
       tbody.appendChild(row);
     });
   } catch (error) {
@@ -131,26 +132,3 @@ export async function getAndDisplayvoucher() {
   }
 }
 getAndDisplayvoucher();
-
-//delete
-const apiUrl = "http://localhost:8083/cinema/deleteVoucher?id=";
-
-async function DeleteVoucher(voucherId) {
-  try {
-    const response = await fetch(`${apiUrl}${voucherId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message);
-    }
-    return true;
-  } catch (error) {
-    console.error("Error deleting:", error);
-    throw error;
-  }
-}
