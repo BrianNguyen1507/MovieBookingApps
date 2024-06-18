@@ -44,6 +44,7 @@ function updateMovieInputs(movieData) {
   const languageInput = document.getElementById("languageInput");
   const trailerInput = document.getElementById("trailerInput");
   const basePriceInput = document.getElementById("basePriceInput");
+
   const movieDescriptionInput = document.getElementById(
     "movieDescriptionInput"
   );

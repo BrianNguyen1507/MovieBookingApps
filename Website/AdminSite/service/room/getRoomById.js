@@ -4,7 +4,7 @@ const url = "http://localhost:8083/cinema/getRoomById?id=";
 export async function getRoomById(id) {
   try {
     const token = await getUserToken();
-    const response = await fetch(url +id, {
+    const response = await fetch(url + id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -21,4 +21,3 @@ export async function getRoomById(id) {
     console.error("Error fetching and displaying theaters:", error);
   }
 }
-
