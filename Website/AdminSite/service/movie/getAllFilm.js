@@ -64,7 +64,7 @@ export async function getAllMovies() {
 
       const movieDateRelease = document.createElement("div");
       movieDateRelease.classList.add("movie-details");
-      movieDateRelease.textContent = `Release Date: ${movie.releaseDate}`;
+      movieDateRelease.textContent = `Ngày phát hành: ${movie.releaseDate}`;
       movieItem.appendChild(movieDateRelease);
 
       const moreDetailsBtn = document.createElement("button");

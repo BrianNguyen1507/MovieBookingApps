@@ -1,6 +1,8 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 const url = "http://localhost:8083/cinema/getAllMovieTheater";
 import { Theater } from "../../models/theater.js";
+import { deleteTheaeterById } from "./deleteMovieTheater.js";
+import { UpdateTheater } from "./updateMovieTheater.js";
 export async function getAndDisplayTheater() {
   try {
     const token = await getUserToken();
@@ -45,11 +47,10 @@ export async function getAndDisplayTheater() {
         <button class="btn btn-primary btn-theater-update" data-id="${theater.id}">Edit</button>
         <button class="btn btn-danger btn-theater-delete" data-id="${theater.id}">Delete</button>
       `;
-      //event
+
       const deleteButton = actionCell.querySelector(".btn-theater-delete");
       const editButton = actionCell.querySelector(".btn-theater-update");
-
-      
+      //delete event
       deleteButton.addEventListener("click", async () => {
         try {
           const confirmation = await Swal.fire({
@@ -65,6 +66,7 @@ export async function getAndDisplayTheater() {
             const result = await deleteTheaeterById(theater.id);
             if (result) {
               tbody.removeChild(row);
+              getAndDisplayTheater();
               Swal.fire({
                 title: "Deleted!",
                 text: `Theater ${theater.name} has been deleted.`,
@@ -96,6 +98,7 @@ export async function getAndDisplayTheater() {
           });
         }
       });
+      //edit event
       editButton.addEventListener("click", () => {
         UpdateTheater(theater.id, theater.name, theater.address);
         getAndDisplayTheater();
@@ -109,80 +112,3 @@ export async function getAndDisplayTheater() {
   }
 }
 getAndDisplayTheater();
-
-//delete n update call
-const apiUrl = "http://localhost:8083/cinema/deleteMovieTheater?id=";
-const tokenUser = await getUserToken();
-async function deleteTheaeterById(theaterId) {
-  try {
-    const response = await fetch(`${apiUrl}${theaterId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${tokenUser}`,
-      },
-    });
-
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message);
-    }
-
-    return true;
-  } catch (error) {
-    console.error("Error deleting:", error);
-    throw error;
-  }
-}
-const UpdateTheater = (id, name, address) => {
-  Swal.fire({
-    title: "Cập nhật thông tin chi nhánh rạp chiếu",
-    html: `
-      <div class="input-group">
-          <span class="input-group-text" id="basic-addon3">Tên chi nhánh</span>
-          <input type="text" class="form-control" value= "${name}" id="editTheaterName" aria-describedby="basic-addon3 basic-addon4">
-      </div>
-      <div class="input-group">
-          <span class="input-group-text" id="basic-addon3">Địa chi</span>
-          <input type="text" class="form-control"  value= "${address}" id="editTheaterAddress" aria-describedby="basic-addon3 basic-addon4">
-      </div>
-      `,
-    showCancelButton: true,
-    confirmButtonText: "Cập nhật",
-    showLoaderOnConfirm: true,
-    preConfirm: () => {
-      const name = document.getElementById("editTheaterName").value;
-      const address = document.getElementById("editTheaterAddress").value;
-      return fetch(`http://localhost:8083/cinema/updateMovieTheater?id=${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-
-          Authorization: `Bearer ${tokenUser}`,
-        },
-        body: JSON.stringify({
-          id,
-          name,
-          address,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          Swal.showValidationMessage(`Cập nhật thể loại thất bại: ${error}`);
-        });
-    },
-    allowOutsideClick: () => !Swal.isLoading(),
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        icon: "success",
-        title: `Cập nhật thể loại thành công`,
-      });
-      getAndDisplayTheater();
-    }
-  });
-};

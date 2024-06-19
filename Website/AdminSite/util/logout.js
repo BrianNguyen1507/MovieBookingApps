@@ -1,4 +1,5 @@
-import { getUserToken } from "../service/authenticate/authenticate";
+
+import { logoutService } from "../service/authenticate/logoutService";
 
 $(document).on("click", "#logoutButton", async function (event) {
   try {
@@ -13,8 +14,7 @@ $(document).on("click", "#logoutButton", async function (event) {
 
     if (confirmation.isConfirmed) {
       event.preventDefault();
-      logout();
-      sessionStorage.clear();
+      logoutService();
       window.location.href = "./signin.html";
     }
   } catch (error) {
