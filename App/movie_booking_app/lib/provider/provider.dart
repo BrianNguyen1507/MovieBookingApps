@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/models/user/user.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
+import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
 import 'package:movie_booking_app/services/Users/signIn/handleSignin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,14 +59,13 @@ class UserProvider extends ChangeNotifier {
 
   void login() {
     _isLoggedIn = true;
-    notifyListeners(); // Notify listeners when the state changes
+    notifyListeners();
   }
 
   Future<void> logout() async {
-    final SharedPreferences pref = await SharedPreferences.getInstance();
     _isLoggedIn = false;
     notifyListeners();
-    await pref.clear();
+    LogOutServices.logout();
     _user = null;
     notifyListeners();
   }
