@@ -18,9 +18,7 @@ import java.text.ParseException;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FilmConverter {
-
     CategoryConverter categoryConverter;
-
     public FilmResponse toFilmResponse(FilmEntity entity){
         return FilmResponse.builder()
                 .id(entity.getId())

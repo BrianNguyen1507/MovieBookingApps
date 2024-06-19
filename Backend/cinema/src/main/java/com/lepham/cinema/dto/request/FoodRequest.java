@@ -1,5 +1,6 @@
 package com.lepham.cinema.dto.request;
 
+import com.lepham.cinema.validator.StringConstraint;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FoodRequest {
     long id;
+    @StringConstraint()
     String name;
     double price;
     byte[] image;

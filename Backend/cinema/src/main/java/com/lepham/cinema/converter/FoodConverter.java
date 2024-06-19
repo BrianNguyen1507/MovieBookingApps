@@ -6,7 +6,6 @@ import com.lepham.cinema.entity.FoodEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-
 public interface FoodConverter {
     FoodEntity toFoodEntity(FoodRequest request);
     FoodResponse toFoodResponse(FoodEntity entity);

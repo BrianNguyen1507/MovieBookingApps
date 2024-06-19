@@ -14,6 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoryRequest {
     long id;
 
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint
     String name;
 }
