@@ -1,7 +1,5 @@
 package com.lepham.cinema.api;
 
-import com.lepham.cinema.constant.ConstantVariable;
-import com.lepham.cinema.dto.request.ShowTimeRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.LatestDateResponse;

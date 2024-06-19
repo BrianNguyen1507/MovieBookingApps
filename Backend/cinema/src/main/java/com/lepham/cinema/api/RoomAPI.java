@@ -2,7 +2,6 @@ package com.lepham.cinema.api;
 
 import com.lepham.cinema.dto.request.RoomRequest;
 import com.lepham.cinema.dto.response.APIResponse;
-import com.lepham.cinema.dto.response.MovieTheaterResponse;
 import com.lepham.cinema.dto.response.RoomResponse;
 import com.lepham.cinema.service.imp.RoomService;
 import jakarta.validation.Valid;

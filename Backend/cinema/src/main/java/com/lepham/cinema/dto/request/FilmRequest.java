@@ -1,6 +1,8 @@
 package com.lepham.cinema.dto.request;
 
+import com.lepham.cinema.validator.DateConstraint;
 import com.lepham.cinema.validator.DurationConstraint;
+import com.lepham.cinema.validator.PriceConstraint;
 import com.lepham.cinema.validator.StringConstraint;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -16,22 +18,26 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NonNull
 public class FilmRequest {
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint
     String title;
     @DurationConstraint(message = "DURATION_INVALID")
     int duration;
     byte [] description;
+
+    @DateConstraint
     LocalDate releaseDate;
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint
     String director;
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint
     String actor;
     byte[] poster;
     String trailer;
-    @StringConstraint(message = "STRING_IS_EMPTY")
-        String country;
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint
+    String country;
+    @StringConstraint
     String language;
+
+    @PriceConstraint
     double basePrice;
     String classify;
     List<CategoryRequest> categories;

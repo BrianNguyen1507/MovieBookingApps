@@ -2,6 +2,7 @@ package com.lepham.cinema.config;
 
 import com.lepham.cinema.service.imp.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -16,6 +17,7 @@ import java.text.ParseException;
 import java.util.Objects;
 
 @Component
+
 public class CustomJWTDecoder implements JwtDecoder {
 
     @Value("${jwt.signerKey}")

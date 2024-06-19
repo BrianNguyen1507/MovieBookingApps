@@ -10,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NonNull
 public class MovieTheaterRequest {
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint
     String name;
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint
     String address;
 }

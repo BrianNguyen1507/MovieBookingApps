@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShowTimesRequest {
-    @StringConstraint(message = "STRING_IS_EMPTY")
+    @StringConstraint()
     String dateStart;
     List<ShowTimeRequest> showTimes;
 }
