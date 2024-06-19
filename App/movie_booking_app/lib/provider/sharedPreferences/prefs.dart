@@ -1,28 +1,35 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
-  Future<void> saveSignInInfo(String email, String password) async {
+  static const String TOKEN_KEY = 'token';
+  Future<void> saveSignInInfo(
+      String email, String password, String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('email', email);
     await prefs.setString('password', password);
+    await prefs.setString('name', name);
   }
 
-  Future<Map<String?, String?>?> saveAuthenticated(
-      String auth, String token) async {
+  Future<void> saveAuthenticated(String auth, String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-    String? auth = prefs.getString('authenticated');
-    return {'token': token, 'authenticated': auth};
+    await prefs.setString('token', token);
+    await prefs.setString(TOKEN_KEY, token);
+    await prefs.setString('authenticated', auth);
   }
 
-  Future<String?> getUserEmail() async {
+  Future<void> saveTokenKey(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('email');
+    await prefs.setString(TOKEN_KEY, token);
+  }
+
+  Future<String?> getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('name');
   }
 
   Future<String?> getTokenUsers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    return prefs.getString(TOKEN_KEY);
   }
 
   Future<bool> getAuthenticated() async {
@@ -38,9 +45,13 @@ class Preferences {
   Future<Map<String, String?>?> getSignInInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString('email');
+
     String? password = prefs.getString('password');
     if (email != null && password != null) {
-      return {'email': email, 'password': password};
+      return {
+        'email': email,
+        'password': password,
+      };
     }
     return null;
   }

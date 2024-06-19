@@ -22,10 +22,13 @@ class SignInService {
       if (responseData['code'] == 1000) {
         dynamic token = responseData['result']['token'];
         dynamic auth = responseData['result']['authenticated'].toString();
+        dynamic endcodeName = responseData['result']['name'];
+        dynamic name = utf8.decode(endcodeName.codeUnits);
         await Preferences().saveAuthenticated(auth, token);
-        await Preferences().saveSignInInfo(email, password);
-        print('auth: $auth- $token ');
-        print('user: $email- $password ');
+        await Preferences().saveSignInInfo(email, password, name);
+        Preferences pref = Preferences();
+        dynamic getToken = await pref.getTokenUsers();
+        print('auth: $getToken');
         return true;
       }
     } catch (error) {

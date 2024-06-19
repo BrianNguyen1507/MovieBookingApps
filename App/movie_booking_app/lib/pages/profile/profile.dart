@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Preferences pref = Preferences();
     return FutureBuilder<String?>(
-      future: pref.getUserEmail(),
+      future: pref.getUserName(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(

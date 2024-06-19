@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
+import 'package:movie_booking_app/services/Users/refresh/tokenManager.dart';
 import 'package:movie_booking_app/services/Users/signIn/signInService.dart';
 import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
 
@@ -34,6 +35,7 @@ class HandleSigninState {
     }
 
     await Future.delayed(const Duration(seconds: 1));
+    TokenManager.startTokenRefreshTimer(context);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
