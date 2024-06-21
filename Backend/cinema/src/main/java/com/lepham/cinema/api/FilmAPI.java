@@ -63,4 +63,10 @@ public class FilmAPI {
                 .message("Delete successful")
                 .build();
     }
+    @GetMapping(value = "/searchFilm")
+    APIResponse<List<FilmResponse>> getFilmById(@RequestParam("keyword") String keyword){
+        return APIResponse.<List<FilmResponse>>builder()
+                .result(filmService.searchFilm(keyword))
+                .build();
+    }
 }

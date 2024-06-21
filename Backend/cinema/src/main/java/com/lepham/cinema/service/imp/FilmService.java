@@ -101,4 +101,10 @@ public class FilmService implements IFilmService {
         entity.setHide(true);
         filmRepository.save(entity);
     }
+
+    @Override
+    public List<FilmResponse> searchFilm(String textFill) {
+        List<FilmEntity> entities = filmRepository.findAllByKeyWord(textFill);
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
+    }
 }

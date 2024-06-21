@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
@@ -5,6 +7,7 @@ import 'package:movie_booking_app/pages/index/components/bottomnav.dart';
 import 'package:movie_booking_app/pages/index/components/drawer.dart';
 import 'package:movie_booking_app/routes/AppRoutes.dart';
 import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
+import 'package:movie_booking_app/pages/search/search.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
@@ -70,11 +73,15 @@ class _IndexPageState extends State<IndexPage> {
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+
+                },
                 icon: Icon(AppIcon.tickets),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Search()));
+                },
                 icon: Icon(AppIcon.search),
               ),
             ],
