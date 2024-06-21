@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
@@ -86,14 +84,13 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
             ),
             actions: [
               IconButton(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 icon: Icon(AppIcon.tickets),
               ),
               IconButton(
                 onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Search()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Search()));
                 },
                 icon: Icon(AppIcon.search),
               ),

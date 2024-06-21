@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:movie_booking_app/models/category/category.dart';
+import 'package:movie_booking_app/models/category/categories.dart';
+
 import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/models/movie/movie.dart';

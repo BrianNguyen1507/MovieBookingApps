@@ -1,4 +1,5 @@
-import 'package:movie_booking_app/models/category/category.dart';
+import 'package:movie_booking_app/models/category/categories.dart';
+
 class Movie {
   final int id;
   final String title;
