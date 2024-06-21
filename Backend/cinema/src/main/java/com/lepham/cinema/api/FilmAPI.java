@@ -67,9 +67,10 @@ public class FilmAPI {
     }
 
     @GetMapping(value = "/searchFilm")
-    APIResponse<List<FilmResponse>> getFilmById(@RequestParam("keyword") String keyword){
+    APIResponse<List<FilmResponse>> getFilmById(@RequestParam("keyword") String keyword) {
         return APIResponse.<List<FilmResponse>>builder()
-                .result(filmService.searchFilm(keyword))
+                .result(filmService.searchFilm(keyword)).build();
+    }
 
     @GetMapping(value = "/getListRealesed")
     APIResponse<List<FilmResponse>> getListRealesed() {
@@ -77,6 +78,7 @@ public class FilmAPI {
                 .result(filmService.getListReleased())
                 .build();
     }
+
     @GetMapping(value = "/getListFutured")
     APIResponse<List<FilmResponse>> getListFutured() {
         return APIResponse.<List<FilmResponse>>builder()
@@ -84,3 +86,4 @@ public class FilmAPI {
                 .build();
     }
 }
+

@@ -40,13 +40,13 @@ public class FilmService implements IFilmService {
     @PreAuthorize("hasRole('ADMIN')")
     public List<FilmResponse> getAllFilmByStep(int step) {
         //Find by step
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_YEAR,calendar.get(Calendar.DAY_OF_YEAR)-step);
-		Date dateStart =calendar.getTime();
-		calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_YEAR,calendar.get(Calendar.DAY_OF_YEAR)+step);
-		Date dateEnd =calendar.getTime();
-        List<FilmEntity> entities = filmRepository.findAllByReleasDate(dateStart,dateEnd);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - step);
+        Date dateStart = calendar.getTime();
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + step);
+        Date dateEnd = calendar.getTime();
+        List<FilmEntity> entities = filmRepository.findAllByReleasDate(dateStart, dateEnd);
         return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
     }
 
@@ -60,22 +60,22 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse getFilmById(long id) {
-        FilmEntity filmEntity = filmRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.FILM_NOT_FOUND));
-        if(filmEntity.isHide())throw new AppException(ErrorCode.FILM_NOT_FOUND);
+        FilmEntity filmEntity = filmRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
+        if (filmEntity.isHide()) throw new AppException(ErrorCode.FILM_NOT_FOUND);
         return filmConverter.toFilmResponse(filmEntity);
     }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse addFilm(FilmRequest request) throws ParseException {
-       FilmEntity entity = filmConverter.toFilmEntity(request);
-       entity.setHide(false);
-       return filmConverter.toFilmResponse(filmRepository.save(entity));
+        FilmEntity entity = filmConverter.toFilmEntity(request);
+        entity.setHide(false);
+        return filmConverter.toFilmResponse(filmRepository.save(entity));
     }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public FilmResponse updateFilm(long id,FilmRequest request) throws ParseException {
+    public FilmResponse updateFilm(long id, FilmRequest request) throws ParseException {
         FilmEntity entity = filmRepository.getReferenceById(id);
         entity.setActor(request.getActor());
         entity.setCountry(request.getCountry());
@@ -96,7 +96,7 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteFilm(long id) {
-        FilmEntity entity = filmRepository.findById(id).orElseThrow(()->
+        FilmEntity entity = filmRepository.findById(id).orElseThrow(() ->
                 new AppException(ErrorCode.FILM_NOT_FOUND));
         entity.setHide(true);
         filmRepository.save(entity);
@@ -106,6 +106,7 @@ public class FilmService implements IFilmService {
     public List<FilmResponse> searchFilm(String textFill) {
         List<FilmEntity> entities = filmRepository.findAllByKeyWord(textFill);
         return entities.stream().map(filmConverter::toFilmResponse).toList();
+    }
 
     public List<FilmResponse> getListReleased() {
         List<FilmEntity> entities = filmRepository.findAllByActiveAndHide(1, false);
