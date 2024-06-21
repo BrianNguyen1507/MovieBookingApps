@@ -69,4 +69,12 @@ public class VoucherAPI {
         accountVoucherService.deleteVoucher(id);
         return APIResponse.builder().message("Delete Gift Voucher successful").build();
     }
+
+
+    @GetMapping(value = "/getVoucherByAccountId")
+    APIResponse<List<VoucherResponse>> getVoucherByAccountId(@RequestParam("accountId") long accountId) {
+        List<VoucherResponse> vouchers = accountVoucherService.getVouchersByAccountId(accountId);
+        return APIResponse.<List<VoucherResponse>>builder().result(vouchers).build();
+    }
+
 }

@@ -13,4 +13,7 @@ public interface IFilmService {
     FilmResponse addFilm(FilmRequest request) throws ParseException;
     FilmResponse updateFilm(long id,FilmRequest request) throws ParseException;
     void deleteFilm(long id);
+
+    List<FilmResponse> getListReleased();
+    List<FilmResponse> getListFutured();
 }
