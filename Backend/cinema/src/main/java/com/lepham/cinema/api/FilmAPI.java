@@ -66,13 +66,17 @@ public class FilmAPI {
                 .build();
     }
 
+    @GetMapping(value = "/searchFilm")
+    APIResponse<List<FilmResponse>> getFilmById(@RequestParam("keyword") String keyword){
+        return APIResponse.<List<FilmResponse>>builder()
+                .result(filmService.searchFilm(keyword))
+
     @GetMapping(value = "/getListRealesed")
     APIResponse<List<FilmResponse>> getListRealesed() {
         return APIResponse.<List<FilmResponse>>builder()
                 .result(filmService.getListReleased())
                 .build();
     }
-
     @GetMapping(value = "/getListFutured")
     APIResponse<List<FilmResponse>> getListFutured() {
         return APIResponse.<List<FilmResponse>>builder()

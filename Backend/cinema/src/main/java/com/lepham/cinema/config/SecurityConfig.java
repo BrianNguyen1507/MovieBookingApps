@@ -35,6 +35,7 @@ public class SecurityConfig {
             "/cinema/login",
             "/cinema/logout",
             "/cinema/refresh",
+            "/cinema/searchFilm",
             "/cinema/getListRealesed",
             "/cinema/getListFutured",
     };
