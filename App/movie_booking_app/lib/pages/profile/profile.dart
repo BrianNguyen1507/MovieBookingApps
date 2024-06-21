@@ -192,7 +192,9 @@ class ProfilePage extends StatelessWidget {
   }
 
   void _onPressLogout(BuildContext context) {
+    Preferences pref = Preferences();
     Provider.of<UserProvider>(context, listen: false).logout();
+    pref.removeSinginInfo();
     Navigator.pushReplacementNamed(context, '/login');
   }
 }

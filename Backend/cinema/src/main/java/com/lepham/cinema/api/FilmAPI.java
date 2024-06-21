@@ -18,25 +18,27 @@ import java.util.List;
 @RequestMapping("/cinema")
 @Slf4j
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FilmAPI {
 
     FilmService filmService;
 
     @GetMapping(value = "/getAllFilmByStep")
-    APIResponse<List<FilmResponse>> getAllFilmByStep(@RequestParam("step") int step){
+    APIResponse<List<FilmResponse>> getAllFilmByStep(@RequestParam("step") int step) {
         return APIResponse.<List<FilmResponse>>builder()
                 .result(filmService.getAllFilmByStep(step))
                 .build();
     }
+
     @GetMapping(value = "/getAllFilm")
-    APIResponse<List<FilmResponse>> getAllFilm(){
+    APIResponse<List<FilmResponse>> getAllFilm() {
         return APIResponse.<List<FilmResponse>>builder()
                 .result(filmService.getAllFilm())
                 .build();
     }
+
     @GetMapping(value = "/getFilmById")
-    APIResponse<FilmResponse> getFilmById(@RequestParam("id") long id){
+    APIResponse<FilmResponse> getFilmById(@RequestParam("id") long id) {
         return APIResponse.<FilmResponse>builder()
                 .result(filmService.getFilmById(id))
                 .build();
@@ -57,16 +59,28 @@ public class FilmAPI {
     }
 
     @DeleteMapping(value = "/deleteFilm")
-    APIResponse<?> deleteFilm(@RequestParam("id") long id){
+    APIResponse<?> deleteFilm(@RequestParam("id") long id) {
         filmService.deleteFilm(id);
         return APIResponse.builder()
                 .message("Delete successful")
                 .build();
     }
+
     @GetMapping(value = "/searchFilm")
     APIResponse<List<FilmResponse>> getFilmById(@RequestParam("keyword") String keyword){
         return APIResponse.<List<FilmResponse>>builder()
                 .result(filmService.searchFilm(keyword))
+
+    @GetMapping(value = "/getListRealesed")
+    APIResponse<List<FilmResponse>> getListRealesed() {
+        return APIResponse.<List<FilmResponse>>builder()
+                .result(filmService.getListReleased())
+                .build();
+    }
+    @GetMapping(value = "/getListFutured")
+    APIResponse<List<FilmResponse>> getListFutured() {
+        return APIResponse.<List<FilmResponse>>builder()
+                .result(filmService.getListFutured())
                 .build();
     }
 }

@@ -1,7 +1,8 @@
 package com.lepham.cinema.service.imp;
 
-import com.lepham.cinema.converter.AccountVoucherConverter;
+import com.lepham.cinema.converter.VoucherConverter;
 import com.lepham.cinema.dto.request.AccountVoucherRequest;
+import com.lepham.cinema.dto.response.VoucherResponse;
 import com.lepham.cinema.entity.AccountEntity;
 import com.lepham.cinema.entity.AccountVoucher;
 import com.lepham.cinema.entity.VoucherEntity;
@@ -19,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class AccountVoucherService implements IAccountVoucherService {
     AccountVoucherRepository accountVoucherRepository;
     AccountRepository accountRepository;
     VoucherRepository voucherRepository;
+    VoucherConverter converter;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
@@ -53,4 +56,16 @@ public class AccountVoucherService implements IAccountVoucherService {
         entity.setHide(true);
         accountVoucherRepository.save(entity);
     }
+
+
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public List<VoucherResponse> getVouchersByAccountId(long accountId) {
+        List<VoucherEntity> vouchers = voucherRepository.findAccountVoucherByAccount_IdAndNotHide(accountId);
+        return vouchers.stream()
+                .map(converter::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
 }

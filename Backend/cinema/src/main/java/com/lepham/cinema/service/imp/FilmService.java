@@ -106,5 +106,15 @@ public class FilmService implements IFilmService {
     public List<FilmResponse> searchFilm(String textFill) {
         List<FilmEntity> entities = filmRepository.findAllByKeyWord(textFill);
         return entities.stream().map(filmConverter::toFilmResponse).toList();
+
+    public List<FilmResponse> getListReleased() {
+        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide(1, false);
+        return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FilmResponse> getListFutured() {
+        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide(0, false);
+        return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
     }
 }

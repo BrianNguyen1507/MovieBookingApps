@@ -58,10 +58,15 @@ class Preferences {
 
   Future<void> clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    await prefs.remove('email');
-    await prefs.remove('password');
     await prefs.remove('token');
     await prefs.remove('authenticated');
+  }
+
+  
+  Future<void> removeSinginInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('name');
+    await prefs.remove('email');
+    await prefs.remove('password');
   }
 }

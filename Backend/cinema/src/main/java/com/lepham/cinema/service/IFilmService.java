@@ -15,4 +15,7 @@ public interface IFilmService {
     void deleteFilm(long id);
 
     List<FilmResponse> searchFilm(String textFilter);
+    List<FilmResponse> getListReleased();
+    List<FilmResponse> getListFutured();
+
 }
