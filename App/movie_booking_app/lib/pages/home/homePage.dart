@@ -1,5 +1,6 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 import 'package:movie_booking_app/modules/common/AutoScrolling.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isLoading = true;
   bool dataLoaded = false;
+  Uint8List? currentPoster;
 
   Future<void> loadData() async {
     try {
@@ -30,6 +32,12 @@ class _HomePageState extends State<HomePage> {
         isLoading = false;
       });
     }
+  }
+
+  void onMovieSelected(Uint8List poster) {
+    setState(() {
+      currentPoster = poster;
+    });
   }
 
   @override
@@ -52,26 +60,6 @@ class _HomePageState extends State<HomePage> {
                   const AutoScrollingBanner(),
                   Stack(
                     children: [
-                      Positioned.fill(
-                        child: Image.asset(
-                          'assets/images/image.png',
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Positioned.fill(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.black.withOpacity(0.3),
-                                Colors.black,
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                          ),
-                        ),
-                      ),
                       CustomScrollView(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -93,16 +81,16 @@ class _HomePageState extends State<HomePage> {
             ),
     );
   }
-}
 
-SliverToBoxAdapter _buildNowShowingSliver(BuildContext context) {
-  return const SliverToBoxAdapter(
-    child: NowShowingSection(),
-  );
-}
+  SliverToBoxAdapter _buildNowShowingSliver(BuildContext context) {
+    return const SliverToBoxAdapter(
+      child: NowShowingSection(),
+    );
+  }
 
-SliverToBoxAdapter _buildComingSoonSliver(BuildContext context) {
-  return const SliverToBoxAdapter(
-    child: ComingSoonSection(),
-  );
+  SliverToBoxAdapter _buildComingSoonSliver(BuildContext context) {
+    return const SliverToBoxAdapter(
+      child: ComingSoonSection(),
+    );
+  }
 }
