@@ -101,4 +101,16 @@ public class FilmService implements IFilmService {
         entity.setHide(true);
         filmRepository.save(entity);
     }
+
+    @Override
+    public List<FilmResponse> getListReleased() {
+        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide(1, false);
+        return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FilmResponse> getListFutured() {
+        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide(0, false);
+        return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
+    }
 }

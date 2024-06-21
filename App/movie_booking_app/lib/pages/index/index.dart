@@ -4,6 +4,8 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/index/components/bottomnav.dart';
 import 'package:movie_booking_app/pages/index/components/drawer.dart';
 import 'package:movie_booking_app/routes/AppRoutes.dart';
+import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
+import 'package:movie_booking_app/services/Users/refresh/tokenManager.dart';
 import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
 
 class IndexPage extends StatefulWidget {
@@ -18,7 +20,7 @@ class IndexPage extends StatefulWidget {
   State<IndexPage> createState() => _IndexPageState();
 }
 
-class _IndexPageState extends State<IndexPage> {
+class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   late int index;
   late List<Widget> pages;
   ValidInput valid = ValidInput();
@@ -28,6 +30,7 @@ class _IndexPageState extends State<IndexPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     _pageController = PageController(initialPage: _selectedIndex);
     pages = [
@@ -49,7 +52,17 @@ class _IndexPageState extends State<IndexPage> {
   @override
   void dispose() {
     _pageController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.detached) {
+      LogOutServices.logout();
+      TokenManager.cancelTokenRefreshTimer();
+    }
   }
 
   @override

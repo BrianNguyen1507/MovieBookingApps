@@ -12,6 +12,7 @@ class TokenManager {
       RefreshToken.refreshToken();
     });
   }
+
   static void cancelTokenRefreshTimer() {
     _refreshTimer?.cancel();
     _refreshTimer = null;
