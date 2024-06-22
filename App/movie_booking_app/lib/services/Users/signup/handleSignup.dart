@@ -8,12 +8,9 @@ import 'package:movie_booking_app/services/Users/signUp/signUpService.dart';
 
 class HandleSignupState {
   ValidInput valid = ValidInput();
-  bool _isSubmitting = false;
 
   Future<void> validSignUp(BuildContext context, String email, String password,
       String name, String gender, String phone, String dob) async {
-    if (_isSubmitting) return;
-
     final user = User(
         email: email.trim(),
         password: password.trim(),
@@ -22,7 +19,6 @@ class HandleSignupState {
         phoneNumber: phone.trim(),
         dayOfBirth: dob.trim());
 
-    _isSubmitting = true;
     showLoadingDialog(context);
     final result = await SignUpService.signup(user);
     if (result == null) {
@@ -43,7 +39,6 @@ class HandleSignupState {
         MaterialPageRoute(
           builder: (context) => OTPPage(email: email,method: AppStringMethod.forgotPassword,),
         ));
-    _isSubmitting = false;
   }
 
   Future<void> validOTP(BuildContext context, String email, String otp, String method) async {

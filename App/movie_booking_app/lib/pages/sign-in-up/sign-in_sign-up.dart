@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/pages/sign-in-up/components/term-conditions.dart';
 import 'package:movie_booking_app/pages/sign-in-up/forgotPassword.dart';
@@ -34,7 +35,6 @@ class _SignInPageState extends State<SignInPage> {
   bool _obscureText = true;
   bool _isSignUp = false;
   bool _isChecked = false;
-  bool isloading = false;
 
   void init() {
     super.initState();
@@ -48,19 +48,17 @@ class _SignInPageState extends State<SignInPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
-        leading: isloading
-            ? null
-            : IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const IndexPage(initialIndex: 2),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.arrow_back),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const IndexPage(initialIndex: 2),
               ),
+            );
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -335,7 +333,7 @@ class _SignInPageState extends State<SignInPage> {
       setState(() {
         _selectedDate = picked;
         _dobController.text =
-            "${_selectedDate!.day}-${_selectedDate!.month}-${_selectedDate!.year}";
+            ConverterUnit.convertToDate(_selectedDate.toString());
       });
     }
   }
@@ -460,9 +458,6 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void _onSignUpPressed() async {
-    setState(() {
-      isloading = true;
-    });
     if (_valid.checkRepassword(
         _passwordController.text, _confirmPasswordController.text, context)) {
       await _signupState.validSignUp(
@@ -476,30 +471,18 @@ class _SignInPageState extends State<SignInPage> {
         _phoneNumberController.text,
         _dobController.text,
       );
-      setState(() {
-        isloading = false;
-      });
     } else {
-      setState(() {
-        isloading = false;
-      });
       _valid.showMessage(
           context, 'Passwords do not match', AppColors.errorColor);
     }
   }
 
   void _onSignInPressed() async {
-    setState(() {
-      isloading = true;
-    });
     await _signinState.validSignIn(
       context,
       _emailController.text,
       _passwordController.text,
     );
-    setState(() {
-      isloading = false;
-    });
   }
 
   void _onswitch() {

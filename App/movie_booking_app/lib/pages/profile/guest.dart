@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/pages/profile/components/mylist.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
 
 class GuestPage extends StatelessWidget {
@@ -15,7 +13,6 @@ class GuestPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           _buildSliverProfileBar(context),
-          Builditem.buildSliverList(context),
           BuildButton.commonbutton(context, 'Continue Sign in or Sign up',
               () => _onPressSignIn(context)),
         ],

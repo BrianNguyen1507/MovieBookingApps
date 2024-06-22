@@ -42,6 +42,7 @@ class OTPService {
       final responseData = json.decode(response.body);
 
       if (responseData['code'] != 1000) {
+        print(otp);
         return responseData['message'];
       }
       if (responseData['code'] == 1000) {
