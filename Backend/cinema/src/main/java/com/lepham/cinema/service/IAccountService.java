@@ -3,6 +3,7 @@ package com.lepham.cinema.service;
 import com.lepham.cinema.dto.request.AccountRequest;
 import com.lepham.cinema.dto.request.LoginRequest;
 import com.lepham.cinema.dto.request.OTPRequest;
+import com.lepham.cinema.dto.request.ResetPasswordRequest;
 import com.lepham.cinema.dto.response.AccountResponse;
 import com.lepham.cinema.entity.AccountEntity;
 import jakarta.mail.MessagingException;
@@ -16,4 +17,6 @@ public interface IAccountService {
 
     AccountEntity login(LoginRequest request);
 
+    AccountResponse forgotPassWord(String email);
+    AccountResponse resetPassword(ResetPasswordRequest request);
 }

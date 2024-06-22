@@ -1,10 +1,10 @@
 package com.lepham.cinema.service.imp;
 
 import com.lepham.cinema.converter.AccountConverter;
-import com.lepham.cinema.converter.DateConverter;
 import com.lepham.cinema.dto.request.AccountRequest;
 import com.lepham.cinema.dto.request.LoginRequest;
 import com.lepham.cinema.dto.request.OTPRequest;
+import com.lepham.cinema.dto.request.ResetPasswordRequest;
 import com.lepham.cinema.dto.response.AccountResponse;
 import com.lepham.cinema.entity.AccountEntity;
 import com.lepham.cinema.exception.AppException;
@@ -19,18 +19,13 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,13 +43,10 @@ public class AccountService implements IAccountService {
             "^\\+?[0-9. ()-]{7,25}$";
 
     private static final int ACTIVATED = 1;
-
-    private static final long TIME_EXPIRED_EMAIL = 5*60*1000 ;// Milliseconds
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
     private static final Pattern emailPattern = Pattern.compile(EMAIL_PATTERN);
     private static final Pattern phonePattern = Pattern.compile(PHONE_NUMBER_PATTERN);
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+    private static final int OTP_LENGTH =6;
 
 
     AccountRepository accountRepository;
@@ -66,7 +58,6 @@ public class AccountService implements IAccountService {
     JavaMailSender mailSender;
 
     @Override
-    @PreAuthorize("permitAll()")
     public AccountResponse createAccount(AccountRequest request) throws ParseException, MessagingException, UnsupportedEncodingException {
         if(!checkEmailValid(request.getEmail())) throw new AppException(ErrorCode.INVALID_EMAIL);
         if(checkEmailExists(request.getEmail())) throw new AppException(ErrorCode.EXISTS_EMAIL);
@@ -80,24 +71,21 @@ public class AccountService implements IAccountService {
             entity.setId(entityExists.getId());
         }
         entity.setPassword(passwordEncoder.encode(request.getPassword()));
-        String OTP = generateOTP(6);
+        String OTP = generateOTP();
         entity.setOtp(OTP);
-        entity.setOtpRequestTime(new Date());
+        entity.setOtpRequestTime(LocalDateTime.now());
         entity = accountRepository.save(entity);
         sendOTPEmail(entity);
         return accountConverter.toResponse(entity);
     }
 
     @Override
-    @PreAuthorize("permitAll()")
     public AccountResponse checkOTP(OTPRequest request) {
         AccountEntity entity = accountRepository.findByEmail(request.getEmail());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(entity.getOtpRequestTime());
-        calendar.add(Calendar.MINUTE, 5);
-        Date currentTime = new Date();
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime expiredDateTime = entity.getOtpRequestTime().plusMinutes(5);
         if(entity.getOtp().equals(request.getOtp()) ){
-            if(currentTime.getTime()-entity.getOtpRequestTime().getTime()<=TIME_EXPIRED_EMAIL){
+            if(currentDateTime.isBefore(expiredDateTime)){
                 entity.setActive(1);
                 entity.setOtp(null);
                 entity.setOtpRequestTime(null);
@@ -115,7 +103,6 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    @PreAuthorize("permitAll()")
     public AccountEntity login(LoginRequest request) {
         AccountEntity entity = accountRepository.findByEmail(request.getEmail());
         if(entity==null) throw new AppException(ErrorCode.EMAIL_PASSWORD_INCORRECT);
@@ -123,6 +110,30 @@ public class AccountService implements IAccountService {
                 && entity.getActive() ==ACTIVATED) return entity;
         else throw new AppException(ErrorCode.EMAIL_PASSWORD_INCORRECT);
     }
+
+    @Override
+    public AccountResponse forgotPassWord(String email) {
+        AccountEntity account = accountRepository.findByEmail(email);
+        if(account == null || account.getActive() != ACTIVATED) throw new AppException(ErrorCode.NOT_EXISTS_EMAIL);
+        String OTP = generateOTP();
+        account.setOtp(OTP);
+        account.setOtpRequestTime(LocalDateTime.now());
+        accountRepository.save(account);
+        return accountConverter.toResponse(accountRepository.save(account));
+    }
+
+    @Override
+    public AccountResponse resetPassword(ResetPasswordRequest request) {
+        AccountEntity account = accountRepository.findByEmail(request.getEmail());
+        if(account==null) throw new AppException(ErrorCode.NOT_EXISTS_EMAIL);
+        String password = passwordEncoder.encode(request.getPassword());
+        account.setPassword(password);
+        account.setOtp(null);
+        account.setOtpRequestTime(null);
+        accountRepository.save(account);
+        return accountConverter.toResponse(account);
+    }
+
 
     boolean checkEmailExists(String email){
         AccountEntity entity = accountRepository.findByEmail(email);
@@ -162,22 +173,15 @@ public class AccountService implements IAccountService {
         if (!Pattern.compile("[0-9]").matcher(password).find()) {
             return false;
         }
-        if (!Pattern.compile("[!@#$%^&*(),.?\":{}|<>]").matcher(password).find()) {
-            return false;
-        }
-        return true;
+        return Pattern.compile("[!@#$%^&*(),.?\":{}|<>]").matcher(password).find();
     }
 
-    String generateOTP(int length){
-        if (length <= 0) {
-            throw new IllegalArgumentException("Length must be greater than 0");
-        }
-
+    String generateOTP(){
         // Create a StringBuilder to hold the random number
-        StringBuilder sb = new StringBuilder(length);
+        StringBuilder sb = new StringBuilder(AccountService.OTP_LENGTH);
 
         // Generate each digit and append to the StringBuilder
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < AccountService.OTP_LENGTH; i++) {
             int randomDigit = SECURE_RANDOM.nextInt(10); // Generates a random digit between 0 and 9
             sb.append(randomDigit);
         }

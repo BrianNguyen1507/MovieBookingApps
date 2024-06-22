@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class AccountEntity {
     @Column(name = "one_time_password")
     String otp;
     @Column(name = "otp_request_time")
-    Date otpRequestTime;
+    LocalDateTime otpRequestTime;
     @Column(name = "active")
     int active;
 

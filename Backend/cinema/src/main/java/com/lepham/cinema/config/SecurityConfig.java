@@ -38,6 +38,8 @@ public class SecurityConfig {
             "/cinema/searchFilm",
             "/cinema/getListRealesed",
             "/cinema/getListFutured",
+            "/cinema/forgotPassword",
+            "/cinema/resetPassword",
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -45,6 +47,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
+                                .requestMatchers(HttpMethod.PUT, PUBLIC_ENDPOINTS).permitAll()
                                 .anyRequest()
                                 .authenticated());
 
