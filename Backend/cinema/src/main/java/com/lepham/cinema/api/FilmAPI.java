@@ -72,18 +72,17 @@ public class FilmAPI {
                 .result(filmService.searchFilm(keyword)).build();
     }
 
-    @GetMapping(value = "/getListRealesed")
-    APIResponse<List<FilmResponse>> getListRealesed() {
+    @GetMapping(value = "/getListMovieRelease")
+    APIResponse<List<FilmResponse>> getListMovieRelease() {
         return APIResponse.<List<FilmResponse>>builder()
-                .result(filmService.getListReleased())
+                .result(filmService.getListMovieRelease())
                 .build();
     }
 
-    @GetMapping(value = "/getListFutured")
-    APIResponse<List<FilmResponse>> getListFutured() {
+    @GetMapping(value = "/getListMovieFuture")
+    APIResponse<List<FilmResponse>> getListMovieFuture() {
         return APIResponse.<List<FilmResponse>>builder()
-                .result(filmService.getListFutured())
+                .result(filmService.getListMovieFuture())
                 .build();
     }
 }
-

@@ -6,14 +6,15 @@ class Movie {
   final String classify;
   final List<Categories> categories;
   final String poster;
+  final DateTime? releaseDate;
 
-  Movie({
-    required this.id,
-    required this.title,
-    required this.classify,
-    required this.categories,
-    required this.poster,
-  });
+  Movie(
+      {required this.id,
+      required this.title,
+      required this.classify,
+      required this.categories,
+      required this.poster,
+      this.releaseDate});
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
         id: json['id'],

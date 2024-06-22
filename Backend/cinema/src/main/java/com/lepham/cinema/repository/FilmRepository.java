@@ -4,8 +4,10 @@ import com.lepham.cinema.entity.FilmEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
     @Query(value = "SELECT f FROM FilmEntity f WHERE f.releaseDate BETWEEN ?1 AND ?2 ")
@@ -16,9 +18,13 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
 
     List<FilmEntity> findAllByHide(boolean hide);
 
-    @Query(value = "SELECT f FROM FilmEntity f WHERE (f.actor like %?1% or f.country like %?1% or f.director like %?1% or f.title like %?1%) and f.active != 0 and f.hide = false order by f.releaseDate asc ")
+    @Query(value = "SELECT f FROM FilmEntity f WHERE (f.actor like %?1% or f.country like %?1% or f.director like %?1% or f.title like %?1%) and f.active != 2 and f.hide = false order by f.releaseDate asc ")
     List<FilmEntity> findAllByKeyWord(String keyWord);
-  
-    List<FilmEntity> findAllByActiveAndHide(int active, boolean hide);
+
+    @Query(value = "SELECT f FROM FilmEntity f WHERE f.active = 0 and f.hide = false and f.releaseDate <= NOW()")
+    List<FilmEntity> findAllMovieRelease();
+
+    @Query(value = "SELECT f FROM FilmEntity f WHERE f.active = 0 and f.hide = false and f.releaseDate > NOW()")
+    List<FilmEntity> findAllMovieFuture ();
 }
 

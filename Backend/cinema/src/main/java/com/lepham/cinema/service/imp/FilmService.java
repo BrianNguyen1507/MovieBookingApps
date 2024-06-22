@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -108,14 +109,17 @@ public class FilmService implements IFilmService {
         return entities.stream().map(filmConverter::toFilmResponse).toList();
     }
 
-    public List<FilmResponse> getListReleased() {
-        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide(1, false);
-        return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
+    @Override
+    public List<FilmResponse> getListMovieRelease() {
+        List<FilmEntity> entities = filmRepository.findAllMovieRelease();
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
     }
 
     @Override
-    public List<FilmResponse> getListFutured() {
-        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide(0, false);
-        return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
+    public List<FilmResponse> getListMovieFuture() {
+        List<FilmEntity> entities = filmRepository.findAllMovieFuture();
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
     }
+
 }
+
