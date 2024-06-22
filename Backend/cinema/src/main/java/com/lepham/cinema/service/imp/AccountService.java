@@ -112,12 +112,13 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountResponse forgotPassWord(String email) {
+    public AccountResponse forgotPassWord(String email) throws MessagingException, UnsupportedEncodingException {
         AccountEntity account = accountRepository.findByEmail(email);
         if(account == null || account.getActive() != ACTIVATED) throw new AppException(ErrorCode.NOT_EXISTS_EMAIL);
         String OTP = generateOTP();
         account.setOtp(OTP);
         account.setOtpRequestTime(LocalDateTime.now());
+        sendOTPEmail(account);
         accountRepository.save(account);
         return accountConverter.toResponse(accountRepository.save(account));
     }

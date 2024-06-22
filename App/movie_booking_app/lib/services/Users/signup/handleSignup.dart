@@ -37,7 +37,7 @@ class HandleSignupState {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => OTPPage(email: email,method: AppStringMethod.forgotPassword,),
+          builder: (context) => OTPPage(email: email,method: AppStringMethod.register),
         ));
   }
 

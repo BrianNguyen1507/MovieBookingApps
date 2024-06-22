@@ -62,7 +62,7 @@ public class AccountAPI {
     }
 
     @GetMapping(value = "/forgotPassword")
-    public APIResponse<AccountResponse> forgotPassword(@RequestParam("email") String email){
+    public APIResponse<AccountResponse> forgotPassword(@RequestParam("email") String email) throws MessagingException, UnsupportedEncodingException {
         return APIResponse.<AccountResponse>builder()
                 .result(accountService.forgotPassWord(email))
                 .build();
