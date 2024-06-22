@@ -28,3 +28,8 @@ class AppFontSize {
   static const double large = 40.0;
   static const double big = 50.0;
 }
+
+class AppStringMethod{
+  static const String register = "register";
+  static const String forgotPassword = "forgotPassword";
+}

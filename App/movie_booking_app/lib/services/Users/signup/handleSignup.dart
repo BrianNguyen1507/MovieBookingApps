@@ -3,6 +3,7 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/models/user/user.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
+import 'package:movie_booking_app/pages/sign-in-up/resetPassword.dart';
 import 'package:movie_booking_app/services/Users/signUp/signUpService.dart';
 
 class HandleSignupState {
@@ -40,22 +41,28 @@ class HandleSignupState {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => OTPPage(email: email),
+          builder: (context) => OTPPage(email: email,method: AppStringMethod.forgotPassword,),
         ));
     _isSubmitting = false;
   }
 
-  Future<void> validOTP(BuildContext context, String email, String otp) async {
+  Future<void> validOTP(BuildContext context, String email, String otp, String method) async {
     showLoadingDialog(context);
     final result = await OTPService.otpService(email, otp);
     if (result != true) {
       valid.showMessage(context, "Invalid OTP", AppColors.errorColor);
+      Navigator.of(context).pop();
       return;
     }
     Navigator.of(context).pop();
     valid.showMessage(
         context, 'Activation successful!', AppColors.correctColor);
-    Navigator.pushReplacementNamed(context, '/login');
+    if(method==AppStringMethod.register){
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+    else{
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword(email: email)));
+    }
   }
 }
 
