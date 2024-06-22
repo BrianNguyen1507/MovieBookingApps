@@ -17,6 +17,6 @@ public interface IAccountService {
 
     AccountEntity login(LoginRequest request);
 
-    AccountResponse forgotPassWord(String email);
+    AccountResponse forgotPassWord(String email) throws MessagingException, UnsupportedEncodingException;
     AccountResponse resetPassword(ResetPasswordRequest request);
 }
