@@ -3,8 +3,9 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
 
 class OTPPage extends StatefulWidget {
-  const OTPPage({super.key, required this.email});
+  const OTPPage({super.key, required this.email, required this.method});
   final dynamic email;
+  final dynamic method;
   @override
   _OTPPageState createState() => _OTPPageState();
 }
@@ -73,7 +74,7 @@ class _OTPPageState extends State<OTPPage> {
                     String message = 'Please enter a 6-digit OTP';
                     valid.showMessage(context, message, AppColors.errorColor);
                   }
-                  _otpSend.validOTP(context, widget.email, otp);
+                  _otpSend.validOTP(context, widget.email, otp,widget.method);
                 },
                 child: const Text(
                   'Submit',

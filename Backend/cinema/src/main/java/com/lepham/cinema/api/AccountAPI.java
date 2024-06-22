@@ -67,7 +67,7 @@ public class AccountAPI {
                 .result(accountService.forgotPassWord(email))
                 .build();
     }
-    @PostMapping(value = "/resetPassword")
+    @PutMapping(value = "/resetPassword")
     public APIResponse<AccountResponse> resetPassword(@RequestBody ResetPasswordRequest request){
         return APIResponse.<AccountResponse>builder()
                 .result(accountService.resetPassword(request))
