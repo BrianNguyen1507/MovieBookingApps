@@ -38,7 +38,9 @@ public class SecurityConfig {
             "/cinema/searchFilm",
             "/cinema/getListMovieRelease",
             "/cinema/getListMovieFuture",
-             };
+            "/cinema/forgotPassword",
+            "/cinema/resetPassword",
+    };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity

@@ -5,6 +5,7 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/pages/sign-in-up/components/term-conditions.dart';
+import 'package:movie_booking_app/pages/sign-in-up/forgotPassword.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/signIn/handleSignin.dart';
@@ -147,6 +148,22 @@ class _SignInPageState extends State<SignInPage> {
                                   _passwordController),
                               const SizedBox(
                                 height: 20,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 20,
+                                ),
+                                alignment: Alignment.topLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassWord()));
+                                  },
+                                  child: const Text(
+                                    'Forgot password',
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor),
+                                  ),
+                                ),
                               ),
                               _buildButton(AppLocalizations.of(context)!.send,
                                   () {

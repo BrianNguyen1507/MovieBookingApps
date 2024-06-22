@@ -60,4 +60,17 @@ public class AccountAPI {
                 .result(authenticationService.refreshToken(request))
                 .build();
     }
+
+    @GetMapping(value = "/forgotPassword")
+    public APIResponse<AccountResponse> forgotPassword(@RequestParam("email") String email){
+        return APIResponse.<AccountResponse>builder()
+                .result(accountService.forgotPassWord(email))
+                .build();
+    }
+    @PutMapping(value = "/resetPassword")
+    public APIResponse<AccountResponse> resetPassword(@RequestBody ResetPasswordRequest request){
+        return APIResponse.<AccountResponse>builder()
+                .result(accountService.resetPassword(request))
+                .build();
+    }
 }
