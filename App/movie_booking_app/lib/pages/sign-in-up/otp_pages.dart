@@ -74,8 +74,7 @@ class _OTPPageState extends State<OTPPage> {
                     String message = 'Please enter a 6-digit OTP';
                     valid.showMessage(context, message, AppColors.errorColor);
                   }
-                  print(_otpController.text.toString());
-                  _otpSend.validOTP(context, widget.email, otp,widget.method);
+                  _otpSend.validOTP(context, widget.email, otp, widget.method);
                 },
                 child: const Text(
                   'Submit',

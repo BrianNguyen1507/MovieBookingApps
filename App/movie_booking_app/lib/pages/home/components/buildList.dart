@@ -10,7 +10,9 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 class ListMovie {
   static Widget buildListMovie(BuildContext context, Movie movie) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        print(movie.id);
+      },
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.transparent,

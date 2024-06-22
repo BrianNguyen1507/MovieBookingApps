@@ -27,7 +27,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppSize.height(context) / 2,
+      height: AppSize.height(context) / 1.8,
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
         borderRadius: BorderRadius.only(
@@ -71,7 +71,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                       itemCount: films.length,
                       options: CarouselOptions(
                           scrollPhysics: const BouncingScrollPhysics(),
-                          aspectRatio: 16 / 15,
+                          aspectRatio: 16 / 20,
                           enableInfiniteScroll: false,
                           viewportFraction: 0.5,
                           initialPage: 0,
@@ -109,7 +109,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppSize.height(context) / 2,
+      height: AppSize.height(context) / 1.8,
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
       ),
@@ -148,7 +148,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                     child: CarouselSlider.builder(
                       itemCount: filmsFuture.length,
                       options: CarouselOptions(
-                        aspectRatio: 16 / 15,
+                        aspectRatio: 16 / 20,
                         enableInfiniteScroll: false,
                         viewportFraction: 0.5,
                         initialPage: 0,
