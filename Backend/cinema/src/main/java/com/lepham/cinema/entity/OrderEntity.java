@@ -39,11 +39,11 @@ public class OrderEntity {
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "orders")
     List<FoodEntity> foods;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ratingfeedback_id", referencedColumnName = "id")
+
+    @OneToOne(mappedBy = "order")
     RatingFeedbackEntity ratingFeedback;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
-    AccountEntity account;
+    @JoinColumn(name = "account_voucher_id", nullable = false)
+    AccountVoucher accountVoucher;
 }

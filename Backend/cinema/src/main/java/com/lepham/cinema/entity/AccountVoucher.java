@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +32,7 @@ public class AccountVoucher {
     @ManyToOne
     @JoinColumn(name = "voucher_id")
     VoucherEntity voucher;
+
+    @OneToMany(mappedBy = "accountVoucher")
+    List<OrderEntity> orders;
 }
