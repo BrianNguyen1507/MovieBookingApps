@@ -41,7 +41,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-             Container(height: 16.0, color: AppColors.containerColor,),
             CustomScrollView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),

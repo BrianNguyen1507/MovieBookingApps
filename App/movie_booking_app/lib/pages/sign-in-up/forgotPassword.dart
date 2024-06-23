@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
 import 'package:movie_booking_app/services/Users/forgotpassword/forgotpassword.dart';
+import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
 
 class ForgotPassWord extends StatefulWidget {
   const ForgotPassWord({super.key});
@@ -13,9 +15,8 @@ class ForgotPassWord extends StatefulWidget {
 }
 
 class ForgotPassWordState extends State<ForgotPassWord> {
-  String email = "";
   TextEditingController emailController = TextEditingController();
-
+  ValidInput valid = ValidInput();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,15 +43,12 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    hintText: "example@gmaill.com",
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: AppColors.textblackColor, width: 2.0),
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.blue, width: 2.0),
+                      borderSide: const BorderSide(
+                          color: AppColors.primaryColor, width: 2.0),
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
@@ -65,15 +63,35 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                       backgroundColor: AppColors.buttonColor,
                     ),
                     onPressed: () async {
-                      email = await ForgotPasswordService.forgotPassword(
-                          emailController.text);
-                      if (email != "") {
-                        Navigator.pushReplacement(
+                      String email = "";
+                      setState(() {
+                        email = emailController.text.trim();
+                      });
+                      try {
+                        showLoadingDialog(context);
+                        bool result =
+                            await ForgotPasswordService.forgotPassword(email);
+                        if (!result && !valid.isValidEmail(email, context)) {
+                          Navigator.pop(context);
+                          return;
+                        }
+                        valid.showMessage(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => OTPPage(
-                                    email: email,
-                                    method: AppStringMethod.forgotPassword)));
+                            'An OTP was send in your email.',
+                            AppColors.correctColor);
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OTPPage(
+                              email: email,
+                              method: AppStringMethod.forgotPassword,
+                            ),
+                          ),
+                        );
+                      } catch (error) {
+                        valid.showMessage(
+                            context, 'An error occurred', AppColors.errorColor);
                       }
                     },
                     child: const SizedBox(

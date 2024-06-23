@@ -7,11 +7,18 @@ import 'package:movie_booking_app/pages/profile/guest.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
+import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
 import 'package:provider/provider.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  ValidInput valid = ValidInput();
   @override
   Widget build(BuildContext context) {
     Preferences pref = Preferences();
@@ -38,7 +45,13 @@ class ProfilePage extends StatelessWidget {
                   _buildSliverProfileBar(context, snapshot.data),
                   Builditem.buildSliverList(context),
                   BuildButton.commonbutton(
-                      context, 'Log out', () => _onPressLogout(context)),
+                      context,
+                      'Log out',
+                      () => valid.showAlertCustom(
+                          context,
+                          'Are you sure to logout?',
+                          'Yes, logout',
+                          () => _onPressLogout(context))),
                 ],
               ),
             );

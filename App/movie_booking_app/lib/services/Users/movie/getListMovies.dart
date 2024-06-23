@@ -59,23 +59,26 @@ class MovieList {
         if (responsefetch['code'] != 1000) {
           return responsefetch['message'];
         }
-        final List<Movie> movies =
-            List<Movie>.from(responsefetch['result'].map((movieData) {
-          List<dynamic> categories = movieData['categories'];
-          List<Categories> listCategory =
-              List<Categories>.from(categories.map((category) => Categories(
-                    id: category['id'],
-                    name: category['name'],
-                  )));
+        final List<Movie> movies = List<Movie>.from(
+          responsefetch['result'].map(
+            (movieData) {
+              List<dynamic> categories = movieData['categories'];
+              List<Categories> listCategory =
+                  List<Categories>.from(categories.map((category) => Categories(
+                        id: category['id'],
+                        name: category['name'],
+                      )));
 
-          return Movie(
-            id: movieData['id'],
-            title: movieData['title'],
-            classify: movieData['classify'],
-            categories: listCategory,
-            poster: movieData['poster'],
-          );
-        }));
+              return Movie(
+                id: movieData['id'],
+                title: movieData['title'],
+                classify: movieData['classify'],
+                categories: listCategory,
+                poster: movieData['poster'],
+              );
+            },
+          ),
+        );
 
         return movies;
       } else {

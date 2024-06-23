@@ -85,4 +85,11 @@ public class FilmAPI {
                 .result(filmService.getListMovieFuture())
                 .build();
     }
+
+    @GetMapping(value = "/getListMovieFutureByMonth")
+    APIResponse<List<FilmResponse>> getListMovieFutureByMonth(@RequestParam("month")int month) {
+        return APIResponse.<List<FilmResponse>>builder()
+                .result(filmService.getListMovieFutureByMonth(month))
+                .build();
+    }
 }

@@ -3,6 +3,7 @@ package com.lepham.cinema.repository;
 import com.lepham.cinema.entity.FilmEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -26,5 +27,9 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
 
     @Query(value = "SELECT f FROM FilmEntity f WHERE f.active = 0 and f.hide = false and f.releaseDate > NOW()")
     List<FilmEntity> findAllMovieFuture ();
+
+    @Query(value = "SELECT f FROM FilmEntity f WHERE YEAR(f.releaseDate) = YEAR(CURRENT_DATE) AND MONTH(f.releaseDate) = :month AND MONTH(f.releaseDate)> MONTH(CURRENT_DATE ) AND f.active = 0 AND f.hide = false")
+    List<FilmEntity>findAllMovieByFutureMonth(@Param("month")int month);
+
 }
 
