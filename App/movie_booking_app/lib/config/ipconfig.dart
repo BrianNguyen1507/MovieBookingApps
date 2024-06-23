@@ -1,1 +1,1 @@
-const String ipAddress = '192.168.2.6';
+const String ipAddress = '172.28.224.1';
