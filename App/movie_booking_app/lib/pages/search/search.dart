@@ -46,14 +46,14 @@ class SearchState extends State<Search> {
           children: [
             Expanded(
               child: Container(
-                margin: const EdgeInsets.all(3.0),
+                margin: const EdgeInsets.all(7.0),
                 padding: const EdgeInsets.only(left: 50.0),
                 child: TextField(
                   style: const TextStyle(color: AppColors.titleTextColor),
                   controller: textFilter,
                   decoration: InputDecoration(
                     hintText: 'Search movies',
-                    hintStyle: const TextStyle(color: AppColors.commonColor),
+                    hintStyle: const TextStyle(color: AppColors.commonColor, fontSize: AppFontSize.small),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide:
@@ -95,7 +95,7 @@ class SearchState extends State<Search> {
               future: movies,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const SizedBox();
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

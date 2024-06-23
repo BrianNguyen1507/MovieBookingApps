@@ -120,7 +120,7 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
             _selectedIndex = index;
             _pageController.animateToPage(
               index,
-              duration: const Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 50),
               curve: Curves.easeInOut,
             );
           });

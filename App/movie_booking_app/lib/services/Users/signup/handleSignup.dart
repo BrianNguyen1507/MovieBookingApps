@@ -37,11 +37,13 @@ class HandleSignupState {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => OTPPage(email: email,method: AppStringMethod.register),
+          builder: (context) =>
+              OTPPage(email: email, method: AppStringMethod.register),
         ));
   }
 
-  Future<void> validOTP(BuildContext context, String email, String otp, String method) async {
+  Future<void> validOTP(
+      BuildContext context, String email, String otp, String method) async {
     showLoadingDialog(context);
     final result = await OTPService.otpService(email, otp);
     if (result != true) {
@@ -52,11 +54,11 @@ class HandleSignupState {
     Navigator.of(context).pop();
     valid.showMessage(
         context, 'Activation successful!', AppColors.correctColor);
-    if(method==AppStringMethod.register){
+    if (method == AppStringMethod.register) {
       Navigator.pushReplacementNamed(context, '/login');
-    }
-    else{
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword(email: email)));
+    } else {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => ResetPassword(email: email)));
     }
   }
 }
@@ -90,8 +92,10 @@ class ValidInput {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 2),
           content: SizedBox(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 1.0),
@@ -103,24 +107,6 @@ class ValidInput {
                         fontSize: AppFontSize.small),
                   ),
                 ),
-                const Spacer(),
-                Container(
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      left: BorderSide(
-                        color: Colors.grey,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                  child: TextButton(
-                    onPressed: () =>
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar(),
-                    child: const Text("Cancel",
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                ),
               ],
             ),
           ),
@@ -129,5 +115,34 @@ class ValidInput {
         ),
       );
     });
+  }
+
+  void showAlertCustom(
+    BuildContext context,
+    String content,
+    String buttonText,
+    VoidCallback onPress,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Alert'),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              onPressed: onPress,
+              child: Text(buttonText),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

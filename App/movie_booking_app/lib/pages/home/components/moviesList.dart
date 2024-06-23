@@ -4,6 +4,8 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/home/components/buildList.dart';
 import 'package:movie_booking_app/services/Users/movie/getListMovies.dart';
 
@@ -27,7 +29,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppSize.height(context) / 1.8,
+      height: AppSize.height(context) / 1.65,
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
         borderRadius: BorderRadius.only(
@@ -38,45 +40,69 @@ class _NowShowingSectionState extends State<NowShowingSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            AppLocalizations.of(context)!.nowshowing,
-            style: const TextStyle(
-              fontFamily: 'Roboto',
-              color: AppColors.darktextColor,
-              fontSize: AppFontSize.medium,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    AppLocalizations.of(context)!.nowshowing,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: AppColors.darktextColor,
+                      fontSize: AppFontSize.medium,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: () {},
+                label: const Text(
+                  'See all',
+                  style: TextStyle(
+                    color: AppColors.darktextColor,
+                    fontSize: AppFontSize.small,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                iconAlignment: IconAlignment.end,
+                icon: Icon(
+                  color: AppColors.darktextColor,
+                  AppIcon.arrowR,
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: FutureBuilder<List<Movie>>(
               future: movieRelease,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: loadingContent);
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'No movies available',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  );
+                  return Center(child: loadingContent);
                 } else {
                   List<Movie> films = snapshot.data!;
+
                   return SizedBox(
                     height: AppSize.height(context),
                     width: AppSize.width(context),
                     child: CarouselSlider.builder(
                       itemCount: films.length,
                       options: CarouselOptions(
-                          scrollPhysics: const BouncingScrollPhysics(),
-                          aspectRatio: 16 / 20,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 0.5,
-                          initialPage: 0,
-                          enlargeCenterPage: true,
-                          padEnds: true),
+                        scrollPhysics: const BouncingScrollPhysics(),
+                        aspectRatio: 16 / 20,
+                        enableInfiniteScroll: true,
+                        viewportFraction: 0.5,
+                        initialPage: 0,
+                        enlargeCenterPage: true,
+                        padEnds: true,
+                      ),
                       itemBuilder: (BuildContext context, int index, _) {
                         return ListMovie.buildListMovie(context, films[index]);
                       },
@@ -109,21 +135,47 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppSize.height(context) / 1.8,
+      height: AppSize.height(context) / 1.6,
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            AppLocalizations.of(context)!.comming,
-            style: const TextStyle(
-              fontFamily: 'Roboto',
-              color: AppColors.darktextColor,
-              fontSize: AppFontSize.medium,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    AppLocalizations.of(context)!.comming,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: AppColors.darktextColor,
+                      fontSize: AppFontSize.medium,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: () {},
+                label: const Text(
+                  'See all',
+                  style: TextStyle(
+                    color: AppColors.darktextColor,
+                    fontSize: AppFontSize.small,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                iconAlignment: IconAlignment.end,
+                icon: Icon(
+                  color: AppColors.darktextColor,
+                  AppIcon.arrowR,
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: FutureBuilder<List<Movie>>(
@@ -134,12 +186,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'No movies available',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  );
+                  return Center(child: loadingContent);
                 } else {
                   List<Movie> filmsFuture = snapshot.data!;
                   return SizedBox(
@@ -152,13 +199,13 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                         enableInfiniteScroll: false,
                         viewportFraction: 0.5,
                         initialPage: 0,
-                        scrollPhysics: const BouncingScrollPhysics(),
-                        enlargeCenterPage: true,
-                        padEnds: true,
                       ),
                       itemBuilder: (BuildContext context, int index, _) {
-                        return ListMovie.buildListMovie(
-                            context, filmsFuture[index]);
+                        return Container(
+                          margin: const EdgeInsets.only(right: 10.0),
+                          child: ListMovie.buildListMovie(
+                              context, filmsFuture[index]),
+                        );
                       },
                     ),
                   );

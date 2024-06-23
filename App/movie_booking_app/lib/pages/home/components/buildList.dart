@@ -6,12 +6,17 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/detail/movieDetail.dart';
 
 class ListMovie {
   static Widget buildListMovie(BuildContext context, Movie movie) {
     return GestureDetector(
       onTap: () {
-        print(movie.id);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieDetailPage(movieId: movie.id),
+            ));
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -78,7 +83,7 @@ class ListMovie {
                   style: const TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 16,
-                    color: AppColors.primaryColor,
+                    color: AppColors.darktextColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -87,6 +92,7 @@ class ListMovie {
                   overflow: TextOverflow.ellipsis,
                   movie.categories.map((category) => category.name).join(', '),
                   style: const TextStyle(
+                    fontFamily: 'Roboto',
                     fontSize: 12,
                     color: AppColors.commonDarkColor,
                   ),

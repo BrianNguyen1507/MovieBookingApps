@@ -21,7 +21,7 @@ class BuildButton {
                 ),
               ),
             ),
-            onPressed: onPress, // Corrected onPressed callback
+            onPressed: onPress,
             child: Text(
               text,
               style: const TextStyle(

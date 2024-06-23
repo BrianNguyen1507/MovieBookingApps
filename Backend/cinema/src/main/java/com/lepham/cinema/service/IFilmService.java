@@ -17,4 +17,5 @@ public interface IFilmService {
     List<FilmResponse> searchFilm(String textFilter);
     List<FilmResponse> getListMovieRelease();
     List<FilmResponse> getListMovieFuture();
+    List<FilmResponse> getListMovieFutureByMonth(int month);
 }

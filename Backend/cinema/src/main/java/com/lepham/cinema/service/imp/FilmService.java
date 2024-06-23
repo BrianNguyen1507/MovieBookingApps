@@ -59,7 +59,6 @@ public class FilmService implements IFilmService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse getFilmById(long id) {
         FilmEntity filmEntity = filmRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
         if (filmEntity.isHide()) throw new AppException(ErrorCode.FILM_NOT_FOUND);
@@ -118,6 +117,12 @@ public class FilmService implements IFilmService {
     @Override
     public List<FilmResponse> getListMovieFuture() {
         List<FilmEntity> entities = filmRepository.findAllMovieFuture();
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
+    }
+
+    @Override
+    public List<FilmResponse> getListMovieFutureByMonth(int month) {
+        List<FilmEntity> entities = filmRepository.findAllMovieByFutureMonth(month);
         return entities.stream().map(filmConverter::toFilmResponse).toList();
     }
 
