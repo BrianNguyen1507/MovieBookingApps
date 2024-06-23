@@ -23,4 +23,8 @@ class ConverterUnit {
     DateFormat dateFormat = DateFormat('yyyy-MM-dd');
     return dateFormat.format(dateTime);
   }
+
+  static String uint8ToString(Uint8List data) {
+    return utf8.decode(data);
+  }
 }
