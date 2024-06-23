@@ -25,6 +25,7 @@ public class RatingFeedbackEntity {
     @Column(name = "datetime",nullable = false)
     Date datetime;
 
-    @OneToOne(mappedBy = "ratingFeedback")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     OrderEntity order;
 }

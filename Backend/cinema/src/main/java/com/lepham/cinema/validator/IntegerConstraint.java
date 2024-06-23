@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = IntegerValidator.class)
 public @interface IntegerConstraint {
+    int min();
     String message() default "NUMBER_NOT_NEGATIVE";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

@@ -44,8 +44,6 @@ public class AccountEntity {
     @Column(name = "active")
     int active;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<OrderEntity> orders;
 
     @OneToMany(mappedBy = "account")
     List<AccountVoucher> vouchers;
