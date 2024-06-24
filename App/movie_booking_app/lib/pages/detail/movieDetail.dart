@@ -9,6 +9,7 @@ import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/trailerScreen.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
+import 'package:movie_booking_app/utils/expandable.dart';
 
 class MovieDetailPage extends StatefulWidget {
   final int movieId;
@@ -266,17 +267,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                               color: Colors.grey,
                               thickness: 0.35,
                             ),
-                            Text(
-                              ConverterUnit.uint8ToString(
+                            ExpandableText(
+                              text: ConverterUnit.uint8ToString(
                                 ConverterUnit.base64ToUnit8(detail.description),
                               ),
-                              style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            )
                           ]),
                     ),
                   ),

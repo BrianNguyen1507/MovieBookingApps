@@ -189,18 +189,14 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                   return Center(child: loadingContent);
                 } else {
                   List<Movie> filmsFuture = snapshot.data!;
-                  return SizedBox(
+                  return Container(
+                    padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                     height: AppSize.height(context),
                     width: AppSize.width(context),
-                    child: CarouselSlider.builder(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
                       itemCount: filmsFuture.length,
-                      options: CarouselOptions(
-                        aspectRatio: 16 / 20,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 0.5,
-                        initialPage: 0,
-                      ),
-                      itemBuilder: (BuildContext context, int index, _) {
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           margin: const EdgeInsets.only(right: 10.0),
                           child: ListMovie.buildListMovie(
