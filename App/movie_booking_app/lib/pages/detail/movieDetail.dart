@@ -363,7 +363,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         } else {
           MovieDetail data = snapshot.data!;
           bool visibleBooking = data.isRelease;
-          print(visibleBooking);
+
           return SafeArea(
             child: Scaffold(
               backgroundColor: AppColors.containerColor,
