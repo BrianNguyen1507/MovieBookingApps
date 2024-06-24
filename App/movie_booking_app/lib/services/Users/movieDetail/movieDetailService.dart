@@ -44,6 +44,7 @@ class MovieDetailService {
           language: detailData['language'],
           poster: detailData['poster'],
           trailer: detailData['trailer'],
+          isRelease: detailData['release'],
         );
 
         return movieDetail;

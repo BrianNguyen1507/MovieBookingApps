@@ -15,6 +15,7 @@ class MovieDetail {
   final List<Categories> categories;
   final dynamic poster;
   final DateTime? releaseDate;
+  final bool isRelease;
 
   MovieDetail({
     required this.id,
@@ -31,23 +32,24 @@ class MovieDetail {
     required this.language,
     required this.poster,
     required this.trailer,
+    required this.isRelease,
   });
   factory MovieDetail.fromJson(Map<dynamic, dynamic> json) {
     return MovieDetail(
-      id: json['id'],
-      title: json['title'],
-      classify: json['classify'],
-      categories: json['categories'],
-      poster: json['poster'],
-      actor: json['actor'],
-      director: json['director'],
-      country: json['country'],
-      duration: json['duration'],
-      price: json['basePrice'],
-      description: json['description'],
-      language: json['language'],
-      releaseDate: json['releaseDate'],
-      trailer: json['trailer'],
-    );
+        id: json['id'],
+        title: json['title'],
+        classify: json['classify'],
+        categories: json['categories'],
+        poster: json['poster'],
+        actor: json['actor'],
+        director: json['director'],
+        country: json['country'],
+        duration: json['duration'],
+        price: json['basePrice'],
+        description: json['description'],
+        language: json['language'],
+        releaseDate: json['releaseDate'],
+        trailer: json['trailer'],
+        isRelease: json['release']);
   }
 }

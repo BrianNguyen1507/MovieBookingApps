@@ -323,33 +323,18 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   Widget renderBooking(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
-        color: Colors.grey[400],
-      ),
+      color: Colors.transparent,
       padding: const EdgeInsets.all(10),
       alignment: Alignment.center,
       width: double.infinity,
-      child: Container(
-        padding: const EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 10.0,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
+      child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            shadowColor: Colors.black,
-            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-            elevation: 15.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            backgroundColor: AppColors.primaryColor,
           ),
           onPressed: () {
             _onRegisterPress(context);
@@ -368,35 +353,52 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.containerColor,
-      appBar: AppBar(
-        title: const Text('Movie Detail'),
-        iconTheme: const IconThemeData(
-          color: AppColors.backgroundColor,
-        ),
-        backgroundColor: Colors.transparent,
-      ),
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        child: Column(
-          children: [
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
+    return FutureBuilder(
+      future: movieDetail,
+      builder: (context, AsyncSnapshot<MovieDetail> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: loadingContent,
+          );
+        } else {
+          MovieDetail data = snapshot.data!;
+          bool visibleBooking = data.isRelease;
+          print(visibleBooking);
+          return SafeArea(
+            child: Scaffold(
+              backgroundColor: AppColors.containerColor,
+              appBar: AppBar(
+                title: const Text('Movie Detail'),
+                iconTheme: const IconThemeData(
+                  color: AppColors.backgroundColor,
+                ),
+                backgroundColor: Colors.transparent,
+              ),
+              body: Container(
+                constraints: const BoxConstraints.expand(),
                 child: Column(
                   children: [
-                    renderBody(context),
-
-                    // : renderBooking(context),
+                    Expanded(
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Column(
+                          children: [
+                            renderBody(context),
+                            visibleBooking
+                                ? renderBooking(context)
+                                : const SizedBox(),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
-            )
-          ],
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 
