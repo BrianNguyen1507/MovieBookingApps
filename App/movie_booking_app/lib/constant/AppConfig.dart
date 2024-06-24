@@ -5,10 +5,12 @@ class AppColors {
   static const Color primaryColor = Color(0xFF2693EF);
   static const Color secondaryColor = Color(0xFFDC004E);
   static const Color commonColor = Color(0xFFBCBCBC);
-    static const Color commonDarkColor = Color.fromARGB(255, 152, 151, 151);
+  static const Color commonDarkColor = Color.fromARGB(255, 152, 151, 151);
   static const Color commonLightColor = Color(0xFFE8E8E8);
   static const Color textblackColor = Color(0xFF000000);
   static const Color darktextColor = Color(0xFF000000);
+  static const Color lightTextColor = Color.fromARGB(255, 255, 255, 255);
+   static const Color grayTextColor  = Color.fromARGB(255, 79, 75, 75);
   static const Color bottomBgColor = Color(0xFFFFFFFF);
   static const Color buttonColor = Color(0xFF000000);
   static const Color appbarColor = Color(0xFF000000);
@@ -24,13 +26,15 @@ class AppColors {
 }
 
 class AppFontSize {
+  static const double verySmall = 12.0;
   static const double small = 15.0;
+  static const double lowMedium = 17.0;
   static const double medium = 20.0;
   static const double large = 40.0;
   static const double big = 50.0;
 }
 
-class AppStringMethod{
+class AppStringMethod {
   static const String register = "register";
   static const String forgotPassword = "forgotPassword";
 }

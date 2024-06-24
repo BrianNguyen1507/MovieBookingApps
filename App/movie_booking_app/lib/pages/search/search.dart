@@ -180,9 +180,9 @@ class SearchState extends State<Search> {
                                             Container(
                                               padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
-                                                color: ClassifyColors
+                                                color: ClassifyClass
                                                     .toFlutterColor(
-                                                  ClassifyColors.classifyType(
+                                                  ClassifyClass.classifyType(
                                                       movieList[index]
                                                           .classify),
                                                 ),
