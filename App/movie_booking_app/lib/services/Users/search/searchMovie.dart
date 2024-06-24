@@ -31,6 +31,7 @@ class SearchMovieService {
           classify: movieData['classify'],
           categories: listCategory,
           poster: movieData['poster'],
+          isRelease: movieData['release'],
         );
       }));
       return movies;

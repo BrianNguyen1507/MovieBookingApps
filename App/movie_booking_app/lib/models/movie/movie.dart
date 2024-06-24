@@ -7,9 +7,11 @@ class Movie {
   final List<Categories> categories;
   final String poster;
   final DateTime? releaseDate;
+  final bool isRelease;
 
   Movie(
-      {required this.id,
+      {required this.isRelease,
+      required this.id,
       required this.title,
       required this.classify,
       required this.categories,
@@ -21,6 +23,7 @@ class Movie {
         title: json['title'],
         classify: json['classify'],
         categories: json['categories'],
-        poster: json['poster']);
+        poster: json['poster'],
+        isRelease: json['release']);
   }
 }

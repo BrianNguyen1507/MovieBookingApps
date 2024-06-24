@@ -55,8 +55,8 @@ class ListMovie {
                   child: Container(
                     padding: const EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
-                        color: ClassifyColors.toFlutterColor(
-                          ClassifyColors.classifyType(movie.classify),
+                        color: ClassifyClass.toFlutterColor(
+                          ClassifyClass.classifyType(movie.classify),
                         ),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(3.0),

@@ -35,6 +35,7 @@ class MovieList {
             classify: movieData['classify'],
             categories: listCategory,
             poster: movieData['poster'],
+            isRelease: movieData['release'],
           );
         }));
 
@@ -75,6 +76,7 @@ class MovieList {
                 classify: movieData['classify'],
                 categories: listCategory,
                 poster: movieData['poster'],
+                isRelease: movieData['release'],
               );
             },
           ),

@@ -11,6 +11,7 @@ class AppIcon {
   static IconData visibleOn = Icons.visibility;
   static IconData visibleOff = Icons.visibility_off;
   static IconData close = Icons.close;
+  static IconData playButton = Icons.play_arrow_rounded;
 }
 
 class AppSize {
@@ -59,35 +60,35 @@ class Appdata {
   }
 }
 
-class ClassifyColors {
+class ClassifyClass {
   final String name;
-  const ClassifyColors._internal(this.name);
+  const ClassifyClass._internal(this.name);
 
-  static const ClassifyColors red = ClassifyColors._internal('red');
-  static const ClassifyColors green = ClassifyColors._internal('green');
-  static const ClassifyColors blue = ClassifyColors._internal('blue');
-  static const ClassifyColors yellow = ClassifyColors._internal('yellow');
-  static const ClassifyColors orange = ClassifyColors._internal('orange');
+  static const ClassifyClass red = ClassifyClass._internal('red');
+  static const ClassifyClass green = ClassifyClass._internal('green');
+  static const ClassifyClass blue = ClassifyClass._internal('blue');
+  static const ClassifyClass yellow = ClassifyClass._internal('yellow');
+  static const ClassifyClass orange = ClassifyClass._internal('orange');
 
-  static ClassifyColors classifyType(String type) {
+  static ClassifyClass classifyType(String type) {
     switch (type.toLowerCase()) {
       case 'k':
-        return ClassifyColors.blue;
+        return ClassifyClass.blue;
       case 'p':
-        return ClassifyColors.green;
+        return ClassifyClass.green;
       case 't13':
-        return ClassifyColors.yellow;
+        return ClassifyClass.yellow;
       case 't16':
-        return ClassifyColors.orange;
+        return ClassifyClass.orange;
       case 't18':
       case 'c':
-        return ClassifyColors.red;
+        return ClassifyClass.red;
       default:
-        return ClassifyColors.blue;
+        return ClassifyClass.blue;
     }
   }
 
-  static Color toFlutterColor(ClassifyColors classifyColor) {
+  static Color toFlutterColor(ClassifyClass classifyColor) {
     switch (classifyColor.name) {
       case 'red':
         return Colors.red;
@@ -96,11 +97,36 @@ class ClassifyColors {
       case 'blue':
         return Colors.blue;
       case 'yellow':
-        return const Color.fromARGB(255, 218, 199, 31);
+        return const Color.fromARGB(255, 212, 195, 40);
       case 'orange':
         return Colors.orange;
       default:
         return Colors.blue;
     }
+  }
+
+  static String contentClassify(String type) {
+    switch (type.toLowerCase()) {
+      case 'k':
+        return ('The movie is available for viewers under 13 years old with a guardian');
+      case 'p':
+        return ('The movie is available for viewers of all ages');
+      case 't13':
+        return ('The movie is available for viewers aged 13 and above');
+      case 't16':
+        return ('The movie is available for viewers aged 16 and above');
+      case 't18':
+        return ('The movie is available for viewers aged 18 and above');
+      case 'c':
+        return ('The movie is not allowed to be shown');
+      default:
+        return ('The movie is available for viewers of all ages');
+    }
+  }
+}
+
+class MovieData {
+  static String getReleased(bool isRelease) {
+    return isRelease ? 'Now Showing' : 'Coming Soon';
   }
 }
