@@ -29,6 +29,8 @@ public class FilmResponse {
     double basePrice;
     String classify;
     List<CategoryResponse> categories;
+    boolean isRelease;
     byte[] description;
     byte[] poster;
+
 }
