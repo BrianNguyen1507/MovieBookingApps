@@ -7,6 +7,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
+import 'package:movie_booking_app/utils/widget.dart';
 
 class ListMovie {
   static Widget buildListMovie(BuildContext context, Movie movie) {
@@ -39,8 +40,8 @@ class ListMovie {
                         return loadingContent;
                       } else {
                         return Image.memory(
-                          height: 250,
-                          width: 200,
+                          height: 200,
+                          width: 150,
                           snapshot.data!,
                           fit: BoxFit.cover,
                         );
@@ -77,7 +78,7 @@ class ListMovie {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  movie.title,
+                  CommonUtil.truncateText(movie.title, 20),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -90,7 +91,11 @@ class ListMovie {
                 Text(
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  movie.categories.map((category) => category.name).join(', '),
+                  CommonUtil.truncateText(
+                      movie.categories
+                          .map((category) => category.name)
+                          .join(', '),
+                      30),
                   style: const TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 12,

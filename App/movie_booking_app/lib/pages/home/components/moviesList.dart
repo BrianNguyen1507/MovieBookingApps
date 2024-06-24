@@ -28,8 +28,11 @@ class _NowShowingSectionState extends State<NowShowingSection> {
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
+    var isPortrait = orientation == Orientation.portrait;
     return Container(
-      height: AppSize.height(context) / 1.65,
+      height:
+          isPortrait ? AppSize.height(context) / 2 : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
         borderRadius: BorderRadius.only(
@@ -98,7 +101,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                         scrollPhysics: const BouncingScrollPhysics(),
                         aspectRatio: 16 / 20,
                         enableInfiniteScroll: true,
-                        viewportFraction: 0.5,
+                        viewportFraction: 0.45,
                         initialPage: 0,
                         enlargeCenterPage: true,
                         padEnds: true,
@@ -134,8 +137,11 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
+    var isPortrait = orientation == Orientation.portrait;
     return Container(
-      height: AppSize.height(context) / 1.6,
+      height:
+          isPortrait ? AppSize.height(context) / 2 : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
       ),
@@ -190,7 +196,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                 } else {
                   List<Movie> filmsFuture = snapshot.data!;
                   return Container(
-                    padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                    padding: const EdgeInsets.all(5.0),
                     height: AppSize.height(context),
                     width: AppSize.width(context),
                     child: ListView.builder(
@@ -198,7 +204,6 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                       itemCount: filmsFuture.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                          margin: const EdgeInsets.only(right: 10.0),
                           child: ListMovie.buildListMovie(
                               context, filmsFuture[index]),
                         );

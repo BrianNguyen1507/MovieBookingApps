@@ -61,9 +61,15 @@ public class FilmService implements IFilmService {
     @Override
     public FilmResponse getFilmById(long id) {
         FilmEntity filmEntity = filmRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
-        if (filmEntity.isHide()) throw new AppException(ErrorCode.FILM_NOT_FOUND);
-        return filmConverter.toFilmResponse(filmEntity);
+        if (filmEntity.isHide()) {
+            throw new AppException(ErrorCode.FILM_NOT_FOUND);
+        }
+        FilmResponse filmResponse = filmConverter.toFilmResponse(filmEntity);
+        LocalDate now = LocalDate.now();
+        filmResponse.setRelease(!(now.isBefore(filmEntity.getReleaseDate())));
+        return filmResponse;
     }
+
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")

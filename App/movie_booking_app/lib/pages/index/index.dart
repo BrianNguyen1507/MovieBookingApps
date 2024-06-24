@@ -63,6 +63,7 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
     if (state == AppLifecycleState.detached) {
       LogOutServices.logout();
       TokenManager.cancelTokenRefreshTimer();
+      print("logout success");
     }
   }
 
