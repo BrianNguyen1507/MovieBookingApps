@@ -111,13 +111,17 @@ public class FilmService implements IFilmService {
     @Override
     public List<FilmResponse> getListMovieRelease() {
         List<FilmEntity> entities = filmRepository.findAllMovieRelease();
-        return entities.stream().map(filmConverter::toFilmResponse).toList();
+        List<FilmResponse> responses = entities.stream().map(filmConverter::toFilmResponse).toList();
+        responses.forEach(filmResponse -> filmResponse.setRelease(true));
+        return responses;
     }
 
     @Override
     public List<FilmResponse> getListMovieFuture() {
         List<FilmEntity> entities = filmRepository.findAllMovieFuture();
-        return entities.stream().map(filmConverter::toFilmResponse).toList();
+        List<FilmResponse> responses = entities.stream().map(filmConverter::toFilmResponse).toList();
+        responses.forEach(filmResponse -> filmResponse.setRelease(false));
+        return responses;
     }
 
     @Override
