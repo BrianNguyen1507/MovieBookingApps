@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class FilmConverter {
                 .basePrice(entity.getBasePrice())
                 .director(entity.getDirector())
                 .classify(entity.getClassify())
+                .isRelease(!(LocalDate.now().isBefore(entity.getReleaseDate())))
                 .build();
     }
 

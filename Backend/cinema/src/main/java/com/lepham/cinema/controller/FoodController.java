@@ -1,4 +1,4 @@
-package com.lepham.cinema.api;
+package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.FoodRequest;
 import com.lepham.cinema.dto.response.APIResponse;
@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class FoodAPI {
+public class FoodController {
     FoodService service;
 
     @GetMapping(value = "/getAllFood")

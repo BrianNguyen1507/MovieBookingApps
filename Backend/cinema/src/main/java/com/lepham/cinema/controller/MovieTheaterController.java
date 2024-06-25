@@ -1,4 +1,4 @@
-package com.lepham.cinema.api;
+package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.MovieTheaterRequest;
 import com.lepham.cinema.dto.response.APIResponse;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MovieTheaterAPI {
+public class MovieTheaterController {
 
     MovieTheaterService movieTheaterService;
 

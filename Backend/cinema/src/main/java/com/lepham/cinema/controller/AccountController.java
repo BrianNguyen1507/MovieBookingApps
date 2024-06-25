@@ -1,4 +1,4 @@
-package com.lepham.cinema.api;
+package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.*;
 import com.lepham.cinema.dto.response.APIResponse;
@@ -23,7 +23,7 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class AccountAPI {
+public class AccountController {
 
     AccountService accountService;
 

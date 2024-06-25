@@ -1,4 +1,4 @@
-package com.lepham.cinema.api;
+package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.CategoryRequest;
 import com.lepham.cinema.dto.response.CategoryResponse;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CategoryAPI {
+public class CategoryController {
 
     CategoryService categoryService;
 

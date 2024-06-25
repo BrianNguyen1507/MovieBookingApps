@@ -1,4 +1,4 @@
-package com.lepham.cinema.api;
+package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.ShowTimesRequest;
 import com.lepham.cinema.dto.response.APIResponse;
@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
-public class MovieScheduleAPI {
+public class MovieScheduleController {
 
     MovieScheduleService movieScheduleService;
 
