@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+
 import 'package:movie_booking_app/modules/common/AutoScrolling.dart';
 
 import 'package:movie_booking_app/pages/home/components/moviesList.dart';
@@ -14,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isLoading = true;
   bool dataLoaded = false;
-
+  List<int> month = [];
   @override
   void initState() {
     super.initState();
@@ -37,15 +38,10 @@ class _HomePageState extends State<HomePage> {
                   physics: const NeverScrollableScrollPhysics(),
                   slivers: [
                     _buildNowShowingSliver(context),
+                    _buildComingSoonSliver(context),
+                    _buildMovieListByMonthSliver(context)
                   ],
                 ),
-              ],
-            ),
-            CustomScrollView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              slivers: [
-                _buildComingSoonSliver(context),
               ],
             ),
           ],
@@ -63,6 +59,12 @@ class _HomePageState extends State<HomePage> {
   SliverToBoxAdapter _buildComingSoonSliver(BuildContext context) {
     return const SliverToBoxAdapter(
       child: ComingSoonSection(),
+    );
+  }
+
+  SliverToBoxAdapter _buildMovieListByMonthSliver(BuildContext context) {
+    return const SliverToBoxAdapter(
+      child: MovieFutureByMonth(),
     );
   }
 }

@@ -18,11 +18,9 @@ class _AutoScrollingBannerState extends State<AutoScrollingBanner> {
     return Column(
       children: [
         Container(
+          padding: const EdgeInsets.all(5.0),
           width: AppSize.width(context),
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5.0),
-            ),
             color: Colors.transparent,
           ),
           child: CarouselSlider.builder(
@@ -38,10 +36,15 @@ class _AutoScrollingBannerState extends State<AutoScrollingBanner> {
             ),
             itemCount: images.length,
             itemBuilder: (BuildContext context, int index, int realIndex) {
-              return Image.asset(
-                images[index],
-                width: double.infinity,
-                fit: BoxFit.fill,
+              return ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(
+                  10.0,
+                )),
+                child: Image.asset(
+                  images[index],
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                ),
               );
             },
           ),
@@ -50,18 +53,15 @@ class _AutoScrollingBannerState extends State<AutoScrollingBanner> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(images.length, (index) {
             return Container(
-              width: 12.0,
-              height: 5.0,
+              width: 7.0,
+              height: 7.0,
               margin:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 3.0),
+                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(30),
-                ),
-                shape: BoxShape.rectangle,
+                shape: BoxShape.circle,
                 color: _currentImageIndex == index
                     ? AppColors.primaryColor
-                    : AppColors.commonLightColor,
+                    : AppColors.commonDarkColor,
               ),
             );
           }),

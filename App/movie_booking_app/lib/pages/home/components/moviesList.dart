@@ -1,12 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/home/components/buildList.dart';
+import 'package:movie_booking_app/pages/list/Listings.dart';
+import 'package:movie_booking_app/pages/list/listingByMonth.dart';
+import 'package:movie_booking_app/services/Users/movie/getListByMonth.dart';
 import 'package:movie_booking_app/services/Users/movie/getListMovies.dart';
 
 class NowShowingSection extends StatefulWidget {
@@ -18,6 +21,7 @@ class NowShowingSection extends StatefulWidget {
 
 late Future<List<Movie>> movieRelease;
 late Future<List<Movie>> movieFuture;
+late Future<Map<int, List<Movie>>> movieByMonth;
 
 class _NowShowingSectionState extends State<NowShowingSection> {
   @override
@@ -62,7 +66,17 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                 ),
               ),
               TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MovieListings(
+                        listTitle: AppLocalizations.of(context)!.nowshowing,
+                        movies: movieFuture,
+                      ),
+                    ),
+                  );
+                },
                 label: const Text(
                   'See all',
                   style: TextStyle(
@@ -166,7 +180,17 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                 ),
               ),
               TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MovieListings(
+                        listTitle: AppLocalizations.of(context)!.comming,
+                        movies: movieFuture,
+                      ),
+                    ),
+                  );
+                },
                 label: const Text(
                   'See all',
                   style: TextStyle(
@@ -215,6 +239,60 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MovieFutureByMonth extends StatefulWidget {
+  const MovieFutureByMonth({super.key});
+
+  @override
+  State<MovieFutureByMonth> createState() => _MovieFutureByMonthState();
+}
+
+class _MovieFutureByMonthState extends State<MovieFutureByMonth> {
+  @override
+  void initState() {
+    super.initState();
+    movieByMonth = GetListByMonth.getListByMonth();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: AppColors.containerColor,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieListingByMonth(
+                  movies: movieByMonth, listTitle: 'Movie By Month'),
+            ),
+          );
+        },
+        child: Container(
+          margin: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.grayTextColor,
+                blurRadius: 5.0,
+              )
+            ],
+            color: AppColors.containerColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
+          ),
+          child: const Center(
+              child: Text(
+            'MOVIE LIST BY MONTH',
+            style: AppStyle.headline1,
+          )),
+        ),
       ),
     );
   }
