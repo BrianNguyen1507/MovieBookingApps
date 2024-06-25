@@ -27,4 +27,13 @@ class ConverterUnit {
   static String uint8ToString(Uint8List data) {
     return utf8.decode(data);
   }
+
+  static List<int> caculateMonth() {
+    DateTime now = DateTime.now();
+    List<int> listMonth = [];
+    for (int month = now.month; month <= 12; month++) {
+      listMonth.add(month);
+    }
+    return listMonth;
+  }
 }

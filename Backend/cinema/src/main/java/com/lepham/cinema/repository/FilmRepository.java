@@ -28,7 +28,7 @@ public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
     @Query(value = "SELECT f FROM FilmEntity f WHERE f.active = 0 and f.hide = false and f.releaseDate > NOW()")
     List<FilmEntity> findAllMovieFuture ();
 
-    @Query(value = "SELECT f FROM FilmEntity f WHERE YEAR(f.releaseDate) = YEAR(CURRENT_DATE) AND MONTH(f.releaseDate) = :month AND MONTH(f.releaseDate)> MONTH(CURRENT_DATE ) AND f.active = 0 AND f.hide = false")
+    @Query(value = "SELECT f FROM FilmEntity f WHERE YEAR(f.releaseDate) = YEAR(CURRENT_DATE) AND MONTH(f.releaseDate) = :month AND f.active = 0 AND f.hide = false")
     List<FilmEntity>findAllMovieByFutureMonth(@Param("month")int month);
 
 }
