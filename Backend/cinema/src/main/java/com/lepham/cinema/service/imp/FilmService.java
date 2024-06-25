@@ -64,10 +64,7 @@ public class FilmService implements IFilmService {
         if (filmEntity.isHide()) {
             throw new AppException(ErrorCode.FILM_NOT_FOUND);
         }
-        FilmResponse filmResponse = filmConverter.toFilmResponse(filmEntity);
-        LocalDate now = LocalDate.now();
-        filmResponse.setRelease(!(now.isBefore(filmEntity.getReleaseDate())));
-        return filmResponse;
+        return filmConverter.toFilmResponse(filmEntity);
     }
 
 
@@ -83,20 +80,9 @@ public class FilmService implements IFilmService {
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse updateFilm(long id, FilmRequest request) throws ParseException {
         FilmEntity entity = filmRepository.getReferenceById(id);
-        entity.setActor(request.getActor());
-        entity.setCountry(request.getCountry());
-        entity.setDescription(request.getDescription());
-        entity.setDirector(request.getDirector());
-        entity.setDuration(request.getDuration());
-        entity.setBasePrice(request.getBasePrice());
-        entity.setLanguage(request.getLanguage());
-        entity.setPoster(request.getPoster());
-        entity.setReleaseDate(request.getReleaseDate());
-        entity.setTrailer(request.getTrailer());
-        entity.setTitle(request.getTitle());
-        entity.setClassify(request.getClassify());
-        entity.setCategories(categoryConverter.toListEntities(request.getCategories()));
-        return filmConverter.toFilmResponse(filmRepository.save(entity));
+        FilmEntity entityUpdate = filmConverter.toFilmEntity(request);
+        entityUpdate.setId(entity.getId());
+        return filmConverter.toFilmResponse(filmRepository.save(entityUpdate));
     }
 
     @Override
@@ -111,23 +97,20 @@ public class FilmService implements IFilmService {
     @Override
     public List<FilmResponse> searchFilm(String textFill) {
         List<FilmEntity> entities = filmRepository.findAllByKeyWord(textFill);
+
         return entities.stream().map(filmConverter::toFilmResponse).toList();
     }
 
     @Override
     public List<FilmResponse> getListMovieRelease() {
         List<FilmEntity> entities = filmRepository.findAllMovieRelease();
-        List<FilmResponse> responses = entities.stream().map(filmConverter::toFilmResponse).toList();
-        responses.forEach(filmResponse -> filmResponse.setRelease(true));
-        return responses;
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
     }
 
     @Override
     public List<FilmResponse> getListMovieFuture() {
         List<FilmEntity> entities = filmRepository.findAllMovieFuture();
-        List<FilmResponse> responses = entities.stream().map(filmConverter::toFilmResponse).toList();
-        responses.forEach(filmResponse -> filmResponse.setRelease(false));
-        return responses;
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
     }
 
     @Override

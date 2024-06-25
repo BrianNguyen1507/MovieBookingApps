@@ -1,4 +1,4 @@
-package com.lepham.cinema.api;
+package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.AccountVoucherRequest;
 import com.lepham.cinema.dto.request.VoucherRequest;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class VoucherAPI {
+public class VoucherController {
 
     VoucherService voucherService;
     AccountVoucherService accountVoucherService;
