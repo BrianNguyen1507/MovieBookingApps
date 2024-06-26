@@ -57,11 +57,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                   child: Text(
                     AppLocalizations.of(context)!.nowshowing,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.darktextColor,
-                      fontSize: AppFontSize.medium,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppStyle.headline1,
                   ),
                 ),
               ),
@@ -72,19 +68,12 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                     MaterialPageRoute(
                       builder: (context) => MovieListings(
                         listTitle: AppLocalizations.of(context)!.nowshowing,
-                        movies: movieFuture,
+                        movies: movieRelease,
                       ),
                     ),
                   );
                 },
-                label: const Text(
-                  'See all',
-                  style: TextStyle(
-                    color: AppColors.darktextColor,
-                    fontSize: AppFontSize.small,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                label: const Text('See all', style: AppStyle.bodyText1),
                 iconAlignment: IconAlignment.end,
                 icon: Icon(
                   color: AppColors.darktextColor,
@@ -171,11 +160,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                   child: Text(
                     AppLocalizations.of(context)!.comming,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.darktextColor,
-                      fontSize: AppFontSize.medium,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppStyle.headline1,
                   ),
                 ),
               ),
@@ -191,17 +176,10 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                     ),
                   );
                 },
-                label: const Text(
-                  'See all',
-                  style: TextStyle(
-                    color: AppColors.darktextColor,
-                    fontSize: AppFontSize.small,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                label: const Text('See all', style: AppStyle.bodyText1),
                 iconAlignment: IconAlignment.end,
                 icon: Icon(
-                  color: AppColors.darktextColor,
+                  color: AppColors.grayTextColor,
                   AppIcon.arrowR,
                 ),
               ),
@@ -268,31 +246,11 @@ class _MovieFutureByMonthState extends State<MovieFutureByMonth> {
             context,
             MaterialPageRoute(
               builder: (context) => MovieListingByMonth(
-                  movies: movieByMonth, listTitle: 'Movie By Month'),
+                  movies: movieByMonth, listTitle: 'Top Movies of the Month'),
             ),
           );
         },
-        child: Container(
-          margin: const EdgeInsets.all(10.0),
-          padding: const EdgeInsets.all(15.0),
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.grayTextColor,
-                blurRadius: 5.0,
-              )
-            ],
-            color: AppColors.containerColor,
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            ),
-          ),
-          child: const Center(
-              child: Text(
-            'MOVIE LIST BY MONTH',
-            style: AppStyle.headline1,
-          )),
-        ),
+        child: const Text('abc'),
       ),
     );
   }

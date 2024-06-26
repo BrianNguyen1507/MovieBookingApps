@@ -3,6 +3,7 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
+import 'package:movie_booking_app/pages/detail/components/widgetComponents.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
 
 class MovieListings extends StatelessWidget {
@@ -117,6 +118,7 @@ class MovieListings extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      releaseBox(movieList[index].isRelease),
                                     ],
                                   ),
                                 )

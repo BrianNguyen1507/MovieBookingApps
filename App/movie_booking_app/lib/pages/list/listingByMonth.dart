@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
@@ -23,7 +24,10 @@ class MovieListingByMonth extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(listTitle),
+          title: Text(
+            listTitle,
+            style: AppStyle.headline1,
+          ),
         ),
         body: FutureBuilder<Map<int, List<Movie>>>(
           future: movies,
@@ -48,119 +52,107 @@ class MovieListingByMonth extends StatelessWidget {
               return SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
-                  children: monthsWithMovies.map((monthEntry) {
-                    final month = monthEntry.key;
-                    final movies = monthEntry.value;
+                  children: monthsWithMovies.map(
+                    (monthEntry) {
+                      final month = monthEntry.key;
+                      final movies = monthEntry.value;
 
-                    return Container(
-                      height: isPortrait
-                          ? monthsWithMovies.length *
-                              AppSize.height(context) /
-                              5
-                          : monthsWithMovies.length *
-                              AppSize.height(context) /
-                              2.5,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Month ${month.toString()}',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                      return Container(
+                        height: isPortrait
+                            ? monthsWithMovies.length *
+                                AppSize.height(context) /
+                                5
+                            : monthsWithMovies.length *
+                                AppSize.height(context) /
+                                2.5,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Month ${month.toString()}',
+                              style: AppStyle.bodyText1,
                             ),
-                          ),
-                          SizedBox(
-                            height: isPortrait
-                                ? AppSize.height(context) / 2
-                                : AppSize.height(context),
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: movies.length,
-                              itemBuilder: (context, movieIndex) {
-                                final movie = movies[movieIndex];
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            MovieDetailPage(movieId: movie.id),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: AppSize.width(context) / 2,
-                                    margin: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          child: Image.memory(
-                                            ConverterUnit.base64ToUnit8(
-                                                movie.poster),
-                                            height: 200,
-                                            width: 150,
-                                            fit: BoxFit.cover,
-                                          ),
+                            SizedBox(
+                              height: isPortrait
+                                  ? AppSize.height(context) / 2
+                                  : AppSize.height(context),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: movies.length,
+                                itemBuilder: (context, movieIndex) {
+                                  final movie = movies[movieIndex];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MovieDetailPage(
+                                              movieId: movie.id),
                                         ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          movie.title,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          movie.categories
-                                              .map((category) => category.name)
-                                              .join(', '),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 5),
-                                          decoration: BoxDecoration(
-                                            color: ClassifyClass.toFlutterColor(
-                                                ClassifyClass.classifyType(
-                                                    movie.classify)),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: AppSize.width(context) / 2.5,
+                                      margin: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(3.0),
-                                          ),
-                                          child: Text(
-                                            movie.classify,
-                                            style: const TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                              color: AppColors.containerColor,
+                                                BorderRadius.circular(12),
+                                            child: Image.memory(
+                                              ConverterUnit.base64ToUnit8(
+                                                  movie.poster),
+                                              height: 200,
+                                              width: 150,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          const SizedBox(height: 8),
+                                          Text(movie.title,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppStyle.titleMovie),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                              movie.categories
+                                                  .map((category) =>
+                                                      category.name)
+                                                  .join(', '),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppStyle.smallText),
+                                          const SizedBox(height: 4),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2, horizontal: 5),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  ClassifyClass.toFlutterColor(
+                                                      ClassifyClass
+                                                          .classifyType(
+                                                              movie.classify)),
+                                              borderRadius:
+                                                  BorderRadius.circular(3.0),
+                                            ),
+                                            child: Text(movie.classify,
+                                                style: AppStyle.classifyText),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                          ],
+                        ),
+                      );
+                    },
+                  ).toList(),
                 ),
               );
             }

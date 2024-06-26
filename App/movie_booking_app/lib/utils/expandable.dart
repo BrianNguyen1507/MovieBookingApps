@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 
 class ExpandableText extends StatefulWidget {
   final String text;
@@ -27,6 +27,7 @@ class _ExpandableTextState extends State<ExpandableText> {
           widget.text,
           maxLines: isExpanded ? null : widget.maxLines,
           overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+          style: AppStyle.detailTitle,
         ),
         GestureDetector(
           onTap: () {
@@ -34,12 +35,8 @@ class _ExpandableTextState extends State<ExpandableText> {
               isExpanded = !isExpanded;
             });
           },
-          child: Text(
-            isExpanded ? 'Show less' : 'Show more',
-            style: const TextStyle(
-              color: AppColors.primaryColor,
-            ),
-          ),
+          child: Text(isExpanded ? 'Show less' : 'Show more',
+              style: AppStyle.buttonText),
         ),
       ],
     );

@@ -13,9 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isLoading = true;
-  bool dataLoaded = false;
-  List<int> month = [];
   @override
   void initState() {
     super.initState();

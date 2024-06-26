@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
 
 class GuestPage extends StatelessWidget {
@@ -23,25 +22,7 @@ class GuestPage extends StatelessWidget {
   Widget _buildSliverProfileBar(BuildContext context) {
     return SliverAppBar(
       automaticallyImplyLeading: false,
-      title: const Center(
-          child: Column(
-        children: [
-          Text(
-            "WELCOME TO",
-            style: TextStyle(
-                color: AppColors.darktextColor,
-                fontWeight: FontWeight.bold,
-                fontSize: AppFontSize.medium),
-          ),
-          Text(
-            "MOVIE BOOKING APP",
-            style: TextStyle(
-              color: AppColors.primaryColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      )),
+      title: const Center(child: Text('')),
       backgroundColor: Colors.transparent,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
