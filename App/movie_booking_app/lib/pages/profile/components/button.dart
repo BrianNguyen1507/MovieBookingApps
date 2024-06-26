@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 
 typedef OnPress = void Function();
 
@@ -24,10 +25,7 @@ class BuildButton {
             onPressed: onPress,
             child: Text(
               text,
-              style: const TextStyle(
-                color: AppColors.iconThemeColor,
-                fontSize: AppFontSize.small,
-              ),
+              style: AppStyle.buttonText2,
             ),
           ),
         ),

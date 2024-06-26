@@ -42,6 +42,10 @@ class Appdata {
     }
   }
 
+  static String getReleased(bool isRelease) {
+    return isRelease ? 'Now Showing' : 'Coming Soon';
+  }
+
   static String? getLabelForIndex(int index) {
     switch (index) {
       case 0:
@@ -122,11 +126,5 @@ class ClassifyClass {
       default:
         return ('The movie is available for viewers of all ages');
     }
-  }
-}
-
-class MovieData {
-  static String getReleased(bool isRelease) {
-    return isRelease ? 'Now Showing' : 'Coming Soon';
   }
 }

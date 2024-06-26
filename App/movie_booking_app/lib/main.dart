@@ -25,19 +25,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
-        return MaterialApp(
-          title: 'Movie Booking Tickets',
-          debugShowCheckedModeBanner: false,
-          initialRoute: AppRoutes.splashScreen,
-          routes: AppRoutes.routes,
-          supportedLocales: L10n.language,
-          locale: themeProvider.locale,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+        return SafeArea(
+          child: MaterialApp(
+            title: 'Movie Booking Tickets',
+            debugShowCheckedModeBanner: false,
+            initialRoute: AppRoutes.splashScreen,
+            routes: AppRoutes.routes,
+            supportedLocales: L10n.language,
+            locale: themeProvider.locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+          ),
         );
       },
     );

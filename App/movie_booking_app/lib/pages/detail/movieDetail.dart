@@ -1,10 +1,9 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/components/widgetComponents.dart';
@@ -82,14 +81,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: AppSize.width(context) / 1.8,
+                              width: AppSize.width(context) / 1.5,
                               child: Text(
                                 detail.title,
-                                style: const TextStyle(
-                                    fontSize: AppFontSize.medium,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.darktextColor),
-                                maxLines: 3,
+                                style: AppStyle.nameMovie,
+                                maxLines: 4,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -99,9 +95,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                 detail.categories
                                     .map((category) => category.name)
                                     .join(', '),
-                                style: const TextStyle(
-                                    fontSize: AppFontSize.verySmall,
-                                    color: AppColors.grayTextColor),
+                                style: AppStyle.smallText,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -110,9 +104,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                               width: AppSize.width(context) / 1.8,
                               child: Text(
                                 "Country: ${detail.country}",
-                                style: const TextStyle(
-                                    fontSize: AppFontSize.verySmall,
-                                    color: AppColors.grayTextColor),
+                                style: AppStyle.smallText,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -133,10 +125,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                   padding: const EdgeInsets.all(1.5),
                                   child: Text(
                                     detail.classify,
-                                    style: const TextStyle(
-                                        fontSize: AppFontSize.verySmall,
-                                        fontWeight: FontWeight.normal,
-                                        color: AppColors.lightTextColor),
+                                    style: AppStyle.classifyText,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -148,46 +137,54 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                     child: Text(
                                       ClassifyClass.contentClassify(
                                           detail.classify),
-                                      style: const TextStyle(
-                                          fontSize: AppFontSize.verySmall,
-                                          color: AppColors.grayTextColor),
+                                      style: AppStyle.smallText,
                                     ),
                                   ),
                                 )
                               ],
                             ),
-                            SizedBox(
-                              child: ElevatedButton.icon(
-                                style: ButtonStyle(
-                                  shape: WidgetStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                releaseBox(detail.isRelease),
+                                SizedBox(
+                                  child: ElevatedButton.icon(
+                                    style: ButtonStyle(
+                                      shape: WidgetStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
+                                        ),
+                                      ),
+                                      minimumSize: WidgetStateProperty.all(
+                                          const Size(10, 30)),
+                                      foregroundColor: WidgetStateProperty.all(
+                                          AppColors.primaryColor),
+                                      overlayColor: WidgetStateProperty.all(
+                                          AppColors.commonLightColor),
+                                      side: WidgetStateProperty.all(
+                                          const BorderSide(
+                                        color: AppColors.primaryColor,
+                                        width: 2,
+                                      )),
                                     ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => VideoScreen(
+                                              videoUrl: detail.trailer),
+                                        ),
+                                      );
+                                    },
+                                    label: const Text(
+                                      'Trailer',
+                                      style: AppStyle.buttonText,
+                                    ),
+                                    icon: Icon(AppIcon.playButton),
                                   ),
-                                  minimumSize: WidgetStateProperty.all(
-                                      const Size(10, 35)),
-                                  foregroundColor: WidgetStateProperty.all(
-                                      AppColors.primaryColor),
-                                  overlayColor: WidgetStateProperty.all(
-                                      AppColors.commonLightColor),
-                                  side:
-                                      WidgetStateProperty.all(const BorderSide(
-                                    color: AppColors.primaryColor,
-                                    width: 1.5,
-                                  )),
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          VideoScreen(videoUrl: detail.trailer),
-                                    ),
-                                  );
-                                },
-                                label: const Text('Trailer'),
-                                icon: Icon(AppIcon.playButton),
-                              ),
+                              ],
                             ),
                           ],
                         ),
@@ -207,7 +204,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         children: [
                           detailTitle(
                               'Release Date',
-                              ConverterUnit.convertToDate(
+                              ConverterUnit.formatToDmY(
                                   detail.releaseDate.toString())),
                           const SizedBox(width: 10),
                           Container(
@@ -242,20 +239,26 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                           children: [
                             const Text(
                               'Description',
-                              style: TextStyle(
-                                  fontSize: AppFontSize.lowMedium,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87),
+                              style: AppStyle.bodyText1,
                             ),
                             const Divider(
                               color: Colors.grey,
                               thickness: 0.35,
                             ),
-                            ExpandableText(
-                              text: ConverterUnit.uint8ToString(
-                                ConverterUnit.base64ToUnit8(detail.description),
-                              ),
-                            )
+                            detail.description.length > 200
+                                ? ExpandableText(
+                                    text: ConverterUnit.uint8ToString(
+                                      ConverterUnit.base64ToUnit8(
+                                          detail.description),
+                                    ),
+                                  )
+                                : Text(
+                                    ConverterUnit.uint8ToString(
+                                      ConverterUnit.base64ToUnit8(
+                                          detail.description),
+                                    ),
+                                    style: AppStyle.detailTitle,
+                                  ),
                           ]),
                     ),
                   ),
@@ -302,10 +305,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           },
           child: const Text(
             'BOOKING',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-            ),
+            style: AppStyle.buttonNavigator,
           ),
         ),
       ),
@@ -329,7 +329,10 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             child: Scaffold(
               backgroundColor: AppColors.containerColor,
               appBar: AppBar(
-                title: const Text('Movie Detail'),
+                title: const Text(
+                  'Movie Detail',
+                  style: AppStyle.headline1,
+                ),
                 iconTheme: const IconThemeData(
                   color: AppColors.backgroundColor,
                 ),

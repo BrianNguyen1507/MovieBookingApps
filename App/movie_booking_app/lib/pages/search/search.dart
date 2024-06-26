@@ -113,7 +113,7 @@ class SearchState extends State<Search> {
                   } else {
                     List<Movie> movieList = snapshot.data!;
                     return SizedBox(
-                      height: (movieList.length + 1) * 150,
+                      height: (movieList.length + 1) * 160,
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         itemCount: movieList.length,
@@ -202,6 +202,36 @@ class SearchState extends State<Search> {
                                                 ),
                                               ),
                                             ),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.all(3.0),
+                                              margin: const EdgeInsets.all(3.0),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(5.0)),
+                                                border: Border.all(
+                                                  color: movieList[index]
+                                                          .isRelease
+                                                      ? AppColors.primaryColor
+                                                      : AppColors
+                                                          .secondaryColor,
+                                                  width: 2.0,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                Appdata.getReleased(
+                                                    movieList[index].isRelease),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: movieList[index]
+                                                          .isRelease
+                                                      ? AppColors.primaryColor
+                                                      : AppColors
+                                                          .secondaryColor,
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         ),
                                       )

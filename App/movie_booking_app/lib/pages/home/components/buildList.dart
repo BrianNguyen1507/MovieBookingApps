@@ -1,7 +1,6 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
@@ -29,7 +28,7 @@ class ListMovie {
               alignment: Alignment.topLeft,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8.0),
                   child: FutureBuilder<Uint8List>(
                     future: ConverterUnit.bytesToImage(movie.poster),
                     builder: (BuildContext context,
@@ -63,12 +62,7 @@ class ListMovie {
                         )),
                     child: Text(
                       movie.classify,
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: AppColors.containerColor,
-                      ),
+                      style: AppStyle.classifyText,
                     ),
                   ),
                 ),
@@ -81,12 +75,7 @@ class ListMovie {
                   CommonUtil.truncateText(movie.title, 20),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                    color: AppColors.darktextColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppStyle.titleMovie,
                 ),
                 Text(
                   maxLines: 1,
@@ -96,11 +85,7 @@ class ListMovie {
                           .map((category) => category.name)
                           .join(', '),
                       30),
-                  style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 12,
-                    color: AppColors.commonDarkColor,
-                  ),
+                  style: AppStyle.smallText,
                 ),
               ],
             ),

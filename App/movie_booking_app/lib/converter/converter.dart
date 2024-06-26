@@ -24,6 +24,12 @@ class ConverterUnit {
     return dateFormat.format(dateTime);
   }
 
+  static String formatToDmY(String dateTimeString) {
+    DateTime date = DateTime.parse(dateTimeString);
+    DateFormat dateformat = DateFormat('dd-MM-yyyy');
+    return dateformat.format(date);
+  }
+
   static String uint8ToString(Uint8List data) {
     return utf8.decode(data);
   }
