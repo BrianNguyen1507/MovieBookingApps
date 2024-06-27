@@ -9,26 +9,10 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/home/components/buildList.dart';
 import 'package:movie_booking_app/pages/list/Listings.dart';
 import 'package:movie_booking_app/pages/list/listingByMonth.dart';
-import 'package:movie_booking_app/services/Users/movie/getListByMonth.dart';
-import 'package:movie_booking_app/services/Users/movie/getListMovies.dart';
 
-class NowShowingSection extends StatefulWidget {
-  const NowShowingSection({super.key});
-
-  @override
-  State<NowShowingSection> createState() => _NowShowingSectionState();
-}
-
-late Future<List<Movie>> movieRelease;
-late Future<List<Movie>> movieFuture;
-late Future<Map<int, List<Movie>>> movieByMonth;
-
-class _NowShowingSectionState extends State<NowShowingSection> {
-  @override
-  void initState() {
-    super.initState();
-    movieRelease = MovieList.getListReleased();
-  }
+class NowShowingSection extends StatelessWidget {
+  final Future<List<Movie>> movieRelease;
+  const NowShowingSection({super.key, required this.movieRelease});
 
   @override
   Widget build(BuildContext context) {
@@ -124,19 +108,9 @@ class _NowShowingSectionState extends State<NowShowingSection> {
   }
 }
 
-class ComingSoonSection extends StatefulWidget {
-  const ComingSoonSection({super.key});
-
-  @override
-  State<ComingSoonSection> createState() => _ComingSoonSectionState();
-}
-
-class _ComingSoonSectionState extends State<ComingSoonSection> {
-  @override
-  void initState() {
-    super.initState();
-    movieFuture = MovieList.getListFutured();
-  }
+class ComingSoonSection extends StatelessWidget {
+  final Future<List<Movie>> movieFuture;
+  const ComingSoonSection({super.key, required this.movieFuture});
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +118,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
     var isPortrait = orientation == Orientation.portrait;
     return Container(
       height:
-          isPortrait ? AppSize.height(context) / 2 : AppSize.height(context),
+          isPortrait ? AppSize.height(context) / 1.8 : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
       ),
@@ -197,8 +171,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                   return Center(child: loadingContent);
                 } else {
                   List<Movie> filmsFuture = snapshot.data!;
-                  return Container(
-                    padding: const EdgeInsets.all(5.0),
+                  return SizedBox(
                     height: AppSize.height(context),
                     width: AppSize.width(context),
                     child: ListView.builder(
@@ -206,6 +179,7 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
                       itemCount: filmsFuture.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
+                          padding: const EdgeInsets.all(10.0),
                           child: ListMovie.buildListMovie(
                               context, filmsFuture[index]),
                         );
@@ -222,19 +196,9 @@ class _ComingSoonSectionState extends State<ComingSoonSection> {
   }
 }
 
-class MovieFutureByMonth extends StatefulWidget {
-  const MovieFutureByMonth({super.key});
-
-  @override
-  State<MovieFutureByMonth> createState() => _MovieFutureByMonthState();
-}
-
-class _MovieFutureByMonthState extends State<MovieFutureByMonth> {
-  @override
-  void initState() {
-    super.initState();
-    movieByMonth = GetListByMonth.getListByMonth();
-  }
+class MovieFutureByMonth extends StatelessWidget {
+  final Future<Map<int, List<Movie>>> movieByMonth;
+  const MovieFutureByMonth({super.key, required this.movieByMonth});
 
   @override
   Widget build(BuildContext context) {

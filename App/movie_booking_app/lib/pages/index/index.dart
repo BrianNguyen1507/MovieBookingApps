@@ -26,7 +26,7 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   late List<Widget> pages;
   ValidInput valid = ValidInput();
   PageController _pageController = PageController();
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -38,8 +38,6 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
       Builder(
           builder: (context) =>
               AppRoutes.routes[AppRoutes.homeScreen]!(context)),
-      Builder(
-          builder: (context) => AppRoutes.routes[AppRoutes.shimmer]!(context)),
       Builder(
           builder: (context) =>
               AppRoutes.routes[AppRoutes.homeScreen]!(context)),

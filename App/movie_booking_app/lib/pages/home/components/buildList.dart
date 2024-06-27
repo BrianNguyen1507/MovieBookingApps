@@ -6,7 +6,6 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
-import 'package:movie_booking_app/utils/widget.dart';
 
 class ListMovie {
   static Widget buildListMovie(BuildContext context, Movie movie) {
@@ -52,7 +51,7 @@ class ListMovie {
                   top: 5,
                   right: 5,
                   child: Container(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(3.0),
                     decoration: BoxDecoration(
                         color: ClassifyClass.toFlutterColor(
                           ClassifyClass.classifyType(movie.classify),
@@ -71,22 +70,30 @@ class ListMovie {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  CommonUtil.truncateText(movie.title, 20),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppStyle.titleMovie,
+                SizedBox(
+                  width: 150,
+                  child: Center(
+                    child: Text(
+                      movie.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyle.titleMovie,
+                    ),
+                  ),
                 ),
-                Text(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  CommonUtil.truncateText(
+                SizedBox(
+                  width: 150.0,
+                  child: Center(
+                    child: Text(
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       movie.categories
                           .map((category) => category.name)
                           .join(', '),
-                      30),
-                  style: AppStyle.smallText,
-                ),
+                      style: AppStyle.smallText,
+                    ),
+                  ),
+                )
               ],
             ),
           ],

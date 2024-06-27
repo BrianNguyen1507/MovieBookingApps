@@ -33,7 +33,7 @@ class MovieListingByMonth extends StatelessWidget {
           future: movies,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: loadingContent);
+              return Center(child: loadingData(context));
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

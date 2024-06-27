@@ -31,11 +31,10 @@ class Appdata {
         return Icons.percent_rounded;
       case 1:
         return Icons.movie_creation_rounded;
+
       case 2:
-        return Icons.home;
-      case 3:
         return Icons.storefront_rounded;
-      case 4:
+      case 3:
         return Icons.person;
       default:
         return null;
@@ -51,12 +50,10 @@ class Appdata {
       case 0:
         return 'Vouchers';
       case 1:
-        return 'Home';
-      case 2:
         return 'Cinema';
-      case 3:
+      case 2:
         return 'Store';
-      case 4:
+      case 3:
         return 'Personal';
       default:
         return null;
