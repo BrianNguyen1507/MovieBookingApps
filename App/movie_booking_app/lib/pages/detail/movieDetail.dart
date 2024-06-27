@@ -36,7 +36,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox();
         } else if (snapshot.hasError) {
-          return loadingContent;
+          return loadingData(context);
         } else {
           MovieDetail detail = snapshot.data!;
           return Expanded(
@@ -60,9 +60,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                 AsyncSnapshot<Uint8List> snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return loadingContent;
+                                return loadingData(context);
                               } else if (snapshot.hasError) {
-                                return loadingContent;
+                                return loadingData(context);
                               } else {
                                 return Image.memory(
                                   height: 150,
@@ -160,8 +160,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                           const Size(10, 30)),
                                       foregroundColor: WidgetStateProperty.all(
                                           AppColors.primaryColor),
-                                      overlayColor: WidgetStateProperty.all(
-                                          AppColors.commonLightColor),
+                                      backgroundColor: WidgetStateProperty.all(
+                                          AppColors.containerColor),
                                       side: WidgetStateProperty.all(
                                           const BorderSide(
                                         color: AppColors.primaryColor,
@@ -319,7 +319,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       builder: (context, AsyncSnapshot<MovieDetail> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: loadingContent,
+            child: loadingData(context),
           );
         } else {
           MovieDetail data = snapshot.data!;

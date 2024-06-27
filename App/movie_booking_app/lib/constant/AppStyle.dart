@@ -9,11 +9,25 @@ class AppStyle {
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
+
   static const TextStyle commonText = TextStyle(
     fontFamily: 'Roboto',
     fontSize: AppFontSize.midMedium,
     fontWeight: FontWeight.bold,
     color: Colors.white,
+  );
+  static const TextStyle commonblueText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.medium,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primaryColor,
+  );
+  static const TextStyle bannerText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.medium,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primaryColor,
+    overflow: TextOverflow.ellipsis,
   );
 //detail
   static const TextStyle headline1 = TextStyle(

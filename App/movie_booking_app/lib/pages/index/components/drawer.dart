@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
+import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/modules/common/AutoScrolling.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/pages/index/components/buttonDrawer.dart';
+import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:movie_booking_app/constant/svgString.dart';
 
 class BuildDrawer extends StatefulWidget {
   const BuildDrawer(BuildContext context, {super.key});
@@ -20,85 +25,63 @@ class _BuildDrawerState extends State<BuildDrawer> {
 
     return Drawer(
       backgroundColor: Colors.white,
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
-            itemCount: 7,
-            itemBuilder: (context, index) {
-              if (index == 6) {
-                return Container(
-                    padding: const EdgeInsets.all(20),
-                    child: const AutoScrollingBanner());
-              }
-              if (index == 0) {
-                return const SizedBox(
-                  height: 100,
-                  child: DrawerHeader(
-                    padding: EdgeInsets.zero,
-                    margin: EdgeInsets.zero,
-                    curve: Curves.bounceOut,
-                    decoration: BoxDecoration(
-                      color: AppColors.containerColor,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'MOVIES BOOKING APP',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+          Container(
+            height: AppSize.height(context) / 10,
+            child: const DrawerHeader(
+              padding: EdgeInsets.zero,
+              margin: EdgeInsets.zero,
+              curve: Curves.bounceOut,
+              decoration: BoxDecoration(
+                color: AppColors.containerColor,
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.white,
                   ),
-                );
-              } else {
-                return Container(
-                  margin: const EdgeInsets.only(left: 20, right: 20),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: AppColors.commonLightColor,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                  child: ListTile(
-                    leading: const Icon(Icons.abc_rounded),
-                    title: Text('Item ${index}'),
-                    onTap: () {},
-                  ),
-                );
-              }
-            },
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'MOVIES BOOKING APP',
+                  style: AppStyle.bannerText,
+                ),
+              ),
+            ),
           ),
-          Positioned(
-            bottom: -20,
-            left: 0,
-            right: 0,
-            child: Padding(
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.vertical,
               padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "${AppLocalizations.of(context)!.version}: ${1.0}",
-                    style: const TextStyle(
-                      color: AppColors.darktextColor,
-                      fontSize: AppFontSize.small,
-                      fontWeight: FontWeight.bold,
+              physics: const BouncingScrollPhysics(),
+              children: [
+                buttonDrawer(context, AppIcon.arrowR, 'Cinema',
+                    const IndexPage(initialIndex: 2)),
+                buttonDrawer(context, AppIcon.arrowR, 'Cinema',
+                    const IndexPage(initialIndex: 2)),
+                buttonDrawer(context, AppIcon.arrowR, 'Cinema',
+                    const IndexPage(initialIndex: 2)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.language,
+                          size: 20.0,
+                          color: AppColors.commonColor,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(16.0),
+                          child: const Text(
+                            'Languages',
+                            style: AppStyle.bodyText1,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(16.0),
-                    child: GestureDetector(
+                    GestureDetector(
                       onTap: () {
                         setState(() {
                           final provider = Provider.of<ThemeProvider>(context,
@@ -107,7 +90,7 @@ class _BuildDrawerState extends State<BuildDrawer> {
                         });
                       },
                       child: Container(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
                           color: isEnglish
                               ? AppColors.primaryColor
@@ -123,29 +106,43 @@ class _BuildDrawerState extends State<BuildDrawer> {
                               width: 24.0,
                               height: 24.0,
                               decoration: BoxDecoration(
-                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(12.0),
+                                color: Colors.white,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: isEnglish
+                                    ? SvgPicture.string(
+                                        svgEng,
+                                        width: 24.0,
+                                        height: 24.0,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : SvgPicture.string(
+                                        svgVie,
+                                        width: 24.0,
+                                        height: 24.0,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                             ),
                             Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              padding: isEnglish
+                                  ? const EdgeInsets.only(right: 20.0)
+                                  : const EdgeInsets.only(left: 25.0),
                               child: Text(
-                                isEnglish ? 'ENG  ' : '  VIE',
-                                style: const TextStyle(
-                                  color: AppColors.titleTextColor,
-                                  fontSize: AppFontSize.small,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                isEnglish ? 'EN ' : 'VN ',
+                                style: AppStyle.buttonText2,
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                const AutoScrollingBanner(),
+              ],
             ),
           ),
         ],
