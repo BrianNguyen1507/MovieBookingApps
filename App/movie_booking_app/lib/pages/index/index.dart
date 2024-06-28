@@ -6,8 +6,8 @@ import 'package:movie_booking_app/pages/index/components/drawer.dart';
 import 'package:movie_booking_app/routes/AppRoutes.dart';
 import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
 import 'package:movie_booking_app/services/Users/refresh/tokenManager.dart';
-import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
 import 'package:movie_booking_app/pages/search/search.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({

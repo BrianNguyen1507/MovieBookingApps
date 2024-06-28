@@ -4,7 +4,7 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/services/Users/refresh/tokenManager.dart';
 import 'package:movie_booking_app/services/Users/signIn/signInService.dart';
-import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class HandleSigninState {
   bool _isSubmitting = false;

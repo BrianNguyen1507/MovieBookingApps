@@ -293,8 +293,7 @@ public class MovieScheduleService implements IMovieScheduleService {
         return movieScheduleConverter.toResponse(listSchedule.getFirst(),filmConverter.toFilmScheduleResponse(film));
     }
 
-    @Override
-    @PreAuthorize("hasRole('USER')")
+
     public ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId,LocalDate date) {
         List<MovieScheduleEntity> scheduleEntities = movieScheduleRepository.findAllByFilmAndMovieTheater(filmId,theaterId,date);
         if(scheduleEntities.isEmpty()) throw  new AppException(ErrorCode.NULL_EXCEPTION);

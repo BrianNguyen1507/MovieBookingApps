@@ -5,7 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class MapTheater extends StatefulWidget {
-  const MapTheater({super.key});
+  final String theaeterName;
+  const MapTheater({super.key, required this.theaeterName});
 
   @override
   State<MapTheater> createState() => MapTheaterState();
@@ -41,8 +42,8 @@ class MapTheaterState extends State<MapTheater> {
           Marker(
             markerId: const MarkerId('theater'),
             position: _theaterLocation,
-            infoWindow: const InfoWindow(
-              title: 'theaeter Name',
+            infoWindow: InfoWindow(
+              title: widget.theaeterName,
             ),
           ),
         },

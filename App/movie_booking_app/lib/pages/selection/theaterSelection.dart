@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
-import 'package:movie_booking_app/pages/googlemap/googleMap.dart';
+import 'package:movie_booking_app/models/theater/theater.dart';
+import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/selection/components/theaterItem.dart';
+import 'package:movie_booking_app/services/Users/theater/theaterService.dart';
 
 class TheaterSelection extends StatefulWidget {
-  const TheaterSelection({super.key});
+  final int movieId;
+  final String name;
+  const TheaterSelection(
+      {super.key, required this.movieId, required this.name});
 
   @override
   State<TheaterSelection> createState() => _TheaterSelectionState();
 }
 
+late Future<List<Theater>> listTheater;
+
 class _TheaterSelectionState extends State<TheaterSelection> {
+  @override
+  void initState() {
+    super.initState();
+    listTheater = GetAllMovieTheater.getAllMovieTheater();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,12 +35,16 @@ class _TheaterSelectionState extends State<TheaterSelection> {
         iconTheme: const IconThemeData(
           color: AppColors.containerColor,
         ),
-        title: const Text('MOVIE NAME'),
+        title: Text(
+          widget.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         titleTextStyle: AppStyle.bannerText,
       ),
       body: Container(
         decoration: const BoxDecoration(
-          color: AppColors.containerColor,
+          color: AppColors.commonLightColor,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
@@ -37,8 +53,10 @@ class _TheaterSelectionState extends State<TheaterSelection> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
               child: Row(
                 children: [
                   SizedBox(
@@ -71,101 +89,36 @@ class _TheaterSelectionState extends State<TheaterSelection> {
               ),
             ),
             Expanded(
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: AppSize.width(context),
-                      padding: const EdgeInsets.all(5.0),
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          color: AppColors.containerColor,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 6.0,
-                              color: AppColors.shadowColor,
-                              offset: Offset(2, 1),
-                            ),
-                          ]),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: AppColors.primaryColor,
-                                          width: 2.0),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    padding: const EdgeInsets.all(5.0),
-                                    margin: const EdgeInsets.all(5.0),
-                                    child: SvgPicture.string(svgTheater),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: AppSize.width(context) * 0.5,
-                                        child: const Text(
-                                          'Cinema Ward 888888888888888888888888888888',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: AppStyle.titleTheater,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: AppSize.width(context) * 0.5,
-                                        child: const Text(
-                                          'Cinema Ward 1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaádadadasdaaaaaaaaa',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: AppStyle.smallText,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return const FractionallySizedBox(
-                                        child: MapTheater(),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: SizedBox(
-                                  child: SizedBox(
-                                    width: 30.0,
-                                    height: 30.0,
-                                    child: SvgPicture.string(
-                                      svgMap,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              child: FutureBuilder(
+                future: listTheater,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return loadingData(context);
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                        child: Text(
+                      'No theaters found',
+                      style: TextStyle(color: AppColors.primaryColor),
+                    ));
+                  } else {
+                    List<Theater> theaters = snapshot.data!;
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.all(10.0),
+                      itemCount: theaters.length,
+                      itemBuilder: (context, index) {
+                        return TheaterItems.theaterTag(
+                          context,
+                          theaters,
+                          index,
+                          widget.movieId,
+                        );
+                      },
+                    );
+                  }
+                },
               ),
             ),
           ],

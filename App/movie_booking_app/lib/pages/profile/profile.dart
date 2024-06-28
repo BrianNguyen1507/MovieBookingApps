@@ -7,7 +7,7 @@ import 'package:movie_booking_app/pages/profile/guest.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
-import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {

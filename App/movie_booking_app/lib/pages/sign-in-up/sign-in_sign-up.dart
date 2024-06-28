@@ -10,7 +10,7 @@ import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/signIn/handleSignin.dart';
 import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
-
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
@@ -156,7 +156,11 @@ class _SignInPageState extends State<SignInPage> {
                                 alignment: Alignment.topLeft,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassWord()));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ForgotPassWord()));
                                   },
                                   child: const Text(
                                     'Forgot password',

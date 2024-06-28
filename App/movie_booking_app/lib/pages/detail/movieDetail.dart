@@ -8,6 +8,7 @@ import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/components/widgetComponents.dart';
 import 'package:movie_booking_app/pages/detail/trailerScreen.dart';
+import 'package:movie_booking_app/pages/selection/theaterSelection.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/utils/expandable.dart';
 
@@ -22,7 +23,7 @@ class MovieDetailPage extends StatefulWidget {
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
   late Future<MovieDetail> movieDetail;
-
+  late String movieName;
   @override
   void initState() {
     movieDetail = MovieDetailService.deatailMovieService(widget.movieId);
@@ -39,6 +40,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return loadingData(context);
         } else {
           MovieDetail detail = snapshot.data!;
+          movieName = detail.title;
           return Expanded(
               child: Container(
             color: Colors.white,
@@ -367,6 +369,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   }
 
   _onBookingPress(BuildContext context) {
-    Navigator.pushNamed(context, '/theater');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              TheaterSelection(movieId: widget.movieId, name: movieName),
+        ));
   }
 }

@@ -3,7 +3,7 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
 import 'package:movie_booking_app/services/Users/forgotpassword/forgotpassword.dart';
-import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class ForgotPassWord extends StatefulWidget {
   const ForgotPassWord({super.key});
