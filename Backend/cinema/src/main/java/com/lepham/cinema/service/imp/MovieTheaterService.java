@@ -28,7 +28,6 @@ public class MovieTheaterService implements IMovieTheaterService {
     MovieTheaterConverter movieTheaterConverter;
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public List<MovieTheaterResponse> getAllMovieTheater() {
         List<MovieTheaterEntity> entities = movieTheaterRepository.findAllByHide(false);
         return entities.stream().map(movieTheaterConverter::toResponse).collect(Collectors.toList());

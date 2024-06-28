@@ -8,4 +8,6 @@ public class ConstantVariable {
     public static final int hourStart =8;
     public static final int dayOfSchedule = 10;
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final int direct = 0;
+    public static final int percent = 1;
 }

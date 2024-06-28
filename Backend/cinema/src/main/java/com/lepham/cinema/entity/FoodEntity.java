@@ -28,10 +28,6 @@ public class FoodEntity {
     @Column(name = "hide", nullable = false)
     boolean hide;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "food_order",
-            joinColumns = @JoinColumn(name = "food_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    List<OrderEntity> orders;
+    @OneToMany(mappedBy = "food")
+    List<FoodOrderEntity> foodOrders;
 }
