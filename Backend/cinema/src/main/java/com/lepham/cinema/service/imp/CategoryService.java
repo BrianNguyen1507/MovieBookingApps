@@ -46,6 +46,7 @@ public class CategoryService implements ICategoryService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public CategoryResponse create(CategoryRequest request) {
+        if (categoryRepository.findByName(request.getName()).isPresent()) throw new AppException(ErrorCode.CATEGORY_NAME_DUPLICATE);
         CategoryEntity entity = categoryConverter.toEntity(request);
         return categoryConverter.toCategoryResponse(categoryRepository.save(entity));
     }
@@ -54,6 +55,7 @@ public class CategoryService implements ICategoryService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public CategoryResponse update(CategoryRequest request) {
+        if (categoryRepository.findByName(request.getName()).isPresent()) throw new AppException(ErrorCode.CATEGORY_NAME_DUPLICATE);
         CategoryEntity entity = categoryRepository.getReferenceById(request.getId());
         entity.setName(request.getName());
         return categoryConverter.toCategoryResponse(categoryRepository.save(entity));

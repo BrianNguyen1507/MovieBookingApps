@@ -1,10 +1,7 @@
 package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.ShowTimesRequest;
-import com.lepham.cinema.dto.response.APIResponse;
-import com.lepham.cinema.dto.response.LatestDateResponse;
-import com.lepham.cinema.dto.response.MovieScheduleResponse;
-import com.lepham.cinema.dto.response.ShowTimeResponse;
+import com.lepham.cinema.dto.response.*;
 import com.lepham.cinema.service.imp.MovieScheduleService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -14,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -54,6 +52,14 @@ public class MovieScheduleController {
     APIResponse<MovieScheduleResponse> updateSchedule(@RequestParam("id") long id,@RequestParam("filmId") long filmId) throws ParseException {
         return APIResponse.<MovieScheduleResponse>builder()
                 .result(movieScheduleService.updateSchedule(id,filmId))
+                .build();
+    }
+    @GetMapping(value = "/getAllScheduleMobile")
+    APIResponse<ScheduleMobileResponse> getAllScheduleByTheaterAndFilm(@RequestParam("filmId") long filmId,
+                                                                       @RequestParam("theaterId") long theaterId,
+                                                                       @RequestParam("date") LocalDate date){
+        return APIResponse.<ScheduleMobileResponse>builder()
+                .result(movieScheduleService.getAllScheduleByTheaterAndFilm(theaterId,filmId,date))
                 .build();
     }
 }

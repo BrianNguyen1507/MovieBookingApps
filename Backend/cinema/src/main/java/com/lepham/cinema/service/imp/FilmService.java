@@ -35,7 +35,6 @@ public class FilmService implements IFilmService {
 
     FilmConverter filmConverter;
 
-    CategoryConverter categoryConverter;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
@@ -71,6 +70,7 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse addFilm(FilmRequest request) throws ParseException {
+        if(filmRepository.findByTitle(request.getTitle()).isPresent()) throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
         FilmEntity entity = filmConverter.toFilmEntity(request);
         entity.setHide(false);
         return filmConverter.toFilmResponse(filmRepository.save(entity));
@@ -79,6 +79,7 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse updateFilm(long id, FilmRequest request) throws ParseException {
+        if(filmRepository.findByTitle(request.getTitle()).isPresent()) throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
         FilmEntity entity = filmRepository.getReferenceById(id);
         FilmEntity entityUpdate = filmConverter.toFilmEntity(request);
         entityUpdate.setId(entity.getId());

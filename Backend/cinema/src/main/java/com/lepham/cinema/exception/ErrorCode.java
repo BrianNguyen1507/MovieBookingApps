@@ -31,7 +31,9 @@ public enum ErrorCode {
     INVALID_DATE(1019, "Invalid date", HttpStatus.BAD_REQUEST),
     NUMBER_NOT_NEGATIVE(1020, "Number is not negative", HttpStatus.BAD_REQUEST),
     INVALID_PRICE(1021, "Price is invalid", HttpStatus.BAD_REQUEST),
-    NOT_EXISTS_EMAIL(1022, "Email does not exists", HttpStatus.BAD_REQUEST)
+    NOT_EXISTS_EMAIL(1022, "Email does not exists", HttpStatus.BAD_REQUEST),
+    CATEGORY_NAME_DUPLICATE(1023, "Category name is duplicate", HttpStatus.BAD_REQUEST),
+    FILM_NAME_DUPLICATE(1024, "Film title is duplicate", HttpStatus.BAD_REQUEST)
     ;
 
 

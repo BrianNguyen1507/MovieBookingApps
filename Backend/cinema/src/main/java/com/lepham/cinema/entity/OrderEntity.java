@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -21,20 +21,22 @@ public class OrderEntity {
     long id;
     @Column(name = "order_code",nullable = false)
     String orderCode;
+
+    @Lob
     @Column(name = "seat",nullable = false)
-    int seat;
+    int[] seat;
     @Column(name = "sumtotal",nullable = false)
     int sumTotal;
     @Column(name = "date",nullable = false)
-    Date date;
+    LocalDate date;
     @Column(name = "quantity_ticket",nullable = false)
-    double quantityTicket;
+    int quantityTicket;
     @Column(name = "payment_method",nullable = false)
     double paymentMethod;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "film_id", nullable = false)
-    FilmEntity films;
+    @JoinColumn(name = "movie_schedule_id", nullable = false)
+    MovieScheduleEntity movieSchedule;
 
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "orders")
     List<FoodEntity> foods;
