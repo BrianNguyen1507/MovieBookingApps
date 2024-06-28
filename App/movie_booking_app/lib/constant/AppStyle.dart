@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
+  //theater
+  static const TextStyle titleTheater = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.small,
+    fontWeight: FontWeight.bold,
+    color: AppColors.darktextColor,
+  );
+
 //home
   static const TextStyle titleMovie = TextStyle(
     fontFamily: 'Roboto',
