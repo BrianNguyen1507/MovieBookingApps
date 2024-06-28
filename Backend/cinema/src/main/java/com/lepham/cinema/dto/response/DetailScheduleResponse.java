@@ -3,23 +3,17 @@ package com.lepham.cinema.dto.response;
 import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderResponse {
+public class DetailScheduleResponse {
     long id;
-    String orderCode;
-    String seat;
-    double sumTotal;
-    LocalDateTime date;
-    String paymentMethod;
-    String paymentCode;
-    boolean pending;
+    LocalDateTime timeStart;
+    int[][] seat;
 }

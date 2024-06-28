@@ -1,10 +1,7 @@
 package com.lepham.cinema.converter;
 
 import com.lepham.cinema.constant.ConstantVariable;
-import com.lepham.cinema.dto.response.FilmScheduleResponse;
-import com.lepham.cinema.dto.response.MovieScheduleResponse;
-import com.lepham.cinema.dto.response.ScheduleHourResponse;
-import com.lepham.cinema.dto.response.ScheduleMobileResponse;
+import com.lepham.cinema.dto.response.*;
 import com.lepham.cinema.entity.MovieScheduleEntity;
 import org.mapstruct.Mapper;
 
@@ -33,7 +30,7 @@ public interface MovieScheduleConverter {
             scheduleDayResponses.add(
                     ScheduleHourResponse.builder()
                             .id(movieSchedule.getId())
-                            .roomNUmber(movieSchedule.getRoom().getNumber())
+                            .roomNumber(movieSchedule.getRoom().getNumber())
                             .times(movieSchedule.getTimeStart().toLocalTime())
                             .build()
             );
@@ -41,4 +38,6 @@ public interface MovieScheduleConverter {
         response.setScheduleByHour(scheduleDayResponses);
         return response;
     }
+
+    DetailScheduleResponse toDetailScheduleResponse(MovieScheduleEntity movieSchedule);
 }

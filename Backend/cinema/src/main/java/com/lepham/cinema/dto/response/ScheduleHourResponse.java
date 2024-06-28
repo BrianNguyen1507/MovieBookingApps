@@ -12,6 +12,6 @@ import java.time.LocalTime;
 @Builder
 public class ScheduleHourResponse {
     long id;
-    int roomNUmber;
+    int roomNumber;
     LocalTime times;
 }

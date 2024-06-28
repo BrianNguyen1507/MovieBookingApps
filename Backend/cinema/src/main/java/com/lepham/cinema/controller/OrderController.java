@@ -1,7 +1,9 @@
 package com.lepham.cinema.controller;
 
+import com.lepham.cinema.dto.request.OrderFilmRequest;
 import com.lepham.cinema.dto.request.SumTotalRequest;
 import com.lepham.cinema.dto.response.APIResponse;
+import com.lepham.cinema.dto.response.OrderResponse;
 import com.lepham.cinema.dto.response.SumTotalResponse;
 import com.lepham.cinema.dto.response.VoucherResponse;
 import com.lepham.cinema.service.imp.OrderService;
@@ -41,6 +43,26 @@ public class OrderController {
                                      @RequestParam("price") double price){
         return APIResponse.<Double>builder()
                 .result(orderService.applyVoucher(price,voucherId))
+                .build();
+    }
+    @PostMapping("/createOrder")
+    APIResponse<OrderResponse> createOrder(@RequestBody OrderFilmRequest request){
+        return APIResponse.<OrderResponse>builder()
+                .result(orderService.createOrder(request))
+                .build();
+    }
+    @PostMapping("/holdSeat")
+    APIResponse<?> holdSeat(@RequestParam("scheduleId") long id, @RequestParam("seat") String  seat){
+        orderService.holeSeat(id,seat);
+        return APIResponse.builder()
+                .message("Hold the seat successfully")
+                .build();
+    }
+    @PostMapping("/returnSeat")
+    APIResponse<?> returnSeat(@RequestParam("scheduleId") long id, @RequestParam("seat") String  seat){
+        orderService.returnSeat(id,seat);
+        return APIResponse.builder()
+                .message("RefundSeat the seat successfully")
                 .build();
     }
 

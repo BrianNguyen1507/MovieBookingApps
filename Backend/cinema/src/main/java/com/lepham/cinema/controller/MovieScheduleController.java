@@ -62,4 +62,12 @@ public class MovieScheduleController {
                 .result(movieScheduleService.getAllScheduleByTheaterAndFilm(theaterId,filmId,date))
                 .build();
     }
+
+    @GetMapping(value = "/getMovieScheduleById")
+    APIResponse<DetailScheduleResponse> getMovieScheduleById(@RequestParam("id") long id){
+        return APIResponse.<DetailScheduleResponse>builder()
+                .result(movieScheduleService.getMovieScheduleById(id))
+                .build();
+    }
+
 }
