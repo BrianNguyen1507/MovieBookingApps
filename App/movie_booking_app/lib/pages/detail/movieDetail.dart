@@ -60,9 +60,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                 AsyncSnapshot<Uint8List> snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return loadingData(context);
+                                return const SizedBox();
                               } else if (snapshot.hasError) {
-                                return loadingData(context);
+                                return const SizedBox();
                               } else {
                                 return Image.memory(
                                   height: 150,
@@ -366,5 +366,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
-  _onBookingPress(BuildContext context) {}
+  _onBookingPress(BuildContext context) {
+    Navigator.pushNamed(context, '/theater');
+  }
 }

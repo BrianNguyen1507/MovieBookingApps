@@ -4,7 +4,10 @@
     <application
         android:label="movie_booking_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+    >
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAa3KJ47pt4yyZd6x4mzpBiLRYRbIBuIDA" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
