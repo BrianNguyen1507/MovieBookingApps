@@ -26,7 +26,6 @@ public class FoodService implements IFoodService {
     FoodConverter converter;
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public List<FoodResponse> getAllFood() {
         List<FoodEntity> entities = repository.findAllByHide(false);
         return entities.stream().map(converter::toFoodResponse).toList();

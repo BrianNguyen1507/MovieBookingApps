@@ -2,10 +2,7 @@ package com.lepham.cinema.service;
 
 import com.lepham.cinema.dto.request.ShowTimeRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
-import com.lepham.cinema.dto.response.LatestDateResponse;
-import com.lepham.cinema.dto.response.MovieScheduleResponse;
-import com.lepham.cinema.dto.response.ScheduleMobileResponse;
-import com.lepham.cinema.dto.response.ShowTimeResponse;
+import com.lepham.cinema.dto.response.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -22,5 +19,7 @@ public interface IMovieScheduleService {
     MovieScheduleResponse updateSchedule(long id,long filmId);
 
     ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId, LocalDate date);
+
+    DetailScheduleResponse getMovieScheduleById(long id);
 
 }

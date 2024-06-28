@@ -301,6 +301,13 @@ public class MovieScheduleService implements IMovieScheduleService {
         return movieScheduleConverter.toScheduleMobileResponse(scheduleEntities,filmConverter.toFilmScheduleResponse(scheduleEntities.getFirst().getFilm()));
     }
 
+    @Override
+    public DetailScheduleResponse getMovieScheduleById(long id) {
+        MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(id)
+                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+        return movieScheduleConverter.toDetailScheduleResponse(movieSchedule);
+    }
+
     int getDayByCalendar(Calendar cdStart, Calendar cdEnd) {
         return cdEnd.get(Calendar.DAY_OF_YEAR) - cdStart.get(Calendar.DAY_OF_YEAR);
     }

@@ -33,7 +33,10 @@ public enum ErrorCode {
     INVALID_PRICE(1021, "Price is invalid", HttpStatus.BAD_REQUEST),
     NOT_EXISTS_EMAIL(1022, "Email does not exists", HttpStatus.BAD_REQUEST),
     CATEGORY_NAME_DUPLICATE(1023, "Category name is duplicate", HttpStatus.BAD_REQUEST),
-    FILM_NAME_DUPLICATE(1024, "Film title is duplicate", HttpStatus.BAD_REQUEST)
+    FILM_NAME_DUPLICATE(1024, "Film title is duplicate", HttpStatus.BAD_REQUEST),
+    SEAT_WAS_ORDERED(1025, "Seat was ordered", HttpStatus.BAD_REQUEST),
+    VOUCHER_NOY_ENOUGH(1026, "Voucher was not enough", HttpStatus.BAD_REQUEST),
+    SEAT_NOT_ORDERED(1027, "Seat was not ordered", HttpStatus.BAD_REQUEST),
     ;
 
 

@@ -48,15 +48,52 @@ public class MovieScheduleEntity {
         return seat;
     }
 
-    public boolean orderSeat(int[][] seat,int positionRow, int positionColumn){
-        for(int i=1;i<=seat.length;i++){
-            for(int j=1;j<seat[i].length;j++){
-                if(seat[i][j]==0){
-                    seat[i][j]=1;
-                    return true;
+    public boolean orderSeat(String seatOrder){
+        String[] array = seatOrder.split(",");
+        for (String string : array) {
+            try {
+                int rowIndex = string.charAt(0) - 'A';
+                int columnIndex = Integer.parseInt(string.charAt(1)+"")-1;
+                if(seat[rowIndex][columnIndex] == 1){
+                    return false;
                 }
+                seat[rowIndex][columnIndex] = 1;
+            } catch (NumberFormatException e) {
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+    public boolean holdSeat(String seatOrder){
+        String[] array = seatOrder.split(",");
+        for (String string : array) {
+            try {
+                int rowIndex = string.charAt(0) - 'A';
+                int columnIndex = Integer.parseInt(string.charAt(1)+"")-1;
+                if(seat[rowIndex][columnIndex] == 1){
+                    return false;
+                }
+                seat[rowIndex][columnIndex] = 2;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean refundSeat(String seatOrder){
+        String[] array = seatOrder.split(",");
+        for (String string : array) {
+            try {
+                int rowIndex = string.charAt(0) - 'A';
+                int columnIndex = Integer.parseInt(string.charAt(1)+"")-1;
+                if(seat[rowIndex][columnIndex] != 2){
+                    return false;
+                }
+                seat[rowIndex][columnIndex] = 0;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
     }
 }
