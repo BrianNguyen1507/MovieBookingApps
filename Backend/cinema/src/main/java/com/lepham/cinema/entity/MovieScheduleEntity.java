@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +22,8 @@ public class MovieScheduleEntity {
     @Column(name = "id")
     long id;
     @Column(name = "time_start",nullable = false)
-    Date timeStart;
+    LocalDateTime timeStart;
+
     @Column(name = "seat",length = 1000,nullable = false)
     int[][] seat;
 
@@ -30,6 +34,10 @@ public class MovieScheduleEntity {
     @ManyToOne
     @JoinColumn(name = "film_id")
     FilmEntity film;
+
+    @OneToMany(mappedBy = "movieSchedule", fetch = FetchType.LAZY)
+    List<OrderEntity> orders;
+
     public int[][] generateSeat(int row, int column){
         int[][] seat = new int[row][column];
         for(int i=0;i<row;i++){

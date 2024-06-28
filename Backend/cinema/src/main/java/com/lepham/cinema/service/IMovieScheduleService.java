@@ -4,9 +4,11 @@ import com.lepham.cinema.dto.request.ShowTimeRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
 import com.lepham.cinema.dto.response.LatestDateResponse;
 import com.lepham.cinema.dto.response.MovieScheduleResponse;
+import com.lepham.cinema.dto.response.ScheduleMobileResponse;
 import com.lepham.cinema.dto.response.ShowTimeResponse;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IMovieScheduleService {
@@ -18,4 +20,7 @@ public interface IMovieScheduleService {
     List<MovieScheduleResponse> swapSchedule(long id, long idSwap);
 
     MovieScheduleResponse updateSchedule(long id,long filmId);
+
+    ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId, LocalDate date);
+
 }

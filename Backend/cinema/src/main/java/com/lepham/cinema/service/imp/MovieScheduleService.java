@@ -6,10 +6,7 @@ import com.lepham.cinema.converter.FilmConverter;
 import com.lepham.cinema.converter.MovieScheduleConverter;
 import com.lepham.cinema.dto.request.ShowTimeRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
-import com.lepham.cinema.dto.response.FilmScheduleResponse;
-import com.lepham.cinema.dto.response.LatestDateResponse;
-import com.lepham.cinema.dto.response.MovieScheduleResponse;
-import com.lepham.cinema.dto.response.ShowTimeResponse;
+import com.lepham.cinema.dto.response.*;
 import com.lepham.cinema.entity.FilmEntity;
 import com.lepham.cinema.entity.MovieScheduleEntity;
 import com.lepham.cinema.entity.RoomEntity;
@@ -28,6 +25,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,17 +55,11 @@ public class MovieScheduleService implements IMovieScheduleService {
     public LatestDateResponse getLatestDate() {
         MovieScheduleEntity entity = movieScheduleRepository.getLatestDate();
         LatestDateResponse response = new LatestDateResponse();
-        Date dateStart = entity == null ? new Date() : entity.getTimeStart();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateStart);
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        dateStart = calendar.getTime();
-        calendar = Calendar.getInstance();
-        calendar.setTime(dateStart);
-        calendar.add(Calendar.DAY_OF_YEAR, ConstantVariable.step);
-        Date dateEnd = calendar.getTime();
-        response.setDateStart(DateConverter.toStringDMY(dateStart));
-        response.setDateEnd(DateConverter.toStringDMY(dateEnd));
+        LocalDate localDate = entity.getTimeStart().toLocalDate();
+        localDate.plusDays(1);
+        response.setDateStart(localDate);
+        localDate.plusDays(ConstantVariable.step);
+        response.setDateEnd(localDate);
         return response;
     }
     @Override
@@ -79,13 +74,16 @@ public class MovieScheduleService implements IMovieScheduleService {
             entities.add(entity);
         }
         List<ShowTimeResponse> showTimeResponses = new ArrayList<>();
-        Date dateStart = DateConverter.stringParseYMD(requests.getDateStart());
+        Date dateStart = DateConverter.convertLocalDateToDate(requests.getDateStart());
         Calendar cdStart = Calendar.getInstance();
         cdStart.setTime(dateStart);
         Calendar cdEnd = Calendar.getInstance();
         cdEnd.setTime(dateStart);
         cdEnd.add(Calendar.DAY_OF_YEAR, 7);
-        List<FilmEntity> filmEntities = filmRepository.findAllByActive();
+
+
+
+        List<FilmEntity> filmEntities = filmRepository.findAllByActiveAndHide();
         for (FilmEntity film : filmEntities) {
             if (!entities.contains(film)) {
                 Calendar cdFilm = Calendar.getInstance();
@@ -159,7 +157,7 @@ public class MovieScheduleService implements IMovieScheduleService {
                     Calendar cdShowTime = Calendar.getInstance();
                     cdShowTime.setTime(DateConverter.localDateToDate(schedule.getFilm().getReleaseDate()));
                     Calendar cdStart = Calendar.getInstance();
-                    cdStart.setTime(DateConverter.stringParseYMD(request.getDateStart()));
+                    cdStart.setTime(DateConverter.convertLocalDateToDate(request.getDateStart()));
                     if(cdShowTime.get(Calendar.DAY_OF_YEAR)-cdStart.get(Calendar.DAY_OF_YEAR)<=i+1){
                         schedule = saveSchedule(showTime.getIdFilm(), idRoom);
                         movieSchedule.add(schedule);
@@ -169,20 +167,22 @@ public class MovieScheduleService implements IMovieScheduleService {
 
             movieScheduleAllDay.add(movieSchedule);
         }
-        Date dateStart = DateConverter.stringParseYMD(request.getDateStart());
+        LocalDate dateStart = request.getDateStart();
         List<MovieScheduleEntity> entities = new ArrayList<>();
         for (List<MovieScheduleEntity> movieSchedule : movieScheduleAllDay) {
             int day = movieScheduleAllDay.indexOf(movieSchedule);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(dateStart);
-            calendar.add(Calendar.DAY_OF_YEAR, day);
-            calendar.add(Calendar.HOUR_OF_DAY, ConstantVariable.hourStart);
+            LocalDateTime localDateTime = LocalDateTime.now()
+                    .withDayOfYear(dateStart.getDayOfYear()+day)
+                    .withHour(ConstantVariable.hourStart)
+                    .withMinute(0)
+                    .withSecond(0)
+                    .withNano(0);
             long id=0;
             for (MovieScheduleEntity schedule : movieSchedule) {
                 if(id!=0){
                     schedule.setId(++id);
                 }
-                schedule.setTimeStart(calendar.getTime());
+                schedule.setTimeStart(localDateTime);
                 schedule = movieScheduleRepository.save(schedule);
                 entities.add(schedule);
                 id=schedule.getId();
@@ -199,13 +199,13 @@ public class MovieScheduleService implements IMovieScheduleService {
 
                 int hours = (duration / 60);
                 int minutes =(duration % (60 * hours));
-                if(minutes+calendar.get(Calendar.MINUTE)>=60){
+                if(minutes+localDateTime.getMinute()>=60){
                     minutes= minutes-60;
                     hours++;
                 }
-                if(calendar.get(Calendar.HOUR_OF_DAY)+hours >= 24 || calendar.get(Calendar.HOUR_OF_DAY) < ConstantVariable.hourStart)break;
-                calendar.add(Calendar.MINUTE, minutes);
-                calendar.add(Calendar.HOUR_OF_DAY, hours);
+                if(localDateTime.getHour()+hours >= 24 || localDateTime.getHour()< ConstantVariable.hourStart)break;
+                localDateTime  = localDateTime.plusMinutes(minutes);
+                localDateTime = localDateTime.plusHours(hours);
             }
         }
         return entities.stream()
@@ -223,36 +223,37 @@ public class MovieScheduleService implements IMovieScheduleService {
         MovieScheduleEntity scheduleSwap = movieScheduleRepository.findById(idSwap)
                 .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(schedule.getTimeStart());
-        int hour =  calendar.get(Calendar.HOUR_OF_DAY);
-        int day = calendar.get(Calendar.DAY_OF_YEAR);
-        int year = calendar.get(Calendar.YEAR);
+        LocalDateTime localDateTime = schedule.getTimeStart(); // Example LocalDateTime
+
+        // Extract hour, day of year, and year
+        int hour = localDateTime.getHour();
+        int day = localDateTime.getDayOfYear();
+        int year = localDateTime.getYear();
         List<MovieScheduleEntity> listSchedule = movieScheduleRepository.getAllByTimeStartAfter(schedule.getTimeStart());
 
-        calendar.setTime(scheduleSwap.getTimeStart());
-        int hourSwap =  calendar.get(Calendar.HOUR_OF_DAY);
-        int daySwap = calendar.get(Calendar.DAY_OF_YEAR);
-        int yearSwap = calendar.get(Calendar.YEAR);
+        localDateTime  =scheduleSwap.getTimeStart();
+        int hourSwap =  localDateTime.getHour();
+        int daySwap = localDateTime.getDayOfYear();
+        int yearSwap =localDateTime.getYear();
         List<MovieScheduleEntity> listScheduleSwap = movieScheduleRepository.getAllByTimeStartAfter(scheduleSwap.getTimeStart());
         if( day==daySwap && yearSwap==year){
             if(hour<hourSwap){
                 FilmEntity film = schedule.getFilm();
                 schedule.setFilm(scheduleSwap.getFilm());
                 scheduleSwap.setFilm(film);
-                calendar.setTime(schedule.getTimeStart());
+                localDateTime = schedule.getTimeStart();
                 int duration = (schedule.getFilm().getDuration() % 10) <= 5 ?
                         (schedule.getFilm().getDuration() / 10) * 10 + 10 :
                         (schedule.getFilm().getDuration() / 10) * 10 + 15;
                 hour = (duration / 60);
                 int minute =(duration % (60 * hour));
-                if(minute+calendar.get(Calendar.MINUTE)>=60){
+                if(minute+localDateTime.getMinute()>=60){
                     minute=60-minute;
                     hour++;
                 }
-                calendar.add(Calendar.MINUTE, minute);
-                calendar.add(Calendar.HOUR_OF_DAY, hour);
-                scheduleSwap.setTimeStart(calendar.getTime());
+                localDateTime.plusMinutes(minute);
+                localDateTime.plusHours(hour);
+                scheduleSwap.setTimeStart(localDateTime);
                 schedule = movieScheduleRepository.save(schedule);
                 scheduleSwap = movieScheduleRepository.save(scheduleSwap);
                 response.add(schedule);
@@ -292,15 +293,23 @@ public class MovieScheduleService implements IMovieScheduleService {
         return movieScheduleConverter.toResponse(listSchedule.getFirst(),filmConverter.toFilmScheduleResponse(film));
     }
 
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId,LocalDate date) {
+        List<MovieScheduleEntity> scheduleEntities = movieScheduleRepository.findAllByFilmAndMovieTheater(filmId,theaterId,date);
+        if(scheduleEntities.isEmpty()) throw  new AppException(ErrorCode.NULL_EXCEPTION);
+        return movieScheduleConverter.toScheduleMobileResponse(scheduleEntities,filmConverter.toFilmScheduleResponse(scheduleEntities.getFirst().getFilm()));
+    }
+
     int getDayByCalendar(Calendar cdStart, Calendar cdEnd) {
         return cdEnd.get(Calendar.DAY_OF_YEAR) - cdStart.get(Calendar.DAY_OF_YEAR);
     }
 
     MovieScheduleEntity saveSchedule(long idFilm, long idRoom) {
         MovieScheduleEntity schedule = new MovieScheduleEntity();
-        FilmEntity film = filmRepository.findById(idFilm)
+        FilmEntity film = filmRepository.findByIdAndHide(idFilm,false)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        RoomEntity room = roomRepository.findById(idRoom)
+        RoomEntity room = roomRepository.findByIdAndHide(idRoom,false)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         schedule.setFilm(film);
         schedule.setRoom(room);
@@ -309,26 +318,25 @@ public class MovieScheduleService implements IMovieScheduleService {
     }
     List<MovieScheduleEntity> checkSwap(List<MovieScheduleEntity> scheduleEntities,FilmEntity film){
         List<MovieScheduleEntity> listScheduleSwap = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(scheduleEntities.getFirst().getTimeStart());
+        LocalDateTime localDateTime = scheduleEntities.getFirst().getTimeStart();
         for(MovieScheduleEntity schedule : scheduleEntities){
             if(schedule.equals(scheduleEntities.getFirst())){
                 schedule.setFilm(film);
             }
-            schedule.setTimeStart(calendar.getTime());
+            schedule.setTimeStart(localDateTime);
             listScheduleSwap.add(schedule);
             int duration = schedule.getFilm().getDuration() % 10 <= 5 ?
                     (schedule.getFilm().getDuration() / 10) * 10 + 10 :
                     (schedule.getFilm().getDuration() / 10) * 10 + 15;
             int hour = (duration / 60);
             int minute =(duration % (60 * hour));
-            if(minute+calendar.get(Calendar.MINUTE)>=60){
+            if(minute+localDateTime.getMinute()>=60){
                 minute = 60-minute;
                 hour++;
             }
-            if(calendar.get(Calendar.HOUR_OF_DAY)+hour >= 24 && !scheduleEntities.getLast().equals(schedule))return null;
-            calendar.add(Calendar.MINUTE, minute);
-            calendar.add(Calendar.HOUR_OF_DAY, hour);
+            if(localDateTime.getHour()+hour >= 24 && !scheduleEntities.getLast().equals(schedule))return null;
+            localDateTime.plusMinutes(minute);
+            localDateTime.plusHours(hour);
         }
         return listScheduleSwap;
     }

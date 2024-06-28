@@ -12,13 +12,13 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "category")
+@Table(name = "category", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name",nullable = false, unique = true)
     String name;
 
     @ManyToMany (mappedBy = "categories")

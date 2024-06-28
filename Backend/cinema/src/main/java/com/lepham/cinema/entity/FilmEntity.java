@@ -14,20 +14,20 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "film")
+@Table(name = "film",uniqueConstraints = {@UniqueConstraint(columnNames = "title")})
 public class FilmEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "title")
+    @Column(name = "title", nullable = false, unique = true)
     String title;
-    @Column(name = "duration", length = 30,nullable = false)
+    @Column(name = "duration", length = 30,nullable = false,unique = true)
     int duration;
     @Column(name = "description", length = 65535,nullable = false)
     @Lob
     byte[] description;
-    @Column(name = "release_date")
+    @Column(name = "release_date",nullable = false)
     LocalDate releaseDate;
     @Column(name = "director",nullable = false)
     String director;
@@ -61,6 +61,4 @@ public class FilmEntity {
     )
     List<CategoryEntity> categories;
 
-    @OneToMany(mappedBy = "films", fetch = FetchType.LAZY)
-    List<OrderEntity> orders;
 }
