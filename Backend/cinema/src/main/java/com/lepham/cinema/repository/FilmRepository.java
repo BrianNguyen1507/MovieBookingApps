@@ -1,6 +1,7 @@
 package com.lepham.cinema.repository;
 
 import com.lepham.cinema.entity.FilmEntity;
+import lombok.Builder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 public interface FilmRepository extends JpaRepository<FilmEntity, Long> {
 
-    Optional<FilmEntity> findByIdAndHide(long id, boolean hide);
+    Optional<FilmEntity> findByIdAndHideAndActive(long id,boolean hide , int active);
     Optional<FilmEntity> findByTitle(String title);
     @Query(value = "SELECT f FROM FilmEntity f WHERE f.releaseDate BETWEEN ?1 AND ?2 ")
     List<FilmEntity> findAllByReleasDate(Date dateStart, Date dateEnd);

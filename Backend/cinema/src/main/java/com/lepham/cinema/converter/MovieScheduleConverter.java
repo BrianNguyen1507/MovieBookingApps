@@ -29,10 +29,10 @@ public interface MovieScheduleConverter {
         response.setFilm(film);
         response.setDate(scheduleByDay.getLast().getTimeStart().toLocalDate());
         List<ScheduleHourResponse> scheduleDayResponses = new ArrayList<>();
-
         for (MovieScheduleEntity movieSchedule : scheduleByDay) {
             scheduleDayResponses.add(
                     ScheduleHourResponse.builder()
+                            .id(movieSchedule.getId())
                             .roomNUmber(movieSchedule.getRoom().getNumber())
                             .times(movieSchedule.getTimeStart().toLocalTime())
                             .build()

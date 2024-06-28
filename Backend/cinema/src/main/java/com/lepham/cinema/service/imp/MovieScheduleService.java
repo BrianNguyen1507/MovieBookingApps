@@ -307,7 +307,7 @@ public class MovieScheduleService implements IMovieScheduleService {
 
     MovieScheduleEntity saveSchedule(long idFilm, long idRoom) {
         MovieScheduleEntity schedule = new MovieScheduleEntity();
-        FilmEntity film = filmRepository.findByIdAndHide(idFilm,false)
+        FilmEntity film = filmRepository.findByIdAndHideAndActive(idFilm,false,0)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         RoomEntity room = roomRepository.findByIdAndHide(idRoom,false)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));

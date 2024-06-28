@@ -1,4 +1,4 @@
-package com.lepham.cinema.dto.response;
+package com.lepham.cinema.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -6,20 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class VoucherResponse {
+public class FoodOrderRequest {
     long id;
-    String title;
-    String content;
-    int typeDiscount;
-    double minLimit;
-    double discount;
     int quantity;
-    LocalDate expired;
-    boolean allow;
 }

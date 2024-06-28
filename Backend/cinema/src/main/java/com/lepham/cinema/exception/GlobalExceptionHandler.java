@@ -42,7 +42,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = AccessDeniedException.class)
     ResponseEntity<APIResponse> handlingAccessDeniedException(AccessDeniedException exception) {
         ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
-
         return ResponseEntity.status(errorCode.getStatusCode())
                 .body(APIResponse.builder()
                         .code(errorCode.getCode())

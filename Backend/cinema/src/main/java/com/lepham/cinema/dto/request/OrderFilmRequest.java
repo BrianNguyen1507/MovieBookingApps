@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,13 +14,9 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderFilmRequest {
-
-    long id;
-    LocalDate date;
     String paymentMethod;
     int quantityTicket;
-    int[] seat;
-    double sumTotal;
+    List<String> seat;
     AccountResponse accountResponse;
     MovieScheduleResponse movieScheduleResponse;
 }

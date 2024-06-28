@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -28,9 +29,7 @@ public class OrderEntity {
     @Column(name = "sumtotal",nullable = false)
     int sumTotal;
     @Column(name = "date",nullable = false)
-    LocalDate date;
-    @Column(name = "quantity_ticket",nullable = false)
-    int quantityTicket;
+    LocalDateTime date;
     @Column(name = "payment_method",nullable = false)
     double paymentMethod;
 
@@ -38,8 +37,8 @@ public class OrderEntity {
     @JoinColumn(name = "movie_schedule_id", nullable = false)
     MovieScheduleEntity movieSchedule;
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "orders")
-    List<FoodEntity> foods;
+    @OneToMany(mappedBy = "order")
+    List<FoodOrderEntity> foodOrders;
 
 
     @OneToOne(mappedBy = "order")
