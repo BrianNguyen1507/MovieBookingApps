@@ -22,4 +22,6 @@ public interface VoucherRepository extends JpaRepository<VoucherEntity,Long> {
     List<VoucherEntity> findAllByAllowVoucher(double price, long accountId);
     @Query("SELECT v FROM AccountVoucher av JOIN av.voucher v WHERE (av.account.id = ?2 AND av.hide = false and v.hide=false) and v.expired > Now() and v.minLimit>?1 or av.quantity<0")
     List<VoucherEntity> findAllByNotAllowVoucher(double price, long accountId);
+
+    VoucherEntity findByTypeDiscount(int type);
 }

@@ -14,9 +14,13 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderFilmRequest {
+    long movieScheduleId;
+    long voucherId;
+    long accountId;
     String paymentMethod;
-    int quantityTicket;
-    List<String> seat;
-    AccountResponse accountResponse;
-    MovieScheduleResponse movieScheduleResponse;
+    String paymentCode;
+    String seat;
+    double sumTotal;
+    List<FoodOrderRequest> food;
+
 }

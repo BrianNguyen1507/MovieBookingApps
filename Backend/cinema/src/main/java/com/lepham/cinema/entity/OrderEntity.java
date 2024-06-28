@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,18 +19,23 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "order_code",nullable = false)
+    @Column(name = "order_code", nullable = false)
     String orderCode;
 
-    @Lob
-    @Column(name = "seat",nullable = false)
-    int[] seat;
-    @Column(name = "sumtotal",nullable = false)
-    int sumTotal;
-    @Column(name = "date",nullable = false)
+    @Column(name = "seat", nullable = false)
+    String seat;
+    @Column(name = "sumtotal", nullable = false)
+    double sumTotal;
+    @Column(name = "date", nullable = false)
     LocalDateTime date;
-    @Column(name = "payment_method",nullable = false)
-    double paymentMethod;
+    @Column(name = "payment_method", nullable = false)
+    String paymentMethod;
+    @Column(name = "payment_code", nullable = false, length = 50)
+    String paymentCode;
+
+    @Column(name = "pending")
+    boolean pending;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_schedule_id", nullable = false)
