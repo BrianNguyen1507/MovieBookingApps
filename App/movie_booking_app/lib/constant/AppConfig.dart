@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  static const Color transpanrent = Colors.transparent;
+  static Color opacityBlackColor = Colors.black.withOpacity(0.3);
   static const Color backgroundColor = Color(0xFF000000);
-  static const Color primaryColor = Color(0xFF2693EF);
+  static const Color primaryColor = Color.fromARGB(255, 60, 161, 244);
   static const Color secondaryColor = Color.fromARGB(255, 152, 151, 151);
   static const Color commonColor = Color.fromARGB(255, 152, 151, 151);
   static const Color commonDarkColor = Color.fromARGB(255, 152, 151, 151);
@@ -23,15 +25,22 @@ class AppColors {
   static const Color shimmerLightColor = Color.fromARGB(255, 117, 117, 117);
   static const Color correctColor = Color.fromARGB(255, 51, 122, 29);
   static const Color errorColor = Color.fromARGB(255, 182, 47, 23);
-   static const Color shadowColor = Color.fromARGB(255, 151, 146, 146);
+  static const Color shadowColor = Color.fromARGB(255, 151, 146, 146);
+
+  static const Color seatAvailable = Color.fromARGB(255, 151, 146, 146);
+  static const Color seatSold = Color.fromARGB(255, 241, 61, 61);
+  static const Color seatPeding = Color.fromARGB(255, 225, 163, 8);
+  static const Color seatDisable = Color.fromARGB(255, 68, 68, 68);
+  static const Color textSeat = Color.fromARGB(255, 178, 172, 172);
 }
 
 class AppFontSize {
+  static const double superSmall = 10.0;
   static const double verySmall = 12.0;
   static const double small = 15.0;
   static const double lowMedium = 17.0;
   static const double medium = 20.0;
-   static const double midMedium = 30.0;
+  static const double midMedium = 30.0;
   static const double large = 40.0;
   static const double big = 50.0;
 }

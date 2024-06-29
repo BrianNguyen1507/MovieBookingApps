@@ -5,9 +5,8 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/schedule/schedule.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
-import 'package:movie_booking_app/pages/selection/components/scheduleWidget.dart';
+import 'package:movie_booking_app/pages/selection/components/schedulewidget/scheduleWidget.dart';
 import 'package:movie_booking_app/services/Users/schedule/scheduleService.dart';
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class ScheduleSelection extends StatefulWidget {
   final int movieId;
@@ -84,18 +83,17 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
                 } else if (snapshot.hasError) {
                   return Center(child: loadingContent);
                 } else if (snapshot.data == null) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    ValidInput val = ValidInput();
-                    val.showAlertCustom(
-                        context,
-                        'Oops! There are no schedules available. Please come back later.',
-                        '',
-                        null);
-                  });
-                  return const SizedBox.shrink();
+                  return Container(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
+                    child: const Text(
+                        'Oops! There are no schedules available. Please come back later.'),
+                  );
                 } else {
                   final scheduleSnapshot = snapshot.data!;
-                  return buildScheduleList(scheduleSnapshot, context);
+                  return buildScheduleList(scheduleSnapshot, context,
+                      widget.theaterName, widget.movieId);
                 }
               },
             ),

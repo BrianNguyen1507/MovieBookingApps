@@ -62,137 +62,139 @@ class _SignInPageState extends State<SignInPage> {
       ),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      padding:
-                          const EdgeInsets.only(left: 10, bottom: 2, top: 25),
-                      child: Text(
-                        _isSignUp
-                            ? AppLocalizations.of(context)!.sup
-                            : AppLocalizations.of(context)!.sin,
-                        style: const TextStyle(
-                          fontSize: AppFontSize.big,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        padding:
+                            const EdgeInsets.only(left: 10, bottom: 2, top: 25),
+                        child: Text(
+                          _isSignUp
+                              ? AppLocalizations.of(context)!.sup
+                              : AppLocalizations.of(context)!.sin,
+                          style: const TextStyle(
+                            fontSize: AppFontSize.big,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Column(
-                  children: [
-                    _isSignUp
-                        ? Column(
-                            children: [
-                              _buildTextField(
-                                  AppLocalizations.of(context)!.email,
-                                  _emailController),
-                              _buildPasswordField(
-                                  AppLocalizations.of(context)!.password,
-                                  _passwordController),
-                              _buildPasswordField(
-                                  AppLocalizations.of(context)!.repassword,
-                                  _confirmPasswordController),
-                              _buildTextField(
-                                  AppLocalizations.of(context)!.fullname,
-                                  _nameController),
-                              _buildTextField(
-                                  AppLocalizations.of(context)!.phone,
-                                  _phoneNumberController),
-                              _buildGenderField(),
-                              _buildDateOfBirthField(),
-                              _buildCheckBox(context),
-                              _buildButton(
-                                  _isSignUp
-                                      ? AppLocalizations.of(context)!.submit
-                                      : AppLocalizations.of(context)!.send,
-                                  () async {
-                                _emailController.text;
-                                _passwordController.text;
-                                _nameController.text;
-                                _phoneNumberController.text;
-                                _selectedGender;
-                                _dobController.text;
-                                _onSignUpPressed();
-                              }, true),
-                              Center(
-                                heightFactor: 3,
-                                child: Text(
-                                  AppLocalizations.of(context)!.ahac,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: AppFontSize.small,
+                  Column(
+                    children: [
+                      _isSignUp
+                          ? Column(
+                              children: [
+                                _buildTextField(
+                                    AppLocalizations.of(context)!.email,
+                                    _emailController),
+                                _buildPasswordField(
+                                    AppLocalizations.of(context)!.password,
+                                    _passwordController),
+                                _buildPasswordField(
+                                    AppLocalizations.of(context)!.repassword,
+                                    _confirmPasswordController),
+                                _buildTextField(
+                                    AppLocalizations.of(context)!.fullname,
+                                    _nameController),
+                                _buildTextField(
+                                    AppLocalizations.of(context)!.phone,
+                                    _phoneNumberController),
+                                _buildGenderField(),
+                                _buildDateOfBirthField(),
+                                _buildCheckBox(context),
+                                _buildButton(
+                                    _isSignUp
+                                        ? AppLocalizations.of(context)!.submit
+                                        : AppLocalizations.of(context)!.send,
+                                    () async {
+                                  _emailController.text;
+                                  _passwordController.text;
+                                  _nameController.text;
+                                  _phoneNumberController.text;
+                                  _selectedGender;
+                                  _dobController.text;
+                                  _onSignUpPressed();
+                                }, true),
+                                Center(
+                                  heightFactor: 3,
+                                  child: Text(
+                                    AppLocalizations.of(context)!.ahac,
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: AppFontSize.small,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              _buildSwitchButton(),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              _buildTextField(
-                                  AppLocalizations.of(context)!.email,
-                                  _emailController),
-                              _buildPasswordField(
-                                  AppLocalizations.of(context)!.password,
-                                  _passwordController),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                  left: 20,
+                                _buildSwitchButton(),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                _buildTextField(
+                                    AppLocalizations.of(context)!.email,
+                                    _emailController),
+                                _buildPasswordField(
+                                    AppLocalizations.of(context)!.password,
+                                    _passwordController),
+                                const SizedBox(
+                                  height: 20,
                                 ),
-                                alignment: Alignment.topLeft,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ForgotPassWord()));
-                                  },
-                                  child: const Text(
-                                    'Forgot password',
-                                    style: TextStyle(
-                                        color: AppColors.primaryColor),
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                  ),
+                                  alignment: Alignment.topLeft,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const ForgotPassWord()));
+                                    },
+                                    child: const Text(
+                                      'Forgot password',
+                                      style: TextStyle(
+                                          color: AppColors.primaryColor),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              _buildButton(AppLocalizations.of(context)!.send,
-                                  () {
-                                _emailController.text;
-                                _passwordController.text;
-                                _onSignInPressed();
-                              }, false),
-                              Center(
-                                heightFactor: 3,
-                                child: Text(
-                                  AppLocalizations.of(context)!.dhac,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: AppFontSize.small,
+                                _buildButton(AppLocalizations.of(context)!.send,
+                                    () {
+                                  _emailController.text;
+                                  _passwordController.text;
+                                  _onSignInPressed();
+                                }, false),
+                                Center(
+                                  heightFactor: 3,
+                                  child: Text(
+                                    AppLocalizations.of(context)!.dhac,
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: AppFontSize.small,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              _buildSwitchButton(),
-                            ],
-                          ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                                _buildSwitchButton(),
+                              ],
+                            ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
