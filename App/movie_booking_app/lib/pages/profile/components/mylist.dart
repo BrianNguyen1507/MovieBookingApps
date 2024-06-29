@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/pages/profile/informationChoice.dart';
 
 class Builditem {
   static Widget buildSliverList(BuildContext context) {
@@ -11,8 +12,10 @@ class Builditem {
             case 0:
               return buildListItem(
                 context,
-                text: 'My Details 1',
-                onPressed: () {},
+                text: 'Information',
+                onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const InformationChoice(),));
+                },
               );
             case 1:
               return buildListItem(
