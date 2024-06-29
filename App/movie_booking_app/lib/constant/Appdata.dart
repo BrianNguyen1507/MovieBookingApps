@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppIcon {
   static IconData watchedMovie = Icons.live_tv_rounded;
@@ -57,6 +58,25 @@ class Appdata {
         return 'Personal';
       default:
         return null;
+    }
+  }
+}
+
+class SeatClass {
+  static Color getSeatColor(int seatStatus) {
+    switch (seatStatus) {
+      case 0:
+        return AppColors.seatAvailable.withOpacity(0.3);
+      case 1:
+        return AppColors.seatSold.withOpacity(0.5);
+
+      case 2:
+        return AppColors.seatPeding.withOpacity(0.5);
+      case 3:
+        return AppColors.seatDisable.withOpacity(0.3);
+
+      default:
+        return AppColors.seatDisable.withOpacity(0.3);
     }
   }
 }

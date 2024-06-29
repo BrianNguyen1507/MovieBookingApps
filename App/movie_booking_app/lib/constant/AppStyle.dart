@@ -2,6 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
+  //seat
+  static const TextStyle seatText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.superSmall,
+    color: AppColors.textSeat,
+  );
+  //seat
+  static const TextStyle screenText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.lowMedium,
+    color: AppColors.textSeat,
+  );
   //theater
   static const TextStyle titleTheater = TextStyle(
     fontFamily: 'Roboto',
@@ -9,7 +21,7 @@ class AppStyle {
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
- static const TextStyle timerText = TextStyle(
+  static const TextStyle timerText = TextStyle(
     fontFamily: 'Roboto',
     fontSize: AppFontSize.verySmall,
     fontWeight: FontWeight.bold,
