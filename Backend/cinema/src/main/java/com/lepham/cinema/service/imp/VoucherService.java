@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,5 +70,29 @@ public class VoucherService implements IVoucherService {
             voucherRepository.save(entity);
         }
 
+    }
+
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public List<VoucherResponse> getAllVoucherByAccountAndMinLimit(double price, long accountId) {
+        List<VoucherResponse> responses = new ArrayList<>();
+        List<VoucherEntity> vouchers = voucherRepository.findAllByAllowVoucher(price, accountId);
+        if (!vouchers.isEmpty()) {
+            vouchers.forEach(entity -> {
+                VoucherResponse response = voucherConverter.toResponse(entity);
+                response.setAllow(true);
+                responses.add(response);
+            });
+        }
+        vouchers = voucherRepository.findAllByNotAllowVoucher(price, accountId);
+        if (!vouchers.isEmpty()) {
+            vouchers.forEach(entity -> {
+                VoucherResponse response = voucherConverter.toResponse(entity);
+                response.setAllow(false);
+                responses.add(response);
+            });
+        }
+
+        return responses;
     }
 }

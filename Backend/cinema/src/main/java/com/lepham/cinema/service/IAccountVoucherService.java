@@ -10,7 +10,6 @@ public interface IAccountVoucherService {
    void gift(AccountVoucherRequest request);
    void deleteVoucher (long id);
 
-   @PreAuthorize("hasRole('USER')")
    List<VoucherResponse> getVouchersByAccountId(long accountId);
 
 }
