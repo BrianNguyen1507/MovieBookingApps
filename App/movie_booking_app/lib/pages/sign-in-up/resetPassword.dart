@@ -3,7 +3,7 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/sign-in-up/sign-in_sign-up.dart';
 import 'package:movie_booking_app/services/Users/forgotpassword/resetPassword.dart';
-import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key, required this.email});
@@ -22,7 +22,7 @@ class ResetPasswordState extends State<ResetPassword> {
   TextEditingController passwordRefController = TextEditingController();
   ValidInput valid = ValidInput();
   String email = "";
-  String passwordWarning="";
+  String passwordWarning = "";
   String passwordMatch = "Password match";
   @override
   Widget build(BuildContext context) {
@@ -53,13 +53,15 @@ class ResetPasswordState extends State<ResetPassword> {
                       style: const TextStyle(color: Colors.black),
                       obscureText: _obscureText,
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(left: 10, right: 10),
+                        contentPadding:
+                            const EdgeInsets.only(left: 10, right: 10),
                         focusedBorder: const OutlineInputBorder(
-                          borderSide:
-                          BorderSide(color: AppColors.primaryColor, width: 3.0),
+                          borderSide: BorderSide(
+                              color: AppColors.primaryColor, width: 3.0),
                         ),
                         enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black54, width: 1.0),
+                          borderSide:
+                              BorderSide(color: Colors.black54, width: 1.0),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -72,8 +74,12 @@ class ResetPasswordState extends State<ResetPassword> {
                             });
                           },
                           icon: Icon(
-                            _obscureText ? AppIcon.visibleOff : AppIcon.visibleOn,
-                            color: _obscureText ? Colors.grey : AppColors.primaryColor,
+                            _obscureText
+                                ? AppIcon.visibleOff
+                                : AppIcon.visibleOn,
+                            color: _obscureText
+                                ? Colors.grey
+                                : AppColors.primaryColor,
                           ),
                         ),
                       ),
@@ -83,30 +89,32 @@ class ResetPasswordState extends State<ResetPassword> {
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Column(
                       children: [
-                       TextFormField(
+                        TextFormField(
                           controller: passwordRefController,
                           onChanged: (value) {
                             setState(() {
-                              if(passwordRefController.text==""){
+                              if (passwordRefController.text == "") {
                                 passwordWarning = "";
+                              } else {
+                                passwordWarning = passwordController.text !=
+                                        passwordRefController.text
+                                    ? "Password do not match!"
+                                    : passwordMatch;
                               }
-                              else{
-                                passwordWarning=passwordController.text!=passwordRefController.text?"Password do not match!":passwordMatch;
-                              }
-
                             });
-
                           },
                           style: const TextStyle(color: Colors.black),
                           obscureText: _obscureTextRef,
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(left: 10, right: 10),
+                            contentPadding:
+                                const EdgeInsets.only(left: 10, right: 10),
                             focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                              BorderSide(color: AppColors.primaryColor, width: 3.0),
+                              borderSide: BorderSide(
+                                  color: AppColors.primaryColor, width: 3.0),
                             ),
                             enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black54, width: 1.0),
+                              borderSide:
+                                  BorderSide(color: Colors.black54, width: 1.0),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -119,21 +127,26 @@ class ResetPasswordState extends State<ResetPassword> {
                                 });
                               },
                               icon: Icon(
-                                _obscureTextRef ? AppIcon.visibleOff : AppIcon.visibleOn,
-                                color: _obscureTextRef ? Colors.grey : AppColors.primaryColor,
+                                _obscureTextRef
+                                    ? AppIcon.visibleOff
+                                    : AppIcon.visibleOn,
+                                color: _obscureTextRef
+                                    ? Colors.grey
+                                    : AppColors.primaryColor,
                               ),
                             ),
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(top: 20,left: 10),
+                          margin: const EdgeInsets.only(top: 20, left: 10),
                           width: AppSize.width(context),
                           child: Text(
-                              passwordWarning,
+                            passwordWarning,
                             style: TextStyle(
-                              color: passwordWarning==passwordMatch?AppColors.correctColor:AppColors.errorColor,
-                              fontSize: AppFontSize.small
-                            ),
+                                color: passwordWarning == passwordMatch
+                                    ? AppColors.correctColor
+                                    : AppColors.errorColor,
+                                fontSize: AppFontSize.small),
                           ),
                         )
                       ],
@@ -147,7 +160,9 @@ class ResetPasswordState extends State<ResetPassword> {
                 padding: const EdgeInsets.all(10),
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: passwordWarning==passwordMatch?AppColors.buttonColor:AppColors.shimmerColor,
+                      backgroundColor: passwordWarning == passwordMatch
+                          ? AppColors.buttonColor
+                          : AppColors.shimmerColor,
                     ),
                     onPressed: () async {
                       if (passwordController.text ==

@@ -30,6 +30,13 @@ class ConverterUnit {
     return dateformat.format(date);
   }
 
+  static String formatTimeToHhmm(String timeString) {
+    DateFormat inputFormat = DateFormat('HH:mm:ss');
+    DateFormat timeFormat = DateFormat('HH:mm');
+    DateTime time = inputFormat.parse(timeString);
+    return timeFormat.format(time);
+  }
+
   static String uint8ToString(Uint8List data) {
     return utf8.decode(data);
   }

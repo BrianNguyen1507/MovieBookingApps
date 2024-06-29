@@ -9,7 +9,12 @@ class AppStyle {
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
-
+ static const TextStyle timerText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.verySmall,
+    fontWeight: FontWeight.bold,
+    color: AppColors.lightTextColor,
+  );
 //home
   static const TextStyle titleMovie = TextStyle(
     fontFamily: 'Roboto',
@@ -34,7 +39,7 @@ class AppStyle {
     fontFamily: 'Roboto',
     fontSize: AppFontSize.medium,
     fontWeight: FontWeight.bold,
-    color: AppColors.primaryColor,
+    color: AppColors.lightTextColor,
     overflow: TextOverflow.ellipsis,
   );
 //detail
