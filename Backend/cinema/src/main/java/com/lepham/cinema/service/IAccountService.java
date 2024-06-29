@@ -19,4 +19,7 @@ public interface IAccountService {
 
     AccountResponse forgotPassWord(String email) throws MessagingException, UnsupportedEncodingException;
     AccountResponse resetPassword(ResetPasswordRequest request);
+    AccountResponse getMyInfo();
+
+    AccountResponse updateAccount(AccountRequest accountRequest) throws ParseException;
 }

@@ -37,6 +37,7 @@ public enum ErrorCode {
     SEAT_WAS_ORDERED(1025, "Seat was ordered", HttpStatus.BAD_REQUEST),
     VOUCHER_NOY_ENOUGH(1026, "Voucher was not enough", HttpStatus.BAD_REQUEST),
     SEAT_NOT_ORDERED(1027, "Seat was not ordered", HttpStatus.BAD_REQUEST),
+    ACCOUNT_NOT_EXIST(1028,"Account was not exist ", HttpStatus.BAD_REQUEST),
     ;
 
 

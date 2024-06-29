@@ -30,13 +30,7 @@ public class OrderController {
                 .build();
     }
 
-    @GetMapping("/getAllVoucherByAccount")
-    APIResponse<List<VoucherResponse>> getAllVoucherByAccount(@RequestParam("accountId") long accountId,
-                                                              @RequestParam("price") double price){
-        return APIResponse.<List<VoucherResponse>>builder()
-                .result(orderService.getAllVoucherByAccount(price,accountId))
-                .build();
-    }
+
 
     @GetMapping("/applyVoucher")
     APIResponse<Double> applyVoucher(@RequestParam("voucherId") long voucherId,

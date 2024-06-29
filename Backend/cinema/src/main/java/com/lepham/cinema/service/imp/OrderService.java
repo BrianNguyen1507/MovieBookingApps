@@ -72,29 +72,7 @@ public class OrderService implements IOrderService {
                 .build();
     }
 
-    @Override
-    @PreAuthorize("hasRole('USER')")
-    public List<VoucherResponse> getAllVoucherByAccount(double price, long accountId) {
-        List<VoucherResponse> responses = new ArrayList<>();
-        List<VoucherEntity> vouchers = voucherRepository.findAllByAllowVoucher(price, accountId);
-        if (!vouchers.isEmpty()) {
-            vouchers.forEach(entity -> {
-                VoucherResponse response = voucherConverter.toResponse(entity);
-                response.setAllow(true);
-                responses.add(response);
-            });
-        }
-        vouchers = voucherRepository.findAllByNotAllowVoucher(price, accountId);
-        if (!vouchers.isEmpty()) {
-            vouchers.forEach(entity -> {
-                VoucherResponse response = voucherConverter.toResponse(entity);
-                response.setAllow(false);
-                responses.add(response);
-            });
-        }
 
-        return responses;
-    }
 
     @Override
     @PreAuthorize("hasRole('USER')")
@@ -117,7 +95,8 @@ public class OrderService implements IOrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
-        AccountEntity account = accountRepository.findByEmail(email);
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         AccountVoucher accountVoucher = new AccountVoucher();
         if (request.getVoucherId() != -1) {
             VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
@@ -179,7 +158,8 @@ public class OrderService implements IOrderService {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         OrderEntity order = orderConverter.toEntity(request);
-        AccountEntity account = accountRepository.findByEmail(email);
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         AccountVoucher accountVoucher = new AccountVoucher();
         if (request.getVoucherId() != -1) {
             VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())

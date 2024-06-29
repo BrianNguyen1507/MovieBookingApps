@@ -21,12 +21,12 @@ public class AccountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @Column(name = "avatar")
+    @Column(name = "avatar", length = 17777777)
     byte[] avatar;
     @Column(name = "full_name",nullable = false)
     String fullName;
     @Column(name = "phone",nullable = false)
-    String phone;
+    String phoneNumber;
     @Column(name = "gender")
     String gender;
     @Column(name = "day_of_birth")

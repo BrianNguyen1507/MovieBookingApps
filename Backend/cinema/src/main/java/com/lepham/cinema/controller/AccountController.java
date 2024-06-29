@@ -73,4 +73,17 @@ public class AccountController {
                 .result(accountService.resetPassword(request))
                 .build();
     }
+
+    @GetMapping(value = "/getMyInfo")
+    public APIResponse<AccountResponse> getMyInfo(){
+        return APIResponse.<AccountResponse>builder()
+                .result(accountService.getMyInfo())
+                .build();
+    }
+    @PutMapping(value = "/updateAccount")
+    public APIResponse<AccountResponse> updateAccount(@RequestBody AccountRequest request){
+        return APIResponse.<AccountResponse>builder()
+                .result(accountService.updateAccount(request))
+                .build();
+    }
 }

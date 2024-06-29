@@ -15,6 +15,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NonNull
 public class AccountRequest {
+    byte[] avatar;
     String fullName;
     String phoneNumber;
     String gender;

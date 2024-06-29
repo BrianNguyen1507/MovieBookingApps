@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountResponse {
+    byte[] avatar;
     String fullName;
     String phoneNumber;
     String gender;

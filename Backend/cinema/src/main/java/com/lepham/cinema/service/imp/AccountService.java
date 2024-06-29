@@ -19,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +68,8 @@ public class AccountService implements IAccountService {
         if(!checkPhoneValid(request.getPhoneNumber())) throw new AppException(ErrorCode.INVALID_PHONE);
 
         AccountEntity entity = accountConverter.toEntity(request);
-        AccountEntity entityExists = accountRepository.findByEmail(request.getEmail());
+        AccountEntity entityExists = accountRepository.findByEmail(request.getEmail())
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         if (entityExists!=null){
             entity.setId(entityExists.getId());
         }
@@ -81,7 +84,8 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountResponse checkOTP(OTPRequest request) {
-        AccountEntity entity = accountRepository.findByEmail(request.getEmail());
+        AccountEntity entity = accountRepository.findByEmail(request.getEmail())
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime expiredDateTime = entity.getOtpRequestTime().plusMinutes(5);
         if(entity.getOtp().equals(request.getOtp()) ){
@@ -104,7 +108,8 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountEntity login(LoginRequest request) {
-        AccountEntity entity = accountRepository.findByEmail(request.getEmail());
+        AccountEntity entity = accountRepository.findByEmail(request.getEmail())
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         if(entity==null) throw new AppException(ErrorCode.EMAIL_PASSWORD_INCORRECT);
         if(passwordEncoder.matches(request.getPassword(),entity.getPassword())
                 && entity.getActive() ==ACTIVATED) return entity;
@@ -113,7 +118,8 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountResponse forgotPassWord(String email) throws MessagingException, UnsupportedEncodingException {
-        AccountEntity account = accountRepository.findByEmail(email);
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         if(account == null || account.getActive() != ACTIVATED) throw new AppException(ErrorCode.NOT_EXISTS_EMAIL);
         String OTP = generateOTP();
         account.setOtp(OTP);
@@ -125,7 +131,8 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountResponse resetPassword(ResetPasswordRequest request) {
-        AccountEntity account = accountRepository.findByEmail(request.getEmail());
+        AccountEntity account = accountRepository.findByEmail(request.getEmail())
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         if(account==null) throw new AppException(ErrorCode.NOT_EXISTS_EMAIL);
         String password = passwordEncoder.encode(request.getPassword());
         account.setPassword(password);
@@ -135,10 +142,30 @@ public class AccountService implements IAccountService {
         return accountConverter.toResponse(account);
     }
 
+    @Override
+    @PostAuthorize("returnObject.email == authentication.name")
+    public AccountResponse getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        return accountConverter.toResponse(account);
+    }
+
+    @Override
+    @PostAuthorize("returnObject.email == authentication.name")
+    public AccountResponse updateAccount(AccountRequest accountRequest){
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        accountConverter.updateAccount(account,accountRequest);
+        return accountConverter.toResponse(accountRepository.save(account));
+    }
+
 
     boolean checkEmailExists(String email){
-        AccountEntity entity = accountRepository.findByEmail(email);
-        return entity != null && entity.getActive() == ACTIVATED;
+        return accountRepository.existsByEmail(email);
     }
     boolean checkEmailValid(String email){
         if (email == null) {

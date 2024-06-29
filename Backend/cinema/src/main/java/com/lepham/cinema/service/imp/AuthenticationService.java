@@ -128,7 +128,8 @@ public class AuthenticationService {
             String jit = singJWT.getJWTClaimsSet().getJWTID();
             Date expiredTime = singJWT.getJWTClaimsSet().getExpirationTime();
 
-            AccountEntity account = accountRepository.findByEmail(singJWT.getJWTClaimsSet().getSubject());
+            AccountEntity account = accountRepository.findByEmail(singJWT.getJWTClaimsSet().getSubject())
+                    .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
             if (account == null) throw new AppException(ErrorCode.NULL_EXCEPTION);
 
             InvalidatedToken invalidatedToken = InvalidatedToken.builder().id(jit).expired(expiredTime).build();
