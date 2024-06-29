@@ -46,9 +46,9 @@ public class OrderController {
                 .build();
     }
     @PostMapping("/createOrder")
-    APIResponse<OrderResponse> createOrder(@RequestBody OrderFilmRequest request){
+    APIResponse<OrderResponse> orderFilm(@RequestBody OrderFilmRequest request){
         return APIResponse.<OrderResponse>builder()
-                .result(orderService.createOrder(request))
+                .result(orderService.orderFilm(request))
                 .build();
     }
     @PostMapping("/holdSeat")
@@ -63,6 +63,12 @@ public class OrderController {
         orderService.returnSeat(id,seat);
         return APIResponse.builder()
                 .message("RefundSeat the seat successfully")
+                .build();
+    }
+    @PostMapping("/orderFood")
+    APIResponse<OrderResponse> orderFood(@RequestBody OrderFilmRequest request){
+        return APIResponse.<OrderResponse>builder()
+                .result(orderService.orderFood(request))
                 .build();
     }
 

@@ -23,11 +23,5 @@ public interface OrderConverter {
         order.setSeat(request.getSeat());
         return order;
     }
-//    @Mappings({
-//            @Mapping(target = "movieSchedule", ignore = true),
-//            @Mapping(target = "foodOrders", ignore = true),
-//            @Mapping(target = "ratingFeedback", ignore = true),
-//            @Mapping(target = "accountVoucher", ignore = true)
-//    })
     OrderResponse toOrderFilmResponse( OrderEntity entity);
 }
