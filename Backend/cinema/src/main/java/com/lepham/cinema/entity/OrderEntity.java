@@ -22,7 +22,7 @@ public class OrderEntity {
     @Column(name = "order_code", nullable = false)
     String orderCode;
 
-    @Column(name = "seat", nullable = false)
+    @Column(name = "seat",nullable = true)
     String seat;
     @Column(name = "sumtotal", nullable = false)
     double sumTotal;
@@ -33,12 +33,9 @@ public class OrderEntity {
     @Column(name = "payment_code", nullable = false, length = 50)
     String paymentCode;
 
-    @Column(name = "pending")
-    boolean pending;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "movie_schedule_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_schedule_id", nullable = true)
     MovieScheduleEntity movieSchedule;
 
     @OneToMany(mappedBy = "order")

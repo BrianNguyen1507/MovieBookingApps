@@ -16,7 +16,6 @@ import java.util.List;
 public class OrderFilmRequest {
     long movieScheduleId;
     long voucherId;
-    long accountId;
     String paymentMethod;
     String paymentCode;
     String seat;
