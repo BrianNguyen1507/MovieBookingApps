@@ -18,10 +18,13 @@ class Preferences {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('name', name);
   }
+  Future<String?> getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email');
+  }
 
   Future<void> saveAuthenticated(String auth, String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
     await prefs.setString(TOKEN_KEY, token);
     await prefs.setString('authenticated', auth);
   }

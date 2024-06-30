@@ -7,6 +7,7 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/account/account.dart';
+import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/getMyInfoService.dart';
 import 'package:movie_booking_app/services/Users/infomation/updateAccount.dart';
@@ -234,6 +235,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                       valid.showMessage(context, "Update successfully",
                           AppColors.correctColor);
                     }
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const IndexPage(initialIndex: 3)));
                   },
                   child: const SizedBox(
                       width: 100,
