@@ -24,8 +24,9 @@ class SignInService {
         dynamic auth = responseData['result']['authenticated'].toString();
         dynamic endcodeName = responseData['result']['name'];
         dynamic name = utf8.decode(endcodeName.codeUnits);
+        dynamic avatar = responseData['result']['avatar']??"";
         await Preferences().saveAuthenticated(auth, token);
-        await Preferences().saveSignInInfo(email, password, name);
+        await Preferences().saveSignInInfo(email, password, name,avatar);
         Preferences pref = Preferences();
         dynamic getToken = await pref.getTokenUsers();
         print('auth: $getToken');

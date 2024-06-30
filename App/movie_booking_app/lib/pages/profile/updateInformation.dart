@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/account/account.dart';
+import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/getMyInfoService.dart';
 import 'package:movie_booking_app/services/Users/infomation/updateAccount.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
@@ -26,6 +28,8 @@ class UpdateInformationState extends State<UpdateInformation> {
   String base64Avatar = "";
   String email = "";
   String avatar = "";
+  bool _isLoading = true;
+
   ImagePicker picker = ImagePicker();
   late File image;
   ValidInput valid = ValidInput();
@@ -97,6 +101,8 @@ class UpdateInformationState extends State<UpdateInformation> {
                         base64Avatar = base64Encode(image.readAsBytesSync());
                       }
                     });
+                  onTap: () {
+                     _pickAndCropImage();
                   },
                   child: imageAvatar(avatar)),
             ),
@@ -255,6 +261,7 @@ class UpdateInformationState extends State<UpdateInformation> {
   }
 
   DateTime? _selectedDate;
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -277,5 +284,37 @@ class UpdateInformationState extends State<UpdateInformation> {
       return Image.file(image);
     }
     return Image.memory(ConverterUnit.base64ToUnit8(imgUnit8Bit));
+  }
+  Future<void> _pickAndCropImage() async {
+    final ImagePicker _picker = ImagePicker();
+
+    // Pick an image
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Crop the image
+      final File? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        androidUiSettings: const AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: true,
+        ),
+        iosUiSettings: const IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ),
+      );
+      setState(()  {
+        image = File(croppedFile!.path);
+        print(image.path);
+        avatar="file";
+        base64Avatar = base64Encode(image.readAsBytesSync());
+      });
+      if (croppedFile != null) {
+      }
+    }
   }
 }
