@@ -3,10 +3,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Preferences {
   static const String TOKEN_KEY = 'token';
   Future<void> saveSignInInfo(
-      String email, String password, String name) async {
+      String email, String password, String name,String avatar) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('email', email);
     await prefs.setString('password', password);
+    await prefs.setString('name', name);
+    await prefs.setString('avatar', avatar);
+  }
+  Future<void> setAvatar(String avatar) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('avatar', avatar);
+  }
+  Future<void> setUserName(String name) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('name', name);
   }
 
@@ -25,6 +34,10 @@ class Preferences {
   Future<String?> getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('name');
+  }
+  Future<String?> getAvatar() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('avatar');
   }
 
   Future<String?> getTokenUsers() async {
@@ -68,5 +81,6 @@ class Preferences {
     await prefs.remove('name');
     await prefs.remove('email');
     await prefs.remove('password');
+    await prefs.remove('avatar');
   }
 }

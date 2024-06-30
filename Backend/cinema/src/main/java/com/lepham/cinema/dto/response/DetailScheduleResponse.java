@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DetailScheduleResponse {
     long id;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime timeStart;
     int[][] seat;

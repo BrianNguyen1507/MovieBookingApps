@@ -6,6 +6,7 @@ import 'package:movie_booking_app/pages/profile/updateInformation.dart';
 class InformationChoice extends StatelessWidget{
   const InformationChoice({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

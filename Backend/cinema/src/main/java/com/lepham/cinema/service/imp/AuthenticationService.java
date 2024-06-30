@@ -69,6 +69,7 @@ public class AuthenticationService {
                     .name(account.getFullName())
                     .role(account.getRole())
                     .email(account.getEmail())
+                    .avatar(account.getAvatar())
                     .build();
         }
         return AuthenticationResponse.builder()

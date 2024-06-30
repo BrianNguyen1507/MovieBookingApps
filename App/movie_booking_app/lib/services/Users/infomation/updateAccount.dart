@@ -28,6 +28,8 @@ class UpdateAccount {
         print(responseData['message']);
       }
      final result = responseData['result'];
+     Preferences().setAvatar(result['avatar']);
+      Preferences().setUserName(result['fullName']);
       Account account =Account(
           email: result['email']?? "",
           avatar: result['avatar']?? "",
