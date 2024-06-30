@@ -20,7 +20,11 @@ class AppRoutes {
     homeScreen: (context) => const HomePage(),
     profile: (context) => const ProfilePage(),
     login: (context) => const SignInPage(),
-    store: (context) => const StorePage(),
+    store: (context) => const StorePage(
+          selection: false,
+          seats: {},
+          movieId: -1,
+        ),
     shimmer: (context) => const ShimmerHomeLoading(),
   };
 }

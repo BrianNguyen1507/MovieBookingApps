@@ -6,6 +6,8 @@ import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/schedule/schedule.dart';
 import 'package:movie_booking_app/pages/selection/seatSelection.dart';
+import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 Widget buildScheduleList(
     Schedule schedule, BuildContext context, String theaterName, int movieId) {
@@ -124,6 +126,19 @@ class ScheduleButton extends StatefulWidget {
 
 class _ScheduleButtonState extends State<ScheduleButton> {
   bool isSelected = false;
+  dynamic token;
+  Preferences pref = Preferences();
+
+  @override
+  void initState() {
+    super.initState();
+    _initToken();
+  }
+
+  Future<void> _initToken() async {
+    token = await pref.getTokenUsers();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -136,13 +151,25 @@ class _ScheduleButtonState extends State<ScheduleButton> {
             isSelected = false;
           });
         });
+
         print('Selected schedule: ${widget.schedule.id}');
         print('Selected schedule: ${widget.schedule.times}');
         print('Selected schedule: ${widget.schedule.roomNumber}');
+        if (token == null) {
+          ValidInput valid = ValidInput();
+          valid.showAlertCustom(
+              context, 'You need to sign in to continue', 'Go to Sign in', () {
+            Navigator.pushNamed(context, '/login');
+          });
+
+          return;
+        }
+
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SeatSelection(
+              time: widget.schedule.times,
               scheduleId: widget.schedule.id,
               roomNumber: widget.schedule.roomNumber,
               theaterName: widget.theaterName,

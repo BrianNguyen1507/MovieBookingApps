@@ -39,7 +39,7 @@ class HandleSigninState {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const IndexPage(initialIndex: 2),
+        builder: (context) => const IndexPage(initialIndex: 1),
       ),
     );
     _isSubmitting = false;

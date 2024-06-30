@@ -68,15 +68,15 @@ class SeatClass {
       case 0:
         return AppColors.seatAvailable.withOpacity(0.3);
       case 1:
-        return AppColors.seatSold.withOpacity(0.5);
+        return AppColors.seatSold.withOpacity(0.6);
 
       case 2:
-        return AppColors.seatPeding.withOpacity(0.5);
+        return AppColors.seatPeding.withOpacity(0.6);
       case 3:
-        return AppColors.seatDisable.withOpacity(0.3);
+        return const Color.fromARGB(255, 214, 11, 255).withOpacity(0.6);
 
       default:
-        return AppColors.seatDisable.withOpacity(0.3);
+        return const Color.fromARGB(255, 214, 11, 255).withOpacity(0.6);
     }
   }
 }

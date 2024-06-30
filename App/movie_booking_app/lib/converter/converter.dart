@@ -9,6 +9,14 @@ class ConverterUnit {
     return Uint8List.fromList(bytes);
   }
 
+  static String convertToUtf8(String input) {
+    List<int> utf8Bytes = utf8.encode(input);
+
+    String decodedString = utf8.decode(utf8Bytes);
+
+    return decodedString;
+  }
+
   static Future<Uint8List> bytesToImage(String base64String) async {
     try {
       Uint8List imgBytes = base64Decode(base64String);
@@ -41,6 +49,12 @@ class ConverterUnit {
     return utf8.decode(data);
   }
 
+  static String formatPrice(double price) {
+    final formatter = NumberFormat('#,###', 'en_US');
+    String formatted = formatter.format(price);
+    return formatted.replaceAll(',', '.');
+  }
+
   static List<int> caculateMonth() {
     DateTime now = DateTime.now();
     List<int> listMonth = [];
@@ -48,5 +62,9 @@ class ConverterUnit {
       listMonth.add(month);
     }
     return listMonth;
+  }
+
+  static String convertSetToString(Set<String> seats) {
+    return seats.join(',');
   }
 }
