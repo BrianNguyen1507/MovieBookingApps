@@ -29,6 +29,7 @@ class UpdateInformationState extends State<UpdateInformation> {
   String email = "";
   String avatar = "";
   bool _isLoading = true;
+
   ImagePicker picker = ImagePicker();
   late File image;
   ValidInput valid = ValidInput();
@@ -60,13 +61,10 @@ class UpdateInformationState extends State<UpdateInformation> {
         if (account.avatar != "") {
           base64Avatar = account.avatar;
         }
-        _isLoading = false;
       });
     } catch (e) {
       print('Error fetching information: $e');
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() {});
     }
   }
 
@@ -76,10 +74,9 @@ class UpdateInformationState extends State<UpdateInformation> {
       appBar: AppBar(
         title: const Text("Update Information"),
         backgroundColor: Colors.blue,
-        // Change to your AppColors.appbarColor
         titleTextStyle: const TextStyle(
-          color: Colors.white, // Change to your AppColors.titleTextColor
-          fontSize: 18.0, // Change to your AppFontSize.midMedium
+          color: Colors.white,
+          fontSize: 18.0,
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(
@@ -94,6 +91,16 @@ class UpdateInformationState extends State<UpdateInformation> {
               width: 150,
               height: 150,
               child: GestureDetector(
+                  onTap: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      if (pickedImage != null) {
+                        image = File(pickedImage.path);
+                        avatar = "file";
+                        base64Avatar = base64Encode(image.readAsBytesSync());
+                      }
+                    });
                   onTap: () {
                      _pickAndCropImage();
                   },
@@ -307,7 +314,6 @@ class UpdateInformationState extends State<UpdateInformation> {
         base64Avatar = base64Encode(image.readAsBytesSync());
       });
       if (croppedFile != null) {
-
       }
     }
   }

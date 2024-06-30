@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
+  //store
+  static const TextStyle priceText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.small,
+    fontWeight: FontWeight.bold,
+    color: AppColors.darktextColor,
+  );
   //seat
   static const TextStyle seatText = TextStyle(
     fontFamily: 'Roboto',
@@ -11,7 +18,7 @@ class AppStyle {
   //seat
   static const TextStyle screenText = TextStyle(
     fontFamily: 'Roboto',
-    fontSize: AppFontSize.lowMedium,
+    fontSize: AppFontSize.small,
     color: AppColors.textSeat,
   );
   //theater

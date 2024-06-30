@@ -7,18 +7,26 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
+import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/models/seat/seat.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/selection/components/seatwidget/seatwidget.dart';
+import 'package:movie_booking_app/pages/store/store.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
+import 'package:movie_booking_app/services/Users/order/holdSeat/holdSeat.dart';
+import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
 import 'package:movie_booking_app/services/Users/seat/seatService.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class SeatSelection extends StatefulWidget {
   final int scheduleId;
   final String theaterName;
   final int roomNumber;
   final int movieId;
+  final String time;
   const SeatSelection(
       {super.key,
+      required this.time,
       required this.scheduleId,
       required this.theaterName,
       required this.movieId,
@@ -31,7 +39,7 @@ class SeatSelection extends StatefulWidget {
 class _SeatSelectionState extends State<SeatSelection> {
   late Future<Seat> seats;
   late Future<MovieDetail> getMovie;
-
+  late Future<GetTotal> getTotal;
   Set<String> selectedSeats = {};
 
   @override
@@ -39,51 +47,73 @@ class _SeatSelectionState extends State<SeatSelection> {
     super.initState();
     seats = Seatservice.getMovieScheduleById(widget.scheduleId);
     getMovie = MovieDetailService.deatailMovieService(widget.movieId);
+    getTotal = _fetchTotal();
   }
 
-  @override
+  Future<GetTotal> _fetchTotal() {
+    return GetTotalService.sumTotalOrder(
+      widget.movieId,
+      selectedSeats.length,
+      [],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: AppColors.opacityBlackColor,
+          centerTitle: true,
+          title: seatStateList(),
           iconTheme: const IconThemeData(color: AppColors.containerColor),
         ),
         backgroundColor: AppColors.backgroundColor,
-        body: Stack(
-          children: [
-            Column(
-              children: [
-                Expanded(
-                  child: FutureBuilder<Seat>(
-                    future: seats,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return loadingData(context);
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.hasData) {
-                        final seatData = snapshot.data!;
-                        return buildSeatMap(seatData);
-                      } else {
-                        return const SizedBox();
-                      }
-                    },
+        body: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Expanded(
+                        child: FutureBuilder<Seat>(
+                          future: seats,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return loadingData(context);
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              final seatData = snapshot.data!;
+                              return buildSeatMap(seatData);
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: renderBooking(
-                context,
-                widget.theaterName,
-                widget.roomNumber,
-                getMovie,
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: renderBooking(
+                      context,
+                      widget.theaterName,
+                      widget.roomNumber,
+                      widget.time,
+                      widget.scheduleId,
+                      widget.movieId,
+                      getMovie,
+                      getTotal,
+                      selectedSeats,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -103,17 +133,14 @@ class _SeatSelectionState extends State<SeatSelection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const Text(
-                  'S C R E E N',
-                  style: AppStyle.screenText,
-                ),
-                SvgPicture.string(svgScreen),
-              ],
-            ),
+          Column(
+            children: [
+              const Text(
+                'S  C  R  E  E  N',
+                style: AppStyle.screenText,
+              ),
+              SvgPicture.string(svgScreen),
+            ],
           ),
           SizedBox(
             height: 300,
@@ -150,7 +177,8 @@ class _SeatSelectionState extends State<SeatSelection> {
               int seatStatus = entry.value;
               String seatIdentifier =
                   '${rowLabels[rowIndex - 1]}${seatIndex + 1}';
-              bool isSelectable = seatStatus != 1 && seatStatus != 2;
+              bool isSelectable =
+                  seatStatus != 1 && seatStatus != 2 && seatStatus != 3;
               bool isSelected = selectedSeats.contains(seatIdentifier);
               Color seatColor = SeatClass.getSeatColor(seatStatus);
 
@@ -165,6 +193,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                       }
                     }
                     print(selectedSeats);
+                    getTotal = _fetchTotal();
                   });
                 },
                 child: Container(
@@ -172,7 +201,9 @@ class _SeatSelectionState extends State<SeatSelection> {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primaryColor : seatColor,
+                    color: isSelected
+                        ? AppColors.primaryColor.withOpacity(0.76)
+                        : seatColor,
                     borderRadius: BorderRadius.circular(2),
                   ),
                   child: Center(
@@ -199,8 +230,16 @@ class _SeatSelectionState extends State<SeatSelection> {
   }
 }
 
-Widget renderBooking(BuildContext context, String theaterName, int roomNumber,
-    Future<MovieDetail> movieInfo) {
+Widget renderBooking(
+    BuildContext context,
+    String theaterName,
+    int roomNumber,
+    String times,
+    int scheduleId,
+    int movieId,
+    Future<MovieDetail> movieInfo,
+    Future<GetTotal> totalInfo,
+    Set<String> selectedSeats) {
   return Container(
     decoration: const BoxDecoration(
       color: AppColors.containerColor,
@@ -219,20 +258,19 @@ Widget renderBooking(BuildContext context, String theaterName, int roomNumber,
           future: movieInfo,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return loadingData(context);
+              return const SizedBox.shrink();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
               final movieData = snapshot.data!;
-              return Container(
-                margin: const EdgeInsets.all(5.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Row(
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(5.0),
@@ -263,6 +301,8 @@ Widget renderBooking(BuildContext context, String theaterName, int roomNumber,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin:
@@ -303,40 +343,81 @@ Widget renderBooking(BuildContext context, String theaterName, int roomNumber,
                             ),
                           ],
                         ),
-                        Column(
+                      ),
+                      SizedBox(
+                        width: AppSize.width(context) / 3,
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Theater: $theaterName',
                                 style: AppStyle.smallText),
                             Text('Room: $roomNumber',
                                 style: AppStyle.smallText),
+                            Text('Show time: $times',
+                                style: AppStyle.smallText),
                           ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               );
             } else {
               return const SizedBox();
             }
           },
         ),
-        const Text.rich(
-          TextSpan(
-            text: 'TOTAL: ',
-            style: AppStyle.bodyText1,
-            children: <TextSpan>[
-              TextSpan(
-                text: '${100000000}',
-                style: AppStyle.bodyText1,
-              ),
-              TextSpan(
-                text: '\$',
-                style: AppStyle.bodyText1,
-              ),
-            ],
-          ),
+        FutureBuilder<GetTotal>(
+          future: totalInfo,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox.shrink();
+            } else if (snapshot.hasError) {
+              return const SizedBox.shrink();
+            } else if (snapshot.hasData) {
+              final data = snapshot.data!;
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    TextSpan(
+                      text: 'SEATS: ',
+                      style: AppStyle.bodyText1,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${selectedSeats.length}',
+                          style: AppStyle.bodyText1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text.rich(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    TextSpan(
+                      text: 'TOTAL: ',
+                      style: AppStyle.bodyText1,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: ConverterUnit.formatPrice(data.priceMovie),
+                          style: AppStyle.bodyText1,
+                        ),
+                        const TextSpan(
+                          text: '₫',
+                          style: AppStyle.bodyText1,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
         ),
         SizedBox(
           width: double.infinity,
@@ -347,7 +428,28 @@ Widget renderBooking(BuildContext context, String theaterName, int roomNumber,
               ),
               backgroundColor: AppColors.primaryColor,
             ),
-            onPressed: () {},
+            onPressed: () async {
+              ValidInput val = ValidInput();
+
+              if (selectedSeats.isEmpty) {
+                val.showAlertCustom(context,
+                    'Please select at least one seat before booking', '', null);
+                return;
+              }
+              HoldSeatService.holdSeat(scheduleId, selectedSeats);
+              Navigator.push(
+                context,
+                ModalBottomSheetRoute(
+                    builder: (context) {
+                      return StorePage(
+                        selection: true,
+                        seats: selectedSeats,
+                        movieId: movieId,
+                      );
+                    },
+                    isScrollControlled: true),
+              );
+            },
             child: const Text(
               'BOOKING',
               style: AppStyle.buttonNavigator,

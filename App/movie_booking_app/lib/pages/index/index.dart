@@ -11,9 +11,9 @@ import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
-    super.key,
+    Key? key,
     required this.initialIndex,
-  });
+  }) : super(key: key);
 
   final int initialIndex;
 
@@ -22,29 +22,31 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
-  late int index;
+  late int _selectedIndex;
+
   late List<Widget> pages;
   ValidInput valid = ValidInput();
   PageController _pageController = PageController();
-  int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.initialIndex;
     WidgetsBinding.instance.addObserver(this);
-
     _pageController = PageController(initialPage: _selectedIndex);
     pages = [
       Builder(
-          builder: (context) =>
-              AppRoutes.routes[AppRoutes.homeScreen]!(context)),
+        builder: (context) => AppRoutes.routes[AppRoutes.homeScreen]!(context),
+      ),
       Builder(
-          builder: (context) =>
-              AppRoutes.routes[AppRoutes.homeScreen]!(context)),
+        builder: (context) => AppRoutes.routes[AppRoutes.homeScreen]!(context),
+      ),
       Builder(
-          builder: (context) => AppRoutes.routes[AppRoutes.store]!(context)),
+        builder: (context) => AppRoutes.routes[AppRoutes.store]!(context),
+      ),
       Builder(
-          builder: (context) => AppRoutes.routes[AppRoutes.profile]!(context)),
+        builder: (context) => AppRoutes.routes[AppRoutes.profile]!(context),
+      ),
     ];
   }
 
@@ -91,7 +93,7 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Search()));
                 },
-                icon: Icon(AppIcon.search),
+                icon: const Icon(Icons.search),
               ),
             ],
           ),

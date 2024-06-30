@@ -1,144 +1,297 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movie_booking_app/utils/bookingSheet.dart';
+import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
+import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/models/food/food.dart';
+import 'package:movie_booking_app/models/order/Total.dart';
+import 'package:movie_booking_app/pages/order/ordered.dart';
+import 'package:movie_booking_app/services/Users/food/foodService.dart';
+import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
 
 class StorePage extends StatefulWidget {
-  const StorePage({super.key});
+  final int movieId;
+  final Set<String>? seats;
+  final bool selection;
+  const StorePage(
+      {super.key, required this.selection, this.seats, required this.movieId});
 
   @override
   State<StorePage> createState() => _StorePageState();
 }
 
+late Future<List<Food>> foods;
+late List<TextEditingController> _controllers;
+late List<int> _values;
+late List<Map<String, dynamic>> foodOrder;
+
+//call lai khi an nut
+late Future<GetTotal> getTotal;
+
 class _StorePageState extends State<StorePage> {
+  @override
+  void initState() {
+    super.initState();
+    foods = FoodService.getAllFood();
+    _controllers = [];
+    _values = [];
+    foodOrder = [];
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _incrementValue(int index) {
+    setState(() {
+      _values[index]++;
+      _controllers[index].text = _values[index].toString();
+      foodOrder[index]['quantity'] = _values[index];
+    });
+  }
+
+  void _decrementValue(int index) {
+    if (_values[index] > 0) {
+      setState(() {
+        _values[index]--;
+        _controllers[index].text = _values[index].toString();
+        foodOrder[index]['quantity'] = _values[index];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        extendBody: true,
-        body: CustomScrollView(slivers: <Widget>[
-          SliverList(
-              delegate: SliverChildListDelegate([
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                  color: AppColors.containerColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  )),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: AppColors.backgroundColor,
+      body: Container(
+        decoration: const BoxDecoration(
+          color: AppColors.containerColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      AppLocalizations.of(context)!.fnd,
-                      style: const TextStyle(
-                        color: AppColors.textblackColor,
-                        fontSize: AppFontSize.medium,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(10.0),
-                    height: 80,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3),
+                  Text(AppLocalizations.of(context)!.fnd,
+                      style: AppStyle.bodyText1),
+                  widget.selection
+                      ? MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: AppColors.backgroundColor,
                           ),
-                        ],
-                        color: AppColors.containerColor,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5))),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(right: 5.0),
-                                color: Colors.blue,
-                                height: 60,
-                                width: 60,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'cocacocal',
-                                    style: TextStyle(
-                                      color: AppColors.textblackColor,
-                                      fontSize: AppFontSize.small,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        '${AppLocalizations.of(context)!.price} ${': '}',
-                                        style: const TextStyle(
-                                          color: AppColors.textblackColor,
-                                          fontSize: AppFontSize.small,
-                                        ),
-                                      ),
-                                      const Text(
-                                        '${10000}',
-                                        style: TextStyle(
-                                          color: AppColors.textblackColor,
-                                          fontSize: AppFontSize.small,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(
-                                    AppColors.buttonColor),
-                                shape: WidgetStateProperty.all(
-                                  const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                showBookingSheet(context);
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!.buy,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: AppFontSize.small,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),
-          ]))
-        ]));
+            Expanded(
+              child: FutureBuilder<List<Food>>(
+                future: foods,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: loadingContent);
+                  } else if (snapshot.hasError || !snapshot.hasData) {
+                    return Center(
+                      child: loadingContent,
+                    );
+                  } else {
+                    final foodData = snapshot.data!;
+
+                    if (_controllers.isEmpty && _values.isEmpty) {
+                      _controllers = List.generate(
+                        foodData.length,
+                        (index) => TextEditingController(text: '0'),
+                      );
+                      _values = List.generate(foodData.length, (index) => 0);
+                      foodOrder = List.generate(
+                        foodData.length,
+                        (index) => {
+                          'id': foodData[index].id,
+                          'quantity': 0,
+                        },
+                      );
+                    }
+
+                    return ListView.builder(
+                      itemCount: foodData.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.all(10.0),
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                            color: AppColors.containerColor,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      margin: const EdgeInsets.only(right: 5.0),
+                                      height: 60,
+                                      width: 60,
+                                      child: Image.memory(
+                                        ConverterUnit.base64ToUnit8(
+                                            foodData[index].image),
+                                        height: 150,
+                                        width: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          utf8.decode(
+                                              foodData[index].name.codeUnits),
+                                          style: AppStyle.bodyText1,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '${AppLocalizations.of(context)!.price}: ',
+                                              style: AppStyle.smallText,
+                                            ),
+                                            Text(
+                                              '${foodData[index].price} ₫',
+                                              style: AppStyle.priceText,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 40,
+                                      child: TextField(
+                                        controller: _controllers[index],
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          isDense: true,
+                                        ),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _values[index] = int.parse(value);
+                                            foodOrder[index]['quantity'] =
+                                                _values[index];
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.add),
+                                          onPressed: () =>
+                                              _incrementValue(index),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.remove),
+                                          onPressed: () =>
+                                              _decrementValue(index),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
+            renderBooking(
+                context, widget.selection, widget.seats, widget.movieId),
+          ],
+        ),
+      ),
+    );
   }
+}
+
+Widget renderBooking(
+    BuildContext context, bool visible, Set<String>? seats, int movieId) {
+  return Container(
+    color: Colors.transparent,
+    padding: const EdgeInsets.all(10),
+    alignment: Alignment.center,
+    width: double.infinity,
+    child: SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          backgroundColor: AppColors.primaryColor,
+        ),
+        onPressed: () async {
+          List<Map<String, dynamic>> listOrdered = [];
+          for (var item in foodOrder) {
+            if (item['quantity'] != 0) {
+              listOrdered.add(item);
+            }
+          }
+
+          GetTotal getTotal = await GetTotalService.sumTotalOrder(
+              movieId, seats!.length, listOrdered);
+
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return OrderPage(total: getTotal);
+            },
+          ));
+        },
+        child: Text(
+          visible ? 'CONTINUE' : 'BOOKING',
+          style: AppStyle.buttonNavigator,
+        ),
+      ),
+    ),
+  );
 }

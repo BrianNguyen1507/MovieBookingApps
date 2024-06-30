@@ -31,7 +31,7 @@ class AppColors {
   static const Color seatSold = Color.fromARGB(255, 241, 61, 61);
   static const Color seatPeding = Color.fromARGB(255, 225, 163, 8);
   static const Color seatDisable = Color.fromARGB(255, 68, 68, 68);
-  static const Color textSeat = Color.fromARGB(255, 178, 172, 172);
+  static const Color textSeat = Color.fromARGB(255, 255, 255, 255);
 }
 
 class AppFontSize {

@@ -53,7 +53,7 @@ class _SignInPageState extends State<SignInPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const IndexPage(initialIndex: 2),
+                builder: (context) => const IndexPage(initialIndex: 1),
               ),
             );
           },
