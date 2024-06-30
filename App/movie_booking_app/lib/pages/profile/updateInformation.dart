@@ -8,7 +8,6 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/account/account.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/getMyInfoService.dart';
 import 'package:movie_booking_app/services/Users/infomation/updateAccount.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
@@ -29,7 +28,6 @@ class UpdateInformationState extends State<UpdateInformation> {
   String base64Avatar = "";
   String email = "";
   String avatar = "";
-  bool _isLoading = true;
 
   ImagePicker picker = ImagePicker();
   late File image;
@@ -92,27 +90,17 @@ class UpdateInformationState extends State<UpdateInformation> {
               width: 150,
               height: 150,
               child: GestureDetector(
-                  onTap: () async {
-                    final pickedImage =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    setState(() {
-                      if (pickedImage != null) {
-                        image = File(pickedImage.path);
-                        avatar = "file";
-                        base64Avatar = base64Encode(image.readAsBytesSync());
-                      }
-                    });
                   onTap: () {
-                     _pickAndCropImage();
+                    _pickAndCropImage();
                   },
                   child: imageAvatar(avatar)),
             ),
             Container(
               margin: const EdgeInsets.all(10),
               child: Padding(
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Align left
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Align(
                       alignment: Alignment.centerLeft,
@@ -122,7 +110,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10),
+                      margin: const EdgeInsets.only(top: 10),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -168,13 +156,12 @@ class UpdateInformationState extends State<UpdateInformation> {
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  // Align items to the start
                   children: [
                     Row(
                       children: [
                         const Text(
                           'Gender:',
-                          style: TextStyle(fontSize: 16.0), // Adjust font size
+                          style: TextStyle(fontSize: 16.0),
                         ),
                         const SizedBox(width: 30),
                         Radio<String>(
@@ -187,7 +174,6 @@ class UpdateInformationState extends State<UpdateInformation> {
                       ],
                     ),
                     const SizedBox(width: 30),
-                    // Add some space between the radio buttons
                     Row(
                       children: [
                         Radio<String>(
@@ -242,7 +228,11 @@ class UpdateInformationState extends State<UpdateInformation> {
                       valid.showMessage(context, "Update successfully",
                           AppColors.correctColor);
                     }
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const IndexPage(initialIndex: 3)));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const IndexPage(initialIndex: 3)));
                   },
                   child: const SizedBox(
                       width: 100,
@@ -287,14 +277,14 @@ class UpdateInformationState extends State<UpdateInformation> {
     }
     return Image.memory(ConverterUnit.base64ToUnit8(imgUnit8Bit));
   }
-  Future<void> _pickAndCropImage() async {
-    final ImagePicker _picker = ImagePicker();
 
-    // Pick an image
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickAndCropImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      // Crop the image
       final File? croppedFile = await ImageCropper().cropImage(
         sourcePath: pickedFile.path,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
@@ -309,14 +299,13 @@ class UpdateInformationState extends State<UpdateInformation> {
           minimumAspectRatio: 1.0,
         ),
       );
-      setState(()  {
+      setState(() {
         image = File(croppedFile!.path);
         print(image.path);
-        avatar="file";
+        avatar = "file";
         base64Avatar = base64Encode(image.readAsBytesSync());
       });
-      if (croppedFile != null) {
-      }
+      if (croppedFile != null) {}
     }
   }
 }
