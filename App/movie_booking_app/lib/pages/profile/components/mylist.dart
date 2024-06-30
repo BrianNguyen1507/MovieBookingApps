@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/profile/informationChoice.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 class Builditem {
   static Widget buildSliverList(BuildContext context) {
