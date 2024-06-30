@@ -1,10 +1,7 @@
 package com.lepham.cinema.service.imp;
 
 import com.lepham.cinema.converter.AccountConverter;
-import com.lepham.cinema.dto.request.AccountRequest;
-import com.lepham.cinema.dto.request.LoginRequest;
-import com.lepham.cinema.dto.request.OTPRequest;
-import com.lepham.cinema.dto.request.ResetPasswordRequest;
+import com.lepham.cinema.dto.request.*;
 import com.lepham.cinema.dto.response.AccountResponse;
 import com.lepham.cinema.entity.AccountEntity;
 import com.lepham.cinema.exception.AppException;
@@ -160,6 +157,18 @@ public class AccountService implements IAccountService {
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         accountConverter.updateAccount(account,accountRequest);
+        return accountConverter.toResponse(accountRepository.save(account));
+    }
+
+    @Override
+    @PostAuthorize("returnObject.email == authentication.name")
+    public AccountResponse updatePassword(UpdatePwdRequest request) {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        if(!passwordEncoder.matches(request.getPassword(),account.getPassword())) throw new AppException(ErrorCode.PASSWORD_INVALID);
+        account.setPassword(passwordEncoder.encode(request.getNewPassword()));
         return accountConverter.toResponse(accountRepository.save(account));
     }
 

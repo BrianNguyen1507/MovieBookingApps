@@ -86,4 +86,10 @@ public class AccountController {
                 .result(accountService.updateAccount(request))
                 .build();
     }
+    @PutMapping(value = "/updatePassword")
+    public APIResponse<AccountResponse> updatePassword(@RequestBody UpdatePwdRequest request){
+        return APIResponse.<AccountResponse>builder()
+                .result(accountService.updatePassword(request))
+                .build();
+    }
 }

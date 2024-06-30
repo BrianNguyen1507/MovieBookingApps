@@ -1,9 +1,6 @@
 package com.lepham.cinema.service;
 
-import com.lepham.cinema.dto.request.AccountRequest;
-import com.lepham.cinema.dto.request.LoginRequest;
-import com.lepham.cinema.dto.request.OTPRequest;
-import com.lepham.cinema.dto.request.ResetPasswordRequest;
+import com.lepham.cinema.dto.request.*;
 import com.lepham.cinema.dto.response.AccountResponse;
 import com.lepham.cinema.entity.AccountEntity;
 import jakarta.mail.MessagingException;
@@ -22,4 +19,6 @@ public interface IAccountService {
     AccountResponse getMyInfo();
 
     AccountResponse updateAccount(AccountRequest accountRequest) throws ParseException;
+
+    AccountResponse updatePassword(UpdatePwdRequest request);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/pages/profile/changePassword.dart';
 import 'package:movie_booking_app/pages/profile/updateInformation.dart';
 
 class InformationChoice extends StatelessWidget{
@@ -61,7 +62,7 @@ class InformationChoice extends StatelessWidget{
               ),
 
               onPressed: () {
-                print("haha");
+               Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePassword()));
               },
               child: SizedBox(
                 width: AppSize.width(context),
