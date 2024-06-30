@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
 import 'package:movie_booking_app/pages/profile/guest.dart';
 import 'package:movie_booking_app/provider/provider.dart';
@@ -19,6 +20,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   ValidInput valid = ValidInput();
+  String? avatar;
+  @override
+  void initState()  {
+    // TODO: implement initState
+    super.initState();
+     getData();
+  }
+  Future<void> getData() async{
+    Preferences pref = Preferences();
+    avatar = await pref.getAvatar();
+
+  }
   @override
   Widget build(BuildContext context) {
     Preferences pref = Preferences();
@@ -43,6 +56,9 @@ class _ProfilePageState extends State<ProfilePage> {
               body: CustomScrollView(
                 slivers: <Widget>[
                   _buildSliverProfileBar(context, snapshot.data),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 50),
+                  ),
                   Builditem.buildSliverList(context),
                   BuildButton.commonbutton(
                       context,
@@ -94,17 +110,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: AppColors.backgroundColor,
                         shape: BoxShape.circle),
                     padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: const BoxDecoration(
-                        color: AppColors.commonColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        AppIcon.person,
-                        size: 50,
-                        color: Colors.white,
+                    child: ClipOval(
+                      child: (avatar ?? "")==""?
+                      Image.asset(
+                          'assets/images/avatarDefault.png',
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ):Image.memory(
+                        ConverterUnit.base64ToUnit8(avatar!),
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -117,81 +134,84 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.commonLightColor,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
+                  SizedBox(
+
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: AppColors.commonLightColor,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      height: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.iconThemeColor,
+                        height: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.iconThemeColor,
+                                  ),
+                                  child: Icon(
+                                    AppIcon.watchedMovie,
+                                    color: AppColors.primaryColor,
+                                  ),
                                 ),
-                                child: Icon(
-                                  AppIcon.watchedMovie,
-                                  color: AppColors.primaryColor,
+                                const Text(
+                                  '0',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: AppFontSize.medium),
                                 ),
-                              ),
-                              const Text(
-                                '0',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: AppFontSize.medium),
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!.watched,
-                                style: const TextStyle(
-                                    fontSize: AppFontSize.small,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 30,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.iconThemeColor,
+                                Text(
+                                  AppLocalizations.of(context)!.watched,
+                                  style: const TextStyle(
+                                      fontSize: AppFontSize.small,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                child: Icon(
-                                  AppIcon.reviews,
-                                  color: AppColors.primaryColor,
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.iconThemeColor,
+                                  ),
+                                  child: Icon(
+                                    AppIcon.reviews,
+                                    color: AppColors.primaryColor,
+                                  ),
                                 ),
-                              ),
-                              const Text(
-                                '0',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: AppFontSize.medium),
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!.revw,
-                                style: const TextStyle(
-                                    fontSize: AppFontSize.small,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ],
+                                const Text(
+                                  '0',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: AppFontSize.medium),
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!.revw,
+                                  style: const TextStyle(
+                                      fontSize: AppFontSize.small,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -205,9 +225,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _onPressLogout(BuildContext context) {
+
     Preferences pref = Preferences();
     Provider.of<UserProvider>(context, listen: false).logout();
     pref.removeSinginInfo();
     Navigator.pushReplacementNamed(context, '/login');
+  }
+  Future<void> reloadData() async {
+    getData();
   }
 }
