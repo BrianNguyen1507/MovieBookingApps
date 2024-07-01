@@ -25,6 +25,7 @@ class HoldSeatService {
         if (result['code'] != 1000) {
           throw Exception('Invalid: ${result['message']}');
         }
+        print('hold thanh cong');
         return true;
       } else if (response.statusCode == 401) {
         throw Exception('Unauthorized: Please log in again.');

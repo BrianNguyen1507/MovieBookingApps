@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/index/components/bottomnav.dart';
 import 'package:movie_booking_app/pages/index/components/drawer.dart';
+import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/routes/AppRoutes.dart';
 import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
+import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
 import 'package:movie_booking_app/services/Users/refresh/tokenManager.dart';
 import 'package:movie_booking_app/pages/search/search.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
@@ -61,9 +64,26 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.detached) {
-      LogOutServices.logout();
-      TokenManager.cancelTokenRefreshTimer();
-      print("logout success");
+      handleAppDetached();
+    }
+  }
+
+  Future<void> handleAppDetached() async {
+    Preferences pref = Preferences();
+    LogOutServices.logout();
+    TokenManager.cancelTokenRefreshTimer();
+    print("logout success");
+
+    String? seatpref = await pref.getHoldSeats();
+    int? scheduleIdpref = await pref.getSchedule();
+    if (seatpref != null && seatpref.isNotEmpty && scheduleIdpref != null) {
+      Set<String> heldSeats = ConverterUnit.convertStringToSet(seatpref);
+      ReturnSeatService.returnSeat(scheduleIdpref, heldSeats);
+      pref.clearHoldSeats();
+      pref.clearSchedule();
+      print("Hold seats returned successfully");
+    } else {
+      print("No seats were held");
     }
   }
 

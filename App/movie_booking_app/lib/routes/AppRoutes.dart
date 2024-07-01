@@ -21,9 +21,10 @@ class AppRoutes {
     profile: (context) => const ProfilePage(),
     login: (context) => const SignInPage(),
     store: (context) => const StorePage(
+          date: '',
           selection: false,
-          seats: {},
           movieId: -1,
+          scheduleId: -1,
         ),
     shimmer: (context) => const ShimmerHomeLoading(),
   };

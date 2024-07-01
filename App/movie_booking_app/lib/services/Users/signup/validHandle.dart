@@ -59,6 +59,7 @@ class ValidInput {
     BuildContext context,
     String content,
     String? buttonText,
+    bool? cancelButton,
     VoidCallback? onPress,
   ) {
     showDialog(
@@ -68,12 +69,14 @@ class ValidInput {
           title: const Text('Alert'),
           content: Text(content),
           actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            cancelButton!
+                ? TextButton(
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                : const SizedBox.shrink(),
             TextButton(
               onPressed: onPress,
               child: Text(buttonText!),
