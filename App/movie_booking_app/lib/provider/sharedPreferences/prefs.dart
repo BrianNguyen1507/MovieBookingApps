@@ -1,23 +1,27 @@
+import 'package:movie_booking_app/converter/converter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
   static const String TOKEN_KEY = 'token';
   Future<void> saveSignInInfo(
-      String email, String password, String name,String avatar) async {
+      String email, String password, String name, String avatar) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('email', email);
     await prefs.setString('password', password);
     await prefs.setString('name', name);
     await prefs.setString('avatar', avatar);
   }
-  Future<void> setAvatar(String avatar) async{
+
+  Future<void> setAvatar(String avatar) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('avatar', avatar);
   }
-  Future<void> setUserName(String name) async{
+
+  Future<void> setUserName(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('name', name);
   }
+
   Future<String?> getEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('email');
@@ -38,6 +42,7 @@ class Preferences {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('name');
   }
+
   Future<String?> getAvatar() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('avatar');
@@ -78,12 +83,45 @@ class Preferences {
     await prefs.remove('authenticated');
   }
 
-  
   Future<void> removeSinginInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('name');
     await prefs.remove('email');
     await prefs.remove('password');
     await prefs.remove('avatar');
+  }
+
+//save seat
+  Future<void> saveHoldSeats(Set<String> seats) async {
+    String getSeats = ConverterUnit.convertSetToString(seats);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('holdseat', getSeats);
+  }
+
+  Future<void> clearHoldSeats() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('holdseat');
+  }
+
+  Future<String?> getHoldSeats() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? holdSeat = prefs.getString('holdseat');
+    return holdSeat;
+  }
+
+  //save schedule
+  Future<void> saveSchedule(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('scheduleId', id);
+  }
+
+  Future<void> clearSchedule() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('scheduleId');
+  }
+
+  Future<int?> getSchedule() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('scheduleId');
   }
 }

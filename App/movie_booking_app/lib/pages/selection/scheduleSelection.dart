@@ -88,7 +88,7 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
                 } else {
                   final scheduleSnapshot = snapshot.data!;
                   return buildScheduleList(scheduleSnapshot, context,
-                      widget.theaterName, widget.movieId);
+                      widget.theaterName, widget.movieId, dateformated);
                 }
               },
             ),

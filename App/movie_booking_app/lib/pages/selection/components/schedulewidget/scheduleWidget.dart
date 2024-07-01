@@ -10,7 +10,12 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 Widget buildScheduleList(
-    Schedule schedule, BuildContext context, String theaterName, int movieId) {
+  Schedule schedule,
+  BuildContext context,
+  String theaterName,
+  int movieId,
+  String date,
+) {
   Map<int, List<ScheduleByHour>> groupedSchedules = {};
 
   for (var scheduleByHour in schedule.scheduleByHour) {
@@ -25,13 +30,14 @@ Widget buildScheduleList(
     itemBuilder: (context, index) {
       int roomNumber = groupedSchedules.keys.elementAt(index);
       List<ScheduleByHour> schedules = groupedSchedules[roomNumber]!;
-      return buildScheduleWidget(roomNumber, schedules, theaterName, movieId);
+      return buildScheduleWidget(
+          roomNumber, schedules, theaterName, movieId, date);
     },
   );
 }
 
 Widget buildScheduleWidget(int roomNumber, List<ScheduleByHour> schedules,
-    String theaterName, int movieId) {
+    String theaterName, int movieId, String date) {
   return Container(
     padding: const EdgeInsets.all(10.0),
     margin: const EdgeInsets.all(5.0),
@@ -94,6 +100,7 @@ Widget buildScheduleWidget(int roomNumber, List<ScheduleByHour> schedules,
                 schedule: schedules[index],
                 theaterName: theaterName,
                 movieId: movieId,
+                date: date,
               );
             },
           ),
@@ -114,11 +121,14 @@ class ScheduleButton extends StatefulWidget {
   final ScheduleByHour schedule;
   final String theaterName;
   final int movieId;
-  const ScheduleButton(
-      {super.key,
-      required this.schedule,
-      required this.theaterName,
-      required this.movieId});
+  final String date;
+  const ScheduleButton({
+    super.key,
+    required this.schedule,
+    required this.theaterName,
+    required this.movieId,
+    required this.date,
+  });
 
   @override
   State<ScheduleButton> createState() => _ScheduleButtonState();
@@ -142,7 +152,7 @@ class _ScheduleButtonState extends State<ScheduleButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         setState(() {
           isSelected = !isSelected;
         });
@@ -151,14 +161,18 @@ class _ScheduleButtonState extends State<ScheduleButton> {
             isSelected = false;
           });
         });
-
+        Preferences pref = Preferences();
+        pref.saveSchedule(widget.schedule.id);
+        int? prefid = await pref.getSchedule();
+        print('PREF schedule ID: $prefid');
         print('Selected schedule: ${widget.schedule.id}');
         print('Selected schedule: ${widget.schedule.times}');
         print('Selected schedule: ${widget.schedule.roomNumber}');
         if (token == null) {
           ValidInput valid = ValidInput();
           valid.showAlertCustom(
-              context, 'You need to sign in to continue', 'Go to Sign in', () {
+              context, 'You need to sign in to continue', 'Go to Sign in', true,
+              () {
             Navigator.pushNamed(context, '/login');
           });
 
@@ -174,6 +188,7 @@ class _ScheduleButtonState extends State<ScheduleButton> {
               roomNumber: widget.schedule.roomNumber,
               theaterName: widget.theaterName,
               movieId: widget.movieId,
+              date: widget.date,
             ),
           ),
         );

@@ -6,31 +6,49 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
+import 'package:movie_booking_app/modules/timer/timer.dart';
 import 'package:movie_booking_app/pages/order/ordered.dart';
+import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/foodService.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
 import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class StorePage extends StatefulWidget {
+  final int scheduleId;
   final int movieId;
   final Set<String>? seats;
+  final String? date;
+  final String? theater;
+  final int? room;
+  final String? schedule;
   final bool selection;
-  const StorePage(
-      {super.key, required this.selection, this.seats, required this.movieId});
+  const StorePage({
+    super.key,
+    required this.selection,
+    this.seats,
+    required this.movieId,
+    required this.scheduleId,
+    this.theater,
+    this.schedule,
+    this.date,
+    this.room,
+  });
 
   @override
   State<StorePage> createState() => _StorePageState();
 }
 
-late Future<List<Food>> foods;
-late List<TextEditingController> _controllers;
-late List<int> _values;
-late List<Map<String, dynamic>> foodOrder;
-
-//call lai khi an nut
-late Future<GetTotal> getTotal;
-
 class _StorePageState extends State<StorePage> {
+  late Future<List<Food>> foods;
+  late List<TextEditingController> _controllers;
+  late List<int> _values;
+  late List<Map<String, dynamic>> foodOrder;
+  Preferences pref = Preferences();
+//call lai khi an nut
+  late Future<GetTotal> getTotal;
+  late String? seats;
   @override
   void initState() {
     super.initState();
@@ -38,10 +56,21 @@ class _StorePageState extends State<StorePage> {
     _controllers = [];
     _values = [];
     foodOrder = [];
+    initAsync();
+  }
+
+  Future<void> initAsync() async {
+    seats = await pref.getHoldSeats();
   }
 
   @override
   void dispose() {
+    TimerController.timerHoldSeatCancel();
+    if (widget.selection && seats != null) {
+      Set<String> prefSeats = ConverterUnit.convertStringToSet(seats!);
+      ReturnSeatService.returnSeat(widget.scheduleId, prefSeats);
+      pref.clearHoldSeats();
+    }
     for (var controller in _controllers) {
       controller.dispose();
     }
@@ -81,18 +110,19 @@ class _StorePageState extends State<StorePage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding:
+                  const EdgeInsets.only(top: 20.0, left: 10.0, bottom: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(AppLocalizations.of(context)!.fnd,
-                      style: AppStyle.bodyText1),
+                      style: AppStyle.headline1),
                   widget.selection
-                      ? MaterialButton(
+                      ? IconButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: const Icon(
+                          icon: const Icon(
                             Icons.close,
                             color: AppColors.backgroundColor,
                           ),
@@ -246,7 +276,15 @@ class _StorePageState extends State<StorePage> {
               ),
             ),
             renderBooking(
-                context, widget.selection, widget.seats, widget.movieId),
+                context,
+                widget.selection,
+                widget.date ?? DateTime.now().toString(),
+                widget.theater ?? '',
+                widget.schedule ?? '',
+                widget.seats ?? {},
+                widget.movieId,
+                foodOrder,
+                widget.selection),
           ],
         ),
       ),
@@ -255,7 +293,16 @@ class _StorePageState extends State<StorePage> {
 }
 
 Widget renderBooking(
-    BuildContext context, bool visible, Set<String>? seats, int movieId) {
+  BuildContext context,
+  bool visible,
+  String selectedDate,
+  String selectedTheater,
+  String selectedSchedule,
+  Set<String>? seats,
+  int movieId,
+  List<Map<String, dynamic>> foodOrder,
+  selection,
+) {
   return Container(
     color: Colors.transparent,
     padding: const EdgeInsets.all(10),
@@ -278,14 +325,32 @@ Widget renderBooking(
             }
           }
 
-          GetTotal getTotal = await GetTotalService.sumTotalOrder(
-              movieId, seats!.length, listOrdered);
+          if (!selection && listOrdered.isEmpty) {
+            ValidInput val = ValidInput();
+            val.showMessage(
+                context,
+                'Vui lòng chọn ít nhất một \nloại thức ăn và nước uống',
+                Colors.red);
+          } else {
+            GetTotal getTotal = await GetTotalService.sumTotalOrder(
+                movieId, seats!.length, listOrdered);
+            print(listOrdered);
 
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return OrderPage(total: getTotal);
-            },
-          ));
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return OrderPage(
+                  total: getTotal,
+                  movieId: movieId,
+                  selectedDate: selectedDate,
+                  selectedTheater: selectedTheater,
+                  selectedSchedule: selectedSchedule,
+                  selectedSeat: ConverterUnit.convertSetToString(seats),
+                  visible: visible,
+                  selectedFoods: listOrdered,
+                );
+              },
+            ));
+          }
         },
         child: Text(
           visible ? 'CONTINUE' : 'BOOKING',

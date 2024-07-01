@@ -22,16 +22,17 @@ class _ProfilePageState extends State<ProfilePage> {
   ValidInput valid = ValidInput();
   String? avatar;
   @override
-  void initState()  {
+  void initState() {
     // TODO: implement initState
     super.initState();
-     getData();
+    getData();
   }
-  Future<void> getData() async{
+
+  Future<void> getData() async {
     Preferences pref = Preferences();
     avatar = await pref.getAvatar();
-
   }
+
   @override
   Widget build(BuildContext context) {
     Preferences pref = Preferences();
@@ -67,6 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           context,
                           'Are you sure to logout?',
                           'Yes, logout',
+                          true,
                           () => _onPressLogout(context))),
                 ],
               ),
@@ -111,18 +113,19 @@ class _ProfilePageState extends State<ProfilePage> {
                         shape: BoxShape.circle),
                     padding: const EdgeInsets.all(5.0),
                     child: ClipOval(
-                      child: (avatar ?? "")==""?
-                      Image.asset(
-                          'assets/images/avatarDefault.png',
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ):Image.memory(
-                        ConverterUnit.base64ToUnit8(avatar!),
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
+                      child: (avatar ?? "") == ""
+                          ? Image.asset(
+                              'assets/images/avatarDefault.png',
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.memory(
+                              ConverterUnit.base64ToUnit8(avatar!),
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -135,7 +138,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   SizedBox(
-
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
@@ -225,12 +227,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _onPressLogout(BuildContext context) {
-
     Preferences pref = Preferences();
     Provider.of<UserProvider>(context, listen: false).logout();
     pref.removeSinginInfo();
     Navigator.pushReplacementNamed(context, '/login');
   }
+
   Future<void> reloadData() async {
     getData();
   }

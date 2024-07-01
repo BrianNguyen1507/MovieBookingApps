@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
+  //order
+  static const TextStyle titleOrder = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.small,
+    fontWeight: FontWeight.bold,
+    color: AppColors.darktextColor,
+  );
   //store
   static const TextStyle priceText = TextStyle(
     fontFamily: 'Roboto',

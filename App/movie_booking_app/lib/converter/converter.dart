@@ -11,9 +11,7 @@ class ConverterUnit {
 
   static String convertToUtf8(String input) {
     List<int> utf8Bytes = utf8.encode(input);
-
     String decodedString = utf8.decode(utf8Bytes);
-
     return decodedString;
   }
 
@@ -66,5 +64,10 @@ class ConverterUnit {
 
   static String convertSetToString(Set<String> seats) {
     return seats.join(',');
+  }
+
+  static Set<String> convertStringToSet(String seatsString) {
+    List<String> seatList = seatsString.split(',');
+    return seatList.toSet();
   }
 }

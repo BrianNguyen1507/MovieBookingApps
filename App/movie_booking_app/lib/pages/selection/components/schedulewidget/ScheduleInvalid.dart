@@ -20,9 +20,16 @@ Widget scheduleInvalid(BuildContext context) {
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(12))),
           child: const Center(
-            child: Text(
-              'Oops! There are no schedules available. Please come back later.',
-              style: AppStyle.bodyText1,
+            child: Column(
+              children: [
+                Text(
+                  'Oops! There are no schedules available',
+                  style: AppStyle.bodyText1,
+                ),Text(
+                  'Please Come back later',
+                  style: AppStyle.bodyText1,
+                ),
+              ],
             ),
           ),
         ),

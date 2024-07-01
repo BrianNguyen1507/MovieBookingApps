@@ -90,6 +90,7 @@ class TheaterItems {
                       context,
                       'Do you want to find your way to the cinema?',
                       'Yes, continue',
+                      true,
                       () {
                         Navigator.pop(context);
                         showDialog(
