@@ -3,6 +3,11 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
   //order
+  static const TextStyle graySmallText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.small,
+    color: AppColors.grayTextColor,
+  );
   static const TextStyle titleOrder = TextStyle(
     fontFamily: 'Roboto',
     fontSize: AppFontSize.small,

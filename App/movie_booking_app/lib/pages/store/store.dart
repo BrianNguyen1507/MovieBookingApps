@@ -318,6 +318,17 @@ Widget renderBooking(
           backgroundColor: AppColors.primaryColor,
         ),
         onPressed: () async {
+          Preferences pref = Preferences();
+          String? token = await pref.getTokenUsers();
+          if (token == null) {
+            ValidInput valid = ValidInput();
+            valid.showAlertCustom(context, 'You need to sign in to continue',
+                'Go to Sign in', true, () {
+              Navigator.pushNamed(context, '/login');
+            });
+            return;
+          }
+
           List<Map<String, dynamic>> listOrdered = [];
           for (var item in foodOrder) {
             if (item['quantity'] != 0) {
@@ -329,7 +340,7 @@ Widget renderBooking(
             ValidInput val = ValidInput();
             val.showMessage(
                 context,
-                'Vui lòng chọn ít nhất một \nloại thức ăn và nước uống',
+                'Please choose at least one type of food and drink',
                 Colors.red);
           } else {
             GetTotal getTotal = await GetTotalService.sumTotalOrder(
