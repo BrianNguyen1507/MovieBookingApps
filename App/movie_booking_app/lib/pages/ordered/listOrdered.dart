@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
-import 'package:movie_booking_app/pages/ordered/listFilmOrder.dart';
 
 class ListOrdered extends StatefulWidget {
   const ListOrdered({super.key});
@@ -42,7 +41,7 @@ class ListOrderedState extends State<ListOrdered> {
                     });
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
@@ -57,8 +56,9 @@ class ListOrderedState extends State<ListOrdered> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: AppFontSize.medium,
-                          fontWeight:
-                              isTabSelected ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: isTabSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                       )),
                 ),
@@ -84,16 +84,14 @@ class ListOrderedState extends State<ListOrdered> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: AppFontSize.medium,
-                          fontWeight:
-                              isTabSelected ? FontWeight.normal : FontWeight.bold,
+                          fontWeight: isTabSelected
+                              ? FontWeight.normal
+                              : FontWeight.bold,
                         ),
                       )),
                 ),
               ],
             ),
-            Builder(builder: (context) {
-              return const Listfilmorder();
-            },)
           ],
         ),
       ),
