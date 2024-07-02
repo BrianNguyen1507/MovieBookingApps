@@ -18,6 +18,6 @@ IVoucherService {
     VoucherResponse addVoucher(VoucherRequest request) throws ParseException;
     VoucherResponse updateVoucher(long id, VoucherRequest request) throws ParseException;
     void deleteVoucher(long id);
-    List<VoucherResponse> getAllVoucherByAccountAndMinLimit(double price, long accountId);
+    List<VoucherResponse> getAllVoucherByAccountAndMinLimit(double price);
 
 }

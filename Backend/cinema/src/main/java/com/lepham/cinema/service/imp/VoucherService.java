@@ -3,9 +3,11 @@ package com.lepham.cinema.service.imp;
 import com.lepham.cinema.converter.VoucherConverter;
 import com.lepham.cinema.dto.request.VoucherRequest;
 import com.lepham.cinema.dto.response.VoucherResponse;
+import com.lepham.cinema.entity.AccountEntity;
 import com.lepham.cinema.entity.VoucherEntity;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
+import com.lepham.cinema.repository.AccountRepository;
 import com.lepham.cinema.repository.VoucherRepository;
 import com.lepham.cinema.service.IVoucherService;
 import lombok.AccessLevel;
@@ -14,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -24,11 +27,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VoucherService implements IVoucherService {
 
     VoucherRepository voucherRepository;
-
+    AccountRepository accountRepository;
     VoucherConverter voucherConverter;
 
     @Override
@@ -52,8 +55,8 @@ public class VoucherService implements IVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     public VoucherResponse updateVoucher(long id, VoucherRequest request) throws ParseException {
         VoucherEntity entity = voucherRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.NULL_EXCEPTION));
-        voucherConverter.updateVoucher(entity,request);
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        voucherConverter.updateVoucher(entity, request);
         return voucherConverter.toResponse(voucherRepository.save(entity));
     }
 
@@ -61,11 +64,10 @@ public class VoucherService implements IVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteVoucher(long id) {
         VoucherEntity entity = voucherRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.NULL_EXCEPTION));
-        if(entity.getAccounts()==null){
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        if (entity.getAccounts() == null) {
             voucherRepository.delete(entity);
-        }
-        else{
+        } else {
             entity.setHide(true);
             voucherRepository.save(entity);
         }
@@ -74,9 +76,13 @@ public class VoucherService implements IVoucherService {
 
     @Override
     @PreAuthorize("hasRole('USER')")
-    public List<VoucherResponse> getAllVoucherByAccountAndMinLimit(double price, long accountId) {
+    public List<VoucherResponse> getAllVoucherByAccountAndMinLimit(double price) {
         List<VoucherResponse> responses = new ArrayList<>();
-        List<VoucherEntity> vouchers = voucherRepository.findAllByAllowVoucher(price, accountId);
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        List<VoucherEntity> vouchers = voucherRepository.findAllByAllowVoucher(price, account.getId());
         if (!vouchers.isEmpty()) {
             vouchers.forEach(entity -> {
                 VoucherResponse response = voucherConverter.toResponse(entity);
@@ -84,7 +90,7 @@ public class VoucherService implements IVoucherService {
                 responses.add(response);
             });
         }
-        vouchers = voucherRepository.findAllByNotAllowVoucher(price, accountId);
+        vouchers = voucherRepository.findAllByNotAllowVoucher(price, account.getId());
         if (!vouchers.isEmpty()) {
             vouchers.forEach(entity -> {
                 VoucherResponse response = voucherConverter.toResponse(entity);
