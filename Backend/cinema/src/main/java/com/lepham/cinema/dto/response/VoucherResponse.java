@@ -24,4 +24,4 @@ public class VoucherResponse {
     int quantity;
     LocalDate expired;
     boolean allow;
-}
+}       

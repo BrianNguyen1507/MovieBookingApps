@@ -3,8 +3,8 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 
-Widget buildBottomSheetOrder(
-    GetTotal total, String seats, List<Map<String, dynamic>> foods) {
+Widget buildBottomSheetOrder(GetTotal total, String seats,
+    List<Map<String, dynamic>> foods, double newTotal) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: Column(
@@ -64,7 +64,7 @@ Widget buildBottomSheetOrder(
               style: AppStyle.bodyText1,
             ),
             Text(
-              '${ConverterUnit.formatPrice(total.total)}₫',
+              '${ConverterUnit.formatPrice(newTotal)}₫',
               style: AppStyle.bodyText1,
             ),
           ],

@@ -27,11 +27,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VoucherService implements IVoucherService {
 
     VoucherRepository voucherRepository;
-
+    AccountRepository accountRepository;
     VoucherConverter voucherConverter;
     AccountRepository accountRepository;
 
@@ -56,8 +56,8 @@ public class VoucherService implements IVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     public VoucherResponse updateVoucher(long id, VoucherRequest request) throws ParseException {
         VoucherEntity entity = voucherRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.NULL_EXCEPTION));
-        voucherConverter.updateVoucher(entity,request);
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        voucherConverter.updateVoucher(entity, request);
         return voucherConverter.toResponse(voucherRepository.save(entity));
     }
 
@@ -65,11 +65,10 @@ public class VoucherService implements IVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteVoucher(long id) {
         VoucherEntity entity = voucherRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.NULL_EXCEPTION));
-        if(entity.getAccounts()==null){
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        if (entity.getAccounts() == null) {
             voucherRepository.delete(entity);
-        }
-        else{
+        } else {
             entity.setHide(true);
             voucherRepository.save(entity);
         }

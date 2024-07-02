@@ -1,19 +1,25 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/constant/svgString.dart';
-
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/components/orderWidget.dart';
+import 'package:movie_booking_app/pages/vouchers/voucherOrder.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
+import 'package:movie_booking_app/services/Users/food/getFoodById.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
+
+double newTotal = 0;
+double discount = 0;
+int voucherId = -1;
 
 class OrderPage extends StatefulWidget {
   const OrderPage({
@@ -42,6 +48,7 @@ class OrderPage extends StatefulWidget {
 }
 
 late Future<MovieDetail> movieData;
+late Future<Food> foodData;
 
 class _OrderPageState extends State<OrderPage> {
   @override
@@ -49,12 +56,8 @@ class _OrderPageState extends State<OrderPage> {
     widget.visible
         ? movieData = MovieDetailService.deatailMovieService(widget.movieId)
         : null;
+    newTotal = widget.total.total;
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -92,7 +95,60 @@ class _OrderPageState extends State<OrderPage> {
                           )
                         : const SizedBox.shrink(),
                     buildFoodInfo(context, widget.selectedFoods),
-                    buildVoucherInfo(context),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            final responseTotal = await Navigator.push(
+                              context,
+                              ModalBottomSheetRoute(
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return VoucherOrder(
+                                    total: widget.total.total,
+                                  );
+                                },
+                              ),
+                            );
+                            setState(() {
+                              if (responseTotal != null) {
+                                newTotal = responseTotal['newTotal'];
+                                voucherId = responseTotal['voucherId'];
+                                discount = widget.total.total - newTotal;
+                              }
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5.0),
+                            width: AppSize.width(context),
+                            decoration: const BoxDecoration(
+                              color: AppColors.containerColor,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SvgPicture.string(
+                                      svgVoucherCard,
+                                      height: 35,
+                                      width: 35,
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: Text('My voucher wallet',
+                                          style: AppStyle.bodyText1),
+                                    ),
+                                  ],
+                                ),
+                                Icon(AppIcon.arrowR),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     buildCustomerInfo(context),
                   ],
                 ),
@@ -228,20 +284,54 @@ Widget buildFoodInfo(
             style: AppStyle.bodyText1),
       ),
       SizedBox(
-        height: selectedFoods.length * 80,
+        height: selectedFoods.length * 90.0,
         child: ListView.builder(
           itemCount: selectedFoods.length,
           itemBuilder: (context, index) {
             final food = selectedFoods[index];
-            return Card(
-              child: SizedBox(
-                height: 70,
-                child: ListTile(
-                  leading: const Icon(Icons.fastfood),
-                  title: Text(food['id'].toString()),
-                  subtitle: const Text('123'),
-                ),
-              ),
+            return FutureBuilder<Food>(
+              future: FindFoodService.getFoodById(food['id'].toString()),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                } else {
+                  final fdata = snapshot.data!;
+
+                  return Card(
+                    child: SizedBox(
+                      height: 80,
+                      child: ListTile(
+                        leading: Image.memory(
+                          height: 50,
+                          width: 50,
+                          ConverterUnit.base64ToUnit8(fdata.image),
+                        ),
+                        title: Text(
+                          utf8.decode(fdata.name.codeUnits),
+                          style: AppStyle.detailText,
+                        ),
+                        subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${ConverterUnit.formatPrice(fdata.price)}₫',
+                              style: AppStyle.smallText,
+                            ),
+                            Text(
+                              'x${food['quantity']}',
+                              style: AppStyle.smallText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
             );
           },
         ),
@@ -300,52 +390,6 @@ Widget buildCustomerInfo(BuildContext context) {
   );
 }
 
-Widget buildVoucherInfo(BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      GestureDetector(
-        onTap: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    width: AppSize.width(context),
-                    child: const Text('123'));
-              });
-        },
-        child: Container(
-          padding: const EdgeInsets.all(5.0),
-          width: AppSize.width(context),
-          decoration: const BoxDecoration(
-            color: AppColors.containerColor,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  SvgPicture.string(
-                    svgVoucher,
-                    height: 35,
-                    width: 35,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text('My voucher wallet', style: AppStyle.bodyText1),
-                  ),
-                ],
-              ),
-              Icon(AppIcon.arrowR),
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
 Widget renderBooking(BuildContext context, GetTotal total, String seats,
     List<Map<String, dynamic>> foods) {
   return Container(
@@ -373,7 +417,7 @@ Widget renderBooking(BuildContext context, GetTotal total, String seats,
               Row(
                 children: [
                   Text(
-                    '${ConverterUnit.formatPrice(total.total)}₫',
+                    '${ConverterUnit.formatPrice(newTotal)}₫',
                     style: AppStyle.bodyText1,
                   ),
                   GestureDetector(
@@ -391,7 +435,8 @@ Widget renderBooking(BuildContext context, GetTotal total, String seats,
                             ),
                             height: AppSize.height(context),
                             width: AppSize.width(context),
-                            child: buildBottomSheetOrder(total, seats, foods),
+                            child: buildBottomSheetOrder(
+                                total, seats, foods, newTotal),
                           );
                         },
                       );
