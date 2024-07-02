@@ -1,14 +1,14 @@
 package com.lepham.cinema.service.imp;
 
+import com.google.zxing.WriterException;
 import com.lepham.cinema.constant.ConstantVariable;
+import com.lepham.cinema.converter.FoodConverter;
 import com.lepham.cinema.converter.OrderConverter;
 import com.lepham.cinema.converter.VoucherConverter;
 import com.lepham.cinema.dto.request.FoodOrderRequest;
 import com.lepham.cinema.dto.request.OrderFilmRequest;
 import com.lepham.cinema.dto.request.SumTotalRequest;
-import com.lepham.cinema.dto.response.OrderResponse;
-import com.lepham.cinema.dto.response.SumTotalResponse;
-import com.lepham.cinema.dto.response.VoucherResponse;
+import com.lepham.cinema.dto.response.*;
 import com.lepham.cinema.entity.*;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
@@ -22,8 +22,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +46,8 @@ public class OrderService implements IOrderService {
     AccountRepository accountRepository;
     OrderConverter orderConverter;
     FoodOrderRepository foodOrderRepository;
+    QRCodeService qrCodeService;
+    FoodConverter foodConverter;
 
     @Override
     @PreAuthorize("hasRole('USER')")
@@ -93,6 +100,7 @@ public class OrderService implements IOrderService {
         OrderEntity order = orderConverter.toEntity(request);
         MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(request.getMovieScheduleId())
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        if(LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart())) throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
@@ -131,7 +139,19 @@ public class OrderService implements IOrderService {
                 foodOrderRepository.save(foodOrder);
             }
         }
-        return orderConverter.toOrderFilmResponse(order);
+        return getOrderResponse(order);
+    }
+
+    private OrderResponse getOrderResponse(OrderEntity order) {
+        OrderResponse response = orderConverter.toOrderFilmResponse(order);
+        try {
+            byte[] image = qrCodeService.generateQRCode(order.getOrderCode());
+            String qrcode = Base64.getEncoder().encodeToString(image);
+            response.setOrderCode(qrcode);
+        } catch (WriterException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
     }
 
     @Override
@@ -190,7 +210,72 @@ public class OrderService implements IOrderService {
             foodOrder.setFood(food);
             foodOrderRepository.save(foodOrder);
         }
+        return getOrderResponse(order);
+    }
 
-        return orderConverter.toOrderFilmResponse(order);
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public List<OrderResponse> listFilmOrder() {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNotNull(account);
+        return orderEntities.stream().map(orderConverter::toOrderFilmResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public List<OrderResponse> listFoodOrder() {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNull(account);
+        return orderEntities.stream().map(orderConverter::toOrderFilmResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public DetailOrderResponse detailOrder(long id) {
+        OrderEntity order = orderRepository.findById(id).orElseThrow();
+            DetailOrderResponse detailOrderResponse = orderConverter.toDetailOrderResponse(order);
+            try {
+                byte[] image = qrCodeService.generateQRCode(order.getOrderCode());
+                String qrcode = Base64.getEncoder().encodeToString(image);
+                detailOrderResponse.setOrderCode(qrcode);
+            } catch (WriterException | IOException e) {
+                throw new RuntimeException(e);
+            }
+            if(order.getAccountVoucher().getVoucher()!=null){
+                VoucherResponse voucherResponse = voucherConverter.toResponse(order.getAccountVoucher().getVoucher());
+                detailOrderResponse.setVoucher(voucherResponse);
+            }
+            if(order.getFoodOrders()!=null){
+                List<FoodResponse> food = order.getFoodOrders().stream()
+                        .map(foodOrderEntity -> foodConverter.toFoodResponse(foodOrderEntity.getFood())).toList();
+                detailOrderResponse.setFood(food);
+            }
+            detailOrderResponse.setAllowedComment(false);
+            if(order.getMovieSchedule()!=null){
+
+                MovieScheduleEntity movieSchedule = order.getMovieSchedule();
+                FilmEntity film = movieSchedule.getFilm();
+                RoomEntity room = movieSchedule.getRoom();
+                MovieTheaterEntity theater = room.getMovieTheater();
+                detailOrderResponse.setTheaterName(theater.getName());
+                detailOrderResponse.setFilmTitle(film.getTitle());
+                detailOrderResponse.setDuration(film.getDuration());
+                detailOrderResponse.setRoomNumber(room.getNumber());
+                detailOrderResponse.setMovieTimeStart(movieSchedule.getTimeStart());
+                LocalDateTime movieTimeEnd = detailOrderResponse.getMovieTimeStart()
+                        .plusMinutes(detailOrderResponse.getDuration());
+                if(film.getActive()==ConstantVariable.FILM_RELEASE){
+                    detailOrderResponse.setAllowedComment(movieTimeEnd.isBefore(LocalDateTime.now()));
+                }
+
+            }
+
+        return detailOrderResponse;
     }
 }

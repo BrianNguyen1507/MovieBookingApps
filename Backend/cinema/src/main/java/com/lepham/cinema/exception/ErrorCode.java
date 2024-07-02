@@ -38,6 +38,9 @@ public enum ErrorCode {
     VOUCHER_NOY_ENOUGH(1026, "Voucher was not enough", HttpStatus.BAD_REQUEST),
     SEAT_NOT_ORDERED(1027, "Seat was not ordered", HttpStatus.BAD_REQUEST),
     ACCOUNT_NOT_EXIST(1028,"Account was not exist ", HttpStatus.BAD_REQUEST),
+    SHOWTIME_IS_COMING_SOON(1029,"Showtime is coming soon, please choose a showtime other ", HttpStatus.BAD_REQUEST),
+    ORDER_NOT_FOUND(1030,"Order not found", HttpStatus.BAD_REQUEST),
+    FOOD_NOT_FOUND(1031,"Food not found",HttpStatus.BAD_REQUEST),
     ;
 
 

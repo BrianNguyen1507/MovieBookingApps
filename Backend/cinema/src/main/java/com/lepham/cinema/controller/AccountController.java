@@ -68,7 +68,7 @@ public class AccountController {
                 .build();
     }
     @PutMapping(value = "/resetPassword")
-    public APIResponse<AccountResponse> resetPassword(@RequestBody ResetPasswordRequest request){
+    public APIResponse<AccountResponse> resetPassword(@RequestBody @Valid ResetPasswordRequest request){
         return APIResponse.<AccountResponse>builder()
                 .result(accountService.resetPassword(request))
                 .build();
@@ -81,13 +81,13 @@ public class AccountController {
                 .build();
     }
     @PutMapping(value = "/updateAccount")
-    public APIResponse<AccountResponse> updateAccount(@RequestBody AccountRequest request){
+    public APIResponse<AccountResponse> updateAccount(@RequestBody @Valid AccountRequest request){
         return APIResponse.<AccountResponse>builder()
                 .result(accountService.updateAccount(request))
                 .build();
     }
     @PutMapping(value = "/updatePassword")
-    public APIResponse<AccountResponse> updatePassword(@RequestBody UpdatePwdRequest request){
+    public APIResponse<AccountResponse> updatePassword(@RequestBody @Valid UpdatePwdRequest request){
         return APIResponse.<AccountResponse>builder()
                 .result(accountService.updatePassword(request))
                 .build();

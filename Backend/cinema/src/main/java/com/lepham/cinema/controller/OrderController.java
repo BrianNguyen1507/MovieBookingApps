@@ -2,11 +2,10 @@ package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.request.OrderFilmRequest;
 import com.lepham.cinema.dto.request.SumTotalRequest;
-import com.lepham.cinema.dto.response.APIResponse;
-import com.lepham.cinema.dto.response.OrderResponse;
-import com.lepham.cinema.dto.response.SumTotalResponse;
-import com.lepham.cinema.dto.response.VoucherResponse;
+import com.lepham.cinema.dto.response.*;
 import com.lepham.cinema.service.imp.OrderService;
+import com.lepham.cinema.validator.PriceConstraint;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -40,7 +39,7 @@ public class OrderController {
                 .build();
     }
     @PostMapping("/createOrder")
-    APIResponse<OrderResponse> orderFilm(@RequestBody OrderFilmRequest request){
+    APIResponse<OrderResponse> orderFilm(@RequestBody @Valid OrderFilmRequest request){
         return APIResponse.<OrderResponse>builder()
                 .result(orderService.orderFilm(request))
                 .build();
@@ -60,9 +59,28 @@ public class OrderController {
                 .build();
     }
     @PostMapping("/orderFood")
-    APIResponse<OrderResponse> orderFood(@RequestBody OrderFilmRequest request){
+    APIResponse<OrderResponse> orderFood(@RequestBody @Valid OrderFilmRequest request){
         return APIResponse.<OrderResponse>builder()
                 .result(orderService.orderFood(request))
+                .build();
+    }
+    @GetMapping("/getAllFilmOrder")
+    APIResponse<List<OrderResponse>> getAllFilmOrder(){
+        return APIResponse.<List<OrderResponse>>builder()
+                .result(orderService.listFilmOrder())
+                .build();
+    }
+    @GetMapping("/getAllFoodOrder")
+    APIResponse<List<OrderResponse>> getAllFoodOrder(){
+        return APIResponse.<List<OrderResponse>>builder()
+                .result(orderService.listFoodOrder())
+                .build();
+    }
+
+    @GetMapping("/detailOrder")
+    APIResponse<DetailOrderResponse> detailOrder(@RequestParam("id") long id){
+        return APIResponse.<DetailOrderResponse>builder()
+                .result(orderService.detailOrder(id))
                 .build();
     }
 

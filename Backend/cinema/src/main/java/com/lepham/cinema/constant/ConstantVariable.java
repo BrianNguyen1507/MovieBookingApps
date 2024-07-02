@@ -10,4 +10,7 @@ public class ConstantVariable {
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     public static final int direct = 0;
     public static final int percent = 1;
+    public static final int FILM_RELEASE = 0;
+    public static final int FILM_FUTURE = 1;
+    public static final int FILM_STOP_RELEASE = 2;
 }

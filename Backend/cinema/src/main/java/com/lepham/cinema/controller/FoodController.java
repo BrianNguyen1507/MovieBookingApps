@@ -4,6 +4,7 @@ import com.lepham.cinema.dto.request.FoodRequest;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.FoodResponse;
 import com.lepham.cinema.service.imp.FoodService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,7 +30,7 @@ public class FoodController {
 
 
     @PostMapping("/addFood")
-    APIResponse<FoodResponse> addFood(@RequestBody FoodRequest request) throws Exception {
+    APIResponse<FoodResponse> addFood(@RequestBody @Valid FoodRequest request) throws Exception {
         return APIResponse.<FoodResponse>builder()
                 .result(service.addFood(request))
                 .build();
@@ -42,11 +43,17 @@ public class FoodController {
                 .build();
     }
 
-        @DeleteMapping("/deleteFood")
+    @DeleteMapping("/deleteFood")
     APIResponse<?> hideFood(@RequestParam("id") long id) throws Exception {
         service.deleteFood(id);
         return APIResponse.builder()
                 .message("Delete food successful")
+                .build();
+    }
+    @GetMapping(value = "/getFoodById")
+    APIResponse<FoodResponse> findFoodById(@RequestParam("id") long id) {
+        return APIResponse.<FoodResponse>builder()
+                .result(service.findFoodById(id))
                 .build();
     }
 }

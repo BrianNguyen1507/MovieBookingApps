@@ -72,15 +72,17 @@ class UpdateInformationState extends State<UpdateInformation> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Update Information"),
-        backgroundColor: Colors.blue,
+        backgroundColor: AppColors.appbarColor,
         titleTextStyle: const TextStyle(
           color: Colors.white,
           fontSize: 18.0,
         ),
         centerTitle: true,
+
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -223,20 +225,19 @@ class UpdateInformationState extends State<UpdateInformation> {
                         gender: selectedGender == "Male" ? "Nam" : "Nữ",
                         dayOfBirth: ConverterUnit.convertToDate(dobCtl.text));
                     accountRequest =
-                        await UpdateAccount.updateAccount(accountRequest);
-                    if (accountRequest.email == email) {
-                      valid.showMessage(context, "Update successfully",
-                          AppColors.correctColor);
-                    }
+                        await UpdateAccount.updateAccount(accountRequest,context);
+
+
+
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
                                 const IndexPage(initialIndex: 3)));
                   },
-                  child: const SizedBox(
-                      width: 100,
-                      child: Text(
+                  child: SizedBox(
+                      width: AppSize.width(context)*0.75,
+                      child: const Text(
                         "Update",
                         textAlign: TextAlign.center,
                         style: TextStyle(
