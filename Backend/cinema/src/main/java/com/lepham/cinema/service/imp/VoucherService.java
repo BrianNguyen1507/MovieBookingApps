@@ -33,7 +33,7 @@ public class VoucherService implements IVoucherService {
     VoucherRepository voucherRepository;
     AccountRepository accountRepository;
     VoucherConverter voucherConverter;
-    AccountRepository accountRepository;
+            
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
 
 class FoodService {
   static Future<List<Food>> getAllFood() async {

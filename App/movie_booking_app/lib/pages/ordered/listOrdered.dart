@@ -94,7 +94,7 @@ class ListOrderedState extends State<ListOrdered> {
                 ),
               ],
             ),
-            isTabSelected?ListFilmOrder():ListFoodOrder()
+            isTabSelected ? const ListFilmOrder() : const ListFoodOrder()
           ],
         ),
       ),
