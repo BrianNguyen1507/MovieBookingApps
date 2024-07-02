@@ -70,4 +70,8 @@ class ConverterUnit {
     List<String> seatList = seatsString.split(',');
     return seatList.toSet();
   }
+  static String formatdMYhm(DateTime date) {
+    final DateFormat formatter = DateFormat('HH:mm dd-MM-yyyy');
+    return formatter.format(date);
+  }
 }

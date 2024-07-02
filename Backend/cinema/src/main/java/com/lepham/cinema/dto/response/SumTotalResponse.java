@@ -12,10 +12,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class SumTotalResponse {
-    @JsonSerialize(using = CustomDoubleSerializer.class)
+
     double priceTicket;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
+
     double priceFood;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
+
     double total;
 }

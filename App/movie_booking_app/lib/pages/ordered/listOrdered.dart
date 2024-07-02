@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/pages/ordered/listFilmOrder.dart';
+import 'package:movie_booking_app/pages/ordered/listFoodOrder.dart';
 
 class ListOrdered extends StatefulWidget {
   const ListOrdered({super.key});
@@ -18,7 +20,7 @@ class ListOrderedState extends State<ListOrdered> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("List Ordered"),
+        title: const Text("List Order"),
         backgroundColor: AppColors.appbarColor,
         titleTextStyle: const TextStyle(
           color: Colors.white,
@@ -92,6 +94,7 @@ class ListOrderedState extends State<ListOrdered> {
                 ),
               ],
             ),
+            isTabSelected?ListFilmOrder():ListFoodOrder()
           ],
         ),
       ),

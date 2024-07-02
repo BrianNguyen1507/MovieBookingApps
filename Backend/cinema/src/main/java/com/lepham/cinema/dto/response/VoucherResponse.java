@@ -19,9 +19,7 @@ public class VoucherResponse {
     String title;
     String content;
     int typeDiscount;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
     double minLimit;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
     double discount;
     int quantity;
     LocalDate expired;

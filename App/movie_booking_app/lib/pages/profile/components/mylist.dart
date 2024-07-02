@@ -21,7 +21,7 @@ class Builditem {
             case 1:
               return buildListItem(
                 context,
-                text: 'My Details 2',
+                text: 'List oder',
                 onPressed: ()  {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const ListOrdered()));
                 },
