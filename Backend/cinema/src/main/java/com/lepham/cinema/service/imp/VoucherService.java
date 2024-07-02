@@ -3,9 +3,11 @@ package com.lepham.cinema.service.imp;
 import com.lepham.cinema.converter.VoucherConverter;
 import com.lepham.cinema.dto.request.VoucherRequest;
 import com.lepham.cinema.dto.response.VoucherResponse;
+import com.lepham.cinema.entity.AccountEntity;
 import com.lepham.cinema.entity.VoucherEntity;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
+import com.lepham.cinema.repository.AccountRepository;
 import com.lepham.cinema.repository.VoucherRepository;
 import com.lepham.cinema.service.IVoucherService;
 import lombok.AccessLevel;
@@ -14,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -30,6 +33,7 @@ public class VoucherService implements IVoucherService {
     VoucherRepository voucherRepository;
 
     VoucherConverter voucherConverter;
+    AccountRepository accountRepository;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
@@ -74,9 +78,13 @@ public class VoucherService implements IVoucherService {
 
     @Override
     @PreAuthorize("hasRole('USER')")
-    public List<VoucherResponse> getAllVoucherByAccountAndMinLimit(double price, long accountId) {
+    public List<VoucherResponse> getAllVoucherByAccountAndMinLimit(double price) {
         List<VoucherResponse> responses = new ArrayList<>();
-        List<VoucherEntity> vouchers = voucherRepository.findAllByAllowVoucher(price, accountId);
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(()-> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        List<VoucherEntity> vouchers = voucherRepository.findAllByAllowVoucher(price, account.getId());
         if (!vouchers.isEmpty()) {
             vouchers.forEach(entity -> {
                 VoucherResponse response = voucherConverter.toResponse(entity);
@@ -84,7 +92,7 @@ public class VoucherService implements IVoucherService {
                 responses.add(response);
             });
         }
-        vouchers = voucherRepository.findAllByNotAllowVoucher(price, accountId);
+        vouchers = voucherRepository.findAllByNotAllowVoucher(price, account.getId());
         if (!vouchers.isEmpty()) {
             vouchers.forEach(entity -> {
                 VoucherResponse response = voucherConverter.toResponse(entity);

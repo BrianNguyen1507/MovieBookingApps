@@ -20,10 +20,12 @@ public class OrderResponse {
     long id;
     String orderCode;
     String seat;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
+
     double sumTotal;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     LocalDateTime date;
     String paymentMethod;
     String paymentCode;
+
+    FilmResponse film;
 }

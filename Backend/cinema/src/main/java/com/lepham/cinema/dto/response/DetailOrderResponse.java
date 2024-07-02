@@ -17,7 +17,6 @@ import java.util.List;
 public class DetailOrderResponse {
     long id;
     String seat;
-    @JsonSerialize(using = CustomDoubleSerializer.class)
     double sumTotal;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     LocalDateTime date;
