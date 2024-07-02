@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/Appdata.dart';
 
 class ValidInput {
   bool isValidEmail(String email, BuildContext context) {
@@ -37,12 +38,15 @@ class ValidInput {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 1.0),
-                  child: Text(
-                    message,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: AppFontSize.small),
+                  child: SizedBox(
+                    width: AppSize.width(context) *0.7,
+                    child: Text(
+                      message,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: AppFontSize.small),
+                    ),
                   ),
                 ),
               ],
