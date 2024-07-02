@@ -79,7 +79,7 @@ public class VoucherController {
 
     @GetMapping("/getAllVoucherByAccount")
     APIResponse<List<VoucherResponse>> getAllVoucherByAccount(
-            @RequestParam("price") double price) {
+            @RequestParam("price") double price){
         return APIResponse.<List<VoucherResponse>>builder()
                 .result(voucherService.getAllVoucherByAccountAndMinLimit(price))
                 .build();

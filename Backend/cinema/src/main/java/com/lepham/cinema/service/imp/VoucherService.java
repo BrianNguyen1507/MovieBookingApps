@@ -33,6 +33,7 @@ public class VoucherService implements IVoucherService {
     VoucherRepository voucherRepository;
     AccountRepository accountRepository;
     VoucherConverter voucherConverter;
+    AccountRepository accountRepository;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
@@ -81,7 +82,7 @@ public class VoucherService implements IVoucherService {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+                .orElseThrow(()-> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         List<VoucherEntity> vouchers = voucherRepository.findAllByAllowVoucher(price, account.getId());
         if (!vouchers.isEmpty()) {
             vouchers.forEach(entity -> {

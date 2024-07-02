@@ -2,6 +2,7 @@ package com.lepham.cinema.service.imp;
 
 import com.google.zxing.WriterException;
 import com.lepham.cinema.constant.ConstantVariable;
+import com.lepham.cinema.converter.FilmConverter;
 import com.lepham.cinema.converter.FoodConverter;
 import com.lepham.cinema.converter.OrderConverter;
 import com.lepham.cinema.converter.VoucherConverter;
@@ -38,6 +39,7 @@ public class OrderService implements IOrderService {
 
     OrderRepository orderRepository;
     FilmRepository filmRepository;
+    FilmConverter filmConverter;
     MovieScheduleRepository movieScheduleRepository;
     FoodRepository foodRepository;
     VoucherRepository voucherRepository;
@@ -221,9 +223,16 @@ public class OrderService implements IOrderService {
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNotNull(account);
-        return orderEntities.stream().map(orderConverter::toOrderFilmResponse).collect(Collectors.toList());
-    }
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        orderEntities.forEach(entity -> {
+            OrderResponse response = orderConverter.toOrderFilmResponse(entity);
+            FilmEntity film = entity.getMovieSchedule().getFilm();
+            response.setFilm(filmConverter.toFilmResponse(film));
+            orderResponses.add(response);
 
+        });
+        return orderResponses;
+    }
     @Override
     @PreAuthorize("hasRole('USER')")
     public List<OrderResponse> listFoodOrder() {
