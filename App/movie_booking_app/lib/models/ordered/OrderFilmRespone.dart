@@ -1,4 +1,0 @@
-class Orderfilmrespone{
-   BigInt id;
-
-}

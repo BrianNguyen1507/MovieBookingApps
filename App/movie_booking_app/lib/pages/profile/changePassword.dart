@@ -6,31 +6,29 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/changePassword.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
-class ChangePassword extends StatefulWidget{
+class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
 
   @override
   State<StatefulWidget> createState() {
     return ChangePasswordState();
   }
-
 }
-class ChangePasswordState extends State<ChangePassword>{
+
+class ChangePasswordState extends State<ChangePassword> {
   bool _obscureText = true;
   bool _obscureNewText = true;
   bool _obscureTextRef = true;
   TextEditingController passwordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController passwordRefController = TextEditingController();
-  ValidInput valid =  ValidInput();
+  ValidInput valid = ValidInput();
   String passwordWarning = "";
   String passwordMatch = "Password match";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-
         backgroundColor: AppColors.containerColor,
       ),
       body: SingleChildScrollView(
@@ -42,7 +40,7 @@ class ChangePasswordState extends State<ChangePassword>{
                 style: TextStyle(
                     fontSize: AppFontSize.large,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue),
+                    color: AppColors.primaryColor),
               ),
             ),
             Container(
@@ -53,18 +51,18 @@ class ChangePasswordState extends State<ChangePassword>{
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: TextFormField(
                       controller: passwordController,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: AppColors.darktextColor),
                       obscureText: _obscureNewText,
                       decoration: InputDecoration(
                         contentPadding:
-                        const EdgeInsets.only(left: 10, right: 10),
+                            const EdgeInsets.only(left: 10, right: 10),
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                               color: AppColors.primaryColor, width: 3.0),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black54, width: 1.0),
+                              BorderSide(color: Colors.black54, width: 1.0),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -92,18 +90,18 @@ class ChangePasswordState extends State<ChangePassword>{
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: TextFormField(
                       controller: newPasswordController,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: AppColors.darktextColor),
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                         contentPadding:
-                        const EdgeInsets.only(left: 10, right: 10),
+                            const EdgeInsets.only(left: 10, right: 10),
                         focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                               color: AppColors.primaryColor, width: 3.0),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black54, width: 1.0),
+                              BorderSide(color: Colors.black54, width: 1.0),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -139,24 +137,25 @@ class ChangePasswordState extends State<ChangePassword>{
                                 passwordWarning = "";
                               } else {
                                 passwordWarning = newPasswordController.text !=
-                                    passwordRefController.text
+                                        passwordRefController.text
                                     ? "Password do not match!"
                                     : passwordMatch;
                               }
                             });
                           },
-                          style: const TextStyle(color: Colors.black),
+                          style:
+                              const TextStyle(color: AppColors.darktextColor),
                           obscureText: _obscureTextRef,
                           decoration: InputDecoration(
                             contentPadding:
-                            const EdgeInsets.only(left: 10, right: 10),
+                                const EdgeInsets.only(left: 10, right: 10),
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: AppColors.primaryColor, width: 3.0),
                             ),
                             enabledBorder: const OutlineInputBorder(
                               borderSide:
-                              BorderSide(color: Colors.black54, width: 1.0),
+                                  BorderSide(color: Colors.black54, width: 1.0),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -207,15 +206,21 @@ class ChangePasswordState extends State<ChangePassword>{
                           : AppColors.shimmerColor,
                     ),
                     onPressed: () async {
-                        if(passwordWarning==passwordMatch){
-                          print(newPasswordController.text);
-                          Account account = await ChangePasswordService.changePassword(passwordController.text, newPasswordController.text);
-                          Preferences pre = new Preferences();
-                          String? email = await pre.getEmail();
-                          if(account.email==email){
-                            valid.showMessage(context, "Change password successfully", AppColors.correctColor);
-                          }
+                      if (passwordWarning == passwordMatch) {
+                        print(newPasswordController.text);
+                        Account account =
+                            await ChangePasswordService.changePassword(
+                                passwordController.text,
+                                newPasswordController.text);
+                        Preferences pre = new Preferences();
+                        String? email = await pre.getEmail();
+                        if (account.email == email) {
+                          valid.showMessage(
+                              context,
+                              "Change password successfully",
+                              AppColors.correctColor);
                         }
+                      }
                     },
                     child: const SizedBox(
                       width: 300,
@@ -226,7 +231,7 @@ class ChangePasswordState extends State<ChangePassword>{
                             "Continue",
                             style: TextStyle(
                               fontSize: AppFontSize.medium,
-                              color: Colors.white,
+                              color: AppColors.lightTextColor,
                             ),
                           ),
                         ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/profile/changePassword.dart';
 import 'package:movie_booking_app/pages/profile/updateInformation.dart';
 
-class InformationChoice extends StatelessWidget{
+class InformationChoice extends StatelessWidget {
   const InformationChoice({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -14,55 +14,43 @@ class InformationChoice extends StatelessWidget{
       appBar: AppBar(
         title: const Text("Information"),
         backgroundColor: AppColors.appbarColor,
-        titleTextStyle: const TextStyle(
-          color: AppColors.titleTextColor,
-          fontSize: AppFontSize.midMedium,
-        ),
+        titleTextStyle: AppStyle.headline2,
         centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.white
-        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 100 , left: 10,right: 10),
-        width: AppSize.width(context),
+      body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(
-                  fontSize: AppFontSize.medium,
-                  color: Colors.black
-                ),
-              ),
-
+            MaterialButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const UpdateInformation(),));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UpdateInformation(),
+                    ));
               },
               child: SizedBox(
                 width: AppSize.width(context),
                 height: 50,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                        "Update Information",
+                      "Update Information",
+                      style: AppStyle.bodyText1,
                     ),
-                    const Expanded(child: SizedBox()),
                     Icon(AppIcon.arrowR),
                   ],
                 ),
               ),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: const TextStyle(
-                    fontSize: AppFontSize.medium,
-                    color: Colors.black
-                ),
-              ),
-
+            MaterialButton(
               onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => const ChangePassword()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChangePassword()));
               },
               child: SizedBox(
                 width: AppSize.width(context),
@@ -71,6 +59,7 @@ class InformationChoice extends StatelessWidget{
                   children: [
                     const Text(
                       "Change password",
+                      style: AppStyle.bodyText1,
                     ),
                     const Expanded(child: SizedBox()),
                     Icon(AppIcon.arrowR),
@@ -83,5 +72,4 @@ class InformationChoice extends StatelessWidget{
       ),
     );
   }
-
 }

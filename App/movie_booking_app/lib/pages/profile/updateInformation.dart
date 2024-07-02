@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/account/account.dart';
@@ -73,16 +74,11 @@ class UpdateInformationState extends State<UpdateInformation> {
       appBar: AppBar(
         title: const Text("Update Information"),
         backgroundColor: AppColors.appbarColor,
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 18.0,
-        ),
+        titleTextStyle: AppStyle.headline2,
         centerTitle: true,
-
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: AppColors.containerColor,
         ),
-
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -170,7 +166,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                           value: 'Male',
                           groupValue: selectedGender,
                           onChanged: _onGenderChanged,
-                          activeColor: Colors.red,
+                          activeColor: AppColors.primaryColor,
                         ),
                         const Text('Male'),
                       ],
@@ -182,7 +178,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                           value: 'Female',
                           groupValue: selectedGender,
                           onChanged: _onGenderChanged,
-                          activeColor: Colors.red,
+                          activeColor: AppColors.primaryColor,
                         ),
                         const Text('Female'),
                       ],
@@ -224,10 +220,8 @@ class UpdateInformationState extends State<UpdateInformation> {
                         phoneNumber: phoneCrl.text,
                         gender: selectedGender == "Male" ? "Nam" : "Nữ",
                         dayOfBirth: ConverterUnit.convertToDate(dobCtl.text));
-                    accountRequest =
-                        await UpdateAccount.updateAccount(accountRequest,context);
-
-
+                    accountRequest = await UpdateAccount.updateAccount(
+                        accountRequest, context);
 
                     Navigator.pushReplacement(
                         context,
@@ -236,12 +230,12 @@ class UpdateInformationState extends State<UpdateInformation> {
                                 const IndexPage(initialIndex: 3)));
                   },
                   child: SizedBox(
-                      width: AppSize.width(context)*0.75,
+                      width: AppSize.width(context) * 0.75,
                       child: const Text(
                         "Update",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.containerColor,
                         ),
                       )),
                 ),
@@ -276,7 +270,9 @@ class UpdateInformationState extends State<UpdateInformation> {
     } else if (imgUnit8Bit == "file") {
       return Image.file(image);
     }
-    return Image.memory(ConverterUnit.base64ToUnit8(imgUnit8Bit));
+    return ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(100.0)),
+        child: Image.memory(ConverterUnit.base64ToUnit8(imgUnit8Bit)));
   }
 
   Future<void> _pickAndCropImage() async {
@@ -291,8 +287,8 @@ class UpdateInformationState extends State<UpdateInformation> {
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         androidUiSettings: const AndroidUiSettings(
           toolbarTitle: 'Cropper',
-          toolbarColor: Colors.deepOrange,
-          toolbarWidgetColor: Colors.white,
+          toolbarColor: AppColors.backgroundColor,
+          toolbarWidgetColor: AppColors.containerColor,
           initAspectRatio: CropAspectRatioPreset.square,
           lockAspectRatio: true,
         ),
@@ -301,12 +297,13 @@ class UpdateInformationState extends State<UpdateInformation> {
         ),
       );
       setState(() {
-        image = File(croppedFile!.path);
-        print(image.path);
-        avatar = "file";
-        base64Avatar = base64Encode(image.readAsBytesSync());
+        if (croppedFile != null) {
+          image = File(croppedFile.path);
+          print(image.path);
+          avatar = "file";
+          base64Avatar = base64Encode(image.readAsBytesSync());
+        }
       });
-      if (croppedFile != null) {}
     }
   }
 }

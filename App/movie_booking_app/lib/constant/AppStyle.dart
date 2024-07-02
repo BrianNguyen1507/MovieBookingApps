@@ -80,7 +80,12 @@ class AppStyle {
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
-
+  static const TextStyle headline2 = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.medium,
+    fontWeight: FontWeight.bold,
+    color: AppColors.lightTextColor,
+  );
   static const TextStyle nameMovie = TextStyle(
       fontFamily: 'Roboto',
       fontSize: AppFontSize.medium,

@@ -1,3 +1,0 @@
-class GetAllOrderFilm{
-  static Future<>
-}
