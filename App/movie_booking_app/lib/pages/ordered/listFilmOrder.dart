@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
@@ -7,6 +6,8 @@ import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
 import 'package:movie_booking_app/services/Users/ordered/getAllFilmOrder.dart';
 
 class ListFilmOrder extends StatefulWidget {
+  const ListFilmOrder({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return ListFilmOrderState();
@@ -36,14 +37,14 @@ class ListFilmOrderState extends State<ListFilmOrder> {
             ),
           ));
         }
-        List<OrderResponse>? filmOrders = snapshot.data;
+        List<OrderResponse> filmOrders = snapshot.data!;
         return SizedBox(
           width: AppSize.width(context),
-          height: AppSize.height(context)-160,
+          height: AppSize.height(context) - 160,
           child: ListView.builder(
-            itemCount: filmOrders?.length,
+            itemCount: filmOrders.length,
             itemBuilder: (context, index) {
-              OrderResponse filmOrder = filmOrders![index];
+              OrderResponse filmOrder = filmOrders[index];
               return GestureDetector(
                 onTap: () {
                   print("hah");
@@ -106,9 +107,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                         child: Text(
                           ConverterUnit.formatPrice(filmOrder.sumTotal),
                           style: const TextStyle(
-                              fontSize: AppFontSize.small,
-                            color: Colors.red
-                          ),
+                              fontSize: AppFontSize.small, color: Colors.red),
                         ),
                       ),
                     ],
