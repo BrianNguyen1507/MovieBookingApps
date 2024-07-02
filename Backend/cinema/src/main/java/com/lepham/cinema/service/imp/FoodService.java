@@ -58,8 +58,16 @@ public class FoodService implements IFoodService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteFood(long id) {
         FoodEntity foodEntity = repository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
         foodEntity.setHide(true);
         repository.save(foodEntity);
+    }
+
+    @Override
+    public FoodResponse findFoodById(long id) {
+        FoodEntity food = repository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+
+        return converter.toFoodResponse(food);
     }
 }

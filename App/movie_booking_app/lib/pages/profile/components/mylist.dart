@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/pages/ordered/listOrdered.dart';
 import 'package:movie_booking_app/pages/profile/informationChoice.dart';
 
 class Builditem {
@@ -22,6 +23,7 @@ class Builditem {
                 context,
                 text: 'My Details 2',
                 onPressed: ()  {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ListOrdered()));
                 },
               );
 

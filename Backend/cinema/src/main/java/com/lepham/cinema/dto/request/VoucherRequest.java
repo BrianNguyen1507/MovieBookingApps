@@ -25,6 +25,7 @@ public class VoucherRequest {
     String content;
 
     int typeDiscount;
+
     @PriceConstraint
     double minLimit;
 

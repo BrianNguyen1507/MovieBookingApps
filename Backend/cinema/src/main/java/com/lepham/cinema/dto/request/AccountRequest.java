@@ -1,6 +1,7 @@
 package com.lepham.cinema.dto.request;
 
 import com.lepham.cinema.validator.DobConstraint;
+import com.lepham.cinema.validator.StringConstraint;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,8 +17,11 @@ import java.util.Date;
 @NonNull
 public class AccountRequest {
     byte[] avatar;
+    @StringConstraint()
     String fullName;
+    @StringConstraint()
     String phoneNumber;
+    @StringConstraint()
     String gender;
     String email;
     @Size(min = 6,message = "PASSWORD_INVALID")

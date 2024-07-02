@@ -10,4 +10,6 @@ public interface IFoodService {
     FoodResponse updateFood(long id,FoodRequest request);
     FoodResponse addFood(FoodRequest request);
     void deleteFood(long id);
+
+    FoodResponse findFoodById(long id);
 }

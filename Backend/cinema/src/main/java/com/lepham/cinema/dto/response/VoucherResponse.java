@@ -1,5 +1,7 @@
 package com.lepham.cinema.dto.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lepham.cinema.validator.CustomDoubleSerializer;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +19,9 @@ public class VoucherResponse {
     String title;
     String content;
     int typeDiscount;
+    @JsonSerialize(using = CustomDoubleSerializer.class)
     double minLimit;
+    @JsonSerialize(using = CustomDoubleSerializer.class)
     double discount;
     int quantity;
     LocalDate expired;

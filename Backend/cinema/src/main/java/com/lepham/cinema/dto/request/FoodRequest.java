@@ -1,5 +1,6 @@
 package com.lepham.cinema.dto.request;
 
+import com.lepham.cinema.validator.PriceConstraint;
 import com.lepham.cinema.validator.StringConstraint;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ public class FoodRequest {
     long id;
     @StringConstraint()
     String name;
+    @PriceConstraint
     double price;
     byte[] image;
 }

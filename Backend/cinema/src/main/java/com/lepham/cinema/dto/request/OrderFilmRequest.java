@@ -2,6 +2,7 @@ package com.lepham.cinema.dto.request;
 
 import com.lepham.cinema.dto.response.AccountResponse;
 import com.lepham.cinema.dto.response.MovieScheduleResponse;
+import com.lepham.cinema.validator.PriceConstraint;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,6 +20,7 @@ public class OrderFilmRequest {
     String paymentMethod;
     String paymentCode;
     String seat;
+    @PriceConstraint()
     double sumTotal;
     List<FoodOrderRequest> food;
 

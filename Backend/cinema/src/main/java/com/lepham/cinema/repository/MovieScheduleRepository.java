@@ -26,7 +26,7 @@ public interface MovieScheduleRepository extends JpaRepository<MovieScheduleEnti
             "inner join FilmEntity f on f.id = ms.film.id " +
             "inner join RoomEntity r on r.id = ms.room.id " +
             "inner join MovieTheaterEntity mt on mt.id = r.movieTheater.id " +
-            "where f.id=?1 and mt.id = ?2 and r.hide=false and Date(ms.timeStart) = ?3")
+            "where f.id=?1 and mt.id = ?2 and r.hide=false and Date(ms.timeStart) = ?3 and ms.timeStart > Now()")
     List<MovieScheduleEntity> findAllByFilmAndMovieTheater(long filmId, long theaterId, LocalDate date);
 
 
