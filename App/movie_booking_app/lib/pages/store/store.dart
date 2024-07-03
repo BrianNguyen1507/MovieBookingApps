@@ -7,7 +7,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/modules/timer/timer.dart';
-import 'package:movie_booking_app/pages/order/ordered.dart';
+import 'package:movie_booking_app/pages/order/orderPage.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/foodService.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';

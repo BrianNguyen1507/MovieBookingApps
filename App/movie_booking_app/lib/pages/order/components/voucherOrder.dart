@@ -46,6 +46,7 @@ class _VoucherOrderState extends State<VoucherOrder> {
         children: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
+              iconColor: AppColors.backgroundColor,
               elevation: 0.0,
               padding: EdgeInsets.zero,
               backgroundColor: AppColors.commonLightColor,
@@ -120,6 +121,8 @@ class _VoucherOrderState extends State<VoucherOrder> {
                                     ],
                                   ),
                                   trailing: Checkbox(
+                                    activeColor: AppColors.primaryColor,
+                                    shape: const CircleBorder(),
                                     value: selectedVoucherIndex ==
                                         vouchers[index].id,
                                     onChanged: (bool? value) {
@@ -174,7 +177,7 @@ Widget renderApplyVoucher(
             }
             double totalApplyed =
                 await VoucherApply.applyVoucher(selectedVocher, total);
-
+            //update total vua apply voucher
             Navigator.pop(context,
                 {'newTotal': totalApplyed, 'voucherId': selectedVocher});
           },

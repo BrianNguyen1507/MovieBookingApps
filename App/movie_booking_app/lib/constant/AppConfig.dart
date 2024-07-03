@@ -49,3 +49,8 @@ class AppStringMethod {
   static const String register = "register";
   static const String forgotPassword = "forgotPassword";
 }
+
+class AppPayments {
+  static const String appName = "ZaloPay Flutter Demo";
+  static const String version = "v2";
+}
