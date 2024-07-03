@@ -12,7 +12,8 @@ import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/components/orderWidget.dart';
-import 'package:movie_booking_app/pages/vouchers/voucherOrder.dart';
+import 'package:movie_booking_app/pages/order/components/voucherOrder.dart';
+import 'package:movie_booking_app/pages/payments/payment.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/getFoodById.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
@@ -57,6 +58,7 @@ class _OrderPageState extends State<OrderPage> {
         ? movieData = MovieDetailService.deatailMovieService(widget.movieId)
         : null;
     newTotal = widget.total.total;
+    discount = widget.total.total - newTotal;
     super.initState();
   }
 
@@ -64,100 +66,117 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor.withOpacity(0.05),
-        iconTheme: const IconThemeData(color: AppColors.backgroundColor),
+        backgroundColor: AppColors.backgroundColor,
+        iconTheme: const IconThemeData(color: AppColors.containerColor),
         title: const Text(
           'Order Information',
           style: AppStyle.headline1,
         ),
         centerTitle: true,
       ),
-      backgroundColor: AppColors.commonLightColor,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                decoration:
-                    const BoxDecoration(color: AppColors.commonLightColor),
-                width: double.infinity,
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    widget.visible
-                        ? buildMovieInfo(
-                            movieData,
-                            widget.selectedDate,
-                            widget.selectedTheater,
-                            widget.selectedSchedule,
-                            widget.selectedSeat,
-                          )
-                        : const SizedBox.shrink(),
-                    buildFoodInfo(context, widget.selectedFoods),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            final responseTotal = await Navigator.push(
-                              context,
-                              ModalBottomSheetRoute(
-                                isScrollControlled: true,
-                                builder: (BuildContext context) {
-                                  return VoucherOrder(
-                                    total: widget.total.total,
-                                  );
-                                },
-                              ),
-                            );
-                            setState(() {
-                              if (responseTotal != null) {
-                                newTotal = responseTotal['newTotal'];
-                                voucherId = responseTotal['voucherId'];
-                                discount = widget.total.total - newTotal;
-                              }
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(5.0),
-                            width: AppSize.width(context),
-                            decoration: const BoxDecoration(
-                              color: AppColors.containerColor,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    SvgPicture.string(
-                                      svgVoucherCard,
-                                      height: 35,
-                                      width: 35,
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.all(5.0),
-                                      child: Text('My voucher wallet',
-                                          style: AppStyle.bodyText1),
-                                    ),
-                                  ],
+      backgroundColor: AppColors.backgroundColor,
+      body: Container(
+        padding: const EdgeInsets.only(top: 10.0),
+        decoration: const BoxDecoration(
+            color: AppColors.commonLightColor,
+            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  decoration:
+                      const BoxDecoration(color: AppColors.commonLightColor),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      widget.visible
+                          ? buildMovieInfo(
+                              movieData,
+                              widget.selectedDate,
+                              widget.selectedTheater,
+                              widget.selectedSchedule,
+                              widget.selectedSeat,
+                            )
+                          : const SizedBox.shrink(),
+                      buildFoodInfo(context, widget.selectedFoods),
+                      //push den trang voucherOrder
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              final responseTotal = await Navigator.push(
+                                context,
+                                ModalBottomSheetRoute(
+                                  isScrollControlled: true,
+                                  builder: (BuildContext context) {
+                                    return VoucherOrder(
+                                      total: widget.total.total,
+                                    );
+                                  },
                                 ),
-                                Icon(AppIcon.arrowR),
-                              ],
+                              );
+                              setState(() {
+                                if (responseTotal != null) {
+                                  newTotal = responseTotal['newTotal'];
+                                  voucherId = responseTotal['voucherId'];
+                                  discount = widget.total.total - newTotal;
+                                }
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(5.0),
+                              width: AppSize.width(context),
+                              decoration: const BoxDecoration(
+                                color: AppColors.containerColor,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SvgPicture.string(
+                                        svgVoucherCard,
+                                        height: 35,
+                                        width: 35,
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Text('My voucher wallet',
+                                            style: AppStyle.bodyText1),
+                                      ),
+                                    ],
+                                  ),
+                                  Icon(AppIcon.arrowR),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    buildCustomerInfo(context),
-                  ],
+                        ],
+                      ),
+                      buildCustomerInfo(context),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          renderBooking(
-              context, widget.total, widget.selectedSeat, widget.selectedFoods),
-        ],
+            renderBooking(
+              context,
+              widget.total,
+              widget.selectedSeat,
+              widget.selectedFoods,
+              widget.visible,
+              widget.selectedTheater,
+              widget.selectedDate,
+              widget.selectedSchedule,
+              widget.movieId,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -197,12 +216,15 @@ Widget buildMovieInfo(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.memory(
-                          height: 100,
-                          width: 80,
-                          ConverterUnit.base64ToUnit8(getMovie.poster)),
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.memory(
+                            height: 90,
+                            width: 60,
+                            ConverterUnit.base64ToUnit8(getMovie.poster)),
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,8 +412,17 @@ Widget buildCustomerInfo(BuildContext context) {
   );
 }
 
-Widget renderBooking(BuildContext context, GetTotal total, String seats,
-    List<Map<String, dynamic>> foods) {
+Widget renderBooking(
+  BuildContext context,
+  GetTotal total,
+  String seats,
+  List<Map<String, dynamic>> foods,
+  bool visible,
+  String theater,
+  String date,
+  String time,
+  int movieId,
+) {
   return Container(
     decoration: const BoxDecoration(
       color: AppColors.containerColor,
@@ -435,8 +466,8 @@ Widget renderBooking(BuildContext context, GetTotal total, String seats,
                             ),
                             height: AppSize.height(context),
                             width: AppSize.width(context),
-                            child: buildBottomSheetOrder(
-                                total, seats, foods, newTotal),
+                            child: buildBottomSheetOrder(total, seats, foods,
+                                newTotal, discount, visible),
                           );
                         },
                       );
@@ -467,7 +498,20 @@ Widget renderBooking(BuildContext context, GetTotal total, String seats,
               ),
               backgroundColor: AppColors.primaryColor,
             ),
-            onPressed: () async {},
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentPage(
+                    sumtotal: newTotal,
+                    visible: visible,
+                    foods: foods,
+                    seats: seats,
+                    theater: theater,
+                    date: date,
+                    time: time,
+                    movieId: movieId,
+                  ),
+                )),
             child: const Text(
               'CONTINUE',
               style: AppStyle.buttonNavigator,

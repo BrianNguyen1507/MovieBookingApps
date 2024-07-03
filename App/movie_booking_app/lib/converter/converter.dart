@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:intl/intl.dart';
 
 class ConverterUnit {
@@ -70,8 +69,19 @@ class ConverterUnit {
     List<String> seatList = seatsString.split(',');
     return seatList.toSet();
   }
+
   static String formatdMYhm(DateTime date) {
     final DateFormat formatter = DateFormat('HH:mm dd-MM-yyyy');
     return formatter.format(date);
   }
+}
+
+//payments
+String formatNumber(double value) {
+  final f = new NumberFormat("#,###", "vi_VN");
+  return f.format(value);
+}
+
+String formatDateTime(DateTime dateTime, String layout) {
+  return DateFormat(layout).format(dateTime).toString();
 }
