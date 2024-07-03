@@ -3,12 +3,14 @@ class Food {
   final String name;
   final double price;
   final String image;
+  final int quantity;
 
   Food({
     required this.id,
     required this.name,
     required this.price,
     required this.image,
+    required this.quantity,
   });
 
   factory Food.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,8 @@ class Food {
         id: json['id'],
         name: json['name'],
         price: json['price'],
-        image: json['image']);
+        image: json['image'],
+        quantity: json['image']==null?0:( json['quantity'] as num).toInt(),
+    );
   }
 }

@@ -27,6 +27,7 @@ class FoodService {
                 name: item['name'],
                 price: item['price'],
                 image: item['image'],
+                quantity: item['quantity'],
               ),
             )
             .toList();
