@@ -157,7 +157,7 @@ class DetailOrderPageState extends State<DetailOrderPage> {
             ),
           ),
           SizedBox(
-            width: AppSize.width(context) - 100,
+            width: AppSize.width(context),
             height: 120,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -221,6 +221,20 @@ class DetailOrderPageState extends State<DetailOrderPage> {
                     ],
                   ),
                 ),
+                order.order.status=="Used"
+                    ?ElevatedButton(
+                    onPressed: () {
+
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Text("Rating",style: TextStyle(
+                      fontSize: AppFontSize.small,
+                      color: Colors.black
+                    ),
+                    )
+                ):const SizedBox(width: 0,),
               ],
             ),
           ),

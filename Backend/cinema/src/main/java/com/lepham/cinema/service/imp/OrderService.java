@@ -94,15 +94,16 @@ public class OrderService implements IOrderService {
 
     @Override
     @PreAuthorize("hasRole('USER')")
-    public OrderResponse orderFilm(OrderFilmRequest request) {
+    public OrderResponse order(OrderFilmRequest request) {
         OrderEntity order = orderConverter.toEntity(request);
-        Optional<MovieScheduleEntity> optional = movieScheduleRepository.findById(request.getMovieScheduleId());
-        if (optional.isPresent()){
-            MovieScheduleEntity movieSchedule = optional.get();
+        order.setSeat(null);
+        if (request.getMovieScheduleId()!=-1){
+            MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(request.getMovieScheduleId()).orElseThrow();
             order.setMovieSchedule(movieSchedule);
             if (LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart()))
                 throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
             if (!movieSchedule.orderSeat(request.getSeat())) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
+            order.setSeat(request.getSeat());
             movieScheduleRepository.save(movieSchedule);
         }
 
