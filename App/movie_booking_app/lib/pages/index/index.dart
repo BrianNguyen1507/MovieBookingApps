@@ -63,17 +63,15 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.detached) {
-      handleAppDetached();
+    if (state == AppLifecycleState.paused) {
+        handleAppDetached();
     }
   }
 
   Future<void> handleAppDetached() async {
     Preferences pref = Preferences();
-    LogOutServices.logout();
+    await LogOutServices.logout();
     TokenManager.cancelTokenRefreshTimer();
-    print("logout success");
-
     String? seatpref = await pref.getHoldSeats();
     int? scheduleIdpref = await pref.getSchedule();
     if (seatpref != null && seatpref.isNotEmpty && scheduleIdpref != null) {
