@@ -51,7 +51,6 @@ class ListFilmOrderState extends State<ListFilmOrder> {
               OrderResponse filmOrder = filmOrders[index];
               return GestureDetector(
                 onTap: () async{
-                  DetailOrder orderFuture =  await DetailOrderService.detailOrder(filmOrder.id.toInt());
                   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrderPage(key:widget.key,id: filmOrder.id.toInt(),),));
                 },
                 child: Container(

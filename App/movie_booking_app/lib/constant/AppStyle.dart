@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
+  //payments
+  static const TextStyle paymentInfoText = TextStyle(
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.bold,
+    fontSize: AppFontSize.small,
+    color: AppColors.primaryColor,
+  );
   //order
   static const TextStyle graySmallText = TextStyle(
     fontFamily: 'Roboto',

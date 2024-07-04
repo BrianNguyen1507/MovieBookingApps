@@ -3,8 +3,14 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 
-Widget buildBottomSheetOrder(GetTotal total, String seats,
-    List<Map<String, dynamic>> foods, double newTotal) {
+Widget buildBottomSheetOrder(
+  GetTotal total,
+  String seats,
+  List<Map<String, dynamic>> foods,
+  double newTotal,
+  double? discount,
+  bool visible,
+) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: Column(
@@ -13,27 +19,29 @@ Widget buildBottomSheetOrder(GetTotal total, String seats,
           'Orders Details',
           style: AppStyle.headline1,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Seats:',
-              style: AppStyle.bodyText1,
-            ),
-            Row(
-              children: [
-                Text(
-                  '(x${ConverterUnit.convertStringToSet(seats).length}) ',
-                  style: AppStyle.smallText,
-                ),
-                Text(
-                  '${ConverterUnit.formatPrice(total.priceMovie)}₫',
-                  style: AppStyle.graySmallText,
-                ),
-              ],
-            )
-          ],
-        ),
+        visible
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Seats:',
+                    style: AppStyle.bodyText1,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        '(x${ConverterUnit.convertStringToSet(seats).length}) ',
+                        style: AppStyle.smallText,
+                      ),
+                      Text(
+                        '${ConverterUnit.formatPrice(total.priceMovie)}₫',
+                        style: AppStyle.graySmallText,
+                      ),
+                    ],
+                  )
+                ],
+              )
+            : const SizedBox.shrink(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -53,6 +61,19 @@ Widget buildBottomSheetOrder(GetTotal total, String seats,
                 ),
               ],
             )
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Discount:',
+              style: AppStyle.bodyText1,
+            ),
+            Text(
+              '- ${ConverterUnit.formatPrice(discount!)}₫',
+              style: AppStyle.graySmallText,
+            ),
           ],
         ),
         const Divider(),

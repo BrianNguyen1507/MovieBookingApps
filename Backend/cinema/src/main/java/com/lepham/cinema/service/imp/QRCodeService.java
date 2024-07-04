@@ -20,7 +20,7 @@ import java.io.IOException;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class QRCodeService {
-    static final int SIZE = 250;
+    static final int SIZE = 500;
 
     byte[] generateQRCode(String text) throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

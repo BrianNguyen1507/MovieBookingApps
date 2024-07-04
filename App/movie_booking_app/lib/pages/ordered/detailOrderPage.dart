@@ -4,6 +4,7 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
+import 'package:movie_booking_app/pages/ordered/QrcodePage.dart';
 import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
 
 class DetailOrderPage extends StatefulWidget {
@@ -67,8 +68,18 @@ class DetailOrderPageState extends State<DetailOrderPage> {
       width: AppSize.width(context),
       child: Column(
         children: [
-          Center(
-            child: Image.memory(ConverterUnit.base64ToUnit8(order.orderCode)),
+          GestureDetector(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => QrcodePage(qr: order.orderCode),
+                )),
+            child: Center(
+              child: Image.memory(
+                ConverterUnit.base64ToUnit8(order.orderCode),
+                width: 250,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8),
@@ -431,8 +442,18 @@ class DetailOrderPageState extends State<DetailOrderPage> {
       children: [
         Column(
           children: [
-            Center(
-              child: Image.memory(ConverterUnit.base64ToUnit8(order.orderCode)),
+            GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QrcodePage(qr: order.orderCode),
+                  )),
+              child: Center(
+                child: Image.memory(
+                  ConverterUnit.base64ToUnit8(order.orderCode),
+                  width: 250,
+                ),
+              ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 10),
