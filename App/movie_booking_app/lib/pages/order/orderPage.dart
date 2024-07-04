@@ -14,6 +14,7 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/components/orderWidget.dart';
 import 'package:movie_booking_app/pages/order/components/voucherOrder.dart';
 import 'package:movie_booking_app/pages/payments/payment.dart';
+
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/getFoodById.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';

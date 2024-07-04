@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/constant/ZaloConfig.dart';
-import 'package:movie_booking_app/services/payments/zaloResponse/CreateOrder.dart';
+import 'package:movie_booking_app/services/payments/ZaloPay/zaloResponse/CreateOrder.dart';
 import 'dart:convert';
 import 'package:movie_booking_app/constant/ZaloConfig.dart' as utils;
 import 'package:sprintf/sprintf.dart';
@@ -14,7 +14,8 @@ class ZaloPayService {
   static int transIdDefault = 1;
 }
 
-Future<CreateOrderResponse?> createOrder(int price) async {
+Future<CreateOrderResponse?> createOrder(
+    int price, List<Map<String, dynamic>> items) async {
   final headers = {
     "Content-Type": "application/x-www-form-urlencoded",
   };

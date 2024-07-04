@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/services/payments/ZaloPayService.dart';
+import 'package:movie_booking_app/services/payments/ZaloPay/ZaloPayService.dart';
 import 'package:sprintf/sprintf.dart';
 
 class Endpoints {

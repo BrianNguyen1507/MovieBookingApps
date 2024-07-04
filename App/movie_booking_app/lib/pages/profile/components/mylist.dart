@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/ordered/listOrdered.dart';
 import 'package:movie_booking_app/pages/profile/informationChoice.dart';
@@ -13,20 +14,25 @@ class Builditem {
             case 0:
               return buildListItem(
                 context,
-                text: 'Information',
+                text: 'Personal information',
                 onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const InformationChoice()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const InformationChoice()));
                 },
               );
             case 1:
               return buildListItem(
                 context,
-                text: 'List oder',
-                onPressed: ()  {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ListOrdered()));
+                text: 'My orders list',
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ListOrdered()));
                 },
               );
-
             default:
               return Container();
           }
@@ -50,14 +56,7 @@ class Builditem {
               onTap: onPressed,
               child: Row(
                 children: [
-                  Text(
-                    text,
-                    style: const TextStyle(
-                      color: Color(0xFF181725),
-                      fontSize: AppFontSize.small,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text(text, style: AppStyle.bodyText1),
                   const Expanded(
                     child: SizedBox(),
                   ),
