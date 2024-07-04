@@ -39,9 +39,9 @@ public class OrderController {
                 .build();
     }
     @PostMapping("/order")
-    APIResponse<OrderResponse> orderFilm(@RequestBody @Valid OrderFilmRequest request){
+    APIResponse<OrderResponse> order(@RequestBody @Valid OrderFilmRequest request){
         return APIResponse.<OrderResponse>builder()
-                .result(orderService.orderFilm(request))
+                .result(orderService.order(request))
                 .build();
     }
     @PostMapping("/holdSeat")

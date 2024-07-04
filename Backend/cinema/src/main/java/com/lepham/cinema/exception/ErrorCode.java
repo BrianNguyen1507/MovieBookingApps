@@ -42,6 +42,7 @@ public enum ErrorCode {
     ORDER_NOT_FOUND(1030,"Order not found", HttpStatus.BAD_REQUEST),
     FOOD_NOT_FOUND(1031,"Food not found",HttpStatus.BAD_REQUEST),
     ORDER_NOT_BELONG_ACCOUNT(1032,"The order does not belong to the account", HttpStatus.BAD_REQUEST),
+    CAN_NOT_RATING(1032,"You can not rating and feedback", HttpStatus.BAD_REQUEST),
     ;
 
 

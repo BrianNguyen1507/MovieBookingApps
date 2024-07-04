@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -21,9 +22,9 @@ public class RatingFeedbackEntity {
     @Column(name = "rating",nullable = false)
     int rating;
     @Column(name = "comment",nullable = false)
-    String price;
+    String comment;
     @Column(name = "datetime",nullable = false)
-    Date datetime;
+    LocalDateTime datetime;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", referencedColumnName = "id")

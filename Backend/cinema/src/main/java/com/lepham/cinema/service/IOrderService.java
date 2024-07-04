@@ -14,7 +14,7 @@ public interface IOrderService {
 
     double applyVoucher(double price, long voucherId);
 
-    OrderResponse orderFilm(OrderFilmRequest request);
+    OrderResponse order(OrderFilmRequest request);
 
     void holeSeat(long id,String seat);
 

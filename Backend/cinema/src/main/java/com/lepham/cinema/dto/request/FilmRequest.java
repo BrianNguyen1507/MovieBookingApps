@@ -11,6 +11,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -22,7 +23,6 @@ public class FilmRequest {
     @DurationConstraint(message = "DURATION_INVALID")
     int duration;
     byte [] description;
-
     @DateConstraint
     LocalDate releaseDate;
     @StringConstraint
