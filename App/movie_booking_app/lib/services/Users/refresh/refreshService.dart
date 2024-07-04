@@ -24,6 +24,7 @@ class RefreshToken {
         return;
       }
       dynamic newToken = responseData['result']['token'];
+      pref.saveTokenKey(newToken);
       print('new token:$newToken');
     } catch (e) {
       return 'Error: $e';

@@ -23,13 +23,15 @@ public class DetailOrderResponse {
     String paymentMethod;
     String paymentCode;
     boolean allowedComment;
+    String status;
     VoucherResponse voucher;
     List<FoodResponse> food;
     String theaterName;
-    String filmTitle;
-    int duration;
+    FilmResponse film;
     int roomNumber;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     LocalDateTime movieTimeStart;
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    LocalDateTime movieTimeEnd;
     String orderCode;
 }

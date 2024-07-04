@@ -41,6 +41,7 @@ public enum ErrorCode {
     SHOWTIME_IS_COMING_SOON(1029,"Showtime is coming soon, please choose a showtime other ", HttpStatus.BAD_REQUEST),
     ORDER_NOT_FOUND(1030,"Order not found", HttpStatus.BAD_REQUEST),
     FOOD_NOT_FOUND(1031,"Food not found",HttpStatus.BAD_REQUEST),
+    ORDER_NOT_BELONG_ACCOUNT(1032,"The order does not belong to the account", HttpStatus.BAD_REQUEST),
     ;
 
 

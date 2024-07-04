@@ -13,7 +13,7 @@ class ChangePasswordService{
       'newPassword':newPassword,
     });
     Preferences preferences = Preferences();
-    String? token = await preferences.getTokenUsers();
+    dynamic token = await preferences.getTokenUsers();
     try {
       final response = await http.put(
           Uri.parse(url),

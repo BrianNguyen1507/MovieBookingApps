@@ -64,7 +64,6 @@ class UpdateInformationState extends State<UpdateInformation> {
       });
     } catch (e) {
       print('Error fetching information: $e');
-      setState(() {});
     }
   }
 

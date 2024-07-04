@@ -1,5 +1,6 @@
 package com.lepham.cinema.dto.request;
 
+import com.lepham.cinema.constant.ConstantVariable;
 import com.lepham.cinema.dto.response.AccountResponse;
 import com.lepham.cinema.dto.response.MovieScheduleResponse;
 import com.lepham.cinema.validator.PriceConstraint;
@@ -22,6 +23,7 @@ public class OrderFilmRequest {
     String seat;
     @PriceConstraint()
     double sumTotal;
+    @Builder.Default
+    int isUsed = ConstantVariable.ORDER_UNUSED;
     List<FoodOrderRequest> food;
-
 }

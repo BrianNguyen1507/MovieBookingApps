@@ -8,7 +8,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 class MyInformation{
   static Future<Account> getMyInformation() async{
     Preferences pref = Preferences();
-    String? token = await pref.getTokenUsers();
+    dynamic token = await pref.getTokenUsers();
     const url = 'http://$ipAddress:8083/cinema/getMyInfo';
     try{
       final response = await http.get(

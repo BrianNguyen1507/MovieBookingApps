@@ -17,4 +17,5 @@ public class FoodResponse {
     String name;
     double price;
     byte[] image;
+    int quantity;
 }

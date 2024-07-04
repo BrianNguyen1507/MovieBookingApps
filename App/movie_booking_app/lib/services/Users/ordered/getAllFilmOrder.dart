@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class FilmOrder {
   static Future<List<OrderResponse>> getAllFilmOrder() async {
     const url = 'http://$ipAddress:8083/cinema/getAllFilmOrder';
-    String? token = await Preferences().getTokenUsers();
+    dynamic token = await Preferences().getTokenUsers();
     try {
       final response = await http.get(Uri.parse(url), headers: {
         'Content-Type': 'application/json',

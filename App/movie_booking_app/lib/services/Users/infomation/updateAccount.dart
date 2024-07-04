@@ -14,7 +14,7 @@ class UpdateAccount {
     const url = 'http://$ipAddress:8083/cinema/updateAccount';
     final bodyRequest = jsonEncode(account.toJson());
     Preferences preferences = Preferences();
-    String? token = await preferences.getTokenUsers();
+    dynamic token = await preferences.getTokenUsers();
     try {
       final response = await http.put(
           Uri.parse(url),

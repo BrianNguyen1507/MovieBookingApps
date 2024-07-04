@@ -32,6 +32,8 @@ public class OrderEntity {
     String paymentMethod;
     @Column(name = "payment_code", nullable = false, length = 50)
     String paymentCode;
+    @Column(name = "status", nullable = false)
+    int status;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
