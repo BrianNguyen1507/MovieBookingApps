@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
+import 'package:movie_booking_app/pages/ordered/detailOrderPage.dart';
+import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
 
 import 'package:movie_booking_app/services/Users/ordered/getAllFoodOrder.dart';
 
@@ -48,8 +51,10 @@ class ListFoodOrderState extends State<ListFoodOrder> {
             itemBuilder: (context, index) {
               OrderResponse foodOder = foodOrders![index];
               return GestureDetector(
-                onTap: () {
-                  print("hah");
+                onTap: () async{
+
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrderPage(key:widget.key,id: foodOder.id.toInt(),),));
+
                 },
                 child: Container(
                   margin: const EdgeInsets.all(10),
@@ -78,7 +83,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
-                                    " Date order: ${ConverterUnit.formatdMYhm(foodOder.date!)}",
+                                    " Date order: ${ConverterUnit.formatDMYhm(foodOder.date!)}",
                                     style: const TextStyle(
                                         fontSize: AppFontSize.small),
                                   ),
@@ -98,10 +103,23 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          ConverterUnit.formatPrice(foodOder.sumTotal),
-                          style: const TextStyle(
-                              fontSize: AppFontSize.small, color: Colors.red),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              ConverterUnit.formatPrice(foodOder.sumTotal),
+                              style: const TextStyle(
+                                  fontSize: AppFontSize.small),
+                            ),
+                            Text(
+                              foodOder.status,
+                              style:  TextStyle(
+                                  fontSize: AppFontSize.small,
+                                  color: foodOder.status=="Unused"?AppColors.correctColor:AppColors.errorColor
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

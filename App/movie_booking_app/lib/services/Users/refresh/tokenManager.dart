@@ -9,7 +9,6 @@ class TokenManager {
   static void startTokenRefreshTimer(BuildContext context) {
     const refreshDuration = Duration(minutes: _refreshMinutes);
     _refreshTimer = Timer.periodic(refreshDuration, (timer) {
-      print('refreshtoken');
       RefreshToken.refreshToken();
     });
   }

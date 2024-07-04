@@ -26,6 +26,7 @@ public class OrderResponse {
     LocalDateTime date;
     String paymentMethod;
     String paymentCode;
-
+    String status;
     FilmResponse film;
+
 }

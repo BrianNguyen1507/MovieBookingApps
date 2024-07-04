@@ -24,12 +24,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +82,6 @@ public class OrderService implements IOrderService {
     }
 
 
-
     @Override
     @PreAuthorize("hasRole('USER')")
     public double applyVoucher(double price, long voucherId) {
@@ -102,11 +101,12 @@ public class OrderService implements IOrderService {
         OrderEntity order = orderConverter.toEntity(request);
         MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(request.getMovieScheduleId())
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        if(LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart())) throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
+        if (LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart()))
+            throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
-                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         AccountVoucher accountVoucher = new AccountVoucher();
         if (request.getVoucherId() != -1) {
             VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
@@ -116,10 +116,9 @@ public class OrderService implements IOrderService {
             if (accountVoucher.getQuantity() <= 0) throw new AppException(ErrorCode.VOUCHER_NOY_ENOUGH);
 
         } else {
-            if(accountVoucherRepository.findByAccountAndVoucher(account, null)!=null){
+            if (accountVoucherRepository.findByAccountAndVoucher(account, null) != null) {
                 accountVoucher = accountVoucherRepository.findByAccountAndVoucher(account, null);
-            }
-            else {
+            } else {
                 accountVoucher.setVoucher(null);
                 accountVoucher.setAccount(account);
                 accountVoucherRepository.save(accountVoucher);
@@ -181,7 +180,7 @@ public class OrderService implements IOrderService {
         String email = context.getAuthentication().getName();
         OrderEntity order = orderConverter.toEntity(request);
         AccountEntity account = accountRepository.findByEmail(email)
-                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         AccountVoucher accountVoucher = new AccountVoucher();
         if (request.getVoucherId() != -1) {
             VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
@@ -191,10 +190,9 @@ public class OrderService implements IOrderService {
             if (accountVoucher.getQuantity() <= 0) throw new AppException(ErrorCode.VOUCHER_NOY_ENOUGH);
 
         } else {
-            if(accountVoucherRepository.findByAccountAndVoucher(account, null)!=null){
+            if (accountVoucherRepository.findByAccountAndVoucher(account, null) != null) {
                 accountVoucher = accountVoucherRepository.findByAccountAndVoucher(account, null);
-            }
-            else {
+            } else {
                 accountVoucher.setVoucher(null);
                 accountVoucher.setAccount(account);
                 accountVoucherRepository.save(accountVoucher);
@@ -221,70 +219,109 @@ public class OrderService implements IOrderService {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
-                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNotNull(account);
         List<OrderResponse> orderResponses = new ArrayList<>();
         orderEntities.forEach(entity -> {
-            OrderResponse response = orderConverter.toOrderFilmResponse(entity);
             FilmEntity film = entity.getMovieSchedule().getFilm();
+            if (entity.getMovieSchedule().getTimeStart().plusMinutes(film.getDuration()).isBefore(LocalDateTime.now())
+                    && entity.getStatus() == ConstantVariable.ORDER_UNUSED) {
+                entity.setStatus(ConstantVariable.ORDER_EXPIRED_USED);
+                entity = orderRepository.save(entity);
+            }
+            OrderResponse response = orderConverter.toOrderFilmResponse(entity);
+            response.setStatus(getStatus(entity.getStatus()));
             response.setFilm(filmConverter.toFilmResponse(film));
             orderResponses.add(response);
 
         });
         return orderResponses;
     }
+
     @Override
     @PreAuthorize("hasRole('USER')")
     public List<OrderResponse> listFoodOrder() {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
-                .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNull(account);
-        return orderEntities.stream().map(orderConverter::toOrderFilmResponse).collect(Collectors.toList());
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        orderEntities.forEach(entity -> {
+            if (LocalDate.now().isAfter(entity.getDate().toLocalDate())
+                    && entity.getStatus() == ConstantVariable.ORDER_UNUSED) {
+                entity.setStatus(ConstantVariable.ORDER_EXPIRED_USED);
+                entity = orderRepository.save(entity);
+            }
+            OrderResponse response = orderConverter.toOrderFilmResponse(entity);
+
+            response.setStatus(getStatus(entity.getStatus()));
+            orderResponses.add(response);
+
+        });
+        return orderResponses;
     }
 
     @Override
     @PreAuthorize("hasRole('USER')")
     public DetailOrderResponse detailOrder(long id) {
-        OrderEntity order = orderRepository.findById(id).orElseThrow();
-            DetailOrderResponse detailOrderResponse = orderConverter.toDetailOrderResponse(order);
-            try {
-                byte[] image = qrCodeService.generateQRCode(order.getOrderCode());
-                String qrcode = Base64.getEncoder().encodeToString(image);
-                detailOrderResponse.setOrderCode(qrcode);
-            } catch (WriterException | IOException e) {
-                throw new RuntimeException(e);
-            }
-            if(order.getAccountVoucher().getVoucher()!=null){
-                VoucherResponse voucherResponse = voucherConverter.toResponse(order.getAccountVoucher().getVoucher());
-                detailOrderResponse.setVoucher(voucherResponse);
-            }
-            if(order.getFoodOrders()!=null){
-                List<FoodResponse> food = order.getFoodOrders().stream()
-                        .map(foodOrderEntity -> foodConverter.toFoodResponse(foodOrderEntity.getFood())).toList();
-                detailOrderResponse.setFood(food);
-            }
-            detailOrderResponse.setAllowedComment(false);
-            if(order.getMovieSchedule()!=null){
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        OrderEntity order = orderRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        if (!Objects.equals(account, order.getAccountVoucher().getAccount()))
+            throw new AppException(ErrorCode.ORDER_NOT_BELONG_ACCOUNT);
+        DetailOrderResponse detailOrderResponse = orderConverter.toDetailOrderResponse(order);
+        try {
+            byte[] image = qrCodeService.generateQRCode(order.getOrderCode());
+            String qrcode = Base64.getEncoder().encodeToString(image);
+            detailOrderResponse.setOrderCode(qrcode);
+        } catch (WriterException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (order.getAccountVoucher().getVoucher() != null) {
+            VoucherResponse voucherResponse = voucherConverter.toResponse(order.getAccountVoucher().getVoucher());
+            detailOrderResponse.setVoucher(voucherResponse);
+        }
+        if (order.getFoodOrders() != null) {
+            List<FoodResponse> food = new ArrayList<>();
+            order.getFoodOrders().forEach(foodOrderEntity -> {
+                FoodResponse foodResponse = foodConverter.toFoodResponse(foodOrderEntity.getFood());
+                foodResponse.setQuantity(foodOrderEntity.getQuantity());
+                food.add(foodResponse);
+            });
+            detailOrderResponse.setFood(food);
+        }
+        detailOrderResponse.setStatus(getStatus(order.getStatus()));
+        detailOrderResponse.setAllowedComment(false);
+        if (order.getMovieSchedule() != null) {
 
-                MovieScheduleEntity movieSchedule = order.getMovieSchedule();
-                FilmEntity film = movieSchedule.getFilm();
-                RoomEntity room = movieSchedule.getRoom();
-                MovieTheaterEntity theater = room.getMovieTheater();
-                detailOrderResponse.setTheaterName(theater.getName());
-                detailOrderResponse.setFilmTitle(film.getTitle());
-                detailOrderResponse.setDuration(film.getDuration());
-                detailOrderResponse.setRoomNumber(room.getNumber());
-                detailOrderResponse.setMovieTimeStart(movieSchedule.getTimeStart());
-                LocalDateTime movieTimeEnd = detailOrderResponse.getMovieTimeStart()
-                        .plusMinutes(detailOrderResponse.getDuration());
-                if(film.getActive()==ConstantVariable.FILM_RELEASE){
-                    detailOrderResponse.setAllowedComment(movieTimeEnd.isBefore(LocalDateTime.now()));
-                }
-
+            MovieScheduleEntity movieSchedule = order.getMovieSchedule();
+            FilmEntity film = movieSchedule.getFilm();
+            RoomEntity room = movieSchedule.getRoom();
+            MovieTheaterEntity theater = room.getMovieTheater();
+            detailOrderResponse.setTheaterName(theater.getName());
+            detailOrderResponse.setFilm(filmConverter.toFilmResponse(film));
+            detailOrderResponse.setRoomNumber(room.getNumber());
+            detailOrderResponse.setMovieTimeStart(movieSchedule.getTimeStart());
+            detailOrderResponse.setMovieTimeEnd(movieSchedule.getTimeStart().plusMinutes(film.getDuration()));
+            LocalDateTime movieTimeEnd = detailOrderResponse.getMovieTimeStart()
+                    .plusMinutes(detailOrderResponse.getFilm().getDuration());
+            if (order.getStatus() == ConstantVariable.ORDER_USED) {
+                detailOrderResponse.setAllowedComment(movieTimeEnd.isBefore(LocalDateTime.now()));
             }
+
+        }
 
         return detailOrderResponse;
+    }
+
+    String getStatus(int statusInt) {
+        String status = "";
+        if (statusInt == 0) status = "Unused";
+        else status = statusInt == 1 ? "Used" : "Expired";
+        return status;
     }
 }

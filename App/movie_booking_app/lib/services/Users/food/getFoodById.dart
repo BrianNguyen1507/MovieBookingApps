@@ -23,6 +23,7 @@ class FindFoodService {
           name: data['name'],
           price: data['price'],
           image: data['image'],
+          quantity: data['quantity']
         );
       } else {
         throw Exception('error with status code: ${response.statusCode}');
