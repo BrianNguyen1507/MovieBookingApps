@@ -40,17 +40,17 @@ class MainActivity: FlutterActivity() {
                     ZaloPaySDK.getInstance().payOrder(this@MainActivity, token, "demozpdk://app", object : PayOrderListener {
                         override fun onPaymentCanceled(zpTransToken: String?, appTransID: String?) {
                             Log.d("onPaymentCancel", "TransactionId: $zpTransToken, appTransID: $appTransID")
-                            result.success("User Canceled")
+                            result.success(mapOf("result" to "User Canceled", "appTransID" to appTransID))
                         }
 
                         override fun onPaymentError(zaloPayErrorCode: ZaloPayError?, zpTransToken: String?, appTransID: String?) {
                             Log.d("onPaymentError", "zaloPayErrorCode: ${zaloPayErrorCode.toString()}, zpTransToken: $zpTransToken, appTransID: $appTransID")
-                            result.success("Payment failed")
+                            result.success(mapOf("result" to "Payment failed", "appTransID" to appTransID))
                         }
 
                         override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String?) {
                             Log.d("onPaymentSucceeded", "TransactionId: $transactionId, TransToken: $transToken, appTransID: $appTransID")
-                            result.success("Payment Success")
+                            result.success(mapOf("result" to "Payment Success", "appTransID" to transactionId))
                         }
                     })
                 } else {

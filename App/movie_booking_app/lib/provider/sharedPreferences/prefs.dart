@@ -124,4 +124,20 @@ class Preferences {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt('scheduleId');
   }
+
+  //save Voucher
+  Future<void> saveSVoucher(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('voucherId', id);
+  }
+
+  Future<void> clearVoucher() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('voucherId');
+  }
+
+  Future<int?> getVoucher() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('voucherId');
+  }
 }

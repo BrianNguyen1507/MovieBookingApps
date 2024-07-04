@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
 import 'package:movie_booking_app/pages/profile/guest.dart';
@@ -155,15 +156,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 40,
-                                  height: 40,
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColors.iconThemeColor,
                                   ),
-                                  child: Icon(
-                                    AppIcon.watchedMovie,
-                                    color: AppColors.primaryColor,
+                                  child: SvgPicture.string(
+                                    svgTv,
+                                    width: 40,
+                                    height: 40,
                                   ),
                                 ),
                                 const Text(
@@ -187,17 +187,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.iconThemeColor,
-                                  ),
-                                  child: Icon(
-                                    AppIcon.reviews,
-                                    color: AppColors.primaryColor,
-                                  ),
-                                ),
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.iconThemeColor,
+                                    ),
+                                    child: SvgPicture.string(
+                                      svgReview,
+                                      width: 40,
+                                      height: 40,
+                                    )),
                                 const Text(
                                   '0',
                                   style: TextStyle(

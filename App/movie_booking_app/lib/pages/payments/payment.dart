@@ -8,9 +8,12 @@ import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
-import 'package:movie_booking_app/services/payments/ZaloPayService.dart';
+import 'package:movie_booking_app/services/Users/order/createOrder/createOrderTickets.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:movie_booking_app/services/payments/ZaloPay/ZaloPayService.dart';
 
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
@@ -320,7 +323,8 @@ class _PaymentPageState extends State<PaymentPage> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     children: [
-                      paymentCardWidget(payAmount),
+                      paymentCardWidget(widget.visible, payAmount, widget.seats,
+                          widget.foods),
                     ]),
               ),
             ],
@@ -330,7 +334,12 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  Widget paymentCardWidget(int sumtotal) {
+  Widget paymentCardWidget(
+    bool visible,
+    int sumtotal,
+    String? seats,
+    List<Map<String, dynamic>> foods,
+  ) {
     return Container(
       padding: const EdgeInsets.all(5.0),
       child: Tooltip(
@@ -341,7 +350,8 @@ class _PaymentPageState extends State<PaymentPage> {
             if (amount < 1000 || amount > 1000000) {
               setState(() {
                 zpTransToken = "Invalid Amount";
-                print(zpTransToken);
+                ValidInput()
+                    .showMessage(context, zpTransToken, AppColors.errorColor);
               });
             } else {
               showDialog(
@@ -352,7 +362,18 @@ class _PaymentPageState extends State<PaymentPage> {
                   );
                 },
               );
-              var result = await createOrder(amount);
+              final Set<String>? seatQuantity =
+                  visible ? ConverterUnit.convertStringToSet(seats!) : null;
+
+              final itemList = [
+                {
+                  "movie_item": seatQuantity,
+                  "foods_item": foods.length,
+                  "item_price": sumtotal,
+                }
+              ];
+
+              var result = await createOrder(amount, itemList);
               if (result != null) {
                 Navigator.pop(context);
                 zpTransToken = result.zptranstoken;
@@ -363,20 +384,30 @@ class _PaymentPageState extends State<PaymentPage> {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => SizedBox(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                await handlePayment();
-                              },
-                              child: const Text(
-                                'OPEN ZALOPAY',
-                                style: TextStyle(fontSize: 16),
-                              ),
+                      width: AppSize.width(context),
+                      height: AppSize.height(context) * 0.2,
+                      child: MaterialButton(
+                        onPressed: () async {
+                          await handlePayment(widget.visible, widget.seats,
+                              widget.foods, widget.sumtotal);
+                        },
+                        child: Container(
+                          height: AppSize.height(context) * 0.1,
+                          width: AppSize.width(context),
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
                             ),
-                          ],
+                            color: AppColors.primaryColor,
+                          ),
+                          child: const Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'OPEN ZALOPAY',
+                              style: AppStyle.bannerText,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -387,13 +418,22 @@ class _PaymentPageState extends State<PaymentPage> {
           },
           child: Column(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  'assets/images/ZaloPay-vuong.png',
-                  height: 70,
-                  width: 70,
-                  fit: BoxFit.fitHeight,
+              Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.containerColor,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                margin: const EdgeInsets.all(10.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    'assets/images/ZaloPay-vuong.png',
+                    height: 70,
+                    width: 70,
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
               ),
               const Text(
@@ -407,50 +447,79 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  Future<void> handlePayment() async {
-    setState(() {
-      payResult = "Processing...";
-    });
-
-    String response = "Processing...";
+  Future<void> handlePayment(bool visible, String seats,
+      List<Map<String, dynamic>> foods, double sumTotal) async {
+    String response;
+    String appTranId;
     try {
-      final String result =
+      final Map<dynamic, dynamic> result =
           await platform.invokeMethod('payOrder', {"zptoken": zpTransToken});
-      response = result;
-      print("Kết quả payOrder: '$result'.");
+
+      response = result['result'].toString();
+      appTranId = result['appTransID'] ?? '';
+
+      setState(() {
+        payResult = response;
+        showResult = true;
+      });
     } on PlatformException catch (e) {
-      print("Gọi không thành công: '${e.message}'.");
-      response = "Thanh toán thất bại";
+      response = 'Payment failed';
+      throw Exception("Error: '${e.message}'.");
     }
 
-    setState(() {
-      Navigator.pop(context);
-      payResult = response;
-      showResult = true;
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Column(
-            children: [
-              payResult == 'Payment failed'
-                  ? SvgPicture.string(
-                      svgError,
-                      height: 100,
-                      width: 100,
-                    )
-                  : SvgPicture.string(
-                      svgSuccess,
-                      height: 100,
-                      width: 100,
-                    ),
-              Text(
-                payResult,
-                style: AppStyle.headline1,
-              ),
-            ],
+    setState(
+      () {
+        Navigator.pop(context);
+        payResult = response;
+        showResult = true;
+        showDialog(
+          barrierDismissible: payResult == 'Payment Success' ? false : true,
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                payResult == 'Payment failed' || payResult == 'User Canceled'
+                    ? SvgPicture.string(
+                        svgError,
+                        height: 70,
+                        width: 70,
+                      )
+                    : SvgPicture.string(
+                        svgSuccess,
+                        height: 100,
+                        width: 100,
+                      ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    payResult,
+                    style: AppStyle.bodyText1,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+        if (payResult == 'Payment Success') {
+          dynamic scheduleID = visible ? Preferences().getSchedule() : -1;
+          dynamic voucherID = visible ? Preferences().getVoucher() : -1;
+
+          CreateOrderService.createOrderTicket(scheduleID, voucherID, 'ZALOPAY',
+              appTranId, seats, foods, sumTotal);
+
+          Future.delayed(
+            const Duration(seconds: 3),
+            () {
+              return Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/listOrder',
+                ModalRoute.withName('/'),
+              );
+            },
+          );
+        }
+      },
+    );
   }
 }

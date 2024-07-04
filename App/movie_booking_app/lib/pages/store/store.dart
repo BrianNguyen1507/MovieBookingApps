@@ -219,7 +219,7 @@ class _StorePageState extends State<StorePage> {
                                               style: AppStyle.smallText,
                                             ),
                                             Text(
-                                              '${foodData[index].price} ₫',
+                                              '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
                                               style: AppStyle.priceText,
                                             ),
                                           ],

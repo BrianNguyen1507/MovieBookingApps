@@ -27,7 +27,7 @@ class Payment {
       image: 'assets/images/ZaloPay-vuong.png',
     ),
     Payment(
-      id: '2',
+      id: '3',
       title: 'VNPAY',
       description: 'Payment via Vnpay',
       method: 'VNPAY',
