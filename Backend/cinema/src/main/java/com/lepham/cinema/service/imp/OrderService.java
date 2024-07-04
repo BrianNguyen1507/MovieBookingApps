@@ -26,10 +26,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -99,10 +96,16 @@ public class OrderService implements IOrderService {
     @PreAuthorize("hasRole('USER')")
     public OrderResponse orderFilm(OrderFilmRequest request) {
         OrderEntity order = orderConverter.toEntity(request);
-        MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(request.getMovieScheduleId())
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        if (LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart()))
-            throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
+        Optional<MovieScheduleEntity> optional = movieScheduleRepository.findById(request.getMovieScheduleId());
+        if (optional.isPresent()){
+            MovieScheduleEntity movieSchedule = optional.get();
+            order.setMovieSchedule(movieSchedule);
+            if (LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart()))
+                throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
+            if (!movieSchedule.orderSeat(request.getSeat())) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
+            movieScheduleRepository.save(movieSchedule);
+        }
+
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
@@ -125,9 +128,8 @@ public class OrderService implements IOrderService {
             }
         }
         order.setAccountVoucher(accountVoucher);
-        order.setMovieSchedule(movieSchedule);
-        if (!movieSchedule.orderSeat(request.getSeat())) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
-        movieScheduleRepository.save(movieSchedule);
+
+
         order = orderRepository.save(order);
         if (!request.getFood().isEmpty()) {
             for (FoodOrderRequest foodOrderRequest : request.getFood()) {
@@ -173,45 +175,6 @@ public class OrderService implements IOrderService {
         movieScheduleRepository.save(schedule);
     }
 
-    @Override
-    @PreAuthorize("hasRole('USER')")
-    public OrderResponse orderFood(OrderFilmRequest request) {
-        var context = SecurityContextHolder.getContext();
-        String email = context.getAuthentication().getName();
-        OrderEntity order = orderConverter.toEntity(request);
-        AccountEntity account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-        AccountVoucher accountVoucher = new AccountVoucher();
-        if (request.getVoucherId() != -1) {
-            VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
-                    .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-            accountVoucher = accountVoucherRepository.findByAccountAndVoucher(account, voucher);
-            accountVoucher.setQuantity(accountVoucher.getQuantity() - 1);
-            if (accountVoucher.getQuantity() <= 0) throw new AppException(ErrorCode.VOUCHER_NOY_ENOUGH);
-
-        } else {
-            if (accountVoucherRepository.findByAccountAndVoucher(account, null) != null) {
-                accountVoucher = accountVoucherRepository.findByAccountAndVoucher(account, null);
-            } else {
-                accountVoucher.setVoucher(null);
-                accountVoucher.setAccount(account);
-                accountVoucherRepository.save(accountVoucher);
-            }
-        }
-        order.setMovieSchedule(null);
-        order.setAccountVoucher(accountVoucher);
-        order = orderRepository.save(order);
-        for (FoodOrderRequest foodOrderRequest : request.getFood()) {
-            FoodEntity food = foodRepository.findById(foodOrderRequest.getId())
-                    .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-            FoodOrderEntity foodOrder = new FoodOrderEntity();
-            foodOrder.setOrder(order);
-            foodOrder.setQuantity(foodOrderRequest.getQuantity());
-            foodOrder.setFood(food);
-            foodOrderRepository.save(foodOrder);
-        }
-        return getOrderResponse(order);
-    }
 
     @Override
     @PreAuthorize("hasRole('USER')")

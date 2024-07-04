@@ -20,7 +20,7 @@ public interface IOrderService {
 
     void returnSeat(long id,String seat);
 
-    OrderResponse orderFood(OrderFilmRequest request);
+
     List<OrderResponse> listFilmOrder();
     List<OrderResponse> listFoodOrder();
 
