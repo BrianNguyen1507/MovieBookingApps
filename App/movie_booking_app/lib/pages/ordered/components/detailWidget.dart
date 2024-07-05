@@ -234,9 +234,7 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                           ],
                         ),
                         SizedBox(
-                          width: ConverterUnit.convertStringToSet(order.seat)
-                                  .length *
-                              70,
+                          width: 100,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [

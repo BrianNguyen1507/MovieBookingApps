@@ -346,9 +346,10 @@ Widget renderBooking(
                 Colors.red);
           } else {
             //set tg hold
-            bool isSeatHold =
-                await HoldSeatService.holdSeat(scheduleId, seats!);
-            pref.saveHoldSeats(seats);
+            bool isSeatHold = visible
+                ? await HoldSeatService.holdSeat(scheduleId, seats!)
+                : false;
+            pref.saveHoldSeats(seats!);
 
             isSeatHold
                 ? TimerController.timerHoldSeatStart(
