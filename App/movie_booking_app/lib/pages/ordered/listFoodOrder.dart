@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
 import 'package:movie_booking_app/pages/ordered/detailOrderPage.dart';
-import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
-
 import 'package:movie_booking_app/services/Users/ordered/getAllFoodOrder.dart';
 
 class ListFoodOrder extends StatefulWidget {
@@ -51,10 +48,15 @@ class ListFoodOrderState extends State<ListFoodOrder> {
             itemBuilder: (context, index) {
               OrderResponse foodOder = foodOrders![index];
               return GestureDetector(
-                onTap: () async{
-
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrderPage(key:widget.key,id: foodOder.id.toInt(),),));
-
+                onTap: () async {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailOrderPage(
+                          key: widget.key,
+                          id: foodOder.id.toInt(),
+                        ),
+                      ));
                 },
                 child: Container(
                   margin: const EdgeInsets.all(10),
@@ -109,15 +111,16 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                           children: [
                             Text(
                               ConverterUnit.formatPrice(foodOder.sumTotal),
-                              style: const TextStyle(
-                                  fontSize: AppFontSize.small),
+                              style:
+                                  const TextStyle(fontSize: AppFontSize.small),
                             ),
                             Text(
                               foodOder.status,
-                              style:  TextStyle(
+                              style: TextStyle(
                                   fontSize: AppFontSize.small,
-                                  color: foodOder.status=="Unused"?AppColors.correctColor:AppColors.errorColor
-                              ),
+                                  color: foodOder.status == "Unused"
+                                      ? AppColors.correctColor
+                                      : AppColors.errorColor),
                             ),
                           ],
                         ),

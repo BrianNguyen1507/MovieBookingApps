@@ -14,23 +14,25 @@ class CreateOrderService {
     double sumTotal,
   ) async {
     try {
-      const url = 'http://$ipAddress:8083/cinema/createOrder';
+      const url = 'http://$ipAddress:8083/cinema/order';
       final token = await Preferences().getTokenUsers();
+      final data = jsonEncode({
+        'movieScheduleId': scheduleId,
+        'voucherId': voucherId,
+        'paymentMethod': payMethod,
+        'paymentCode': payCode,
+        'seat': seats,
+        'food': foods,
+        'sumTotal': sumTotal,
+      });
+      print(data);
       final response = await http.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode({
-          'movieScheduleId': scheduleId,
-          'voucherId': voucherId,
-          'paymentMethod': payMethod,
-          'paymentCode': payCode,
-          'seat': seats,
-          'food': foods,
-          'sumTotal': sumTotal,
-        }),
+        body: data,
       );
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
