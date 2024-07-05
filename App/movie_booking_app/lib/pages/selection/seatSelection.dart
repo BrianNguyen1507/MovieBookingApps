@@ -11,12 +11,9 @@ import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/models/seat/seat.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
-import 'package:movie_booking_app/modules/timer/timer.dart';
 import 'package:movie_booking_app/pages/selection/components/seatwidget/seatwidget.dart';
 import 'package:movie_booking_app/pages/store/store.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
-import 'package:movie_booking_app/services/Users/order/holdSeat/holdSeat.dart';
 import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
 import 'package:movie_booking_app/services/Users/seat/seatService.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
@@ -438,7 +435,6 @@ Widget renderBooking(
             ),
             onPressed: () async {
               ValidInput val = ValidInput();
-              Preferences pref = Preferences();
               if (selectedSeats.isEmpty) {
                 val.showAlertCustom(
                     context,
@@ -448,19 +444,6 @@ Widget renderBooking(
                     null);
                 return;
               }
-              //giu ghe
-              bool isSeatHold =
-                  await HoldSeatService.holdSeat(scheduleId, selectedSeats);
-              pref.saveHoldSeats(selectedSeats);
-              //set tg hold => return ghe
-
-              isSeatHold
-                  ? TimerController.timerHoldSeatStart(
-                      scheduleId, selectedSeats, context, false)
-                  : null;
-
-              String? data = await pref.getHoldSeats();
-              print('PReF $data');
 
               showModalBottomSheet(
                 context: context,
