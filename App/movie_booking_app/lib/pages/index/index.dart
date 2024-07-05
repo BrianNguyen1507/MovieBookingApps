@@ -63,7 +63,7 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.detached) {
         handleAppDetached();
     }
   }

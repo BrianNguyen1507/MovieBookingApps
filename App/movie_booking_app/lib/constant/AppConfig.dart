@@ -41,6 +41,7 @@ class AppFontSize {
   static const double lowMedium = 17.0;
   static const double medium = 20.0;
   static const double midMedium = 30.0;
+   static const double midlarge = 35.0;
   static const double large = 40.0;
   static const double big = 50.0;
 }

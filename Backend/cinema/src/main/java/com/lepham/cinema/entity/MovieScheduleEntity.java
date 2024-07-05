@@ -86,7 +86,7 @@ public class MovieScheduleEntity {
             try {
                 int rowIndex = string.charAt(0) - 'A';
                 int columnIndex = Integer.parseInt(string.charAt(1)+"")-1;
-                if(seat[rowIndex][columnIndex] != 2){
+                if(seat[rowIndex][columnIndex] == 1){
                     return false;
                 }
                 seat[rowIndex][columnIndex] = 0;

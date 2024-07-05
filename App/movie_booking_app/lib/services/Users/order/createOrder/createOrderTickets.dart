@@ -16,7 +16,7 @@ class CreateOrderService {
     try {
       const url = 'http://$ipAddress:8083/cinema/order';
       final token = await Preferences().getTokenUsers();
-      final data = jsonEncode({
+      final body = jsonEncode({
         'movieScheduleId': scheduleId,
         'voucherId': voucherId,
         'paymentMethod': payMethod,
@@ -25,23 +25,24 @@ class CreateOrderService {
         'food': foods,
         'sumTotal': sumTotal,
       });
-      print(data);
+      print(body);
       final response = await http.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: data,
+        body: body,
       );
+      final result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        final result = jsonDecode(response.body);
         if (result['code'] != 1000) {
           return false;
         }
         print('SUCCESS!');
         return true;
       } else {
+        print('ERROR MESSAGE: ${result['message']}');
         throw Exception('Error: ${response.statusCode}');
       }
     } catch (err) {

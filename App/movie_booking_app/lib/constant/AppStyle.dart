@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
+  static const TextStyle blackBold = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.small,
+    fontWeight: FontWeight.bold,
+    color: AppColors.darktextColor,
+  );
   //payments
   static const TextStyle paymentInfoText = TextStyle(
     fontFamily: 'Roboto',
@@ -150,5 +156,29 @@ class AppStyle {
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.lightTextColor,
+  );
+  static const TextStyle thinText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.lowMedium,
+    fontWeight: FontWeight.normal,
+    color: AppColors.grayTextColor,
+  );
+  static const TextStyle showTimeText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.lowMedium,
+    fontWeight: FontWeight.bold,
+    color: Color.fromARGB(255, 1, 121, 219),
+  );
+  static const TextStyle mediumBlackText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.medium,
+    fontWeight: FontWeight.bold,
+    color: AppColors.darktextColor,
+  );
+  static const TextStyle bigText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.midlarge,
+    fontWeight: FontWeight.bold,
+    color: AppColors.darktextColor,
   );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/ordered/listFilmOrder.dart';
 import 'package:movie_booking_app/pages/ordered/listFoodOrder.dart';
@@ -20,82 +21,77 @@ class ListOrderedState extends State<ListOrdered> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("List Order"),
+        title: const Text("My orders list"),
         backgroundColor: AppColors.appbarColor,
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: AppFontSize.medium,
-        ),
+        titleTextStyle: AppStyle.bannerText,
         centerTitle: true,
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: AppColors.containerColor,
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isTabSelected = true;
-                    });
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.black,
-                            width: isTabSelected ? 2.0 : 0,
+        child: Container(
+          color: AppColors.containerColor,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTabSelected = true;
+                      });
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.primaryColor,
+                              width: isTabSelected ? 2.0 : 0,
+                            ),
                           ),
                         ),
-                      ),
-                      width: AppSize.width(context) / 2,
-                      child: Text(
-                        "List Film Order ",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: AppFontSize.medium,
-                          fontWeight: isTabSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      )),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isTabSelected = false;
-                    });
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.black,
-                            width: isTabSelected ? 0 : 2,
+                        width: AppSize.width(context) / 2,
+                        child: const Text(
+                          "Movies",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: AppFontSize.medium,
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTabSelected = false;
+                      });
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.primaryColor,
+                              width: isTabSelected ? 0 : 2,
+                            ),
                           ),
                         ),
-                      ),
-                      width: AppSize.width(context) / 2,
-                      child: Text(
-                        "List Food Order ",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: AppFontSize.medium,
-                          fontWeight: isTabSelected
-                              ? FontWeight.normal
-                              : FontWeight.bold,
-                        ),
-                      )),
-                ),
-              ],
-            ),
-            isTabSelected ? const ListFilmOrder() : const ListFoodOrder()
-          ],
+                        width: AppSize.width(context) / 2,
+                        child: const Text(
+                          "Foods",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: AppFontSize.medium,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+              isTabSelected ? const ListFilmOrder() : const ListFoodOrder()
+            ],
+          ),
         ),
       ),
     );

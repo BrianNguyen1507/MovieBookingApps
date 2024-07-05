@@ -13,6 +13,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/order/createOrder/createOrderTickets.dart';
+import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:movie_booking_app/services/payments/ZaloPay/ZaloPayService.dart';
 
@@ -433,10 +434,12 @@ class _PaymentPageState extends State<PaymentPage> {
       response = result['result'].toString();
       appTranId = result['appTransID'] ?? '';
 
-      setState(() {
-        payResult = response;
-        showResult = true;
-      });
+      if (mounted) {
+        setState(() {
+          payResult = response;
+          showResult = true;
+        });
+      }
     } on PlatformException catch (e) {
       response = 'Payment failed';
       throw Exception("Error: '${e.message}'.");
@@ -450,7 +453,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
     showDialog(
       barrierDismissible: payResult == 'Payment Success' ? false : true,
-      context: context,
+      context: (context),
       builder: (context) => AlertDialog(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -480,8 +483,15 @@ class _PaymentPageState extends State<PaymentPage> {
 
     if (payResult == 'Payment Success') {
       dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
+      Set<String> seatfotmat = ConverterUnit.convertStringToSet(seats);
+
+      seats.isNotEmpty
+          ? await ReturnSeatService.returnSeat(scheduleId, seatfotmat)
+          : null;
+
       CreateOrderService.createOrderTicket(
           scheduleId!, voucherId, 'ZALOPAY', appTranId, seats, foods, sumTotal);
+      Preferences().clearHoldSeats();
 
       Future.delayed(
         const Duration(seconds: 3),
