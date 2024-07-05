@@ -23,7 +23,11 @@ class ListFilmOrderState extends State<ListFilmOrder> {
     futureFilmOrder = FilmOrder.getAllFilmOrder();
     super.initState();
   }
-
+@override
+  void setState(VoidCallback fn) {
+  futureFilmOrder = FilmOrder.getAllFilmOrder();
+    super.setState(fn);
+  }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<OrderResponse>>(
@@ -80,11 +84,12 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                             padding: const EdgeInsets.only(left: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
-                                    " Film name: ${filmOrder.title}",
+                                    "${filmOrder.title}",
                                     style: const TextStyle(
                                         fontSize: AppFontSize.small),
                                   ),
@@ -92,7 +97,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
-                                    " Date order: ${ConverterUnit.formatDMYhm(filmOrder.date!)}",
+                                    "${ConverterUnit.formatDMYhm(filmOrder.date!)}",
                                     style: const TextStyle(
                                         fontSize: AppFontSize.small),
                                   ),
@@ -100,7 +105,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
-                                    " Payment Method: ${filmOrder.paymentMethod}",
+                                    "${filmOrder.paymentMethod}",
                                     style: const TextStyle(
                                         fontSize: AppFontSize.small),
                                   ),

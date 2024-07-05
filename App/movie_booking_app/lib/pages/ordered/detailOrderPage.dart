@@ -5,6 +5,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/pages/ordered/QrcodePage.dart';
+import 'package:movie_booking_app/pages/ratingfeedback/ratingfeedback.dart';
 import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
 
 class DetailOrderPage extends StatefulWidget {
@@ -224,7 +225,7 @@ class DetailOrderPageState extends State<DetailOrderPage> {
                 order.order.status=="Used"
                     ?ElevatedButton(
                     onPressed: () {
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  RatingFeedbackPage(order: order.order,),));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
@@ -24,7 +23,11 @@ class ListFoodOrderState extends State<ListFoodOrder> {
     futureFoodOrder = FoodOrderService.getAllFoodOrder();
     super.initState();
   }
-
+@override
+  void setState(VoidCallback fn) {
+    futureFoodOrder = FoodOrderService.getAllFoodOrder();
+    super.setState(fn);
+  }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<OrderResponse>>(
@@ -61,7 +64,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                 child: Container(
                   margin: const EdgeInsets.all(10),
                   width: AppSize.width(context),
-                  height: AppSize.height(context) / 10,
+                  height: 100,
                   decoration: BoxDecoration(
                       color: AppColors.commonLightColor,
                       border: Border.all(width: 1),
@@ -85,7 +88,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
-                                    " Date order: ${ConverterUnit.formatDMYhm(foodOder.date!)}",
+                                    ConverterUnit.formatDMYhm(foodOder.date!),
                                     style: const TextStyle(
                                         fontSize: AppFontSize.small),
                                   ),
@@ -93,7 +96,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
-                                    " Payment Method: ${foodOder.paymentMethod}",
+                                    foodOder.paymentMethod,
                                     style: const TextStyle(
                                         fontSize: AppFontSize.small),
                                   ),

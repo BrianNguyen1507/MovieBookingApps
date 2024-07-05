@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -116,8 +117,9 @@ public class OrderService implements IOrderService {
             VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
                     .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
             accountVoucher = accountVoucherRepository.findByAccountAndVoucher(account, voucher);
+
+            if (accountVoucher.getQuantity() <= 0) throw new AppException(ErrorCode.VOUCHER_NOT_ENOUGH);
             accountVoucher.setQuantity(accountVoucher.getQuantity() - 1);
-            if (accountVoucher.getQuantity() <= 0) throw new AppException(ErrorCode.VOUCHER_NOY_ENOUGH);
 
         } else {
             if (accountVoucherRepository.findByAccountAndVoucher(account, null) != null) {
@@ -125,7 +127,7 @@ public class OrderService implements IOrderService {
             } else {
                 accountVoucher.setVoucher(null);
                 accountVoucher.setAccount(account);
-                accountVoucherRepository.save(accountVoucher);
+                accountVoucher= accountVoucherRepository.save(accountVoucher);
             }
         }
         order.setAccountVoucher(accountVoucher);
@@ -184,7 +186,7 @@ public class OrderService implements IOrderService {
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNotNull(account);
+        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNotNull(account, Sort.by(Sort.Direction.DESC,"date"));
         List<OrderResponse> orderResponses = new ArrayList<>();
         orderEntities.forEach(entity -> {
             FilmEntity film = entity.getMovieSchedule().getFilm();
@@ -209,7 +211,7 @@ public class OrderService implements IOrderService {
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNull(account);
+        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNull(account, Sort.by(Sort.Direction.DESC,"date"));
         List<OrderResponse> orderResponses = new ArrayList<>();
         orderEntities.forEach(entity -> {
             if (LocalDate.now().isAfter(entity.getDate().toLocalDate())

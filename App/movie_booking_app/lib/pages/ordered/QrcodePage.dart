@@ -10,7 +10,6 @@ class QrcodePage extends StatelessWidget{
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("List Order"),
         backgroundColor: AppColors.appbarColor,
         titleTextStyle: const TextStyle(
           color: Colors.white,

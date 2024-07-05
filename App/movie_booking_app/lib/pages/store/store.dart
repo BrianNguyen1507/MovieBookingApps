@@ -66,6 +66,10 @@ class _StorePageState extends State<StorePage> {
   @override
   void dispose() {
     TimerController.timerHoldSeatCancel();
+    setState(() {
+      initAsync();
+    });
+
     if (widget.selection && seats != null) {
       Set<String> prefSeats = ConverterUnit.convertStringToSet(seats!);
       ReturnSeatService.returnSeat(widget.scheduleId, prefSeats);

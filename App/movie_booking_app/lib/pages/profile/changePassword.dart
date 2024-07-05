@@ -236,7 +236,8 @@ class ChangePasswordState extends State<ChangePassword> {
                           ),
                         ),
                       ),
-                    )),
+                    )
+                ),
               ),
             )
           ],
