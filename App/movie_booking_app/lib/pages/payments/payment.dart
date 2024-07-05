@@ -8,6 +8,7 @@ import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/order/orderPage.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
@@ -42,8 +43,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  static const EventChannel eventChannel =
-      EventChannel('flutter.native/eventPayOrder');
   static const MethodChannel platform =
       MethodChannel('flutter.native/channelPayOrder');
   late Future<MovieDetail> movieData;
@@ -52,39 +51,15 @@ class _PaymentPageState extends State<PaymentPage> {
   String payResult = "";
   int payAmount = 0;
   bool showResult = false;
+
   @override
   void initState() {
     widget.visible
         ? movieData = MovieDetailService.deatailMovieService(widget.movieId)
         : null;
 
-    //zalo_init
-    eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
-
     payAmount = widget.sumtotal.toInt();
-
     super.initState();
-  }
-
-  void _onEvent(dynamic event) {
-    print("_onEvent: '$event'.");
-    Map<String, dynamic> res = Map<String, dynamic>.from(event);
-    setState(() {
-      if (res["errorCode"] == 1) {
-        payResult = "Thanh toán thành công";
-      } else if (res["errorCode"] == 4) {
-        payResult = "User hủy thanh toán";
-      } else {
-        payResult = "Giao dịch thất bại";
-      }
-    });
-  }
-
-  void _onError(Object error) {
-    print("_onError: '$error'.");
-    setState(() {
-      payResult = "Giao dịch thất bại";
-    });
   }
 
   @override
@@ -369,7 +344,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 {
                   "movie_item": seatQuantity,
                   "foods_item": foods.length,
-                  "item_price": sumtotal,
+                  "item_price": amount,
                 }
               ];
 
@@ -405,7 +380,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             alignment: Alignment.center,
                             child: Text(
                               'OPEN ZALOPAY',
-                              style: AppStyle.bannerText,
+                              style: AppStyle.buttonText2,
                             ),
                           ),
                         ),
@@ -467,59 +442,57 @@ class _PaymentPageState extends State<PaymentPage> {
       throw Exception("Error: '${e.message}'.");
     }
 
-    setState(
-      () {
-        Navigator.pop(context);
-        payResult = response;
-        showResult = true;
-        showDialog(
-          barrierDismissible: payResult == 'Payment Success' ? false : true,
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                payResult == 'Payment failed' || payResult == 'User Canceled'
-                    ? SvgPicture.string(
-                        svgError,
-                        height: 70,
-                        width: 70,
-                      )
-                    : SvgPicture.string(
-                        svgSuccess,
-                        height: 100,
-                        width: 100,
-                      ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    payResult,
-                    style: AppStyle.bodyText1,
+    Navigator.pop(context);
+    setState(() {
+      payResult = response;
+      showResult = true;
+    });
+
+    showDialog(
+      barrierDismissible: payResult == 'Payment Success' ? false : true,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            payResult == 'Payment failed' || payResult == 'User Canceled'
+                ? SvgPicture.string(
+                    svgError,
+                    height: 70,
+                    width: 70,
+                  )
+                : SvgPicture.string(
+                    svgSuccess,
+                    height: 100,
+                    width: 100,
                   ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                payResult,
+                style: AppStyle.bodyText1,
+              ),
             ),
-          ),
-        );
-        if (payResult == 'Payment Success') {
-          dynamic scheduleID = visible ? Preferences().getSchedule() : -1;
-          dynamic voucherID = visible ? Preferences().getVoucher() : -1;
-
-          CreateOrderService.createOrderTicket(scheduleID, voucherID, 'ZALOPAY',
-              appTranId, seats, foods, sumTotal);
-
-          Future.delayed(
-            const Duration(seconds: 3),
-            () {
-              return Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/listOrder',
-                ModalRoute.withName('/'),
-              );
-            },
-          );
-        }
-      },
+          ],
+        ),
+      ),
     );
+
+    if (payResult == 'Payment Success') {
+      dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
+      CreateOrderService.createOrderTicket(
+          scheduleId!, voucherId, 'ZALOPAY', appTranId, seats, foods, sumTotal);
+
+      Future.delayed(
+        const Duration(seconds: 3),
+        () {
+          return Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/listOrder',
+            ModalRoute.withName('/'),
+          );
+        },
+      );
+    }
   }
 }

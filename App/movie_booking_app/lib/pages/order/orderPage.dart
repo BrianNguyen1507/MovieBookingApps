@@ -64,6 +64,12 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   @override
+  void dispose() {
+    Preferences().clearVoucher();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

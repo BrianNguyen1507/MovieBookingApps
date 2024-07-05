@@ -133,6 +133,7 @@ class Preferences {
 
   Future<void> clearVoucher() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('clear voucher');
     await prefs.remove('voucherId');
   }
 

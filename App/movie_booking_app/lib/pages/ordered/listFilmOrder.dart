@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
 import 'package:movie_booking_app/pages/ordered/detailOrderPage.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
-import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
 import 'package:movie_booking_app/services/Users/ordered/getAllFilmOrder.dart';
 
 class ListFilmOrder extends StatefulWidget {
@@ -50,8 +47,15 @@ class ListFilmOrderState extends State<ListFilmOrder> {
             itemBuilder: (context, index) {
               OrderResponse filmOrder = filmOrders[index];
               return GestureDetector(
-                onTap: () async{
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOrderPage(key:widget.key,id: filmOrder.id.toInt(),),));
+                onTap: () async {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailOrderPage(
+                          key: widget.key,
+                          id: filmOrder.id.toInt(),
+                        ),
+                      ));
                 },
                 child: Container(
                   margin: const EdgeInsets.all(10),
@@ -114,15 +118,16 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                           children: [
                             Text(
                               ConverterUnit.formatPrice(filmOrder.sumTotal),
-                              style: const TextStyle(
-                                  fontSize: AppFontSize.small),
+                              style:
+                                  const TextStyle(fontSize: AppFontSize.small),
                             ),
                             Text(
                               filmOrder.status,
-                              style:  TextStyle(
+                              style: TextStyle(
                                   fontSize: AppFontSize.small,
-                                  color: filmOrder.status=="Unused"?AppColors.correctColor:AppColors.errorColor
-                              ),
+                                  color: filmOrder.status == "Unused"
+                                      ? AppColors.correctColor
+                                      : AppColors.errorColor),
                             ),
                           ],
                         ),
