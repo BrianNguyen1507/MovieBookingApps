@@ -16,4 +16,8 @@ public class ConstantVariable {
     public static final int ORDER_UNUSED = 0;
     public static final int ORDER_USED = 1;
     public static final int ORDER_EXPIRED_USED = 2;
+
+    public static final int SEAT_EMPTY = 0;
+    public static final int SEAT_ORDER = 1;
+    public static final int SEAT_HOLD = 2;
 }

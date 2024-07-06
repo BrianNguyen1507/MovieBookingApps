@@ -35,7 +35,6 @@ public class OrderEntity {
     @Column(name = "status", nullable = false)
     int status;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_schedule_id", nullable = true)
     MovieScheduleEntity movieSchedule;

@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -37,6 +35,9 @@ public class MovieScheduleEntity {
 
     @OneToMany(mappedBy = "movieSchedule", fetch = FetchType.LAZY)
     List<OrderEntity> orders;
+
+    @OneToMany(mappedBy = "schedule", fetch = FetchType.LAZY)
+    List<SeatHeldEntity> seatHeld;
 
     public int[][] generateSeat(int row, int column){
         int[][] seat = new int[row][column];
@@ -80,7 +81,7 @@ public class MovieScheduleEntity {
         }
         return true;
     }
-    public boolean refundSeat(String seatOrder){
+    public boolean returnSeat(String seatOrder){
         String[] array = seatOrder.split(",");
         for (String string : array) {
             try {
