@@ -22,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 @Service
 @Slf4j
@@ -51,5 +53,19 @@ public class RatingFeedBackService implements IRatingFeedbackService {
         ratingFeedback.setDatetime(LocalDateTime.now());
         ratingFeedback.setOrder(order);
         return ratingFeedbackConverter.toResponse( ratingFeedBackRepository.save(ratingFeedback));
+    }
+@PreAuthorize("hasRole('USER')")
+    @Override
+    public List<RatingFeedbackResponse> getAllRatingFeedback(long id) {
+        List<RatingFeedbackEntity> listFeedback = ratingFeedBackRepository.findAllByOrder_MovieSchedule_Film_Id(id);
+        List<RatingFeedbackResponse> responseList = new ArrayList<>();
+        listFeedback.forEach( ratingFeedbackEntity ->{
+            RatingFeedbackResponse response = ratingFeedbackConverter.toResponse(ratingFeedbackEntity);
+            AccountEntity account = ratingFeedbackEntity.getOrder().getAccountVoucher().getAccount();
+            response.setFullName(account.getFullName());
+            response.setAvatar(account.getAvatar());
+            responseList.add(response);
+        } );
+        return responseList;
     }
 }

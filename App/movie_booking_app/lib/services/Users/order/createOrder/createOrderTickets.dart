@@ -41,6 +41,9 @@ class CreateOrderService {
         }
         print('CREATE ORDER SUCCESS!');
         return true;
+      } else if (response.statusCode == 400) {
+        print(' 400 ERROR MESSAGE: ${result['message']}');
+        return false;
       } else {
         print("${result['message']}");
         print('ERROR MESSAGE: ${result['message']}');

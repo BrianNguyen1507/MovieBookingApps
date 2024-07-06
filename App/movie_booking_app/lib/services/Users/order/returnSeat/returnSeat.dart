@@ -24,8 +24,9 @@ class ReturnSeatService {
           throw Exception('Invalid: ${result['message']}');
         }
         print('return thanh cong');
-
         return true;
+      } else if (response.statusCode == 400) {
+        return false;
       } else {
         throw Exception('error with status code ${response.statusCode}');
       }

@@ -32,6 +32,7 @@ class AppColors {
   static const Color seatPeding = Color.fromARGB(255, 225, 163, 8);
   static const Color seatDisable = Color.fromARGB(255, 68, 68, 68);
   static const Color textSeat = Color.fromARGB(255, 255, 255, 255);
+  static const Color startRating = Colors.amber;
 }
 
 class AppFontSize {
@@ -41,7 +42,7 @@ class AppFontSize {
   static const double lowMedium = 17.0;
   static const double medium = 20.0;
   static const double midMedium = 30.0;
-   static const double midlarge = 35.0;
+  static const double midlarge = 35.0;
   static const double large = 40.0;
   static const double big = 50.0;
 }

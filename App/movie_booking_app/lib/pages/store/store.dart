@@ -351,10 +351,7 @@ Widget renderBooking(
                 : false;
             pref.saveHoldSeats(seats!);
 
-            isSeatHold
-                ? TimerController.timerHoldSeatStart(
-                    scheduleId, seats, context, false)
-                : null;
+            isSeatHold ? TimerController.timerHoldSeatStart(context) : null;
 
             String? data = await pref.getHoldSeats();
             print('PReF $data');

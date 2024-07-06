@@ -439,61 +439,61 @@ class _PaymentPageState extends State<PaymentPage> {
           payResult = response;
           showResult = true;
         });
+        showDialog(
+          barrierDismissible: payResult == 'Payment Success' ? false : true,
+          context: (context),
+          builder: (context) => AlertDialog(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                payResult == 'Payment failed' || payResult == 'User Canceled'
+                    ? SvgPicture.string(
+                        svgError,
+                        height: 70,
+                        width: 70,
+                      )
+                    : SvgPicture.string(
+                        svgSuccess,
+                        height: 100,
+                        width: 100,
+                      ),
+                Text(
+                  payResult,
+                  style: AppStyle.bodyText1,
+                )
+              ],
+            ),
+          ),
+        );
+
+        if (payResult == 'Payment Success') {
+          dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
+          Set<String> seatfotmat = ConverterUnit.convertStringToSet(seats);
+          bool isReturn = false;
+          if (seats.isNotEmpty) {
+            isReturn =
+                await ReturnSeatService.returnSeat(scheduleId, seatfotmat);
+          }
+          if ((seats.isNotEmpty && isReturn) || seats.isEmpty) {}
+          CreateOrderService.createOrderTicket(scheduleId!, voucherId,
+              'ZALOPAY', appTranId, seats, foods, sumTotal);
+          Preferences().clearHoldSeats();
+
+          Future.delayed(
+            const Duration(seconds: 3),
+            () {
+              return Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/listOrder',
+                ModalRoute.withName('/'),
+              );
+            },
+          );
+        }
       }
     } on PlatformException catch (e) {
       response = 'Payment failed';
       throw Exception("Error: '${e.message}'.");
-    }
-
-    Navigator.pop(context);
-    setState(() {
-      payResult = response;
-      showResult = true;
-    });
-    showDialog(
-      barrierDismissible: payResult == 'Payment Success' ? false : true,
-      context: (context),
-      builder: (context) => AlertDialog(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            payResult == 'Payment failed' || payResult == 'User Canceled'
-                ? SvgPicture.string(
-                    svgError,
-                    height: 70,
-                    width: 70,
-                  )
-                : SvgPicture.string(
-                    svgSuccess,
-                    height: 100,
-                    width: 100,
-                  ),
-          ],
-        ),
-      ),
-    );
-
-    if (payResult == 'Payment Success') {
-      dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
-      Set<String> seatfotmat = ConverterUnit.convertStringToSet(seats);
-      seats.isNotEmpty
-          ? await ReturnSeatService.returnSeat(scheduleId, seatfotmat)
-          : null;
-
-      CreateOrderService.createOrderTicket(
-          scheduleId!, voucherId, 'ZALOPAY', appTranId, seats, foods, sumTotal);
-      Preferences().clearHoldSeats();
-
-      Future.delayed(
-        const Duration(seconds: 3),
-        () {
-          return Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/listOrder',
-            ModalRoute.withName('/'),
-          );
-        },
-      );
     }
   }
 }

@@ -19,16 +19,16 @@ class HoldSeatService {
           'Authorization': 'Bearer $token',
         },
       );
-
+      final result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        final result = jsonDecode(response.body);
         if (result['code'] != 1000) {
           throw Exception('Invalid: ${result['message']}');
         }
         print('hold thanh cong');
         return true;
-      } else if (response.statusCode == 401) {
-        throw Exception('Unauthorized: Please log in again.');
+      } else if (response.statusCode == 400) {
+        print('Error code 400:${result['result']} ');
+        return false;
       } else {
         throw Exception(
             'Error: ${response.statusCode} ${response.reasonPhrase}');

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
+import 'package:movie_booking_app/models/feedback/feedback.dart';
 
 class ConverterUnit {
   static Uint8List base64ToUnit8(String base64String) {
@@ -74,13 +75,25 @@ class ConverterUnit {
     final DateFormat formatter = DateFormat('HH:mm dd-MM-yyyy');
     return formatter.format(date);
   }
+
   static String formatDMY(DateTime date) {
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
     return formatter.format(date);
   }
+
   static String formatHM(DateTime date) {
     final DateFormat formatter = DateFormat('HH:mm');
     return formatter.format(date);
+  }
+
+  static double calculateAverageRating(List<RatingFeedback> feedback) {
+    if (feedback.isEmpty) return 0.0;
+
+    double totalRating = 0.0;
+    for (var item in feedback) {
+      totalRating += item.rating;
+    }
+    return totalRating / feedback.length;
   }
 }
 

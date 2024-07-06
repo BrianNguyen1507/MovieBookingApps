@@ -14,6 +14,7 @@ class AppIcon {
   static IconData close = Icons.close;
   static IconData playButton = Icons.play_arrow_rounded;
   static IconData questionMark = Icons.question_mark_sharp;
+    static IconData star = Icons.star;
 }
 
 class AppSize {
