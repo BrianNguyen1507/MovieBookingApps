@@ -6,6 +6,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/pages/ordered/QrcodePage.dart';
+import 'package:movie_booking_app/pages/ratingfeedback/ratingfeedback.dart';
 
 Widget detailOrderFilm(BuildContext context, DetailOrder order) {
   return Container(
@@ -17,6 +18,32 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
     width: AppSize.width(context),
     child: Column(
       children: [
+        order.order.status == "Used"
+            ? Container(
+                padding: const EdgeInsets.all(5.0),
+                width: AppSize.width(context),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RatingFeedbackPage(order: order.order),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                  ),
+                  child: const Text(
+                    "Rating",
+                    style: AppStyle.headline2,
+                  ),
+                ),
+              )
+            : const SizedBox(
+                width: 0,
+              ),
         Center(
           child: order.order.status == "Unused"
               ? const SizedBox.shrink()
@@ -111,21 +138,6 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                         ],
                       ),
                     ),
-                    order.order.status == "Used"
-                        ? ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                            ),
-                            child: const Text(
-                              "Rating",
-                              style: TextStyle(
-                                  fontSize: AppFontSize.small,
-                                  color: Colors.black),
-                            ))
-                        : const SizedBox(
-                            width: 0,
-                          ),
                   ],
                 ),
               ),

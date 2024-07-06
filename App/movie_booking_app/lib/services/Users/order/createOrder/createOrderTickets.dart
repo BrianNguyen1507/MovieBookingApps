@@ -36,7 +36,6 @@ class CreateOrderService {
       );
       final result = jsonDecode(response.body);
       if (response.statusCode == 200) {
-
         if (result['code'] != 1000) {
           return false;
         }
@@ -49,6 +48,6 @@ class CreateOrderService {
       }
     } catch (err) {
       throw Exception("cant create order: $err");
-    } return false;
+    }
   }
 }
