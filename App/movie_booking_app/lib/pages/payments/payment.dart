@@ -450,7 +450,6 @@ class _PaymentPageState extends State<PaymentPage> {
       payResult = response;
       showResult = true;
     });
-
     showDialog(
       barrierDismissible: payResult == 'Payment Success' ? false : true,
       context: (context),

@@ -18,7 +18,7 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
     width: AppSize.width(context),
     child: Column(
       children: [
-        order.order.status == "Used"
+        order.allowedComment
             ? Container(
                 padding: const EdgeInsets.all(5.0),
                 width: AppSize.width(context),
@@ -385,7 +385,7 @@ Widget detailOrderFood(BuildContext context, DetailOrder order) {
       child: Column(
         children: [
           Center(
-            child: order.order.status == "Unused"
+            child: order.allowedComment
                 ? const SizedBox.shrink()
                 : Text(
                     order.order.status,
