@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
+import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/ordered/components/detailWidget.dart';
 import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
+import 'package:movie_booking_app/services/Users/ratingFeedback/ratingFeedbackService.dart';
 
 class DetailOrderPage extends StatefulWidget {
   const DetailOrderPage({super.key, required this.id});
@@ -17,7 +19,7 @@ class DetailOrderPage extends StatefulWidget {
 
 class DetailOrderPageState extends State<DetailOrderPage> {
   late Future<DetailOrder> orderFuture;
-
+  late RatingFeedback ratingFeedback;
   @override
   void initState() {
     super.initState();
