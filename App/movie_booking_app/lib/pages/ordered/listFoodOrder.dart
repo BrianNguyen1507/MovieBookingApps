@@ -64,7 +64,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                   },
                   child: Container(
                     padding: const EdgeInsets.all(5.0),
-                    margin: const EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.all(5.0),
                     decoration: const BoxDecoration(
                         color: AppColors.containerColor,
                         boxShadow: [

@@ -86,13 +86,20 @@ class _VoucherOrderState extends State<VoucherOrder> {
                         opacity: vouchers[index].allowed ? 1.0 : 0.5,
                         child: GestureDetector(
                           onTap: () {
-                            setState(() {
-                              if (selectedVoucherIndex == vouchers[index].id) {
-                                selectedVoucherIndex = null;
-                              } else {
-                                selectedVoucherIndex = vouchers[index].id;
-                              }
-                            });
+                            setState(
+                              () {
+                                if (vouchers[index].allowed) {
+                                  if (selectedVoucherIndex ==
+                                      vouchers[index].id) {
+                                    selectedVoucherIndex = null;
+                                  } else {
+                                    selectedVoucherIndex = vouchers[index].id;
+                                  }
+                                } else {
+                                  selectedVoucherIndex = null;
+                                }
+                              },
+                            );
                           },
                           child: Column(
                             children: [

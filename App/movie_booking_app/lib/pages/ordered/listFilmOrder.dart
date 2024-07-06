@@ -65,7 +65,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                         ));
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(bottom: 5.0, top: 5.0),
+                    margin: const EdgeInsets.all(5.0),
                     width: AppSize.width(context),
                     height: 100,
                     decoration: const BoxDecoration(
