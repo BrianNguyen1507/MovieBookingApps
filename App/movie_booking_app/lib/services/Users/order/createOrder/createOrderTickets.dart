@@ -40,7 +40,7 @@ class CreateOrderService {
         if (result['code'] != 1000) {
           return false;
         }
-        print("${result['result']}");
+        print('CREATE ORDER SUCCESS!');
         return true;
       } else {
         print("${result['message']}");

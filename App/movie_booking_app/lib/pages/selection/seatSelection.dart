@@ -300,8 +300,7 @@ Widget renderBooking(
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
+                            Container(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -310,8 +309,6 @@ Widget renderBooking(
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin:
-                                            const EdgeInsets.only(right: 2.0),
                                         decoration: BoxDecoration(
                                           color: ClassifyClass.toFlutterColor(
                                             ClassifyClass.classifyType(
@@ -329,9 +326,12 @@ Widget renderBooking(
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      Text(
-                                        movieData.title,
-                                        style: AppStyle.smallText,
+                                      SizedBox(
+                                        width: AppSize.width(context) / 3,
+                                        child: Text(
+                                          movieData.title,
+                                          style: AppStyle.smallText,
+                                        ),
                                       ),
                                     ],
                                   ),
