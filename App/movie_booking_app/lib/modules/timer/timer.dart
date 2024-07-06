@@ -8,14 +8,11 @@ class TimerController {
   static Timer? _timer;
   static int remainingSeconds = 0;
 
-  static dynamic timerHoldSeatStart(int scheduleId, Set<String> selectedSeats,
-      BuildContext context, bool isReturned) {
-    const int durationInSeconds = 999;
+  static dynamic timerHoldSeatStart(BuildContext context) {
+    const int durationInSeconds = 240;
     remainingSeconds = durationInSeconds;
 
-    _timer = Timer(Duration(seconds: remainingSeconds), () {
-      isReturned = true;
-    });
+    _timer = Timer(Duration(seconds: remainingSeconds), () {});
 
     _periodicTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       if (remainingSeconds > 0) {
@@ -45,7 +42,6 @@ class TimerController {
         });
       }
     });
-    return isReturned;
   }
 
   static void timerHoldSeatCancel() {

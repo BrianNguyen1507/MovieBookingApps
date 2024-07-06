@@ -4,12 +4,15 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/models/feedback/feedback.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/detail/components/feedbackList.dart';
 import 'package:movie_booking_app/pages/detail/components/widgetComponents.dart';
 import 'package:movie_booking_app/pages/detail/trailerScreen.dart';
 import 'package:movie_booking_app/pages/selection/theaterSelection.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
+import 'package:movie_booking_app/services/Users/ratingFeedback/ratingFeedbackService.dart';
 import 'package:movie_booking_app/utils/expandable.dart';
 
 class MovieDetailPage extends StatefulWidget {
@@ -23,10 +26,13 @@ class MovieDetailPage extends StatefulWidget {
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
   late Future<MovieDetail> movieDetail;
+  late Future<List<RatingFeedback>> listFeedback;
   late String movieName;
+
   @override
   void initState() {
     movieDetail = MovieDetailService.deatailMovieService(widget.movieId);
+    listFeedback = RatingFeedbackService.getAllRatingFeedback(widget.movieId);
     super.initState();
   }
 
@@ -278,6 +284,15 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     height: 15,
                   ),
                   infMovie('Actors', detail.actor),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                    ),
+                    height: 15,
+                  ),
+                  RatingFeedbackWidget(
+                    listFeedback: listFeedback,
+                  ),
                 ],
               ),
             ),

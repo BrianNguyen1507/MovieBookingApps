@@ -35,8 +35,10 @@ class _ExpandableTextState extends State<ExpandableText> {
               isExpanded = !isExpanded;
             });
           },
-          child: Text(isExpanded ? 'Show less' : 'Show more',
-              style: AppStyle.buttonText),
+          child: widget.maxLines > 3
+              ? Text(isExpanded ? 'Show less' : 'Show more',
+                  style: AppStyle.buttonText)
+              : const SizedBox.shrink(),
         ),
       ],
     );

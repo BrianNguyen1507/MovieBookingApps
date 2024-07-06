@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/models/feedback/feedback.dart';
+
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
@@ -40,6 +42,32 @@ class RatingFeedbackService {
       }
     } catch (err) {
       throw Exception(err);
+    }
+  }
+
+  static Future<List<RatingFeedback>> getAllRatingFeedback(int movieId) async {
+    try {
+      final url =
+          'http://$ipAddress:8083/cinema/getAllRatingFeedback?filmId=$movieId';
+      dynamic token = await Preferences().getTokenUsers();
+      final responseFeedBack = await http.get(Uri.parse(url), headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      final result =
+          jsonDecode(utf8.decode(responseFeedBack.body.runes.toList()));
+
+      if (responseFeedBack.statusCode != 200 || result['code'] != 1000) {
+        throw Exception(result['message']);
+      }
+
+      List<RatingFeedback> listFeedback = List<RatingFeedback>.from(
+          result['result']
+              .map((feedback) => RatingFeedback.fromjson(feedback)));
+
+      return listFeedback;
+    } catch (err) {
+      throw Exception('Can\'t get all rating feedback: $err');
     }
   }
 }

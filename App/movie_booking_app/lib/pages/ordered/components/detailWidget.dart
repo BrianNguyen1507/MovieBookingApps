@@ -392,7 +392,6 @@ Widget detailOrderFood(BuildContext context, DetailOrder order) {
                     style: AppStyle.bigText,
                   ),
           ),
-          const Divider(),
           Column(
             children: [
               Row(
