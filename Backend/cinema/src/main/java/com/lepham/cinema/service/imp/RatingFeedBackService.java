@@ -44,6 +44,9 @@ public class RatingFeedBackService implements IRatingFeedbackService {
         if(order.getStatus()!= ConstantVariable.ORDER_USED) throw new AppException(ErrorCode.CAN_NOT_RATING);
         if(!Objects.equals(account,order.getAccountVoucher().getAccount()))
             throw new AppException(ErrorCode.ORDER_NOT_BELONG_ACCOUNT);
+        if(ratingFeedBackRepository.findByOrder(order)!=null) throw  new AppException(ErrorCode.WAS_RATING);
+        if((request.getRating()<1 || request.getRating()>5 || request.getComment().isBlank() || request.getComment().isEmpty()))
+            throw  new AppException(ErrorCode.COMPLETE_INFORMATION);
         RatingFeedbackEntity ratingFeedback = ratingFeedbackConverter.toEntity(request);
         ratingFeedback.setDatetime(LocalDateTime.now());
         ratingFeedback.setOrder(order);

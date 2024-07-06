@@ -54,15 +54,15 @@ public class MovieScheduleEntity {
             try {
                 int rowIndex = string.charAt(0) - 'A';
                 int columnIndex = Integer.parseInt(string.charAt(1)+"")-1;
-                if(seat[rowIndex][columnIndex] == 0 ){
-                    seat[rowIndex][columnIndex] = 1;
-                    return  true;
+                if(seat[rowIndex][columnIndex] != 0 ){
+                    return  false;
                 }
+                seat[rowIndex][columnIndex] = 1;
             } catch (NumberFormatException e) {
                 return false;
             }
         }
-        return false;
+        return true;
     }
     public boolean holdSeat(String seatOrder){
         String[] array = seatOrder.split(",");

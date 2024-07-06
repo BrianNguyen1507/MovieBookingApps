@@ -25,7 +25,11 @@ class ListFilmOrderState extends State<ListFilmOrder> {
     futureFilmOrder = FilmOrder.getAllFilmOrder();
     super.initState();
   }
-
+@override
+  void setState(VoidCallback fn) {
+  futureFilmOrder = FilmOrder.getAllFilmOrder();
+    super.setState(fn);
+  }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<OrderResponse>>(
