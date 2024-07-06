@@ -44,20 +44,7 @@ public class OrderController {
                 .result(orderService.order(request))
                 .build();
     }
-    @PostMapping("/holdSeat")
-    APIResponse<?> holdSeat(@RequestParam("scheduleId") long id, @RequestParam("seat") String  seat){
-        orderService.holeSeat(id,seat);
-        return APIResponse.builder()
-                .message("Hold the seat successfully")
-                .build();
-    }
-    @PostMapping("/returnSeat")
-    APIResponse<?> returnSeat(@RequestParam("scheduleId") long id, @RequestParam("seat") String  seat){
-        orderService.returnSeat(id,seat);
-        return APIResponse.builder()
-                .message("RefundSeat the seat successfully")
-                .build();
-    }
+
     @GetMapping("/getAllFilmOrder")
     APIResponse<List<OrderResponse>> getAllFilmOrder(){
         return APIResponse.<List<OrderResponse>>builder()

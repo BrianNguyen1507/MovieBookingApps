@@ -69,5 +69,18 @@ public class MovieScheduleController {
                 .result(movieScheduleService.getMovieScheduleById(id))
                 .build();
     }
-
+    @PostMapping("/holdSeat")
+    APIResponse<?> holdSeat(@RequestParam("scheduleId") long id, @RequestParam("seat") String  seat){
+        movieScheduleService.holeSeat(id,seat);
+        return APIResponse.builder()
+                .message("Hold the seat successfully")
+                .build();
+    }
+    @PostMapping("/returnSeat")
+    APIResponse<?> returnSeat(@RequestParam("scheduleId") long id, @RequestParam("seat") String  seat){
+        movieScheduleService.returnSeat(id,seat);
+        return APIResponse.builder()
+                .message("RefundSeat the seat successfully")
+                .build();
+    }
 }

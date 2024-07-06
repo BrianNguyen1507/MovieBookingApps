@@ -160,23 +160,6 @@ public class OrderService implements IOrderService {
         return response;
     }
 
-    @Override
-    @PreAuthorize("hasRole('USER')")
-    public void holeSeat(long id, String seat) {
-        MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        if (!schedule.holdSeat(seat)) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
-        movieScheduleRepository.save(schedule);
-    }
-
-    @Override
-    @PreAuthorize("hasRole('USER')")
-    public void returnSeat(long id, String seat) {
-        MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        if (!schedule.refundSeat(seat)) throw new AppException(ErrorCode.SEAT_NOT_ORDERED);
-        movieScheduleRepository.save(schedule);
-    }
 
 
     @Override

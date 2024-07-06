@@ -10,12 +10,10 @@ import com.lepham.cinema.dto.response.*;
 import com.lepham.cinema.entity.FilmEntity;
 import com.lepham.cinema.entity.MovieScheduleEntity;
 import com.lepham.cinema.entity.RoomEntity;
+import com.lepham.cinema.entity.SeatHeldEntity;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
-import com.lepham.cinema.repository.FilmRepository;
-import com.lepham.cinema.repository.MovieScheduleRepository;
-import com.lepham.cinema.repository.MovieTheaterRepository;
-import com.lepham.cinema.repository.RoomRepository;
+import com.lepham.cinema.repository.*;
 import com.lepham.cinema.service.IMovieScheduleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +23,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +41,8 @@ public class MovieScheduleService implements IMovieScheduleService {
 
     RoomRepository roomRepository;
 
-    MovieTheaterRepository theaterRepository;
-
     MovieScheduleConverter movieScheduleConverter;
+    SeatHeldRepository seatHeldRepository;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
@@ -346,4 +340,28 @@ public class MovieScheduleService implements IMovieScheduleService {
         }
         return listScheduleSwap;
     }
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public void holeSeat(long id, String seat) {
+        MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        if (!schedule.holdSeat(seat)) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
+        SeatHeldEntity seatHeld = seatHeldRepository.findByScheduleAndSeat(schedule,seat);
+        seatHeld = seatHeld!=null?seatHeld:new SeatHeldEntity();
+        seatHeld.setHeldDateTime(LocalDateTime.now());
+        seatHeld.setSchedule(schedule);
+        seatHeld.setSeat(seat);
+        seatHeld.setStatus(ConstantVariable.SEAT_HOLD);
+        seatHeldRepository.save(seatHeld);
+        movieScheduleRepository.save(schedule);
+    }
+    @Override
+    @PreAuthorize("hasRole('USER')")
+    public void returnSeat(long id, String seat) {
+        MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        if (!schedule.returnSeat(seat)) throw new AppException(ErrorCode.SEAT_NOT_ORDERED);
+        movieScheduleRepository.save(schedule);
+    }
+
 }

@@ -16,9 +16,6 @@ public interface IOrderService {
 
     OrderResponse order(OrderFilmRequest request);
 
-    void holeSeat(long id,String seat);
-
-    void returnSeat(long id,String seat);
 
 
     List<OrderResponse> listFilmOrder();
