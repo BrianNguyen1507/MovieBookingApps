@@ -36,17 +36,19 @@ class CreateOrderService {
       );
       final result = jsonDecode(response.body);
       if (response.statusCode == 200) {
+
         if (result['code'] != 1000) {
           return false;
         }
-        print('SUCCESS!');
+        print("${result['result']}");
         return true;
       } else {
+        print("${result['message']}");
         print('ERROR MESSAGE: ${result['message']}');
         throw Exception('Error: ${response.statusCode}');
       }
     } catch (err) {
       throw Exception("cant create order: $err");
-    }
+    } return false;
   }
 }

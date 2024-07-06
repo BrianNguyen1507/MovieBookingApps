@@ -8,9 +8,7 @@ import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart
 
 class DetailOrderPage extends StatefulWidget {
   const DetailOrderPage({super.key, required this.id});
-
   final int id;
-
   @override
   State<StatefulWidget> createState() {
     return DetailOrderPageState();

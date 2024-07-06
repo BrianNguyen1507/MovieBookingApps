@@ -35,14 +35,16 @@ public enum ErrorCode {
     CATEGORY_NAME_DUPLICATE(1023, "Category name is duplicate", HttpStatus.BAD_REQUEST),
     FILM_NAME_DUPLICATE(1024, "Film title is duplicate", HttpStatus.BAD_REQUEST),
     SEAT_WAS_ORDERED(1025, "Seat was ordered", HttpStatus.BAD_REQUEST),
-    VOUCHER_NOY_ENOUGH(1026, "Voucher was not enough", HttpStatus.BAD_REQUEST),
-    SEAT_NOT_ORDERED(1027, "Seat was not ordered", HttpStatus.BAD_REQUEST),
+    VOUCHER_NOT_ENOUGH(1026, "Voucher was not enough", HttpStatus.BAD_REQUEST),
+    SEAT_NOT_ORDERED(1027, "Seat was ordered", HttpStatus.OK),
     ACCOUNT_NOT_EXIST(1028,"Account was not exist ", HttpStatus.BAD_REQUEST),
     SHOWTIME_IS_COMING_SOON(1029,"Showtime is coming soon, please choose a showtime other ", HttpStatus.BAD_REQUEST),
     ORDER_NOT_FOUND(1030,"Order not found", HttpStatus.BAD_REQUEST),
     FOOD_NOT_FOUND(1031,"Food not found",HttpStatus.BAD_REQUEST),
     ORDER_NOT_BELONG_ACCOUNT(1032,"The order does not belong to the account", HttpStatus.BAD_REQUEST),
     CAN_NOT_RATING(1032,"You can not rating and feedback", HttpStatus.BAD_REQUEST),
+    WAS_RATING(1033,"You was rating and feedback", HttpStatus.BAD_REQUEST),
+    COMPLETE_INFORMATION(1034,"Please enter complete information", HttpStatus.BAD_REQUEST),
     ;
 
 

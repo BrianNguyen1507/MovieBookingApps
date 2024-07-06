@@ -45,7 +45,7 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   static const MethodChannel platform =
-      MethodChannel('flutter.native/channelPayOrder');
+  MethodChannel('flutter.native/channelPayOrder');
   late Future<MovieDetail> movieData;
 
   String zpTransToken = "";
@@ -90,121 +90,125 @@ class _PaymentPageState extends State<PaymentPage> {
             children: [
               widget.visible
                   ? FutureBuilder(
-                      future: movieData,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const SizedBox.shrink();
-                        } else if (snapshot.hasError) {
-                          return loadingContent;
-                        } else {
-                          final getMovie = snapshot.data!;
-                          return SizedBox(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                future: movieData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const SizedBox.shrink();
+                  } else if (snapshot.hasError) {
+                    return loadingContent;
+                  } else {
+                    final getMovie = snapshot.data!;
+                    return SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.all(5.0),
+                            child: const Text('Movie Infomation',
+                                style: AppStyle.bodyText1),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.all(5.0),
+                            width: AppSize.width(context),
+                            decoration: const BoxDecoration(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(12)),
+                              color: AppColors.containerColor,
+                            ),
+                            child: Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   margin: const EdgeInsets.all(5.0),
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: const Text('Movie Infomation',
-                                      style: AppStyle.bodyText1),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5.0),
-                                  padding: const EdgeInsets.all(5.0),
-                                  width: AppSize.width(context),
-                                  decoration: const BoxDecoration(
+                                  child: ClipRRect(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
-                                    color: AppColors.containerColor,
+                                    BorderRadius.circular(10.0),
+                                    child: Image.memory(
+                                        height: 90,
+                                        width: 60,
+                                        ConverterUnit.base64ToUnit8(
+                                            getMovie.poster)),
                                   ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.all(5.0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          child: Image.memory(
-                                              height: 90,
-                                              width: 60,
-                                              ConverterUnit.base64ToUnit8(
-                                                  getMovie.poster)),
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              right: 2.0),
+                                          decoration: BoxDecoration(
+                                            color: ClassifyClass
+                                                .toFlutterColor(
+                                              ClassifyClass.classifyType(
+                                                  getMovie.classify),
+                                            ),
+                                            borderRadius:
+                                            const BorderRadius.all(
+                                              Radius.circular(2),
+                                            ),
+                                          ),
+                                          padding:
+                                          const EdgeInsets.all(1.5),
+                                          child: Text(
+                                            getMovie.classify,
+                                            style: AppStyle.classifyText,
+                                            maxLines: 1,
+                                            overflow:
+                                            TextOverflow.ellipsis,
+                                          ),
                                         ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    right: 2.0),
-                                                decoration: BoxDecoration(
-                                                  color: ClassifyClass
-                                                      .toFlutterColor(
-                                                    ClassifyClass.classifyType(
-                                                        getMovie.classify),
-                                                  ),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(2),
-                                                  ),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(1.5),
-                                                child: Text(
-                                                  getMovie.classify,
-                                                  style: AppStyle.classifyText,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                              Text(
-                                                getMovie.title,
-                                                style: AppStyle.titleOrder,
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            'Categories: ${getMovie.categories.map((category) => category.name).join(', ')}',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            'Duration: ${getMovie.duration.toString()} minutes',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            'Country: ${getMovie.country.toString()}',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            'Languge: ${getMovie.language.toString()}',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                        Text(
+                                          getMovie.title,
+                                          style: AppStyle.titleOrder,
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      'Categories: ${getMovie.categories.map((
+                                          category) => category.name).join(
+                                          ', ')}',
+                                      style: AppStyle.smallText,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      'Duration: ${getMovie.duration
+                                          .toString()} minutes',
+                                      style: AppStyle.smallText,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      'Country: ${getMovie.country.toString()}',
+                                      style: AppStyle.smallText,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      'Languge: ${getMovie.language
+                                          .toString()}',
+                                      style: AppStyle.smallText,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          );
-                        }
-                      },
-                    )
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              )
                   : const SizedBox.shrink(),
               Container(
                 margin: const EdgeInsets.all(5.0),
@@ -229,40 +233,40 @@ class _PaymentPageState extends State<PaymentPage> {
                   children: [
                     widget.visible
                         ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Theater: ',
-                                  style: AppStyle.bodyText1),
-                              Text(widget.theater,
-                                  style: AppStyle.paymentInfoText),
-                            ],
-                          )
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Theater: ',
+                            style: AppStyle.bodyText1),
+                        Text(widget.theater,
+                            style: AppStyle.paymentInfoText),
+                      ],
+                    )
                         : const SizedBox.shrink(),
                     widget.visible
                         ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Show time: ',
-                                  style: AppStyle.bodyText1),
-                              Text(
-                                  '${ConverterUnit.formatToDmY(
-                                    widget.visible
-                                        ? widget.date
-                                        : DateTime.now().toString(),
-                                  )} | ${widget.time}',
-                                  style: AppStyle.paymentInfoText),
-                            ],
-                          )
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Show time: ',
+                            style: AppStyle.bodyText1),
+                        Text(
+                            '${ConverterUnit.formatToDmY(
+                              widget.visible
+                                  ? widget.date
+                                  : DateTime.now().toString(),
+                            )} | ${widget.time}',
+                            style: AppStyle.paymentInfoText),
+                      ],
+                    )
                         : const SizedBox.shrink(),
                     widget.visible
                         ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Seats: ', style: AppStyle.bodyText1),
-                              Text(widget.seats,
-                                  style: AppStyle.paymentInfoText),
-                            ],
-                          )
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Seats: ', style: AppStyle.bodyText1),
+                        Text(widget.seats,
+                            style: AppStyle.paymentInfoText),
+                      ],
+                    )
                         : const SizedBox.shrink(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -310,12 +314,10 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  Widget paymentCardWidget(
-    bool visible,
-    int sumtotal,
-    String? seats,
-    List<Map<String, dynamic>> foods,
-  ) {
+  Widget paymentCardWidget(bool visible,
+      int sumtotal,
+      String? seats,
+      List<Map<String, dynamic>> foods,) {
     return Container(
       padding: const EdgeInsets.all(5.0),
       child: Tooltip(
@@ -339,7 +341,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 },
               );
               final Set<String>? seatQuantity =
-                  visible ? ConverterUnit.convertStringToSet(seats!) : null;
+              visible ? ConverterUnit.convertStringToSet(seats!) : null;
 
               final itemList = [
                 {
@@ -359,34 +361,35 @@ class _PaymentPageState extends State<PaymentPage> {
                   showResult = true;
                   showModalBottomSheet(
                     context: context,
-                    builder: (context) => SizedBox(
-                      width: AppSize.width(context),
-                      height: AppSize.height(context) * 0.2,
-                      child: MaterialButton(
-                        onPressed: () async {
-                          await handlePayment(widget.visible, widget.seats,
-                              widget.foods, widget.sumtotal);
-                        },
-                        child: Container(
-                          height: AppSize.height(context) * 0.1,
+                    builder: (context) =>
+                        SizedBox(
                           width: AppSize.width(context),
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                            color: AppColors.primaryColor,
-                          ),
-                          child: const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'OPEN ZALOPAY',
-                              style: AppStyle.buttonText2,
+                          height: AppSize.height(context) * 0.2,
+                          child: MaterialButton(
+                            onPressed: () async {
+                              await handlePayment(widget.visible, widget.seats,
+                                  widget.foods, widget.sumtotal);
+                            },
+                            child: Container(
+                              height: AppSize.height(context) * 0.1,
+                              width: AppSize.width(context),
+                              padding: const EdgeInsets.all(10.0),
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12),
+                                ),
+                                color: AppColors.primaryColor,
+                              ),
+                              child: const Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'OPEN ZALOPAY',
+                                  style: AppStyle.buttonText2,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
                   );
                 });
               }
@@ -429,7 +432,7 @@ class _PaymentPageState extends State<PaymentPage> {
     String appTranId;
     try {
       final Map<dynamic, dynamic> result =
-          await platform.invokeMethod('payOrder', {"zptoken": zpTransToken});
+      await platform.invokeMethod('payOrder', {"zptoken": zpTransToken});
 
       response = result['result'].toString();
       appTranId = result['appTransID'] ?? '';
@@ -469,22 +472,15 @@ class _PaymentPageState extends State<PaymentPage> {
                     height: 100,
                     width: 100,
                   ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                payResult,
-                style: AppStyle.bodyText1,
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
     );
 
     if (payResult == 'Payment Success') {
       dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
       Set<String> seatfotmat = ConverterUnit.convertStringToSet(seats);
-
       seats.isNotEmpty
           ? await ReturnSeatService.returnSeat(scheduleId, seatfotmat)
           : null;
@@ -493,16 +489,17 @@ class _PaymentPageState extends State<PaymentPage> {
           scheduleId!, voucherId, 'ZALOPAY', appTranId, seats, foods, sumTotal);
       Preferences().clearHoldSeats();
 
-      Future.delayed(
-        const Duration(seconds: 3),
-        () {
-          return Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/listOrder',
-            ModalRoute.withName('/'),
-          );
-        },
-      );
+        Future.delayed(
+          const Duration(seconds: 3),
+              () {
+            return Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/listOrder',
+              ModalRoute.withName('/'),
+            );
+          },
+        );
+      }
     }
   }
 }

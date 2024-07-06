@@ -23,7 +23,11 @@ class ListFoodOrderState extends State<ListFoodOrder> {
     futureFoodOrder = FoodOrderService.getAllFoodOrder();
     super.initState();
   }
-
+@override
+  void setState(VoidCallback fn) {
+    futureFoodOrder = FoodOrderService.getAllFoodOrder();
+    super.setState(fn);
+  }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<OrderResponse>>(
