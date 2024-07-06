@@ -3,7 +3,8 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/models/feedback/feedback.dart';
+import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
+
 import 'package:movie_booking_app/modules/loading/loading.dart';
 
 class RatingFeedbackWidget extends StatefulWidget {

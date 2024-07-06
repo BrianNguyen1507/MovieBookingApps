@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
-import 'package:movie_booking_app/models/feedback/feedback.dart';
+import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 
 class ConverterUnit {
   static Uint8List base64ToUnit8(String base64String) {

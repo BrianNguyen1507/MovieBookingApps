@@ -6,7 +6,6 @@ import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/ordered/components/detailWidget.dart';
 import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
-import 'package:movie_booking_app/services/Users/ratingFeedback/ratingFeedbackService.dart';
 
 class DetailOrderPage extends StatefulWidget {
   const DetailOrderPage({super.key, required this.id});
