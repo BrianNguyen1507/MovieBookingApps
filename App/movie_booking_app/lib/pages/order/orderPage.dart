@@ -11,6 +11,7 @@ import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/modules/timer/timer.dart';
 import 'package:movie_booking_app/pages/order/components/orderWidget.dart';
 import 'package:movie_booking_app/pages/order/components/voucherOrder.dart';
 import 'package:movie_booking_app/pages/payments/payment.dart';
@@ -18,6 +19,7 @@ import 'package:movie_booking_app/pages/payments/payment.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/getFoodById.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
+import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
 
 double newTotal = 0;
 double discount = 0;
@@ -51,6 +53,7 @@ class OrderPage extends StatefulWidget {
 
 late Future<MovieDetail> movieData;
 late Future<Food> foodData;
+Preferences pref = Preferences();
 
 class _OrderPageState extends State<OrderPage> {
   @override
@@ -66,7 +69,22 @@ class _OrderPageState extends State<OrderPage> {
   @override
   void dispose() {
     Preferences().clearVoucher();
+    TimerController.timerHoldSeatCancel();
+    _handleAsyncDisposal();
     super.dispose();
+  }
+
+  void _handleAsyncDisposal() async {
+    final latestSeats = await pref.getHoldSeats();
+
+    if (widget.visible && latestSeats != null) {
+      Set<String> prefSeats = ConverterUnit.convertStringToSet(latestSeats);
+      dynamic scheduleId = await pref.getSchedule();
+      print('seat was closed $prefSeats');
+      await ReturnSeatService.returnSeat(scheduleId, prefSeats);
+
+      await pref.clearHoldSeats();
+    }
   }
 
   @override

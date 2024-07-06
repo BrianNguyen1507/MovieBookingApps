@@ -11,7 +11,7 @@ import 'package:movie_booking_app/pages/order/orderPage.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/foodService.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
-import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
+import 'package:movie_booking_app/services/Users/order/holdSeat/holdSeat.dart';
 import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
@@ -52,29 +52,25 @@ class _StorePageState extends State<StorePage> {
   @override
   void initState() {
     super.initState();
+    initAsync();
+  }
+
+  void initAsync() async {
     foods = FoodService.getAllFood();
     _controllers = [];
     _values = [];
     foodOrder = [];
-    initAsync();
-  }
-
-  Future<void> initAsync() async {
-    seats = await pref.getHoldSeats();
+    final fetchedSeats = await pref.getHoldSeats();
+    if (mounted) {
+      setState(() {
+        seats = fetchedSeats;
+        print(' seat in store ${seats}');
+      });
+    }
   }
 
   @override
   void dispose() {
-    TimerController.timerHoldSeatCancel();
-    setState(() {
-      initAsync();
-    });
-
-    if (widget.selection && seats != null) {
-      Set<String> prefSeats = ConverterUnit.convertStringToSet(seats!);
-      ReturnSeatService.returnSeat(widget.scheduleId, prefSeats);
-      pref.clearHoldSeats();
-    }
     for (var controller in _controllers) {
       controller.dispose();
     }
@@ -287,6 +283,7 @@ class _StorePageState extends State<StorePage> {
                 widget.schedule ?? '',
                 widget.seats ?? {},
                 widget.movieId,
+                widget.scheduleId,
                 foodOrder,
                 widget.selection),
           ],
@@ -304,6 +301,7 @@ Widget renderBooking(
   String selectedSchedule,
   Set<String>? seats,
   int movieId,
+  int scheduleId,
   List<Map<String, dynamic>> foodOrder,
   selection,
 ) {
@@ -347,8 +345,21 @@ Widget renderBooking(
                 'Please choose at least one type of food and drink',
                 Colors.red);
           } else {
+            //set tg hold
+            bool isSeatHold = visible
+                ? await HoldSeatService.holdSeat(scheduleId, seats!)
+                : false;
+            pref.saveHoldSeats(seats!);
+
+            isSeatHold
+                ? TimerController.timerHoldSeatStart(
+                    scheduleId, seats, context, false)
+                : null;
+
+            String? data = await pref.getHoldSeats();
+            print('PReF $data');
             GetTotal getTotal = await GetTotalService.sumTotalOrder(
-                movieId, seats!.length, listOrdered);
+                movieId, seats.length, listOrdered);
             print(listOrdered);
 
             Navigator.push(context, MaterialPageRoute(

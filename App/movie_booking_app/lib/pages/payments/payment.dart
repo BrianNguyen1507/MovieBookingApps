@@ -437,10 +437,12 @@ class _PaymentPageState extends State<PaymentPage> {
       response = result['result'].toString();
       appTranId = result['appTransID'] ?? '';
 
-      setState(() {
-        payResult = response;
-        showResult = true;
-      });
+      if (mounted) {
+        setState(() {
+          payResult = response;
+          showResult = true;
+        });
+      }
     } on PlatformException catch (e) {
       response = 'Payment failed';
       throw Exception("Error: '${e.message}'.");
@@ -454,28 +456,21 @@ class _PaymentPageState extends State<PaymentPage> {
 
     showDialog(
       barrierDismissible: payResult == 'Payment Success' ? false : true,
-      context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                payResult == 'Payment failed' || payResult == 'User Canceled'
-                    ? SvgPicture.string(
-                  svgError,
-                  height: 70,
-                  width: 70,
-                )
-                    : SvgPicture.string(
-                  svgSuccess,
-                  height: 100,
-                  width: 100,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    payResult,
-                    style: AppStyle.bodyText1,
+      context: (context),
+      builder: (context) => AlertDialog(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            payResult == 'Payment failed' || payResult == 'User Canceled'
+                ? SvgPicture.string(
+                    svgError,
+                    height: 70,
+                    width: 70,
+                  )
+                : SvgPicture.string(
+                    svgSuccess,
+                    height: 100,
+                    width: 100,
                   ),
                 ),
               ],
@@ -486,18 +481,13 @@ class _PaymentPageState extends State<PaymentPage> {
     if (payResult == 'Payment Success') {
       dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
       Set<String> seatfotmat = ConverterUnit.convertStringToSet(seats);
-      bool returnSeat =  await ReturnSeatService.returnSeat(scheduleId, seatfotmat);
-      Preferences().clearHoldSeats();
-      if (returnSeat) {
-        CreateOrderService.createOrderTicket(
-            scheduleId!,
-            voucherId,
-            'ZALOPAY',
-            appTranId,
-            seats,
-            foods,
-            sumTotal);
+      seats.isNotEmpty
+          ? await ReturnSeatService.returnSeat(scheduleId, seatfotmat)
+          : null;
 
+      CreateOrderService.createOrderTicket(
+          scheduleId!, voucherId, 'ZALOPAY', appTranId, seats, foods, sumTotal);
+      Preferences().clearHoldSeats();
 
         Future.delayed(
           const Duration(seconds: 3),
