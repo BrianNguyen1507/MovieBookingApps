@@ -3,16 +3,15 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
-import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 import 'package:movie_booking_app/services/Users/ratingFeedback/ratingFeedbackService.dart';
 
-
 int rating = 0;
+
 class RatingFeedbackPage extends StatefulWidget {
   const RatingFeedbackPage({super.key, required this.order});
 
   final OrderResponse order;
-  
+
   @override
   State<StatefulWidget> createState() {
     return RatingFeedbackState();
@@ -20,15 +19,12 @@ class RatingFeedbackPage extends StatefulWidget {
 }
 
 class RatingFeedbackState extends State<RatingFeedbackPage> {
-
   TextEditingController commentCtl = TextEditingController();
 
-  
   @override
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {

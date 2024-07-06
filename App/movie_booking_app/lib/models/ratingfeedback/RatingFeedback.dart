@@ -1,17 +1,25 @@
-import 'package:flutter/foundation.dart';
+class RatingFeedback {
+  final String comment;
+  final int rating;
+  final String datetime;
+  final String fullName;
+  final String avatar;
 
-class RatingFeedback{
-  BigInt id;
-  int rating;
-  String comment;
+  RatingFeedback({
+    required this.comment,
+    required this.rating,
+    required this.datetime,
+    required this.fullName,
+    required this.avatar,
+  });
 
-  RatingFeedback({required this.id,required this.rating,required this.comment});
-
-  factory RatingFeedback.fromJson(Map<String,dynamic> json){
+  factory RatingFeedback.fromjson(Map<String, dynamic> json) {
     return RatingFeedback(
-        id: BigInt.from(json['id']),
-        rating: (json['rating']as num).toInt(),
-        comment: json['comment']
+      comment: json['comment'],
+      rating: json['rating'],
+      datetime: json['datetime'],
+      fullName: json['fullName'],
+      avatar: json['avatar'],
     );
   }
 }
