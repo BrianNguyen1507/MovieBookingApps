@@ -1,5 +1,6 @@
 export class Movie {
   constructor(
+    id,
     title,
     duration,
     description,
@@ -12,8 +13,10 @@ export class Movie {
     language,
     basePrice,
     categories,
-    classify
+    classify,
+    active
   ) {
+    this.id=id
     this.title = title;
     this.duration = duration;
     this.description = description;
@@ -27,5 +30,6 @@ export class Movie {
     this.basePrice = basePrice;
     this.categories = categories;
     this.classify = classify;
+    this.active = active;
   }
 }

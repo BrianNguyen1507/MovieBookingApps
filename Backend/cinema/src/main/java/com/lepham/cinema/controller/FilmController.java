@@ -1,5 +1,6 @@
 package com.lepham.cinema.controller;
 
+import com.lepham.cinema.constant.ConstantVariable;
 import com.lepham.cinema.dto.request.FilmRequest;
 import com.lepham.cinema.dto.response.APIResponse;
 import com.lepham.cinema.dto.response.FilmResponse;
@@ -45,14 +46,14 @@ public class FilmController {
     }
 
     @PostMapping(value = "/addFilm")
-    APIResponse<FilmResponse> addFilm(@RequestBody @Valid FilmRequest request) throws ParseException {
+    APIResponse<FilmResponse> addFilm(@RequestBody @Valid FilmRequest request){
         return APIResponse.<FilmResponse>builder()
                 .result(filmService.addFilm(request))
                 .build();
     }
 
     @PutMapping(value = "/updateFilm")
-    APIResponse<FilmResponse> updateFilm(@RequestParam("id") long id, @RequestBody @Valid FilmRequest request) throws ParseException {
+    APIResponse<FilmResponse> updateFilm(@RequestParam("id") long id, @RequestBody @Valid FilmRequest request) {
         return APIResponse.<FilmResponse>builder()
                 .result(filmService.updateFilm(id, request))
                 .build();
@@ -90,6 +91,12 @@ public class FilmController {
     APIResponse<List<FilmResponse>> getListMovieFutureByMonth(@RequestParam("month")int month) {
         return APIResponse.<List<FilmResponse>>builder()
                 .result(filmService.getListMovieFutureByMonth(month))
+                .build();
+    }
+    @PutMapping(value = "/activeFilm")
+    APIResponse<?> activeFilm(@RequestParam("id") long id) {
+        return APIResponse.builder()
+                .message(filmService.activeFilm(id)== ConstantVariable.FILM_RELEASE?"Active successful":"Inactive successful")
                 .build();
     }
 }

@@ -37,10 +37,11 @@ public class FilmConverter {
                 .director(entity.getDirector())
                 .classify(entity.getClassify())
                 .isRelease(!(LocalDate.now().isBefore(entity.getReleaseDate())))
+                .active(entity.getActive())
                 .build();
     }
 
-    public FilmEntity toFilmEntity(FilmRequest request) throws ParseException {
+    public FilmEntity toFilmEntity(FilmRequest request){
         FilmEntity entity = new FilmEntity();
         entity.setActor(request.getActor());
         entity.setCountry(request.getCountry());

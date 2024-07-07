@@ -11,8 +11,7 @@ public class ConstantVariable {
     public static final int direct = 0;
     public static final int percent = 1;
     public static final int FILM_RELEASE = 0;
-    public static final int FILM_FUTURE = 1;
-    public static final int FILM_STOP_RELEASE = 2;
+    public static final int FILM_STOP_RELEASE = 1;
     public static final int ORDER_UNUSED = 0;
     public static final int ORDER_USED = 1;
     public static final int ORDER_EXPIRED_USED = 2;
