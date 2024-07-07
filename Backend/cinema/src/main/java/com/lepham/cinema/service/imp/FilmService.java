@@ -1,7 +1,6 @@
 package com.lepham.cinema.service.imp;
 
-import com.lepham.cinema.converter.CategoryConverter;
-import com.lepham.cinema.converter.DateConverter;
+import com.lepham.cinema.constant.ConstantVariable;
 import com.lepham.cinema.converter.FilmConverter;
 import com.lepham.cinema.dto.request.FilmRequest;
 import com.lepham.cinema.dto.response.FilmResponse;
@@ -14,11 +13,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -53,7 +52,7 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<FilmResponse> getAllFilm() {
-        List<FilmEntity> entities = filmRepository.findAllByHide(false);
+        List<FilmEntity> entities = filmRepository.findAllByHide(false, Sort.by(Sort.Direction.ASC,"active"));
         return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
     }
 
@@ -69,16 +68,17 @@ public class FilmService implements IFilmService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public FilmResponse addFilm(FilmRequest request) throws ParseException {
+    public FilmResponse addFilm(FilmRequest request)  {
         if(filmRepository.findByTitle(request.getTitle()).isPresent()) throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
         FilmEntity entity = filmConverter.toFilmEntity(request);
         entity.setHide(false);
+        entity.setActive(ConstantVariable.FILM_RELEASE);
         return filmConverter.toFilmResponse(filmRepository.save(entity));
     }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public FilmResponse updateFilm(long id, FilmRequest request) throws ParseException {
+    public FilmResponse updateFilm(long id, FilmRequest request) {
         if(filmRepository.findByTitle(request.getTitle()).isPresent()) throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
         FilmEntity entity = filmRepository.getReferenceById(id);
         FilmEntity entityUpdate = filmConverter.toFilmEntity(request);
@@ -118,6 +118,16 @@ public class FilmService implements IFilmService {
     public List<FilmResponse> getListMovieFutureByMonth(int month) {
         List<FilmEntity> entities = filmRepository.findAllMovieByFutureMonth(month);
         return entities.stream().map(filmConverter::toFilmResponse).toList();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public int activeFilm(long id) {
+        FilmEntity entity = filmRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
+        if(entity.getActive()==ConstantVariable.FILM_RELEASE) entity.setActive(ConstantVariable.FILM_STOP_RELEASE);
+        else entity.setActive(ConstantVariable.FILM_RELEASE);
+        entity = filmRepository.save(entity);
+        return  entity.getActive();
     }
 
 }

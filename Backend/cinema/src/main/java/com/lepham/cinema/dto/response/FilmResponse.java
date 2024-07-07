@@ -28,11 +28,11 @@ public class FilmResponse {
     String language;
     double basePrice;
     String classify;
-
     boolean isRelease;
 
     List<CategoryResponse> categories;
     byte[] description;
     byte[] poster;
+    int active;
 
 }

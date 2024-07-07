@@ -423,3 +423,9 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+.movie-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 200px; /* Adjust this width based on your layout */
+}
