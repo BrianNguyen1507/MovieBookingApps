@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
@@ -358,7 +357,7 @@ Widget buildFoodInfo(
                           ConverterUnit.base64ToUnit8(fdata.image),
                         ),
                         title: Text(
-                          utf8.decode(fdata.name.codeUnits),
+                          fdata.name,
                           style: AppStyle.detailText,
                         ),
                         subtitle: Row(

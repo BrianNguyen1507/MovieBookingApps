@@ -1,4 +1,4 @@
-import 'package:movie_booking_app/config/ipconfig.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:movie_booking_app/models/category/categories.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
@@ -6,7 +6,9 @@ import 'package:http/http.dart' as http;
 
 class MovieDetailService {
   static Future<MovieDetail> deatailMovieService(int id) async {
-    final url = 'http://${ipAddress}:8083/cinema/getFilmById?id=$id';
+    await dotenv.load();
+    final getURL = dotenv.env['GET_MOVIE_BY_ID']!;
+    final url = getURL + id.toString();
 
     try {
       final response = await http.get(Uri.parse(url), headers: {
@@ -23,10 +25,7 @@ class MovieDetailService {
         final detailData = data['result'];
         List<dynamic> categories = detailData['categories'];
         List<Categories> listCategory = categories
-            .map((category) => Categories(
-                  id: category['id'],
-                  name: category['name'],
-                ))
+            .map((category) => Categories.fromJson(category))
             .toList();
 
         MovieDetail movieDetail = MovieDetail(

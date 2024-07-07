@@ -1,13 +1,15 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/models/user/user.dart';
 
 class SignUpService {
   static Future<dynamic> signup(User user) async {
     try {
-      const apiUrl = "http://$ipAddress:8083/cinema/register";
+      await dotenv.load();
+      final getURL = dotenv.env['SIGN_UP']!;
+      final apiUrl = getURL;
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -31,7 +33,9 @@ class SignUpService {
 class OTPService {
   static Future<dynamic> otpService(String email, String otp) async {
     try {
-      const apiUrl = "http://$ipAddress:8083/cinema/activeAccount";
+      await dotenv.load();
+      final getURL = dotenv.env['GET_OTP_ACTIVE']!;
+      final apiUrl = getURL;
       final response = await http.put(
         Uri.parse(apiUrl),
         headers: {

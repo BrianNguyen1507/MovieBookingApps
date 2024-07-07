@@ -6,6 +6,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/utils/expandable.dart';
 
 class RatingFeedbackWidget extends StatefulWidget {
   final Future<List<RatingFeedback>> listFeedback;
@@ -19,6 +20,7 @@ class RatingFeedbackWidget extends StatefulWidget {
 class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
   int countFeedback = 0;
   double averageRating = 0.0;
+  bool showAllFeedback = false;
   @override
   void initState() {
     super.initState();
@@ -35,7 +37,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(10),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(
           Radius.circular(20),
@@ -58,7 +60,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                         color: AppColors.startRating,
                       ),
                       Text(
-                        '$averageRating/10',
+                        '$averageRating/5',
                         style: AppStyle.headline1,
                       ),
                     ],
@@ -81,82 +83,125 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                 return const SizedBox.shrink();
               } else if (snapshot.hasData) {
                 final feedback = snapshot.data!;
-
-                return SizedBox(
-                  height: feedback.length * 120.0,
-                  child: ListView.builder(
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: feedback.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.all(5.0),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 6.0,
-                              color: AppColors.shadowColor,
-                              offset: Offset(2, 1),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12.0),
-                          ),
-                          color: AppColors.containerColor,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: ClipOval(
-                                    child: Image.memory(
-                                      ConverterUnit.base64ToUnit8(
-                                          feedback[index].avatar),
-                                      fit: BoxFit.cover,
-                                      width: 30.0,
-                                      height: 30.0,
-                                    ),
-                                  ),
+                final limitedFeedback = showAllFeedback
+                    ? feedback
+                    : (feedback.length > 4 ? feedback.sublist(0, 4) : feedback);
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: limitedFeedback.length * 120.0,
+                      child: ListView.builder(
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: limitedFeedback.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: const BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 6.0,
+                                  color: AppColors.shadowColor,
+                                  offset: Offset(2, 1),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              ],
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12.0),
+                              ),
+                              color: AppColors.containerColor,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   children: [
-                                    Text(
-                                      feedback[index].fullName,
-                                      style: AppStyle.priceText,
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: ClipOval(
+                                        child: Image.memory(
+                                          ConverterUnit.base64ToUnit8(
+                                              feedback[index].avatar),
+                                          fit: BoxFit.cover,
+                                          width: 30.0,
+                                          height: 30.0,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      'Commented at ${feedback[index].datetime}',
-                                      style: AppStyle.smallText,
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          feedback[index].fullName,
+                                          style: AppStyle.priceText,
+                                        ),
+                                        Text(
+                                          'Commented at ${feedback[index].datetime}',
+                                          style: AppStyle.smallText,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      AppIcon.star,
+                                      color: AppColors.startRating,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${feedback[index].rating}/5',
+                                          style: AppStyle.priceText,
+                                        ),
+                                        Text(
+                                          ' ${RatingContent.contentRating(feedback[index].rating)}',
+                                          style: AppStyle.smallText,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                ExpandableText(
+                                  text: feedback[index].comment,
+                                ),
                               ],
                             ),
-                            Row(
-                              children: [
-                                Icon(
-                                  AppIcon.star,
-                                  color: AppColors.startRating,
-                                ),
-                                Text(
-                                  '${feedback[index].rating}/10',
-                                  style: AppStyle.priceText,
-                                ),
-                              ],
+                          );
+                        },
+                      ),
+                    ),
+                    if (feedback.length > 4)
+                      SizedBox(
+                        child: ElevatedButton.icon(
+                          style: ButtonStyle(
+                            shape: WidgetStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                             ),
-                            Text(
-                              feedback[index].comment,
+                            backgroundColor: WidgetStateProperty.all(
+                              AppColors.backgroundColor.withOpacity(0.5),
                             ),
-                          ],
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              setState(() {
+                                showAllFeedback = !showAllFeedback;
+                              });
+                            });
+                          },
+                          label: Text(
+                            showAllFeedback
+                                ? 'Show less'
+                                : 'Show more (${feedback.length - 4})',
+                            style: AppStyle.buttonText2,
+                          ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                  ],
                 );
               } else {
                 return const SizedBox.shrink();

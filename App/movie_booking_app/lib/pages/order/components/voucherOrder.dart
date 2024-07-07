@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
@@ -112,9 +111,7 @@ class _VoucherOrderState extends State<VoucherOrder> {
                                       width: 50,
                                     ),
                                     title: Text(
-                                      utf8.decode(
-                                        vouchers[index].title.codeUnits,
-                                      ),
+                                      vouchers[index].title,
                                       style: AppStyle.detailText,
                                     ),
                                     subtitle: Column(
@@ -122,9 +119,7 @@ class _VoucherOrderState extends State<VoucherOrder> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          utf8.decode(
-                                            vouchers[index].content.codeUnits,
-                                          ),
+                                          vouchers[index].content,
                                           style: AppStyle.smallText,
                                         ),
                                         Text(

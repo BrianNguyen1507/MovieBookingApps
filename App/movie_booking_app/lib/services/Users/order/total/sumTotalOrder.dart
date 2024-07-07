@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
+
 import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
@@ -9,7 +10,9 @@ class GetTotalService {
       int movieId, int quantity, List? food) async {
     Preferences pref = Preferences();
     String? token = await pref.getTokenUsers();
-    const url = 'http://$ipAddress:8083/cinema/sumTotalOrder';
+    await dotenv.load();
+    final getURL = dotenv.env['GET_SUM_TOTAL']!;
+    final url = getURL;
 
     final response = await http.post(
       Uri.parse(url),

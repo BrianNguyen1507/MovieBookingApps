@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:movie_booking_app/config/ipconfig.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/category/categories.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +8,9 @@ import 'package:http/http.dart' as http;
 class SearchMovieService {
   static Future<List<Movie>> findAllMovieByKeyWord(String keyword) async {
     try {
-      var url = 'http://$ipAddress:8083/cinema/searchFilm?keyword=$keyword';
+      await dotenv.load();
+      final getURL = dotenv.env['SEARCH']!;
+      final url = getURL + keyword;
       final response = await http
           .get(Uri.parse(url), headers: {"Content-Type": "application/json"});
       dynamic result = json.decode(response.body);

@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 class LogOutServices {
@@ -9,7 +9,8 @@ class LogOutServices {
     String? token = await pref.getTokenUsers();
 
     try {
-      const url = 'http://${ipAddress}:8083/cinema/logout';
+      final getURL = dotenv.env['LOG_OUT']!;
+      final url = getURL;
       final logoutBody = json.encode({'token': token});
 
       final response = await http.post(
@@ -23,10 +24,10 @@ class LogOutServices {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         if (responseData['code'] == 1000) {
+          print('LOG OUT THANH CONG');
           await pref.clear();
           return;
         } else {
-
           return responseData['message'];
         }
       } else {

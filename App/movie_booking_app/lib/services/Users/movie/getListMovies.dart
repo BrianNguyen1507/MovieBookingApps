@@ -1,13 +1,15 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/category/categories.dart';
 
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/models/movie/movie.dart';
 
 class MovieList {
   static Future<List<Movie>> getListReleased() async {
-    const url = "http://${ipAddress}:8083/cinema/getListMovieRelease";
+    await dotenv.load();
+    final getURL = dotenv.env['GET_LIST_RELEASE']!;
+    final url = getURL;
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -49,7 +51,9 @@ class MovieList {
   }
 
   static Future<List<Movie>> getListFutured() async {
-    const urlApi = 'http://$ipAddress:8083/cinema/getListMovieFuture';
+    await dotenv.load();
+    final getURL = dotenv.env['GET_LIST_FUTURE']!;
+    final urlApi = getURL;
     final response = await http.get(
       Uri.parse(urlApi),
       headers: {'Content-type': 'application/json'},

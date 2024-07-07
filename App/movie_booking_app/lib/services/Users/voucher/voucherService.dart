@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
@@ -9,9 +9,9 @@ class VoucherService {
     try {
       Preferences pref = Preferences();
       dynamic token = await pref.getTokenUsers();
-      final url =
-          'http://$ipAddress:8083/cinema/getAllVoucherByAccount?price=$total';
-
+      await dotenv.load();
+      final getURL = dotenv.env['GET_ALL_VOUCHER_BY_ACCOUNT']!;
+      final url = getURL + total.toString();
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -21,7 +21,8 @@ class VoucherService {
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> result = jsonDecode(response.body);
+        final Map<String, dynamic> result =
+            jsonDecode(utf8.decode(response.body.codeUnits));
 
         if (result['code'] != 1000) {
           throw Exception(result['message']);

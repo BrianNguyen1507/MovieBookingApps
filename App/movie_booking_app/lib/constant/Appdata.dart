@@ -14,7 +14,7 @@ class AppIcon {
   static IconData close = Icons.close;
   static IconData playButton = Icons.play_arrow_rounded;
   static IconData questionMark = Icons.question_mark_sharp;
-    static IconData star = Icons.star;
+  static IconData star = Icons.star;
 }
 
 class AppSize {
@@ -144,6 +144,25 @@ class ClassifyClass {
         return ('The movie is not allowed to be shown');
       default:
         return ('The movie is available for viewers of all ages');
+    }
+  }
+}
+
+class RatingContent {
+  static String contentRating(int rate) {
+    switch (rate) {
+      case 1:
+        return ('Not good');
+      case 2:
+        return ('Not very satisfied');
+      case 3:
+        return 'Okay movie';
+      case 4:
+        return 'Very good';
+      case 5:
+        return 'Excellent movie';
+      default:
+        return 'Invalid rating';
     }
   }
 }
