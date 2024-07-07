@@ -8,7 +8,7 @@ class ExpandableText extends StatefulWidget {
   const ExpandableText({
     super.key,
     required this.text,
-    this.maxLines = 3,
+    this.maxLines = 2,
   });
 
   @override
@@ -35,7 +35,7 @@ class _ExpandableTextState extends State<ExpandableText> {
               isExpanded = !isExpanded;
             });
           },
-          child: widget.maxLines > 3
+          child: widget.text.length > 100
               ? Text(isExpanded ? 'Show less' : 'Show more',
                   style: AppStyle.buttonText)
               : const SizedBox.shrink(),

@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 class CreateOrderService {
@@ -14,7 +14,9 @@ class CreateOrderService {
     double sumTotal,
   ) async {
     try {
-      const url = 'http://$ipAddress:8083/cinema/order';
+      await dotenv.load();
+      final getURL = dotenv.env['CREATE_ORDER']!;
+      final url = getURL;
       final token = await Preferences().getTokenUsers();
       final body = jsonEncode({
         'movieScheduleId': scheduleId,
@@ -41,9 +43,6 @@ class CreateOrderService {
         }
         print('CREATE ORDER SUCCESS!');
         return true;
-      } else if (response.statusCode == 400) {
-        print(' 400 ERROR MESSAGE: ${result['message']}');
-        return false;
       } else {
         print("${result['message']}");
         print('ERROR MESSAGE: ${result['message']}');

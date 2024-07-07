@@ -1,13 +1,15 @@
 import 'dart:convert';
 
-import 'package:movie_booking_app/config/ipconfig.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/models/seat/seat.dart';
 
 class Seatservice {
   static Future<Seat> getMovieScheduleById(int scheduleId) async {
-    final url =
-        'http://$ipAddress:8083/cinema/getMovieScheduleById?id=${scheduleId}';
+    await dotenv.load();
+    final getURL = dotenv.env['GET_SEAT_BY_SCHEDULE_ID']!;
+    final url = getURL + scheduleId.toString();
     try {
       final response = await http.get(
         Uri.parse(url),

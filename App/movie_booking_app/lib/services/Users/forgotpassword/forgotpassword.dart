@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
 
 class ForgotPasswordService {
   static Future<bool> forgotPassword(String email) async {
-    var url = 'http://${ipAddress}:8083/cinema/forgotPassword?email=$email';
+    await dotenv.load();
+    final getUrl = dotenv.env['FORGOT_PASSWORD']!;
+    var url = getUrl + email;
     try {
       final response = await http.get(
         Uri.parse(url),

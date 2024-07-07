@@ -1,7 +1,6 @@
 import 'dart:convert';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
@@ -12,8 +11,11 @@ class ReturnSeatService {
       dynamic token = await pref.getTokenUsers();
       String seatString = ConverterUnit.convertSetToString(seats);
       print(seatString);
-      final url =
-          'http://$ipAddress:8083/cinema/returnSeat?scheduleId=$scheduleId&seat=$seatString';
+      await dotenv.load();
+      final getURL = dotenv.env['RETURN_SEAT']!;
+      final url = getURL
+          .replaceAll('{scheduleId}', scheduleId.toString())
+          .replaceAll('{seatString}', seatString);
       final response = await http.post(Uri.parse(url), headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer $token',

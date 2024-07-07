@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/config/ipconfig.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
-
 import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
-
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
@@ -14,8 +12,9 @@ class RatingFeedbackService {
   static Future<void> createRatingFeedback(
       int rating, String comment, int orderId, BuildContext context) async {
     ValidInput valid = ValidInput();
-    final uri =
-        'http://$ipAddress:8083/cinema/createRatingFeedBack?orderId=$orderId';
+    await dotenv.load();
+    final getURL = dotenv.env['CREATE_RATING_FEEDBACK']!;
+    final uri = getURL + orderId.toString();
     final token = await Preferences().getTokenUsers();
     final body = jsonEncode({
       'rating': rating,
@@ -48,8 +47,9 @@ class RatingFeedbackService {
 
   static Future<List<RatingFeedback>> getAllRatingFeedback(int movieId) async {
     try {
-      final url =
-          'http://$ipAddress:8083/cinema/getAllRatingFeedback?filmId=$movieId';
+      await dotenv.load();
+      final getURL = dotenv.env['GET_RATING_FEEDBACK']!;
+      final url = getURL + movieId.toString();
       dynamic token = await Preferences().getTokenUsers();
       final responseFeedBack = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
@@ -73,8 +73,9 @@ class RatingFeedbackService {
   }
 
   static Future<RatingFeedback?> getRatingFeedback(BigInt orderId) async {
-    final uri =
-        'http://$ipAddress:8083/cinema/getRatingFeedback?orderId=$orderId';
+    await dotenv.load();
+    final getURL = dotenv.env['GET_RATING_FEEDBACK_BY_ORDER_ID']!;
+    final uri = getURL + orderId.toString();
     final token = await Preferences().getTokenUsers();
     try {
       final response = await http.get(

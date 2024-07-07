@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 class RefreshToken {
@@ -8,9 +8,10 @@ class RefreshToken {
     Preferences pref = Preferences();
     String? expriredToken = await pref.getTokenUsers();
     try {
-      const url = 'http://${ipAddress}:8083/cinema/refresh';
+      await dotenv.load();
+      final getURL = dotenv.env['REFRESH_TOKEN']!;
+      final url = getURL;
       final refreshBody = json.encode({'token': expriredToken});
-
       final response = await http.post(
         Uri.parse(url),
         headers: {

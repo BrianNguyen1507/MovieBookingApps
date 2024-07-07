@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/config/ipconfig.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/category/categories.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
@@ -12,8 +12,9 @@ class GetListByMonth {
     Map<int, List<Movie>> moviesByMonth = {};
     try {
       for (int month in months) {
-        const url =
-            'http://${ipAddress}:8083/cinema/getListMovieFutureByMonth?month=';
+        await dotenv.load();
+        final getURL = dotenv.env['GET_LIST_MONTH']!;
+        final url = getURL;
         final response = await http.get(
           Uri.parse(url + month.toString()),
           headers: {
