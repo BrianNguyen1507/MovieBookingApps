@@ -13,10 +13,13 @@ import 'package:movie_booking_app/models/seat/seat.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/seatwidget/seatwidget.dart';
 import 'package:movie_booking_app/pages/store/store.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
 import 'package:movie_booking_app/services/Users/seat/seatService.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class SeatSelection extends StatefulWidget {
   final int scheduleId;
@@ -68,7 +71,7 @@ class _SeatSelectionState extends State<SeatSelection> {
         appBar: AppBar(
           backgroundColor: AppColors.opacityBlackColor,
           centerTitle: true,
-          title: seatStateList(),
+          title: seatStateList(context),
           iconTheme: const IconThemeData(color: AppColors.containerColor),
         ),
         backgroundColor: AppColors.backgroundColor,
@@ -139,8 +142,8 @@ class _SeatSelectionState extends State<SeatSelection> {
         children: <Widget>[
           Column(
             children: [
-              const Text(
-                'S  C  R  E  E  N',
+              Text(
+                AppLocalizations.of(context)!.screen,
                 style: AppStyle.screenText,
               ),
               SvgPicture.string(svgScreen),
@@ -300,7 +303,8 @@ Widget renderBooking(
                                 },
                               ),
                             ),
-                            Container(
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -327,20 +331,44 @@ Widget renderBooking(
                                         ),
                                       ),
                                       SizedBox(
-                                        width: AppSize.width(context) / 3,
-                                        child: Text(
-                                          movieData.title,
-                                          style: AppStyle.smallText,
-                                        ),
-                                      ),
+                                          width: AppSize.width(context) / 3,
+                                          child: Consumer<ThemeProvider>(
+                                            builder: (context, value, child) {
+                                              return FutureBuilder(
+                                                future: value.translateText(
+                                                    movieData.title),
+                                                builder: (context, snapshot) {
+                                                  final titleTrans =
+                                                      snapshot.data ??
+                                                          movieData.title;
+                                                  return Text(
+                                                    titleTrans,
+                                                    style: AppStyle.smallText,
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          )),
                                     ],
                                   ),
-                                  Text(
-                                    movieData.country,
-                                    style: AppStyle.smallText,
+                                  Consumer<ThemeProvider>(
+                                    builder: (context, value, child) {
+                                      return FutureBuilder(
+                                        future: value
+                                            .translateText(movieData.country),
+                                        builder: (context, snapshot) {
+                                          final countryTrans = snapshot.data ??
+                                              movieData.country;
+                                          return Text(
+                                            countryTrans,
+                                            style: AppStyle.smallText,
+                                          );
+                                        },
+                                      );
+                                    },
                                   ),
                                   Text(
-                                    '${movieData.duration.toString()} minutes',
+                                    '${movieData.duration.toString()} ${AppLocalizations.of(context)!.minutes}',
                                     style: AppStyle.smallText,
                                   ),
                                 ],
@@ -354,11 +382,14 @@ Widget renderBooking(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Theater: $theaterName',
+                            Text(
+                                '${AppLocalizations.of(context)!.theater}: $theaterName',
                                 style: AppStyle.smallText),
-                            Text('Room: $roomNumber',
+                            Text(
+                                '${AppLocalizations.of(context)!.room}: $roomNumber',
                                 style: AppStyle.smallText),
-                            Text('Show time: $times',
+                            Text(
+                                '${AppLocalizations.of(context)!.showTime}: $times',
                                 style: AppStyle.smallText),
                           ],
                         ),
@@ -389,7 +420,7 @@ Widget renderBooking(
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     TextSpan(
-                      text: 'SEATS: ',
+                      text: '${AppLocalizations.of(context)!.seats}: ',
                       style: AppStyle.bodyText1,
                       children: <TextSpan>[
                         TextSpan(
@@ -403,7 +434,7 @@ Widget renderBooking(
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     TextSpan(
-                      text: 'TOTAL: ',
+                      text: '${AppLocalizations.of(context)!.total}: ',
                       style: AppStyle.bodyText1,
                       children: <TextSpan>[
                         TextSpan(
@@ -462,8 +493,8 @@ Widget renderBooking(
                 },
               );
             },
-            child: const Text(
-              'BOOKING',
+            child: Text(
+              AppLocalizations.of(context)!.booking,
               style: AppStyle.buttonNavigator,
             ),
           ),

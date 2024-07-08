@@ -118,7 +118,8 @@ class MovieListings extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      releaseBox(movieList[index].isRelease),
+                                      releaseBox(
+                                          context, movieList[index].isRelease),
                                     ],
                                   ),
                                 )

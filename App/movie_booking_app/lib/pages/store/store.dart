@@ -376,7 +376,9 @@ Widget renderBooking(
           }
         },
         child: Text(
-          visible ? 'CONTINUE' : 'BOOKING',
+          visible
+              ? AppLocalizations.of(context)!.tieptuc
+              : AppLocalizations.of(context)!.booking,
           style: AppStyle.buttonNavigator,
         ),
       ),

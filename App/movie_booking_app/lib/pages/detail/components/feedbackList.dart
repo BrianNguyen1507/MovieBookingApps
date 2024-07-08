@@ -5,6 +5,7 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RatingFeedbackWidget extends StatefulWidget {
   final Future<List<RatingFeedback>> listFeedback;
@@ -47,7 +48,8 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Rating & Feedback', style: AppStyle.bodyText1),
+              Text(AppLocalizations.of(context)!.rating_feedback,
+                  style: AppStyle.bodyText1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -63,7 +65,9 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                       ),
                     ],
                   ),
-                  Text('($countFeedback feedback)', style: AppStyle.smallText),
+                  Text(
+                      '($countFeedback ${AppLocalizations.of(context)!.feedback})',
+                      style: AppStyle.smallText),
                 ],
               ),
             ],
@@ -135,7 +139,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                                           style: AppStyle.priceText,
                                         ),
                                         Text(
-                                          'Commented at ${feedback[index].datetime}',
+                                          '${AppLocalizations.of(context)!.commented} ${feedback[index].datetime}',
                                           style: AppStyle.smallText,
                                         ),
                                       ],
@@ -155,7 +159,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                                           style: AppStyle.priceText,
                                         ),
                                         Text(
-                                          ' ${RatingContent.contentRating(feedback[index].rating)}',
+                                          ' ${RatingContent.contentRating(context, feedback[index].rating)}',
                                           style: AppStyle.smallText,
                                         ),
                                       ],
@@ -192,8 +196,8 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                           },
                           label: Text(
                             showAllFeedback
-                                ? 'Show less'
-                                : 'Show more (${feedback.length - 4})',
+                                ? AppLocalizations.of(context)!.showless
+                                : '${AppLocalizations.of(context)!.showmore} (${feedback.length - 4})',
                             style: AppStyle.buttonText2,
                           ),
                         ),

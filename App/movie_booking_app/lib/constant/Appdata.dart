@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppIcon {
   static IconData watchedMovie = Icons.live_tv_rounded;
@@ -44,20 +45,22 @@ class Appdata {
     }
   }
 
-  static String getReleased(bool isRelease) {
-    return isRelease ? 'Now Showing' : 'Coming Soon';
+  static String getReleased(BuildContext context, bool isRelease) {
+    return isRelease
+        ? AppLocalizations.of(context)!.nowshowing
+        : AppLocalizations.of(context)!.comming;
   }
 
-  static String? getLabelForIndex(int index) {
+  static String? getLabelForIndex(BuildContext context, int index) {
     switch (index) {
       case 0:
         return 'Vouchers';
       case 1:
-        return 'Cinema';
+        return AppLocalizations.of(context)!.cinema;
       case 2:
-        return 'Store';
+        return AppLocalizations.of(context)!.store;
       case 3:
-        return 'Personal';
+        return AppLocalizations.of(context)!.personal;
       default:
         return null;
     }
@@ -128,41 +131,41 @@ class ClassifyClass {
     }
   }
 
-  static String contentClassify(String type) {
+  static String contentClassify(BuildContext context, String type) {
     switch (type.toLowerCase()) {
       case 'k':
-        return ('The movie is available for viewers under 13 years old with a guardian');
+        return AppLocalizations.of(context)!.classify_K;
       case 'p':
-        return ('The movie is available for viewers of all ages');
+        return AppLocalizations.of(context)!.classify_P;
       case 't13':
-        return ('The movie is available for viewers aged 13 and above');
+        return AppLocalizations.of(context)!.classify_T13;
       case 't16':
-        return ('The movie is available for viewers aged 16 and above');
+        return AppLocalizations.of(context)!.classify_T16;
       case 't18':
-        return ('The movie is available for viewers aged 18 and above');
+        return AppLocalizations.of(context)!.classify_T18;
       case 'c':
-        return ('The movie is not allowed to be shown');
+        return AppLocalizations.of(context)!.classify_K;
       default:
-        return ('The movie is available for viewers of all ages');
+        return AppLocalizations.of(context)!.classify_K;
     }
   }
 }
 
 class RatingContent {
-  static String contentRating(int rate) {
+  static String contentRating(BuildContext context, int rate) {
     switch (rate) {
       case 1:
-        return ('Not good');
+        return AppLocalizations.of(context)!.rating_1;
       case 2:
-        return ('Not very satisfied');
+        return AppLocalizations.of(context)!.rating_2;
       case 3:
-        return 'Okay movie';
+        return AppLocalizations.of(context)!.rating_3;
       case 4:
-        return 'Very good';
+        return AppLocalizations.of(context)!.rating_4;
       case 5:
-        return 'Excellent movie';
+        return AppLocalizations.of(context)!.rating_5;
       default:
-        return 'Invalid rating';
+        return AppLocalizations.of(context)!.rating_0;
     }
   }
 }
