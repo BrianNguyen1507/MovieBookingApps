@@ -27,9 +27,9 @@ export async function getAndDisplayGiftVoucher() {
       const voucher = new Voucher(
         voucherData.title,
         voucherData.content,
+        voucherData.typeDiscount,
         voucherData.minLimit,
         voucherData.discount,
-        voucherData.typeDiscount,
         voucherData.quantity,
         voucherData.expired
       );
