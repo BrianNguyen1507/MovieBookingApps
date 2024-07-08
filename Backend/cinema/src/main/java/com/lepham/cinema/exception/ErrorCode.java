@@ -45,6 +45,7 @@ public enum ErrorCode {
     CAN_NOT_RATING(1032,"You can not rating and feedback", HttpStatus.BAD_REQUEST),
     WAS_RATING(1033,"You was rating and feedback", HttpStatus.BAD_REQUEST),
     COMPLETE_INFORMATION(1034,"Please enter complete information", HttpStatus.BAD_REQUEST),
+    DUPLICATE_PASSWORD(1035,"New password must difference old password", HttpStatus.BAD_REQUEST),
     ;
 
 

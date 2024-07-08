@@ -2,7 +2,7 @@ import { getUserToken } from "../authenticate/authenticate.js";
 
 const apiUrl = "http://localhost:8083/cinema/giftVoucher";
 
-export async function giftVoucher(giftVoucher) {
+export async function giftVoucher(quantity,voucherId) {
   try {
     const tokenUser = await getUserToken();
     const response = await $.ajax({
@@ -12,7 +12,7 @@ export async function giftVoucher(giftVoucher) {
       headers: {
         Authorization: `Bearer ${tokenUser}`,
       },
-      data: JSON.stringify(giftVoucher),
+      data: JSON.stringify({quantity,voucherId}),
     });
 
     if (response.code !== 1000) {

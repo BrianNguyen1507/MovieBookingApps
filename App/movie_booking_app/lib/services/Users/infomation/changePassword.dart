@@ -35,7 +35,6 @@ class ChangePasswordService {
       final result = responseData['result'];
       Preferences().setAvatar(result['avatar']);
       Preferences().setUserName(result['fullName']);
-
       return Account.fromJson(result);
     } catch (err) {
       throw Exception(err);
