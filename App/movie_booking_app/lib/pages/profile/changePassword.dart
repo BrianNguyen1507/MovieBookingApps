@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/appdata.dart';
 import 'package:movie_booking_app/models/account/account.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/changePassword.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:provider/provider.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -207,18 +209,18 @@ class ChangePasswordState extends State<ChangePassword> {
                     ),
                     onPressed: () async {
                       if (passwordWarning == passwordMatch) {
-                        print(newPasswordController.text);
                         Account account =
                             await ChangePasswordService.changePassword(
                                 passwordController.text,
                                 newPasswordController.text);
-                        Preferences pre = new Preferences();
+                        Preferences pre =  Preferences();
                         String? email = await pre.getEmail();
                         if (account.email == email) {
                           valid.showMessage(
                               context,
                               "Change password successfully",
                               AppColors.correctColor);
+                          valid.showAlertCustom(context, "Login version has expired", "OK", false, () => _onPressLogout(context),);
                         }
                       }
                     },
@@ -244,5 +246,11 @@ class ChangePasswordState extends State<ChangePassword> {
         ),
       ),
     );
+  }
+  void _onPressLogout(BuildContext context) {
+    Preferences pref = Preferences();
+    Provider.of<UserProvider>(context, listen: false).logout();
+    pref.removeSinginInfo();
+    Navigator.pushReplacementNamed(context, '/login');
   }
 }

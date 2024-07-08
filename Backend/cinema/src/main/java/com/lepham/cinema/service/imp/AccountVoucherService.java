@@ -40,10 +40,16 @@ public class AccountVoucherService implements IAccountVoucherService {
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
 
         for (AccountEntity account : activeUserIds) {
-            AccountVoucher accountVoucherEntity = new AccountVoucher();
-            accountVoucherEntity.setAccount(account);
-            accountVoucherEntity.setQuantity(request.getQuantity());
-            accountVoucherEntity.setVoucher(voucher);
+            AccountVoucher accountVoucherEntity = accountVoucherRepository.findByAccountAndVoucher(account,voucher);
+            if(accountVoucherEntity!=null){
+                accountVoucherEntity.setQuantity(accountVoucherEntity.getQuantity()+request.getQuantity());
+            }
+            else{
+                accountVoucherEntity = new AccountVoucher();
+                accountVoucherEntity.setQuantity(request.getQuantity());
+                accountVoucherEntity.setAccount(account);
+                accountVoucherEntity.setVoucher(voucher);
+            }
             accountVoucherRepository.save(accountVoucherEntity);
         }
     }

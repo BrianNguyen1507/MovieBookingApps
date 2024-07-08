@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -168,6 +169,7 @@ public class AccountService implements IAccountService {
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         if(!passwordEncoder.matches(request.getPassword(),account.getPassword())) throw new AppException(ErrorCode.PASSWORD_INVALID);
+        if(Objects.equals(request.getPassword(),request.getNewPassword())) throw new AppException(ErrorCode.DUPLICATE_PASSWORD);
         account.setPassword(passwordEncoder.encode(request.getNewPassword()));
         return accountConverter.toResponse(accountRepository.save(account));
     }
