@@ -21,7 +21,6 @@ public class OrderFilmRequest {
     String paymentMethod;
     String paymentCode;
     String seat;
-    @PriceConstraint()
     double sumTotal;
     @Builder.Default
     int isUsed = ConstantVariable.ORDER_UNUSED;
