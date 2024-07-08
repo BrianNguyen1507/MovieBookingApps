@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget buildBottomSheetOrder(
+  BuildContext context,
   GetTotal total,
   String seats,
   List<Map<String, dynamic>> foods,
@@ -15,16 +17,16 @@ Widget buildBottomSheetOrder(
     padding: const EdgeInsets.all(10.0),
     child: Column(
       children: [
-        const Text(
-          'Orders Details',
+        Text(
+          AppLocalizations.of(context)!.order_detail,
           style: AppStyle.headline1,
         ),
         visible
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Seats:',
+                  Text(
+                    '${AppLocalizations.of(context)!.seats}:',
                     style: AppStyle.bodyText1,
                   ),
                   Row(
@@ -45,8 +47,8 @@ Widget buildBottomSheetOrder(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Food and Drinks:',
+            Text(
+              '${AppLocalizations.of(context)!.fnd}:',
               style: AppStyle.bodyText1,
             ),
             Row(
@@ -66,8 +68,8 @@ Widget buildBottomSheetOrder(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Discount:',
+            Text(
+              '${AppLocalizations.of(context)!.discount}:',
               style: AppStyle.bodyText1,
             ),
             Text(
@@ -80,8 +82,8 @@ Widget buildBottomSheetOrder(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Total:',
+            Text(
+              '${AppLocalizations.of(context)!.total}:',
               style: AppStyle.bodyText1,
             ),
             Text(

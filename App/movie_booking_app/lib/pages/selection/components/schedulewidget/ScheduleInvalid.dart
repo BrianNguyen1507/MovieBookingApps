@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/constant/svgString.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget scheduleInvalid(BuildContext context) {
   return Container(
@@ -19,15 +20,17 @@ Widget scheduleInvalid(BuildContext context) {
           width: AppSize.width(context),
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(12))),
-          child: const Center(
+          child: Center(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Oops! There are no schedules available',
-                  style: AppStyle.bodyText1,
-                ),Text(
-                  'Please Come back later',
-                  style: AppStyle.bodyText1,
+                  AppLocalizations.of(context)!.error_schedule,
+                  style: AppStyle.thinText,
+                ),
+                Text(
+                  AppLocalizations.of(context)!.error_schedule_bonus,
+                  style: AppStyle.smallText,
                 ),
               ],
             ),

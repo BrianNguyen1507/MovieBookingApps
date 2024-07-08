@@ -7,7 +7,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/components/feedbackList.dart';
 import 'package:movie_booking_app/pages/detail/components/widgetComponents.dart';
@@ -122,7 +122,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                       final countrytrans =
                                           snapshot.data ?? detail.country;
                                       return Text(
-                                        "Country: $countrytrans",
+                                        "${AppLocalizations.of(context)!.country}: $countrytrans",
                                         style: AppStyle.smallText,
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
@@ -157,7 +157,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                     width: AppSize.width(context) / 1.8,
                                     child: Text(
                                       ClassifyClass.contentClassify(
-                                          detail.classify),
+                                          context, detail.classify),
                                       style: AppStyle.smallText,
                                     ),
                                   ),
@@ -167,7 +167,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                releaseBox(detail.isRelease),
+                                releaseBox(context, detail.isRelease),
                                 SizedBox(
                                   child: ElevatedButton.icon(
                                     style: ButtonStyle(
@@ -224,7 +224,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           detailTitle(
-                              'Release Date',
+                              AppLocalizations.of(context)!.releaseDate,
                               ConverterUnit.formatToDmY(
                                   detail.releaseDate.toString())),
                           const SizedBox(width: 10),
@@ -234,7 +234,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                             color: Colors.grey,
                           ),
                           const SizedBox(width: 10),
-                          detailTitle('Duration', '${detail.duration} minutes'),
+                          detailTitle(AppLocalizations.of(context)!.duration,
+                              '${detail.duration} ${AppLocalizations.of(context)!.minutes}'),
                           const SizedBox(width: 10),
                           Container(
                             height: 50,
@@ -242,7 +243,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                             color: Colors.grey,
                           ),
                           const SizedBox(width: 10),
-                          detailTitle('Language', detail.language),
+                          detailTitle(AppLocalizations.of(context)!.language,
+                              detail.language),
                         ],
                       ),
                     ),
@@ -258,8 +260,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Description',
+                            Text(
+                              AppLocalizations.of(context)!.description,
                               style: AppStyle.bodyText1,
                             ),
                             const Divider(
@@ -289,14 +291,15 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     ),
                     height: 15,
                   ),
-                  infMovie('Directors', detail.director),
+                  infMovie(
+                      AppLocalizations.of(context)!.director, detail.director),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                     ),
                     height: 15,
                   ),
-                  infMovie('Actors', detail.actor),
+                  infMovie(AppLocalizations.of(context)!.actor, detail.actor),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
@@ -333,8 +336,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           onPressed: () {
             _onBookingPress(context);
           },
-          child: const Text(
-            'BOOKING',
+          child: Text(
+            AppLocalizations.of(context)!.booking,
             style: AppStyle.buttonNavigator,
           ),
         ),
@@ -359,8 +362,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             child: Scaffold(
               backgroundColor: AppColors.containerColor,
               appBar: AppBar(
-                title: const Text(
-                  'Movie Detail',
+                title: Text(
+                  AppLocalizations.of(context)!.movieDetail,
                   style: AppStyle.headline1,
                 ),
                 iconTheme: const IconThemeData(

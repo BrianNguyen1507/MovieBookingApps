@@ -14,7 +14,7 @@ import 'package:movie_booking_app/modules/timer/timer.dart';
 import 'package:movie_booking_app/pages/order/components/orderWidget.dart';
 import 'package:movie_booking_app/pages/order/components/voucherOrder.dart';
 import 'package:movie_booking_app/pages/payments/payment.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/getFoodById.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
@@ -92,9 +92,9 @@ class _OrderPageState extends State<OrderPage> {
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
         iconTheme: const IconThemeData(color: AppColors.containerColor),
-        title: const Text(
-          'Order Information',
-          style: AppStyle.headline1,
+        title: Text(
+          AppLocalizations.of(context)!.order_inf,
+          style: AppStyle.headline2,
         ),
         centerTitle: true,
       ),
@@ -168,9 +168,11 @@ class _OrderPageState extends State<OrderPage> {
                                         height: 35,
                                         width: 35,
                                       ),
-                                      const Padding(
-                                        padding: EdgeInsets.all(5.0),
-                                        child: Text('My voucher wallet',
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Text(
+                                            AppLocalizations.of(context)!
+                                                .my_vouchers,
                                             style: AppStyle.bodyText1),
                                       ),
                                     ],
@@ -226,9 +228,10 @@ Widget buildMovieInfo(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Text('Movie Infomation', style: AppStyle.bodyText1),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(AppLocalizations.of(context)!.movieDetail,
+                    style: AppStyle.bodyText1),
               ),
               Container(
                 padding: const EdgeInsets.all(10.0),
@@ -280,7 +283,7 @@ Widget buildMovieInfo(
                           ],
                         ),
                         Text(
-                          'Duration: ${getMovie.duration.toString()} minutes',
+                          '${AppLocalizations.of(context)!.duration}: ${getMovie.duration.toString()} ${AppLocalizations.of(context)!.minutes}',
                           style: AppStyle.smallText,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -292,7 +295,7 @@ Widget buildMovieInfo(
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          'Theater: $selectedTheater',
+                          '${AppLocalizations.of(context)!.theater}: $selectedTheater',
                           style: AppStyle.smallText,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -300,7 +303,7 @@ Widget buildMovieInfo(
                         SizedBox(
                           width: AppSize.width(context) * 0.6,
                           child: Text(
-                            'Seats: $selectedSeat',
+                            '${AppLocalizations.of(context)!.seats}: $selectedSeat',
                             style: AppStyle.smallText,
                           ),
                         ),
@@ -326,7 +329,8 @@ Widget buildFoodInfo(
     children: [
       Padding(
         padding: const EdgeInsets.all(5.0),
-        child: Text('Food and drinks (${selectedFoods.length})',
+        child: Text(
+            '${AppLocalizations.of(context)!.fnd} (${selectedFoods.length})',
             style: AppStyle.bodyText1),
       ),
       SizedBox(
@@ -394,9 +398,10 @@ Widget buildCustomerInfo(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      const Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Text('Customer Infomation', style: AppStyle.bodyText1),
+      Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Text(AppLocalizations.of(context)!.cus_inf,
+            style: AppStyle.bodyText1),
       ),
       Container(
         padding: const EdgeInsets.all(10.0),
@@ -465,8 +470,8 @@ Widget renderBooking(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'TOTAL:',
+              Text(
+                '${AppLocalizations.of(context)!.total}:',
                 style: AppStyle.bodyText1,
               ),
               Row(
@@ -490,8 +495,8 @@ Widget renderBooking(
                             ),
                             height: AppSize.height(context),
                             width: AppSize.width(context),
-                            child: buildBottomSheetOrder(total, seats, foods,
-                                newTotal, discount, visible),
+                            child: buildBottomSheetOrder(context, total, seats,
+                                foods, newTotal, discount, visible),
                           );
                         },
                       );
@@ -536,8 +541,8 @@ Widget renderBooking(
                     movieId: movieId,
                   ),
                 )),
-            child: const Text(
-              'CONTINUE',
+            child: Text(
+              AppLocalizations.of(context)!.tieptuc,
               style: AppStyle.buttonNavigator,
             ),
           ),

@@ -72,6 +72,7 @@ class ThemeProvider with ChangeNotifier {
         from: _isEnglish ? 'vi' : 'en',
         to: _isEnglish ? 'en' : 'vi',
       );
+
       return translation.text;
     } catch (e) {
       throw Exception('Error translating text: $e');

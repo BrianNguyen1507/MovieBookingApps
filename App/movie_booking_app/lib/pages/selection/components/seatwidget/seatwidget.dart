@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget seatStateList() {
+Widget seatStateList(BuildContext context) {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: Row(
@@ -20,8 +21,8 @@ Widget seatStateList() {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const Text(
-              'Available',
+            Text(
+              AppLocalizations.of(context)!.seat_available,
               style: AppStyle.seatText,
             ),
           ],
@@ -37,8 +38,8 @@ Widget seatStateList() {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const Text(
-              'Selected',
+            Text(
+              AppLocalizations.of(context)!.seat_selected,
               style: AppStyle.seatText,
             ),
           ],
@@ -54,8 +55,8 @@ Widget seatStateList() {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const Text(
-              'Sold',
+            Text(
+              AppLocalizations.of(context)!.seat_sold,
               style: AppStyle.seatText,
             ),
           ],
@@ -71,8 +72,8 @@ Widget seatStateList() {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const Text(
-              'Pending',
+            Text(
+              AppLocalizations.of(context)!.seat_pending,
               style: AppStyle.seatText,
             ),
           ],
@@ -88,8 +89,8 @@ Widget seatStateList() {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const Text(
-              'Disable',
+            Text(
+              AppLocalizations.of(context)!.seat_disable,
               style: AppStyle.seatText,
             ),
           ],

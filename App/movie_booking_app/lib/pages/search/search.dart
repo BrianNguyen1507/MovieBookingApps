@@ -220,7 +220,7 @@ class SearchState extends State<Search> {
                                                 ),
                                               ),
                                               child: Text(
-                                                Appdata.getReleased(
+                                                Appdata.getReleased(context,
                                                     movieList[index].isRelease),
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,

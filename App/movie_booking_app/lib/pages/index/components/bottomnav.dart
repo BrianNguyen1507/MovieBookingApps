@@ -48,7 +48,7 @@ class BottomNavigator extends StatelessWidget {
                       ),
                     ],
                   ),
-                  label: Appdata.getLabelForIndex(index),
+                  label: Appdata.getLabelForIndex(context, index),
                 ),
               ),
               selectedIconTheme: const IconThemeData(

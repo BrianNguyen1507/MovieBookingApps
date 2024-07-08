@@ -5,7 +5,10 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/models/theater/theater.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/theaterwidget/theaterItem.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/theater/theaterService.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TheaterSelection extends StatefulWidget {
   final int movieId;
@@ -31,14 +34,25 @@ class _TheaterSelectionState extends State<TheaterSelection> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: AppColors.backgroundColor,
         iconTheme: const IconThemeData(
           color: AppColors.containerColor,
         ),
-        title: Text(
-          widget.name,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        title: Consumer<ThemeProvider>(
+          builder: (context, value, child) {
+            return FutureBuilder<String>(
+              future: value.translateText(widget.name),
+              builder: (context, snapshot) {
+                final titleTrans = snapshot.data ?? widget.name;
+                return Text(
+                  titleTrans,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                );
+              },
+            );
+          },
         ),
         titleTextStyle: AppStyle.bannerText,
       ),
@@ -61,8 +75,8 @@ class _TheaterSelectionState extends State<TheaterSelection> {
                 children: [
                   SizedBox(
                     width: AppSize.width(context) / 2,
-                    child: const Text(
-                      'Cinema branch',
+                    child: Text(
+                      AppLocalizations.of(context)!.branch_cinema,
                       style: AppStyle.bodyText1,
                     ),
                   ),

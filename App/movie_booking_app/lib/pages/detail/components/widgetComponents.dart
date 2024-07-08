@@ -52,7 +52,7 @@ Widget infMovie(String title, String value) {
   );
 }
 
-Widget releaseBox(bool detail) {
+Widget releaseBox(BuildContext context, bool detail) {
   return Container(
     padding: const EdgeInsets.all(3.0),
     margin: const EdgeInsets.all(3.0),
@@ -64,7 +64,7 @@ Widget releaseBox(bool detail) {
       ),
     ),
     child: Text(
-      Appdata.getReleased(detail),
+      Appdata.getReleased(context, detail),
       style: TextStyle(
         fontWeight: FontWeight.bold,
         color: detail ? AppColors.primaryColor : AppColors.secondaryColor,

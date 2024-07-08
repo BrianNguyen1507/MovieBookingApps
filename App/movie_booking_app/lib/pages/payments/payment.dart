@@ -10,7 +10,7 @@ import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/orderPage.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/order/createOrder/createOrderTickets.dart';
 import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
@@ -69,8 +69,8 @@ class _PaymentPageState extends State<PaymentPage> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'PAYMENTS',
+        title: Text(
+          AppLocalizations.of(context)!.pay_inf,
           style: AppStyle.headline2,
         ),
         iconTheme: const IconThemeData(color: AppColors.containerColor),
@@ -106,7 +106,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                 Container(
                                   margin: const EdgeInsets.all(5.0),
                                   padding: const EdgeInsets.all(5.0),
-                                  child: const Text('Movie Infomation',
+                                  child: Text(
+                                      AppLocalizations.of(context)!.movieDetail,
                                       style: AppStyle.bodyText1),
                                 ),
                                 Container(
@@ -209,8 +210,8 @@ class _PaymentPageState extends State<PaymentPage> {
               Container(
                 margin: const EdgeInsets.all(5.0),
                 padding: const EdgeInsets.all(5.0),
-                child: const Text(
-                  'Payment Infomation',
+                child: Text(
+                  AppLocalizations.of(context)!.pay_inf,
                   style: AppStyle.bodyText1,
                 ),
               ),
@@ -231,7 +232,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Theater: ',
+                              Text('${AppLocalizations.of(context)!.theater}:',
                                   style: AppStyle.bodyText1),
                               Text(widget.theater,
                                   style: AppStyle.paymentInfoText),
@@ -242,7 +243,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Show time: ',
+                              Text('${AppLocalizations.of(context)!.showTime}:',
                                   style: AppStyle.bodyText1),
                               Text(
                                   '${ConverterUnit.formatToDmY(
@@ -258,7 +259,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Seats: ', style: AppStyle.bodyText1),
+                              Text('${AppLocalizations.of(context)!.seats}:',
+                                  style: AppStyle.bodyText1),
                               Text(widget.seats,
                                   style: AppStyle.paymentInfoText),
                             ],
@@ -267,7 +269,8 @@ class _PaymentPageState extends State<PaymentPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Foods: ', style: AppStyle.bodyText1),
+                        Text('${AppLocalizations.of(context)!.fnd}:',
+                            style: AppStyle.bodyText1),
                         Text('x${widget.foods.length.toString()}',
                             style: AppStyle.paymentInfoText),
                       ],
@@ -276,7 +279,8 @@ class _PaymentPageState extends State<PaymentPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Sum total: ', style: AppStyle.bodyText1),
+                        Text('${AppLocalizations.of(context)!.sumtotal}:',
+                            style: AppStyle.bodyText1),
                         Text(
                           '${ConverterUnit.formatPrice(widget.sumtotal)}₫',
                           style: AppStyle.headline1,
@@ -286,10 +290,10 @@ class _PaymentPageState extends State<PaymentPage> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(5.0),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
                 child: Text(
-                  'Payment Methods',
+                  AppLocalizations.of(context)!.pay_method,
                   style: AppStyle.bodyText1,
                 ),
               ),
@@ -350,7 +354,7 @@ class _PaymentPageState extends State<PaymentPage> {
               ];
 
               var result = await createOrder(amount, itemList);
-              if (result != null) {
+              if (result != null && mounted) {
                 Navigator.pop(context);
                 zpTransToken = result.zptranstoken;
                 setState(() {
@@ -377,10 +381,10 @@ class _PaymentPageState extends State<PaymentPage> {
                             ),
                             color: AppColors.primaryColor,
                           ),
-                          child: const Align(
+                          child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'OPEN ZALOPAY',
+                              '${AppLocalizations.of(context)!.open} ZALOPAY',
                               style: AppStyle.buttonText2,
                             ),
                           ),

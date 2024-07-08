@@ -57,7 +57,8 @@ class NowShowingSection extends StatelessWidget {
                     ),
                   );
                 },
-                label: const Text('See all', style: AppStyle.bodyText1),
+                label: Text(AppLocalizations.of(context)!.seeAll,
+                    style: AppStyle.bodyText1),
                 iconAlignment: IconAlignment.end,
                 icon: Icon(
                   color: AppColors.darktextColor,
@@ -150,7 +151,8 @@ class ComingSoonSection extends StatelessWidget {
                     ),
                   );
                 },
-                label: const Text('See all', style: AppStyle.bodyText1),
+                label: Text(AppLocalizations.of(context)!.seeAll,
+                    style: AppStyle.bodyText1),
                 iconAlignment: IconAlignment.end,
                 icon: Icon(
                   color: AppColors.grayTextColor,

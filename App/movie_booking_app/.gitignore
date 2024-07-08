@@ -1,5 +1,8 @@
 # See https://github.com/flutter/flutter/issues/128635 for more context.
 *.env
+.vscode
+.idea
+
 # Miscellaneous
 *.class
 *.lock
