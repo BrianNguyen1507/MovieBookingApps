@@ -7,6 +7,7 @@ import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/pages/ordered/QrcodePage.dart';
 import 'package:movie_booking_app/pages/ratingfeedback/ratingfeedback.dart';
+import 'package:movie_booking_app/utils/widget.dart';
 
 Widget detailOrderFilm(BuildContext context, DetailOrder order) {
   return Container(
@@ -69,16 +70,13 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                     ),
                     color: AppColors.containerColor.withOpacity(0.5)),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.memory(
-                            height: 100,
-                            ConverterUnit.base64ToUnit8(order.order.poster)),
-                      ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.memory(
+                          height: 100,
+                          ConverterUnit.base64ToUnit8(order.order.poster)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
@@ -113,7 +111,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                               Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: Text(
-                                  " ${order.order.title}",
+                                  CommonUtil.truncateText(
+                                      order.order.title, 12),
                                   style: AppStyle.titleMovie,
                                 ),
                               ),
