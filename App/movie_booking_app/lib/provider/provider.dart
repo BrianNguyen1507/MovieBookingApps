@@ -5,13 +5,17 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
 import 'package:movie_booking_app/services/Users/signIn/handleSignin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
 
 class ThemeProvider with ChangeNotifier {
   Locale _locale = const Locale('en');
-
+  bool _isEnglish = true;
+  final translator = GoogleTranslator();
   static const String _localePreferenceKey = 'localePreference';
+  static const String _isEnglishPreferenceKey = 'isEnglishPreference';
 
   Locale get locale => _locale;
+  bool get isEnglish => _isEnglish;
 
   String get languageDisplayText {
     return _locale.languageCode == 'en' ? 'English' : 'Vietnamese';
@@ -21,18 +25,26 @@ class ThemeProvider with ChangeNotifier {
     _loadLocale();
   }
 
-  void _loadLocale() async {
+  Future<void> _loadLocale() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? localeCode = prefs.getString(_localePreferenceKey);
+    bool? isEnglish = prefs.getBool(_isEnglishPreferenceKey);
+
     if (localeCode != null) {
       _locale = Locale(localeCode);
     }
+
+    if (isEnglish != null) {
+      _isEnglish = isEnglish;
+    }
+
     notifyListeners();
   }
 
-  void _saveLocalePreference(String localeCode) async {
+  Future<void> _saveLocalePreference(String localeCode) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_localePreferenceKey, localeCode);
+    await prefs.setString(_localePreferenceKey, localeCode);
+    await prefs.setBool(_isEnglishPreferenceKey, _isEnglish);
   }
 
   void setLocale(Locale newLocale) {
@@ -41,11 +53,28 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleLanguage() {
-    if (_locale.languageCode == 'en') {
+  Future<void> toggleLanguage() async {
+    if (_locale.languageCode == 'en' && _isEnglish) {
       setLocale(const Locale('vi'));
+      _isEnglish = false;
     } else {
       setLocale(const Locale('en'));
+      _isEnglish = true;
+    }
+    await _saveLocalePreference(_locale.languageCode);
+    notifyListeners();
+  }
+
+  Future<String> translateText(String text) async {
+    try {
+      final translation = await translator.translate(
+        text,
+        from: _isEnglish ? 'vi' : 'en',
+        to: _isEnglish ? 'en' : 'vi',
+      );
+      return translation.text;
+    } catch (e) {
+      throw Exception('Error translating text: $e');
     }
   }
 }

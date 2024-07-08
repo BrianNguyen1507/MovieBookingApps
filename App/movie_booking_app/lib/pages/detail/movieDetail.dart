@@ -13,9 +13,11 @@ import 'package:movie_booking_app/pages/detail/components/feedbackList.dart';
 import 'package:movie_booking_app/pages/detail/components/widgetComponents.dart';
 import 'package:movie_booking_app/pages/detail/trailerScreen.dart';
 import 'package:movie_booking_app/pages/selection/theaterSelection.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/ratingFeedback/ratingFeedbackService.dart';
 import 'package:movie_booking_app/utils/expandable.dart';
+import 'package:provider/provider.dart';
 
 class MovieDetailPage extends StatefulWidget {
   final int movieId;
@@ -91,34 +93,43 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: AppSize.width(context) / 1.5,
-                              child: Text(
-                                detail.title,
-                                style: AppStyle.nameMovie,
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            SizedBox(
                               width: AppSize.width(context) / 1.6,
-                              child: Text(
-                                detail.categories
-                                    .map((category) => category.name)
-                                    .join(', '),
-                                style: AppStyle.smallText,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                              child: Consumer<ThemeProvider>(
+                                builder: (context, provider, child) {
+                                  return FutureBuilder<String>(
+                                    future:
+                                        provider.translateText(detail.title),
+                                    builder: (context, snapshot) {
+                                      return Text(
+                                        snapshot.data ?? detail.title,
+                                        style: AppStyle.nameMovie,
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             ),
                             SizedBox(
-                              width: AppSize.width(context) / 1.8,
-                              child: Text(
-                                "Country: ${detail.country}",
-                                style: AppStyle.smallText,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
+                                width: AppSize.width(context) / 1.8,
+                                child: Consumer<ThemeProvider>(
+                                  builder: (context, provider, child) =>
+                                      FutureBuilder<String>(
+                                    future:
+                                        provider.translateText(detail.country),
+                                    builder: (context, snapshot) {
+                                      final countrytrans =
+                                          snapshot.data ?? detail.country;
+                                      return Text(
+                                        "Country: $countrytrans",
+                                        style: AppStyle.smallText,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      );
+                                    },
+                                  ),
+                                )),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
+import 'package:movie_booking_app/provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class ExpandableText extends StatefulWidget {
   final String text;
@@ -8,7 +10,7 @@ class ExpandableText extends StatefulWidget {
   const ExpandableText({
     super.key,
     required this.text,
-    this.maxLines = 2,
+    this.maxLines = 3,
   });
 
   @override
@@ -23,11 +25,22 @@ class _ExpandableTextState extends State<ExpandableText> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.text,
-          maxLines: isExpanded ? null : widget.maxLines,
-          overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
-          style: AppStyle.detailTitle,
+        Consumer<ThemeProvider>(
+          builder: (context, provider, child) {
+            return FutureBuilder(
+              future: provider.translateText(widget.text),
+              builder: (context, snapshot) {
+                final textTrans = snapshot.data ?? widget.text;
+                return Text(
+                  textTrans,
+                  maxLines: isExpanded ? null : widget.maxLines,
+                  overflow:
+                      isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                  style: AppStyle.detailTitle,
+                );
+              },
+            );
+          },
         ),
         GestureDetector(
           onTap: () {
@@ -35,7 +48,7 @@ class _ExpandableTextState extends State<ExpandableText> {
               isExpanded = !isExpanded;
             });
           },
-          child: widget.text.length > 100
+          child: widget.text.length > 50
               ? Text(isExpanded ? 'Show less' : 'Show more',
                   style: AppStyle.buttonText)
               : const SizedBox.shrink(),

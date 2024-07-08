@@ -1,18 +1,9 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/constant/ZaloConfig.dart';
-import 'package:movie_booking_app/services/payments/ZaloPay/zaloResponse/CreateOrder.dart';
+import 'package:movie_booking_app/services/payments/ZaloPay/CreateOrder.dart';
 import 'dart:convert';
-import 'package:movie_booking_app/constant/ZaloConfig.dart' as utils;
+import 'package:movie_booking_app/services/payments/ZaloPay/ZaloConfig.dart' as utils;
 import 'package:sprintf/sprintf.dart';
-
-class ZaloPayService {
-  static const String appId = "2554";
-  static const String key1 = "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn";
-  static const String key2 = "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf";
-
-  static const String appUser = "STU Cinemas";
-  static int transIdDefault = 1;
-}
 
 Future<CreateOrderResponse?> createOrder(
     int price, List<Map<String, dynamic>> items) async {
@@ -22,9 +13,12 @@ Future<CreateOrderResponse?> createOrder(
 
   final appTime = DateTime.now().millisecondsSinceEpoch.toString();
   final appTransId = utils.getAppTransId();
+  await dotenv.load();
+  final getAppId = dotenv.env['ZALO_APP_ID'];
+  final getAppUser = dotenv.env['ZALO_APP_USER'];
   final body = {
-    "app_id": ZaloPayService.appId,
-    "app_user": ZaloPayService.appUser,
+    "app_id": getAppId,
+    "app_user": getAppUser,
     "app_time": appTime,
     "amount": price.toString(),
     "app_trans_id": appTransId,
@@ -44,11 +38,13 @@ Future<CreateOrderResponse?> createOrder(
     body["item"],
   ]);
 
-  body["mac"] = utils.getMacCreateOrder(dataGetMac);
+  body["mac"] = await utils.getMacCreateOrder(dataGetMac);
 
   try {
+    await dotenv.load();
+    final getUrl = dotenv.env['ZALO_CREATE_ORDER']!;
     final response = await http.post(
-      Uri.parse(Endpoints.createOrderUrl),
+      Uri.parse(getUrl),
       headers: headers,
       body: body,
     );

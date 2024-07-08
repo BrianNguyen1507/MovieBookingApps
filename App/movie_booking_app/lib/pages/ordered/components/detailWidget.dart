@@ -201,7 +201,7 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                 ),
               ),
               const Text(
-                'Show this code to the staff to get movie tickets',
+                'Show this code to the staff to get tickets',
                 style: AppStyle.smallText,
               ),
               const Divider(),

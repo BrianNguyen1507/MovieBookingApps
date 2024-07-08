@@ -6,6 +6,8 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
+import 'package:movie_booking_app/provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class ListMovie {
   static Widget buildListMovie(BuildContext context, Movie movie) {
@@ -73,27 +75,50 @@ class ListMovie {
                 SizedBox(
                   width: 150,
                   child: Center(
-                    child: Text(
-                      movie.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppStyle.titleMovie,
+                    child: Consumer<ThemeProvider>(
+                      builder: (context, provider, child) {
+                        return FutureBuilder<String>(
+                          future: provider.translateText(movie.title),
+                          builder: (context, snapshot) {
+                            return Text(
+                              snapshot.data ?? movie.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppStyle.titleMovie,
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: 150.0,
+                  width: 120.0,
                   child: Center(
-                    child: Text(
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      movie.categories
-                          .map((category) => category.name)
-                          .join(', '),
-                      style: AppStyle.smallText,
+                    child: Consumer<ThemeProvider>(
+                      builder: (context, provider, child) {
+                        return FutureBuilder<String>(
+                          future: provider.translateText(
+                            movie.categories
+                                .map((category) => category.name)
+                                .join(', '),
+                          ),
+                          builder: (context, snapshot) {
+                            return Text(
+                              snapshot.data ??
+                                  movie.categories
+                                      .map((category) => category.name)
+                                      .join(', '),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppStyle.smallText,
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ],

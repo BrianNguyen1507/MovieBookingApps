@@ -202,20 +202,25 @@ class MovieFutureByMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.containerColor,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MovieListingByMonth(
-                  movies: movieByMonth, listTitle: 'Top Movies of the Month'),
-            ),
-          );
-        },
-        child: const Text('abc'),
-      ),
+    return Column(
+      children: [
+        Container(
+          color: AppColors.containerColor,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MovieListingByMonth(
+                      movies: movieByMonth,
+                      listTitle: 'Top Movies of the Month'),
+                ),
+              );
+            },
+            child: const Text('abc'),
+          ),
+        ),
+      ],
     );
   }
 }
