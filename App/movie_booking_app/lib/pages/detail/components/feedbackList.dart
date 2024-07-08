@@ -4,9 +4,7 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
-
 import 'package:movie_booking_app/modules/loading/loading.dart';
-import 'package:movie_booking_app/utils/expandable.dart';
 
 class RatingFeedbackWidget extends StatefulWidget {
   final Future<List<RatingFeedback>> listFeedback;
@@ -89,7 +87,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                 return Column(
                   children: [
                     SizedBox(
-                      height: limitedFeedback.length * 120.0,
+                      height: limitedFeedback.length * 130.0,
                       child: ListView.builder(
                         physics: const ClampingScrollPhysics(),
                         itemCount: limitedFeedback.length,
@@ -164,8 +162,9 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                                     ),
                                   ],
                                 ),
-                                ExpandableText(
-                                  text: feedback[index].comment,
+                                Text(
+                                  ' ${feedback[index].comment}',
+                                  style: AppStyle.smallText,
                                 ),
                               ],
                             ),
@@ -188,9 +187,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                           ),
                           onPressed: () {
                             setState(() {
-                              setState(() {
-                                showAllFeedback = !showAllFeedback;
-                              });
+                              showAllFeedback = !showAllFeedback;
                             });
                           },
                           label: Text(

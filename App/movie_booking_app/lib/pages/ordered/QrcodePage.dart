@@ -15,10 +15,23 @@ class QrcodePage extends StatelessWidget {
         titleTextStyle: AppStyle.headline1,
         centerTitle: true,
         iconTheme: const IconThemeData(
-          color: AppColors.iconThemeColor,
+          color: AppColors.backgroundColor,
         ),
       ),
-      body: Center(child: Image.memory(ConverterUnit.base64ToUnit8(qr))),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(child: Image.memory(ConverterUnit.base64ToUnit8(qr))),
+          const Text(
+            'Show this code to the staff to get tickets ',
+            style: AppStyle.smallText,
+          ),
+          const Text(
+            'Thank you for purchasing tickets on the app.',
+            style: AppStyle.smallText,
+          )
+        ],
+      ),
       backgroundColor: AppColors.iconThemeColor,
     );
   }

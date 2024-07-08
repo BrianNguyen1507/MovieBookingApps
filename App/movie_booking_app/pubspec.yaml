@@ -24,6 +24,7 @@ dependencies:
   sprintf: ^7.0.0
   crypto: ^3.0.3
   flutter_dotenv: ^5.1.0
+  translator: ^1.0.0
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
