@@ -15,4 +15,5 @@ public class FilmScheduleResponse {
     long id;
     String title;
     LocalDate releaseDate;
+    int duration;
 }

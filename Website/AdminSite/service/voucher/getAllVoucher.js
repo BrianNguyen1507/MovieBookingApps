@@ -37,6 +37,7 @@ export async function getAndDisplayvoucher() {
         voucherData.quantity,
         voucherData.expired
       );
+      console.log(voucher);
       const row = document.createElement("tr");
 
       const indexCell = document.createElement("td");

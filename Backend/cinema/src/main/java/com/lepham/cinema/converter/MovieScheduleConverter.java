@@ -16,7 +16,8 @@ public interface MovieScheduleConverter {
         MovieScheduleResponse response = new MovieScheduleResponse();
         response.setFilm(film);
         response.setId(entity.getId());
-        response.setTime(entity.getTimeStart().toLocalTime().format(ConstantVariable.formatter));
+        response.setTimeStart(entity.getTimeStart().toLocalTime().format(ConstantVariable.formatter));
+        response.setTimeEnd(entity.getTimeStart().toLocalTime().plusMinutes(film.getDuration()).format(ConstantVariable.formatter));
         response.setDate(entity.getTimeStart().toLocalDate().toString());
         return response;
     }

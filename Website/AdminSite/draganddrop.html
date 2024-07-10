@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Table Example</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .draggable {
+            cursor: move;
+        }
+        .dropzone {
+            border: 2px dashed #007bff;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .dragged {
+            opacity: 0.5;
+        }
+        .dropzone td {
+            min-height: 50px;
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Drag and Drop Table Example</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Draggable Items</h4>
+                <div class="list-group">
+                    <div class="list-group-item draggable" draggable="true">Item 1</div>
+                    <div class="list-group-item draggable" draggable="true">Item 2</div>
+                    <div class="list-group-item draggable" draggable="true">Item 3</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4>Dropzone Table</h4>
+                <table class="table table-bordered dropzone">
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th>Column 3</th>
+                            <th>Column 4</th>
+                            <th>Column 5</th>
+                            <th>Column 6</th>
+                            <th>Column 7</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.draggable').on('dragstart', function(e) {
+                e.originalEvent.dataTransfer.setData('text', $(this).html());
+                $(this).addClass('dragged');
+            });
+
+            $('.draggable').on('dragend', function() {
+                $(this).removeClass('dragged');
+            });
+
+            $('.dropzone th, .dropzone td').on('dragover', function(e) {
+                e.preventDefault();
+            });
+
+            $('.dropzone th, .dropzone td').on('drop', function(e) {
+                e.preventDefault();
+                var data = e.originalEvent.dataTransfer.getData('text');
+                var columnIndex = $(this).index();
+                var table = $(this).closest('table');
+                var tbody = table.find('tbody');
+                var targetRowIndex = $(this).closest('tr').index();
+
+                var newItem = $('<div class="list-group-item draggable" draggable="true"></div>').html(data);
+                newItem.on('dragstart', function(e) {
+                    e.originalEvent.dataTransfer.setData('text', $(this).html());
+                    $(this).addClass('dragged');
+                });
+                newItem.on('dragend', function() {
+                    $(this).removeClass('dragged');
+                });
+
+                // Find the appropriate place to insert the new item
+                var rows = tbody.find('tr');
+                if (rows.length === 0) {
+                    var newRow = $('<tr></tr>');
+                    for (var i = 0; i < 7; i++) {
+                        newRow.append('<td></td>');
+                    }
+                    newRow.find('td').eq(columnIndex).append(newItem);
+                    tbody.append(newRow);
+                } else {
+                    // Shift items down from the target index
+                    for (var i = rows.length - 1; i >= targetRowIndex; i--) {
+                        var row = rows.eq(i);
+                        var cell = row.find('td').eq(columnIndex);
+                        if (i + 1 >= rows.length) {
+                            var newRow = $('<tr></tr>');
+                            for (var j = 0; j < 7; j++) {
+                                newRow.append('<td></td>');
+                            }
+                            tbody.append(newRow);
+                        }
+                        var nextRow = rows.eq(i + 1);
+                        var nextCell = nextRow.find('td').eq(columnIndex);
+                        nextCell.append(cell.children());
+                    }
+
+                    // Insert the new item in the target cell
+                    $(this).append(newItem);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

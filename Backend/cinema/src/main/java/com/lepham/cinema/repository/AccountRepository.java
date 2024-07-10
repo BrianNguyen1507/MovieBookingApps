@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
-    boolean existsByEmailAndActive(String email, int active);
 
+    boolean existsByEmailAndActive(String email, int active);
 
     Optional<AccountEntity> findByEmail(String email);
 
