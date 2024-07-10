@@ -13,7 +13,10 @@ import com.lepham.cinema.entity.RoomEntity;
 import com.lepham.cinema.entity.SeatHeldEntity;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
-import com.lepham.cinema.repository.*;
+import com.lepham.cinema.repository.FilmRepository;
+import com.lepham.cinema.repository.MovieScheduleRepository;
+import com.lepham.cinema.repository.RoomRepository;
+import com.lepham.cinema.repository.SeatHeldRepository;
 import com.lepham.cinema.service.IMovieScheduleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +59,7 @@ public class MovieScheduleService implements IMovieScheduleService {
         response.setDateEnd(localDate);
         return response;
     }
+
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<ShowTimeResponse> getEstimateShowTimeRemaining(ShowTimesRequest requests) throws ParseException {
@@ -74,7 +78,6 @@ public class MovieScheduleService implements IMovieScheduleService {
         Calendar cdEnd = Calendar.getInstance();
         cdEnd.setTime(dateStart);
         cdEnd.add(Calendar.DAY_OF_YEAR, 7);
-
 
 
         List<FilmEntity> filmEntities = filmRepository.findAllByActiveAndHide();
@@ -136,7 +139,7 @@ public class MovieScheduleService implements IMovieScheduleService {
                 int avgShowTime = showTime.getQuantity() / ConstantVariable.step;
                 int surplusShowTime = showTime.getQuantity() % ConstantVariable.step;
 
-                if(avgShowTime>0){
+                if (avgShowTime > 0) {
                     for (int j = 0; j < avgShowTime; j++) {
                         MovieScheduleEntity schedule = saveSchedule(showTime.getIdFilm(), idRoom);
                         movieSchedule.add(schedule);
@@ -145,14 +148,13 @@ public class MovieScheduleService implements IMovieScheduleService {
                         MovieScheduleEntity schedule = saveSchedule(showTime.getIdFilm(), idRoom);
                         movieSchedule.add(schedule);
                     }
-                }
-                else{
+                } else {
                     MovieScheduleEntity schedule = saveSchedule(showTime.getIdFilm(), idRoom);
                     Calendar cdShowTime = Calendar.getInstance();
                     cdShowTime.setTime(DateConverter.localDateToDate(schedule.getFilm().getReleaseDate()));
                     Calendar cdStart = Calendar.getInstance();
                     cdStart.setTime(DateConverter.convertLocalDateToDate(request.getDateStart()));
-                    if(cdShowTime.get(Calendar.DAY_OF_YEAR)-cdStart.get(Calendar.DAY_OF_YEAR)<=i+1){
+                    if (cdShowTime.get(Calendar.DAY_OF_YEAR) - cdStart.get(Calendar.DAY_OF_YEAR) <= i + 1) {
                         schedule = saveSchedule(showTime.getIdFilm(), idRoom);
                         movieSchedule.add(schedule);
                     }
@@ -166,39 +168,38 @@ public class MovieScheduleService implements IMovieScheduleService {
         for (List<MovieScheduleEntity> movieSchedule : movieScheduleAllDay) {
             int day = movieScheduleAllDay.indexOf(movieSchedule);
             LocalDateTime localDateTime = LocalDateTime.now()
-                    .withDayOfYear(dateStart.getDayOfYear()+day)
+                    .withDayOfYear(dateStart.getDayOfYear() + day)
                     .withHour(ConstantVariable.hourStart)
                     .withMinute(0)
                     .withSecond(0)
                     .withNano(0);
-            long id=0;
+            long id = 0;
             for (MovieScheduleEntity schedule : movieSchedule) {
-                if(id!=0){
+                if (id != 0) {
                     schedule.setId(++id);
                 }
                 schedule.setTimeStart(localDateTime);
                 schedule = movieScheduleRepository.save(schedule);
                 entities.add(schedule);
-                id=schedule.getId();
-                int duration=0;
-                if(schedule.getFilm().getDuration() % 10==0){
-                    duration= (schedule.getFilm().getDuration() / 10) * 10 + 5 ;
-                }
-                else if(schedule.getFilm().getDuration() % 10<=5){
-                    duration= (schedule.getFilm().getDuration() / 10) * 10 + 10 ;
-                }
-                else{
-                    duration=(schedule.getFilm().getDuration() / 10) * 10 + 15;
+                id = schedule.getId();
+                int duration = 0;
+                if (schedule.getFilm().getDuration() % 10 == 0) {
+                    duration = (schedule.getFilm().getDuration() / 10) * 10 + 5;
+                } else if (schedule.getFilm().getDuration() % 10 <= 5) {
+                    duration = (schedule.getFilm().getDuration() / 10) * 10 + 10;
+                } else {
+                    duration = (schedule.getFilm().getDuration() / 10) * 10 + 15;
                 }
 
                 int hours = (duration / 60);
-                int minutes =(duration % (60 * hours));
-                if(minutes+localDateTime.getMinute()>=60){
-                    minutes= minutes-60;
+                int minutes = (duration % (60 * hours));
+                if (minutes + localDateTime.getMinute() >= 60) {
+                    minutes = minutes - 60;
                     hours++;
                 }
-                if(localDateTime.getHour()+hours >= 24 || localDateTime.getHour()< ConstantVariable.hourStart)break;
-                localDateTime  = localDateTime.plusMinutes(minutes);
+                if (localDateTime.getHour() + hours >= 24 || localDateTime.getHour() < ConstantVariable.hourStart)
+                    break;
+                localDateTime = localDateTime.plusMinutes(minutes);
                 localDateTime = localDateTime.plusHours(hours);
             }
         }
@@ -213,9 +214,9 @@ public class MovieScheduleService implements IMovieScheduleService {
     public List<MovieScheduleResponse> swapSchedule(long id, long idSwap) {
         List<MovieScheduleEntity> response = new ArrayList<>();
         MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         MovieScheduleEntity scheduleSwap = movieScheduleRepository.findById(idSwap)
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
 
         LocalDateTime localDateTime = schedule.getTimeStart(); // Example LocalDateTime
 
@@ -225,13 +226,13 @@ public class MovieScheduleService implements IMovieScheduleService {
         int year = localDateTime.getYear();
         List<MovieScheduleEntity> listSchedule = movieScheduleRepository.getAllByTimeStartAfter(schedule.getTimeStart());
 
-        localDateTime  =scheduleSwap.getTimeStart();
-        int hourSwap =  localDateTime.getHour();
+        localDateTime = scheduleSwap.getTimeStart();
+        int hourSwap = localDateTime.getHour();
         int daySwap = localDateTime.getDayOfYear();
-        int yearSwap =localDateTime.getYear();
+        int yearSwap = localDateTime.getYear();
         List<MovieScheduleEntity> listScheduleSwap = movieScheduleRepository.getAllByTimeStartAfter(scheduleSwap.getTimeStart());
-        if( day==daySwap && yearSwap==year){
-            if(hour<hourSwap){
+        if (day == daySwap && yearSwap == year) {
+            if (hour < hourSwap) {
                 FilmEntity film = schedule.getFilm();
                 schedule.setFilm(scheduleSwap.getFilm());
                 scheduleSwap.setFilm(film);
@@ -240,9 +241,9 @@ public class MovieScheduleService implements IMovieScheduleService {
                         (schedule.getFilm().getDuration() / 10) * 10 + 10 :
                         (schedule.getFilm().getDuration() / 10) * 10 + 15;
                 hour = (duration / 60);
-                int minute =(duration % (60 * hour));
-                if(minute+localDateTime.getMinute()>=60){
-                    minute=60-minute;
+                int minute = (duration % (60 * hour));
+                if (minute + localDateTime.getMinute() >= 60) {
+                    minute = 60 - minute;
                     hour++;
                 }
                 localDateTime.plusMinutes(minute);
@@ -253,14 +254,13 @@ public class MovieScheduleService implements IMovieScheduleService {
                 response.add(schedule);
                 response.add(scheduleSwap);
             }
-        }
-        else{
+        } else {
             FilmEntity film = schedule.getFilm();
-            listSchedule = checkSwap(listSchedule,scheduleSwap.getFilm());
-            listScheduleSwap = checkSwap(listScheduleSwap,film);
-            if(listSchedule!=null&& listScheduleSwap!=null){
-                listSchedule=movieScheduleRepository.saveAll(listSchedule);
-                listScheduleSwap=movieScheduleRepository.saveAll(listScheduleSwap);
+            listSchedule = checkSwap(listSchedule, scheduleSwap.getFilm());
+            listScheduleSwap = checkSwap(listScheduleSwap, film);
+            if (listSchedule != null && listScheduleSwap != null) {
+                listSchedule = movieScheduleRepository.saveAll(listSchedule);
+                listScheduleSwap = movieScheduleRepository.saveAll(listScheduleSwap);
 
                 response.add(listSchedule.getFirst());
                 response.add(listScheduleSwap.getFirst());
@@ -268,36 +268,36 @@ public class MovieScheduleService implements IMovieScheduleService {
         }
         return response.stream()
                 .map(entity -> movieScheduleConverter
-                        .toResponse(entity,filmConverter.toFilmScheduleResponse(entity.getFilm())))
+                        .toResponse(entity, filmConverter.toFilmScheduleResponse(entity.getFilm())))
                 .toList();
     }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public MovieScheduleResponse updateSchedule(long id,long filmId) {
+    public MovieScheduleResponse updateSchedule(long id, long filmId) {
         MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         List<MovieScheduleEntity> listSchedule = movieScheduleRepository.getAllByTimeStartAfter(schedule.getTimeStart());
         FilmEntity film = filmRepository.findById(filmId)
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
 
-        listSchedule=checkSwap(listSchedule,film);
-        if(listSchedule==null) throw new AppException(ErrorCode.NULL_EXCEPTION);
+        listSchedule = checkSwap(listSchedule, film);
+        if (listSchedule == null) throw new AppException(ErrorCode.NULL_EXCEPTION);
         listSchedule = movieScheduleRepository.saveAll(listSchedule);
-        return movieScheduleConverter.toResponse(listSchedule.getFirst(),filmConverter.toFilmScheduleResponse(film));
+        return movieScheduleConverter.toResponse(listSchedule.getFirst(), filmConverter.toFilmScheduleResponse(film));
     }
 
 
-    public ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId,LocalDate date) {
-        List<MovieScheduleEntity> scheduleEntities = movieScheduleRepository.findAllByFilmAndMovieTheater(filmId,theaterId,date);
-        if(scheduleEntities.isEmpty()) throw  new AppException(ErrorCode.NULL_EXCEPTION);
-        return movieScheduleConverter.toScheduleMobileResponse(scheduleEntities,filmConverter.toFilmScheduleResponse(scheduleEntities.getFirst().getFilm()));
+    public ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId, LocalDate date) {
+        List<MovieScheduleEntity> scheduleEntities = movieScheduleRepository.findAllByFilmAndMovieTheater(filmId, theaterId, date);
+        if (scheduleEntities.isEmpty()) throw new AppException(ErrorCode.NULL_EXCEPTION);
+        return movieScheduleConverter.toScheduleMobileResponse(scheduleEntities, filmConverter.toFilmScheduleResponse(scheduleEntities.getFirst().getFilm()));
     }
 
     @Override
     public DetailScheduleResponse getMovieScheduleById(long id) {
         MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(id)
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         return movieScheduleConverter.toDetailScheduleResponse(movieSchedule);
     }
 
@@ -307,20 +307,21 @@ public class MovieScheduleService implements IMovieScheduleService {
 
     MovieScheduleEntity saveSchedule(long idFilm, long idRoom) {
         MovieScheduleEntity schedule = new MovieScheduleEntity();
-        FilmEntity film = filmRepository.findByIdAndHideAndActive(idFilm,false,0)
+        FilmEntity film = filmRepository.findByIdAndHideAndActive(idFilm, false, 0)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        RoomEntity room = roomRepository.findByIdAndHide(idRoom,false)
+        RoomEntity room = roomRepository.findByIdAndHide(idRoom, false)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         schedule.setFilm(film);
         schedule.setRoom(room);
-        schedule.setSeat(schedule.generateSeat(room.getRow(),room.getColumn()));
+        schedule.setSeat(schedule.generateSeat(room.getRow(), room.getColumn()));
         return schedule;
     }
-    List<MovieScheduleEntity> checkSwap(List<MovieScheduleEntity> scheduleEntities,FilmEntity film){
+
+    List<MovieScheduleEntity> checkSwap(List<MovieScheduleEntity> scheduleEntities, FilmEntity film) {
         List<MovieScheduleEntity> listScheduleSwap = new ArrayList<>();
         LocalDateTime localDateTime = scheduleEntities.getFirst().getTimeStart();
-        for(MovieScheduleEntity schedule : scheduleEntities){
-            if(schedule.equals(scheduleEntities.getFirst())){
+        for (MovieScheduleEntity schedule : scheduleEntities) {
+            if (schedule.equals(scheduleEntities.getFirst())) {
                 schedule.setFilm(film);
             }
             schedule.setTimeStart(localDateTime);
@@ -329,25 +330,26 @@ public class MovieScheduleService implements IMovieScheduleService {
                     (schedule.getFilm().getDuration() / 10) * 10 + 10 :
                     (schedule.getFilm().getDuration() / 10) * 10 + 15;
             int hour = (duration / 60);
-            int minute =(duration % (60 * hour));
-            if(minute+localDateTime.getMinute()>=60){
-                minute = 60-minute;
+            int minute = (duration % (60 * hour));
+            if (minute + localDateTime.getMinute() >= 60) {
+                minute = 60 - minute;
                 hour++;
             }
-            if(localDateTime.getHour()+hour >= 24 && !scheduleEntities.getLast().equals(schedule))return null;
+            if (localDateTime.getHour() + hour >= 24 && !scheduleEntities.getLast().equals(schedule)) return null;
             localDateTime.plusMinutes(minute);
             localDateTime.plusHours(hour);
         }
         return listScheduleSwap;
     }
+
     @Override
     @PreAuthorize("hasRole('USER')")
     public void holeSeat(long id, String seat) {
         MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         if (!schedule.holdSeat(seat)) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
-        SeatHeldEntity seatHeld = seatHeldRepository.findByScheduleAndSeat(schedule,seat);
-        seatHeld = seatHeld!=null?seatHeld:new SeatHeldEntity();
+        SeatHeldEntity seatHeld = seatHeldRepository.findByScheduleAndSeat(schedule, seat);
+        seatHeld = seatHeld != null ? seatHeld : new SeatHeldEntity();
         seatHeld.setHeldDateTime(LocalDateTime.now());
         seatHeld.setSchedule(schedule);
         seatHeld.setSeat(seat);
@@ -355,6 +357,7 @@ public class MovieScheduleService implements IMovieScheduleService {
         seatHeldRepository.save(seatHeld);
         movieScheduleRepository.save(schedule);
     }
+
     @Override
     @PreAuthorize("hasRole('USER')")
     public void returnSeat(long id, String seat) {
@@ -362,6 +365,26 @@ public class MovieScheduleService implements IMovieScheduleService {
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         if (!schedule.returnSeat(seat)) throw new AppException(ErrorCode.SEAT_NOT_ORDERED);
         movieScheduleRepository.save(schedule);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<MovieScheduleDateResponse> getAllScheduleByRoomAndDate(long roomId, LocalDate dateStart) {
+        LocalDate dateEnd = dateStart.plusDays(7);
+
+        List<MovieScheduleDateResponse> responses = new ArrayList<>();
+        for (int i = 0; i < ConstantVariable.step; i++) {
+            MovieScheduleDateResponse movieScheduleDateResponse = new MovieScheduleDateResponse();
+            movieScheduleDateResponse.setDate(dateStart.plusDays(i));
+            List<MovieScheduleEntity> scheduleEntities = movieScheduleRepository
+                    .findAllByRoomIdAndDateStart(roomId, movieScheduleDateResponse.getDate());
+            movieScheduleDateResponse.setMovieSchedule(
+                    scheduleEntities.stream()
+                            .map(schedule -> movieScheduleConverter
+                                    .toResponse(schedule, filmConverter.toFilmScheduleResponse(schedule.getFilm()))).toList());
+            responses.add(movieScheduleDateResponse);
+        }
+        return responses;
     }
 
 }

@@ -63,6 +63,7 @@ public class FilmConverter {
         response.setId(entity.getId());
         response.setTitle(entity.getTitle());
         response.setReleaseDate(entity.getReleaseDate());
+        response.setDuration(entity.getDuration());
         return response;
     }
 }

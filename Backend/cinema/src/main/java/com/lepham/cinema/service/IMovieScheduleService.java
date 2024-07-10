@@ -25,4 +25,6 @@ public interface IMovieScheduleService {
 
     void returnSeat(long id,String seat);
 
+    List<MovieScheduleDateResponse> getAllScheduleByRoomAndDate(long roomId, LocalDate dateStart);
+
 }

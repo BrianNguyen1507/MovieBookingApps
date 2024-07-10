@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MovieScheduleResponse {
     long id;
     String date;
-    String time;
+    String timeStart;
+    String timeEnd;
     FilmScheduleResponse film;
 }

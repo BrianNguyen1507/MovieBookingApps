@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
-    boolean existsByEmail(String email);
+    boolean existsByEmailAndActive(String email,int active);
 
     @Query(value = "select a from AccountEntity a where a.email like ?1 and a.active = 1 ")
     boolean checkActive(String email);

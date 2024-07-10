@@ -31,12 +31,13 @@ export async function getAndDisplayvoucher() {
       const voucher = new Voucher(
         voucherData.title,
         voucherData.content,
+        voucherData.typeDiscount,
         voucherData.minLimit,
         voucherData.discount,
-        voucherData.typeDiscount,
         voucherData.quantity,
         voucherData.expired
       );
+      console.log(voucher);
       const row = document.createElement("tr");
 
       const indexCell = document.createElement("td");

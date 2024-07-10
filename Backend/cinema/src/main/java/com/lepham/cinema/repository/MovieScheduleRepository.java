@@ -29,5 +29,8 @@ public interface MovieScheduleRepository extends JpaRepository<MovieScheduleEnti
             "where f.id=?1 and mt.id = ?2 and r.hide=false and Date(ms.timeStart) = ?3 and ms.timeStart > Now()")
     List<MovieScheduleEntity> findAllByFilmAndMovieTheater(long filmId, long theaterId, LocalDate date);
 
+    @Query(value = "SELECT ms from MovieScheduleEntity ms inner join RoomEntity r on r.id = ms.room.id where Date( ms.timeStart) = ?2 and ms.room.id=?1")
+    List<MovieScheduleEntity> findAllByRoomIdAndDateStart(long roomId, LocalDate date);
+
 
 }

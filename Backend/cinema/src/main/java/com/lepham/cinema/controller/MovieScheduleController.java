@@ -83,4 +83,11 @@ public class MovieScheduleController {
                 .message("RefundSeat the seat successfully")
                 .build();
     }
+    @GetMapping(value = "/getAllScheduleByRoomAndDate")
+    APIResponse<List<MovieScheduleDateResponse>> getAllScheduleByRoomAndDate(@RequestParam("roomId") long roomId,
+                                                                         @RequestParam("dateStart") LocalDate dateStart){
+        return APIResponse.<List<MovieScheduleDateResponse>>builder()
+                .result(movieScheduleService.getAllScheduleByRoomAndDate(roomId,dateStart))
+                .build();
+    }
 }
