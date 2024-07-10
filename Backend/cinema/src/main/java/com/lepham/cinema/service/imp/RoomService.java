@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoomService implements IRoomService {
 
     RoomRepository roomRepository;
@@ -37,15 +37,15 @@ public class RoomService implements IRoomService {
     public List<RoomResponse> getAllRoom() {
         List<RoomEntity> entities = roomRepository.findAllByHide(false);
         return entities.stream().map(entity ->
-                roomConverter.toResponse(entity,movieTheaterConverter.toResponse(entity.getMovieTheater())))
+                        roomConverter.toResponse(entity, movieTheaterConverter.toResponse(entity.getMovieTheater())))
                 .collect(Collectors.toList());
     }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public RoomResponse getRoomById(long id) {
-        RoomEntity room = roomRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
-        return roomConverter.toResponse(room,movieTheaterConverter.toResponse(room.getMovieTheater()));
+        RoomEntity room = roomRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        return roomConverter.toResponse(room, movieTheaterConverter.toResponse(room.getMovieTheater()));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class RoomService implements IRoomService {
     public List<RoomResponse> getAllRoomByTheater(long theaterId) {
         List<RoomEntity> entities = roomRepository.findAllByMovieTheater_Id(theaterId);
         return entities.stream().map(entity ->
-                        roomConverter.toResponse(entity,movieTheaterConverter.toResponse(entity.getMovieTheater())))
+                        roomConverter.toResponse(entity, movieTheaterConverter.toResponse(entity.getMovieTheater())))
                 .collect(Collectors.toList());
     }
 
@@ -61,9 +61,9 @@ public class RoomService implements IRoomService {
     @PreAuthorize("hasRole('ADMIN')")
     public RoomResponse addRoom(RoomRequest request) {
         MovieTheaterEntity movieTheater = theaterRepository.findById(request.getTheaterId())
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
-        RoomEntity entity = roomConverter.toEntity(request,movieTheater);
-        if(roomRepository.checkExistsRoom(request.getNumber(),request.getTheaterId())!=null)
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        RoomEntity entity = roomConverter.toEntity(request, movieTheater);
+        if (roomRepository.checkExistsRoom(request.getNumber(), request.getTheaterId()) != null)
             throw new AppException(ErrorCode.ROOM_EXISTS);
         entity.setHide(false);
         return roomConverter.toResponse(roomRepository.save(entity),
@@ -74,9 +74,8 @@ public class RoomService implements IRoomService {
     @PreAuthorize("hasRole('ADMIN')")
     public RoomResponse updateRoom(long roomId, RoomRequest request) {
         MovieTheaterEntity movieTheater = theaterRepository.findById(request.getTheaterId())
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
-        if(roomRepository.checkExistsRoom(request.getNumber(),request.getTheaterId())!=null)
-            throw new AppException(ErrorCode.ROOM_EXISTS);
+                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+
         RoomEntity entity = roomRepository.getReferenceById(roomId);
         entity.setRow(request.getRow());
         entity.setColumn(request.getColumn());
@@ -89,11 +88,10 @@ public class RoomService implements IRoomService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteRoom(long id) {
-        RoomEntity entity = roomRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
-        if(entity.getMovieTheater()==null&&entity.getSchedules()==null){
+        RoomEntity entity = roomRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        if (entity.getMovieTheater() == null && entity.getSchedules() == null) {
             roomRepository.delete(entity);
-        }
-        else{
+        } else {
             entity.setHide(true);
             roomRepository.save(entity);
         }

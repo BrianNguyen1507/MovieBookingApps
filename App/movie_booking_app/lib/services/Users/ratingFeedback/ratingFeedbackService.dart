@@ -50,10 +50,9 @@ class RatingFeedbackService {
       await dotenv.load();
       final getURL = dotenv.env['GET_RATING_FEEDBACK']!;
       final url = getURL + movieId.toString();
-      dynamic token = await Preferences().getTokenUsers();
+
       final responseFeedBack = await http.get(Uri.parse(url), headers: {
         'Content-type': 'application/json',
-        'Authorization': 'Bearer $token',
       });
       final result =
           jsonDecode(utf8.decode(responseFeedBack.body.runes.toList()));

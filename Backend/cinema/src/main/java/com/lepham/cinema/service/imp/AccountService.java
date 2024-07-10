@@ -1,5 +1,6 @@
 package com.lepham.cinema.service.imp;
 
+import com.lepham.cinema.constant.ConstantVariable;
 import com.lepham.cinema.converter.AccountConverter;
 import com.lepham.cinema.dto.request.*;
 import com.lepham.cinema.dto.response.AccountResponse;
@@ -66,6 +67,7 @@ public class AccountService implements IAccountService {
         if(!checkPhoneValid(request.getPhoneNumber())) throw new AppException(ErrorCode.INVALID_PHONE);
 
         AccountEntity entity = accountConverter.toEntity(request);
+
         if (accountRepository.findByEmail(request.getEmail()).isPresent()){
             long id= accountRepository.findByEmail(request.getEmail()).get().getId();
             entity.setId(id);
@@ -175,7 +177,7 @@ public class AccountService implements IAccountService {
 
 
     boolean checkEmailExists(String email){
-        return accountRepository.existsByEmailAndActive(email,1);
+        return accountRepository.existsByEmailAndActive(email, 1);
     }
     boolean checkEmailValid(String email){
         if (email == null) {

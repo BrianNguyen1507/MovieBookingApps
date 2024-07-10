@@ -25,47 +25,49 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RatingFeedBackService implements IRatingFeedbackService {
     RatingFeedBackRepository ratingFeedBackRepository;
     RatingFeedbackConverter ratingFeedbackConverter;
     AccountRepository accountRepository;
     OrderRepository orderRepository;
+
     @Override
     @PreAuthorize("hasRole('USER')")
     public RatingFeedbackResponse creatingRatingFeedback(RatingFeedbackRequest request, long orderId) {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
-                        .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         OrderEntity order = orderRepository.findById(orderId)
-                .orElseThrow(()->new AppException(ErrorCode.ORDER_NOT_FOUND));
-        if(order.getStatus()!= ConstantVariable.ORDER_USED) throw new AppException(ErrorCode.CAN_NOT_RATING);
-        if(!Objects.equals(account,order.getAccountVoucher().getAccount()))
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+        if (order.getStatus() != ConstantVariable.ORDER_USED) throw new AppException(ErrorCode.CAN_NOT_RATING);
+        if (!Objects.equals(account, order.getAccountVoucher().getAccount()))
             throw new AppException(ErrorCode.ORDER_NOT_BELONG_ACCOUNT);
-        if(ratingFeedBackRepository.findByOrder(order)!=null) throw  new AppException(ErrorCode.WAS_RATING);
-        if((request.getRating()<1 || request.getRating()>5 || request.getComment().isBlank() || request.getComment().isEmpty()))
-            throw  new AppException(ErrorCode.COMPLETE_INFORMATION);
+        if (ratingFeedBackRepository.findByOrder(order) != null) throw new AppException(ErrorCode.WAS_RATING);
+        if ((request.getRating() < 1 || request.getRating() > 5 || request.getComment().isBlank() || request.getComment().isEmpty()))
+            throw new AppException(ErrorCode.COMPLETE_INFORMATION);
         RatingFeedbackEntity ratingFeedback = ratingFeedbackConverter.toEntity(request);
         ratingFeedback.setDatetime(LocalDateTime.now());
         ratingFeedback.setOrder(order);
-        return ratingFeedbackConverter.toResponse( ratingFeedBackRepository.save(ratingFeedback));
+        return ratingFeedbackConverter.toResponse(ratingFeedBackRepository.save(ratingFeedback));
     }
-@PreAuthorize("hasRole('USER')")
+
     @Override
     public List<RatingFeedbackResponse> getAllRatingFeedback(long id) {
         List<RatingFeedbackEntity> listFeedback = ratingFeedBackRepository.findAllByOrder_MovieSchedule_Film_Id(id);
         List<RatingFeedbackResponse> responseList = new ArrayList<>();
-        listFeedback.forEach( ratingFeedbackEntity ->{
+        listFeedback.forEach(ratingFeedbackEntity -> {
             RatingFeedbackResponse response = ratingFeedbackConverter.toResponse(ratingFeedbackEntity);
             AccountEntity account = ratingFeedbackEntity.getOrder().getAccountVoucher().getAccount();
             response.setFullName(account.getFullName());
             response.setAvatar(account.getAvatar());
             responseList.add(response);
-        } );
+        });
         return responseList;
     }
 }
