@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class DetailOrderService {
   static Future<DetailOrder> detailOrder(int id) async {
     try {
-      await dotenv.load();
+      
       final getURL = dotenv.env['GET_DETAIL_ORDER_BY_ID']!;
       final uri = getURL + id.toString();
       dynamic token = await Preferences().getTokenUsers();

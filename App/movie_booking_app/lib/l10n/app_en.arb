@@ -3,6 +3,7 @@
   "store": "Store",
   "personal": "Personal",
   "nowshowing": "Now Showing",
+  "voucher": "Vouchers",
   "comming": "Comming Soon",
   "version": "Version",
   "email": "Email",
@@ -91,5 +92,6 @@
   "discount": "Discount",
   "open": "OPEN",
   "pay_inf": "Payment infomation",
-  "pay_method": "Payment method"
+  "pay_method": "Payment method",
+  "selectionDetail": "Selection Details"
 }

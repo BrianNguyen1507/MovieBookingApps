@@ -32,14 +32,12 @@ class Appdata {
   static IconData? getIconForIndex(int index) {
     switch (index) {
       case 0:
-        return Icons.percent_rounded;
+        return Icons.storefront_rounded;
       case 1:
         return Icons.movie_creation_rounded;
-
       case 2:
-        return Icons.storefront_rounded;
-      case 3:
         return Icons.person;
+
       default:
         return null;
     }
@@ -54,12 +52,10 @@ class Appdata {
   static String? getLabelForIndex(BuildContext context, int index) {
     switch (index) {
       case 0:
-        return 'Vouchers';
+        return AppLocalizations.of(context)!.store;
       case 1:
         return AppLocalizations.of(context)!.cinema;
       case 2:
-        return AppLocalizations.of(context)!.store;
-      case 3:
         return AppLocalizations.of(context)!.personal;
       default:
         return null;

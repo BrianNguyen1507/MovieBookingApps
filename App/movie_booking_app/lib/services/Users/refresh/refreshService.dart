@@ -8,7 +8,7 @@ class RefreshToken {
     Preferences pref = Preferences();
     String? expriredToken = await pref.getTokenUsers();
     try {
-      await dotenv.load();
+      
       final getURL = dotenv.env['REFRESH_TOKEN']!;
       final url = getURL;
       final refreshBody = json.encode({'token': expriredToken});

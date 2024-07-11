@@ -66,8 +66,8 @@ public class AccountVoucherService implements IAccountVoucherService {
 
     @Override
     @PreAuthorize("hasRole('USER')")
-    public List<VoucherResponse> getVouchersByAccountId(long accountId) {
-        List<VoucherEntity> vouchers = voucherRepository.findAccountVoucherByAccount_IdAndNotHide(accountId);
+    public List<VoucherResponse> getVouchersByEmail(String email) {
+        List<VoucherEntity> vouchers = voucherRepository.findAccountVoucherByEmail(email);
         return vouchers.stream()
                 .map(converter::toResponse)
                 .collect(Collectors.toList());

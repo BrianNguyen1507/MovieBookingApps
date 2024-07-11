@@ -6,7 +6,13 @@ class AppStyle {
     fontFamily: 'Roboto',
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
-    color: AppColors.darktextColor,
+    color: Color.fromARGB(255, 0, 0, 0),
+  );
+  static const TextStyle primaryText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.lowMedium,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primaryColor,
   );
   //payments
   static const TextStyle paymentInfoText = TextStyle(

@@ -6,7 +6,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 class SignInService {
   static Future<dynamic> signin(String email, String password) async {
     try {
-      await dotenv.load();
+      
       final getURL = dotenv.env['SIGN_IN']!;
       final apiUrl = getURL;
       final signInData = json.encode({'email': email, 'password': password});

@@ -117,12 +117,18 @@ class _OrderPageState extends State<OrderPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       widget.visible
-                          ? buildMovieInfo(
-                              movieData,
-                              widget.selectedDate,
-                              widget.selectedTheater,
-                              widget.selectedSchedule,
-                              widget.selectedSeat,
+                          ? Column(
+                              children: [
+                                buildMovieInfo(
+                                  movieData,
+                                ),
+                                buildSelectionInfo(
+                                    context,
+                                    widget.selectedDate,
+                                    widget.selectedTheater,
+                                    widget.selectedSchedule,
+                                    widget.selectedSeat)
+                              ],
                             )
                           : const SizedBox.shrink(),
                       buildFoodInfo(context, widget.selectedFoods),
@@ -208,12 +214,76 @@ class _OrderPageState extends State<OrderPage> {
   }
 }
 
-Widget buildMovieInfo(
-  Future<MovieDetail> fetchMovieData,
+Widget buildSelectionInfo(
+  BuildContext context,
   String selectedDate,
   String selectedTheater,
   String selectedSchedule,
   String selectedSeat,
+) {
+  final numberSeats = ConverterUnit.convertStringToSet(selectedSeat).length;
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Text(
+            '${AppLocalizations.of(context)!.selectionDetail} ($numberSeats)',
+            style: AppStyle.bodyText1),
+      ),
+      Container(
+        padding: const EdgeInsets.all(10.0),
+        width: AppSize.width(context),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          color: AppColors.containerColor,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${AppLocalizations.of(context)!.theater}:',
+                    style: AppStyle.bodyText1),
+                Text(selectedTheater, style: AppStyle.paymentInfoText),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${AppLocalizations.of(context)!.showTime}:',
+                    style: AppStyle.bodyText1),
+                Text(
+                    '${ConverterUnit.formatToDmY(selectedDate)} | $selectedSchedule',
+                    style: AppStyle.paymentInfoText),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${AppLocalizations.of(context)!.seats}:',
+                    style: AppStyle.bodyText1),
+                SizedBox(
+                  width: numberSeats > 10
+                      ? AppSize.width(context) * 0.6
+                      : null,
+                  child: Text(
+                    selectedSeat,
+                    style: AppStyle.paymentInfoText,
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget buildMovieInfo(
+  Future<MovieDetail> fetchMovieData,
 ) {
   return FutureBuilder(
     future: movieData,
@@ -233,81 +303,88 @@ Widget buildMovieInfo(
                 child: Text(AppLocalizations.of(context)!.movieDetail,
                     style: AppStyle.bodyText1),
               ),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                width: AppSize.width(context),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  color: AppColors.containerColor,
-                ),
-                child: Row(
+              SizedBox(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: const EdgeInsets.all(5.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.memory(
-                            height: 90,
-                            width: 60,
-                            ConverterUnit.base64ToUnit8(getMovie.poster)),
+                      padding: const EdgeInsets.all(5.0),
+                      width: AppSize.width(context),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        color: AppColors.containerColor,
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 2.0),
-                              decoration: BoxDecoration(
-                                color: ClassifyClass.toFlutterColor(
-                                  ClassifyClass.classifyType(getMovie.classify),
-                                ),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(2),
-                                ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.all(5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.memory(
+                                  height: 90,
+                                  width: 60,
+                                  ConverterUnit.base64ToUnit8(getMovie.poster)),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 2.0),
+                                    decoration: BoxDecoration(
+                                      color: ClassifyClass.toFlutterColor(
+                                        ClassifyClass.classifyType(
+                                            getMovie.classify),
+                                      ),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(2),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(1.5),
+                                    child: Text(
+                                      getMovie.classify,
+                                      style: AppStyle.classifyText,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Text(
+                                    getMovie.title,
+                                    style: AppStyle.titleOrder,
+                                  ),
+                                ],
                               ),
-                              padding: const EdgeInsets.all(1.5),
-                              child: Text(
-                                getMovie.classify,
-                                style: AppStyle.classifyText,
+                              Text(
+                                'Categories: ${getMovie.categories.map((category) => category.name).join(', ')}',
+                                style: AppStyle.smallText,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            Text(
-                              getMovie.title,
-                              style: AppStyle.titleOrder,
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '${AppLocalizations.of(context)!.duration}: ${getMovie.duration.toString()} ${AppLocalizations.of(context)!.minutes}',
-                          style: AppStyle.smallText,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          '${ConverterUnit.formatToDmY(selectedDate)} | $selectedSchedule',
-                          style: AppStyle.smallText,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          '${AppLocalizations.of(context)!.theater}: $selectedTheater',
-                          style: AppStyle.smallText,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          width: AppSize.width(context) * 0.6,
-                          child: Text(
-                            '${AppLocalizations.of(context)!.seats}: $selectedSeat',
-                            style: AppStyle.smallText,
+                              Text(
+                                'Duration: ${getMovie.duration.toString()} minutes',
+                                style: AppStyle.smallText,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                'Country: ${getMovie.country.toString()}',
+                                style: AppStyle.smallText,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                'Languge: ${getMovie.language.toString()}',
+                                style: AppStyle.smallText,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

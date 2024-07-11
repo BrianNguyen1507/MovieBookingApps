@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class FindFoodService {
   static Future<Food> getFoodById(String id) async {
     try {
-      await dotenv.load();
+      
       final baseUrl = dotenv.env['GET_FOOD_BY_ID']!;
       final url = baseUrl + id;
       final response = await http.get(Uri.parse(url), headers: {

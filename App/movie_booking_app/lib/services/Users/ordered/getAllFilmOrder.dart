@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class FilmOrder {
   static Future<List<OrderResponse>> getAllFilmOrder() async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_ALL_FILM_ORDER']!;
     final url = getURL;
     dynamic token = await Preferences().getTokenUsers();

@@ -10,7 +10,7 @@ class GetTotalService {
       int movieId, int quantity, List? food) async {
     Preferences pref = Preferences();
     String? token = await pref.getTokenUsers();
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_SUM_TOTAL']!;
     final url = getURL;
 

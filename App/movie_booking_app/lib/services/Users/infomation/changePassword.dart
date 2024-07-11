@@ -8,7 +8,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 class ChangePasswordService {
   static Future<Account> changePassword(
       String password, String newPassword) async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['CHANGE_PASSWORD']!;
     final url = getURL;
     final bodyRequest = jsonEncode({

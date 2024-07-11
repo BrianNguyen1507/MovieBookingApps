@@ -9,7 +9,7 @@ class VoucherService {
     try {
       Preferences pref = Preferences();
       dynamic token = await pref.getTokenUsers();
-      await dotenv.load();
+
       final getURL = dotenv.env['GET_ALL_VOUCHER_BY_ACCOUNT']!;
       final url = getURL + total.toString();
       final response = await http.get(
@@ -50,6 +50,34 @@ class VoucherService {
       }
     } catch (err) {
       throw Exception('Cannot fetch data: $err');
+    }
+  }
+
+  static Future<List<Voucher>> getVoucherByEmail() async {
+    try {
+      final getUri = dotenv.env['GET_ALL_VOUCHER_BY_ACCOUNT_EMAIL']!;
+      dynamic token = await Preferences().getTokenUsers();
+      dynamic email = await Preferences().getEmail();
+
+      final response = await http.get(
+        Uri.parse(getUri + email),
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      final result = jsonDecode(utf8.decode(response.body.codeUnits));
+      if (response.statusCode == 200) {
+        if (result['code'] != 1000) {
+          return result['message'];
+        }
+        final List accountVouchers = result['result'];
+        return accountVouchers.map((av) => Voucher.fromJson(av)).toList();
+      } else {
+        throw Exception('error with code ${response.statusCode}');
+      }
+    } catch (err) {
+      throw Exception('cant fetching data voucher by account email $err');
     }
   }
 }

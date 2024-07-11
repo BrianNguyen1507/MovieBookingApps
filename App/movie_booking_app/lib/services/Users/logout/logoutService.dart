@@ -7,9 +7,7 @@ class LogOutServices {
   static Future<dynamic> logout() async {
     Preferences pref = Preferences();
     String? token = await pref.getTokenUsers();
-
     try {
-      dotenv.load();
       final getURL = dotenv.env['LOG_OUT']!;
       final url = getURL;
       final logoutBody = json.encode({'token': token});

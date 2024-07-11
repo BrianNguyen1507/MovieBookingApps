@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class GetAllMovieTheater {
   static Future<List<Theater>> getAllMovieTheater() async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_ALL_THEATER']!;
     final url = getURL;
     try {

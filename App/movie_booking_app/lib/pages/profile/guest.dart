@@ -23,11 +23,6 @@ class GuestPage extends StatelessWidget {
   Widget _buildSliverProfileBar(BuildContext context) {
     return SliverAppBar(
       automaticallyImplyLeading: false,
-      title: const Center(
-          child: Text(
-        'Hi! WelCome to Movie Booking App',
-        style: AppStyle.commonblueText,
-      )),
       backgroundColor: Colors.transparent,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(

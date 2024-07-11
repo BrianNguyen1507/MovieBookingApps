@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class MovieDetailService {
   static Future<MovieDetail> deatailMovieService(int id) async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_MOVIE_BY_ID']!;
     final url = getURL + id.toString();
 

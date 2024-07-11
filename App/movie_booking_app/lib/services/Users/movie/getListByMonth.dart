@@ -12,7 +12,7 @@ class GetListByMonth {
     Map<int, List<Movie>> moviesByMonth = {};
     try {
       for (int month in months) {
-        await dotenv.load();
+        
         final getURL = dotenv.env['GET_LIST_MONTH']!;
         final url = getURL;
         final response = await http.get(

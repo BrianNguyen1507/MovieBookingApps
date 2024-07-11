@@ -13,7 +13,7 @@ Future<CreateOrderResponse?> createOrder(
 
   final appTime = DateTime.now().millisecondsSinceEpoch.toString();
   final appTransId = utils.getAppTransId();
-  await dotenv.load();
+  
   final getAppId = dotenv.env['ZALO_APP_ID'];
   final getAppUser = dotenv.env['ZALO_APP_USER'];
   final body = {
@@ -41,7 +41,7 @@ Future<CreateOrderResponse?> createOrder(
   body["mac"] = await utils.getMacCreateOrder(dataGetMac);
 
   try {
-    await dotenv.load();
+    
     final getUrl = dotenv.env['ZALO_CREATE_ORDER']!;
     final response = await http.post(
       Uri.parse(getUrl),

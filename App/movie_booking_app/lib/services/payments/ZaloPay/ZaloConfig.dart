@@ -20,7 +20,7 @@ String getDescription(String apptransid) =>
     "STU-Cinemas: thanh toán cho đơn hàng  #$apptransid";
 
 Future<String> getMacCreateOrder(String data) async {
-  await dotenv.load();
+  
   final getKey = dotenv.env['ZALO_KEY1']!;
   var hmac = Hmac(sha256, utf8.encode(getKey));
   return hmac.convert(utf8.encode(data)).toString();

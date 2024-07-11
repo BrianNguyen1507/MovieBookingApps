@@ -4,6 +4,7 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/ordered/listOrdered.dart';
 import 'package:movie_booking_app/pages/profile/informationChoice.dart';
+import 'package:movie_booking_app/pages/vouchers/voucherAccountList.dart';
 
 class Builditem {
   static Widget buildSliverList(BuildContext context) {
@@ -31,6 +32,17 @@ class Builditem {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ListOrdered()));
+                },
+              );
+            case 2:
+              return buildListItem(
+                context,
+                text: 'My vouchers list',
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const VoucherAccountList()));
                 },
               );
             default:

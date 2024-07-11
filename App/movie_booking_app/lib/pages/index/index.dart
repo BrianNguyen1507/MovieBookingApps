@@ -39,13 +39,10 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
     _pageController = PageController(initialPage: _selectedIndex);
     pages = [
       Builder(
-        builder: (context) => AppRoutes.routes[AppRoutes.homeScreen]!(context),
-      ),
-      Builder(
-        builder: (context) => AppRoutes.routes[AppRoutes.homeScreen]!(context),
-      ),
-      Builder(
         builder: (context) => AppRoutes.routes[AppRoutes.store]!(context),
+      ),
+      Builder(
+        builder: (context) => AppRoutes.routes[AppRoutes.homeScreen]!(context),
       ),
       Builder(
         builder: (context) => AppRoutes.routes[AppRoutes.profile]!(context),
@@ -64,7 +61,7 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.detached) {
-        handleAppDetached();
+      handleAppDetached();
     }
   }
 
