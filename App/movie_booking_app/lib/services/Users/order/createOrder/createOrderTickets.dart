@@ -14,7 +14,7 @@ class CreateOrderService {
     double sumTotal,
   ) async {
     try {
-      await dotenv.load();
+      
       final getURL = dotenv.env['CREATE_ORDER']!;
       final url = getURL;
       final token = await Preferences().getTokenUsers();

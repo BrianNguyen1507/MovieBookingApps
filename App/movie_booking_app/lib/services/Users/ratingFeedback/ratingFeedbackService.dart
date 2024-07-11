@@ -12,7 +12,7 @@ class RatingFeedbackService {
   static Future<void> createRatingFeedback(
       int rating, String comment, int orderId, BuildContext context) async {
     ValidInput valid = ValidInput();
-    await dotenv.load();
+    
     final getURL = dotenv.env['CREATE_RATING_FEEDBACK']!;
     final uri = getURL + orderId.toString();
     final token = await Preferences().getTokenUsers();
@@ -47,7 +47,7 @@ class RatingFeedbackService {
 
   static Future<List<RatingFeedback>> getAllRatingFeedback(int movieId) async {
     try {
-      await dotenv.load();
+      
       final getURL = dotenv.env['GET_RATING_FEEDBACK']!;
       final url = getURL + movieId.toString();
 
@@ -72,7 +72,7 @@ class RatingFeedbackService {
   }
 
   static Future<RatingFeedback?> getRatingFeedback(BigInt orderId) async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_RATING_FEEDBACK_BY_ORDER_ID']!;
     final uri = getURL + orderId.toString();
     final token = await Preferences().getTokenUsers();

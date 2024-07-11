@@ -15,5 +15,4 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     List<AccountEntity> findAllByActiveAndRole(int active, String role);
 
-    AccountEntity findByIdAndActive(long id, int active);
 }

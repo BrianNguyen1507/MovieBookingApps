@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ForgotPasswordService {
   static Future<bool> forgotPassword(String email) async {
-    await dotenv.load();
+    
     final getUrl = dotenv.env['FORGOT_PASSWORD']!;
     var url = getUrl + email;
     try {

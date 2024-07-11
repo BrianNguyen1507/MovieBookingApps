@@ -71,9 +71,9 @@ public class VoucherController {
     }
 
 
-    @GetMapping(value = "/getVoucherByAccountId")
-    APIResponse<List<VoucherResponse>> getVoucherByAccountId(@RequestParam("accountId") long accountId) {
-        List<VoucherResponse> vouchers = accountVoucherService.getVouchersByAccountId(accountId);
+    @GetMapping(value = "/getVoucherByEmail")
+    APIResponse<List<VoucherResponse>> getVoucherByEmail(@RequestParam("email") String email) {
+        List<VoucherResponse> vouchers = accountVoucherService.getVouchersByEmail(email);
         return APIResponse.<List<VoucherResponse>>builder().result(vouchers).build();
     }
 

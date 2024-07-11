@@ -10,7 +10,7 @@ class HoldSeatService {
       Preferences pref = Preferences();
       dynamic token = await pref.getTokenUsers();
       String seatString = ConverterUnit.convertSetToString(seats);
-      await dotenv.load();
+      
       final getURL = dotenv.env['HOLD_SEAT']!;
       final url = getURL
           .replaceAll('{scheduleId}', scheduleId.toString())

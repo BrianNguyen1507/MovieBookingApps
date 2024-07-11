@@ -7,7 +7,9 @@ import 'package:movie_booking_app/models/schedule/schedule.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/schedulewidget/ScheduleInvalid.dart';
 import 'package:movie_booking_app/pages/selection/components/schedulewidget/scheduleWidget.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/schedule/scheduleService.dart';
+import 'package:provider/provider.dart';
 
 class ScheduleSelection extends StatefulWidget {
   final int movieId;
@@ -55,26 +57,30 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
       ),
       body: Column(
         children: [
-          SizedBox(
-            child: DatePicker(
-              DateTime.now(),
-              initialSelectedDate: DateTime.now(),
-              selectionColor: AppColors.primaryColor,
-              daysCount: 7,
-              width: 60,
-              height: 90,
-              locale: "vi_VN",
-              onDateChange: (date) {
-                setState(
-                  () {
-                    dateformated = ConverterUnit.convertToDate(date.toString());
-                    scheduleData = ScheduleService.getAllSchedule(
-                        dateformated, widget.theaterId, widget.movieId);
-                  },
-                );
-              },
-            ),
-          ),
+          SizedBox(child: Consumer<ThemeProvider>(
+            builder: (context, value, child) {
+              bool locate = value.isEnglish;
+              return DatePicker(
+                DateTime.now(),
+                initialSelectedDate: DateTime.now(),
+                selectionColor: AppColors.primaryColor,
+                daysCount: 7,
+                width: 60,
+                height: 90,
+                locale: locate ? "en_EN" : "vi_VN",
+                onDateChange: (date) {
+                  setState(
+                    () {
+                      dateformated =
+                          ConverterUnit.convertToDate(date.toString());
+                      scheduleData = ScheduleService.getAllSchedule(
+                          dateformated, widget.theaterId, widget.movieId);
+                    },
+                  );
+                },
+              );
+            },
+          )),
           Expanded(
             child: FutureBuilder<Schedule?>(
               future: scheduleData,

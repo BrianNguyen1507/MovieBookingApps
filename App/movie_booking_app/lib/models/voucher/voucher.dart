@@ -31,7 +31,7 @@ class Voucher {
       discount: jsonData['discount'],
       quantity: jsonData['quantity'],
       expired: jsonData['expired'],
-      allowed: jsonData['allowed'],
+      allowed: jsonData['allowed'] ?? false,
     );
   }
 }

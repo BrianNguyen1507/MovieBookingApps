@@ -10,6 +10,6 @@ public interface IAccountVoucherService {
    void gift(AccountVoucherRequest request);
    void deleteVoucher (long id);
 
-   List<VoucherResponse> getVouchersByAccountId(long accountId);
+   List<VoucherResponse> getVouchersByEmail(String email);
 
 }

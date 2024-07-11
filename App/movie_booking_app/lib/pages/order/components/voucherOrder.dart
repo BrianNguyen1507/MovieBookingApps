@@ -8,6 +8,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherApply.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherService.dart';
 
@@ -191,6 +192,8 @@ class _VoucherOrderState extends State<VoucherOrder> {
             ),
             onPressed: () async {
               if (selectedVocher == null) {
+                ValidInput().showAlertCustom(context,
+                    'Please select voucher to continue', '', true, null);
                 return;
               }
               pref.saveSVoucher(selectedVoucherIndex = selectedVocher);

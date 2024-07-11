@@ -8,7 +8,7 @@ import 'package:movie_booking_app/models/schedule/schedule.dart';
 class ScheduleService {
   static Future<Schedule?> getAllSchedule(
       String date, int theaterId, int movieId) async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_ALL_SCHEDULE_MOBILE']!;
     final url = getURL
         .replaceAll('{filmInput}', movieId.toString())

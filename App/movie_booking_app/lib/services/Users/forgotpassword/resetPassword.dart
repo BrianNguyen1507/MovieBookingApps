@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class ResetPasswordService {
   static Future<String> resetPassword(String email, String password) async {
-    await dotenv.load();
+    
     final getUrl = dotenv.env['RESET_PASSWORD']!;
     final url = getUrl;
     final body = json.encode({'email': email, 'password': password});

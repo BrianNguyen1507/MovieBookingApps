@@ -7,7 +7,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 class VoucherApply {
   static Future<double> applyVoucher(int voucherId, double total) async {
     dynamic token = await Preferences().getTokenUsers();
-    await dotenv.load();
+    
     final getURL = dotenv.env['APPLY_VOUCHER_BY_ID']!;
     final url = getURL
         .replaceAll('{voucherId}', voucherId.toString())

@@ -1,7 +1,8 @@
 {
-  "cinema": "Cinema",
+  "cinema": "Rạp phim",
   "store": "Cửa hàng",
   "personal": "Tôi",
+  "voucher": "Ưu đãi",
   "nowshowing": "Phim đang chiếu",
   "comming": "Phim sắp chiếu",
   "version": "Phiên bản",
@@ -91,5 +92,6 @@
   "discount": "Giảm giá",
   "open": "MỞ",
   "pay_inf": "Thông tin thanh toán",
-  "pay_method": "Phương thức thanh toán"
+  "pay_method": "Phương thức thanh toán",
+  "selectionDetail": "Thông tin suất chiếu"
 }

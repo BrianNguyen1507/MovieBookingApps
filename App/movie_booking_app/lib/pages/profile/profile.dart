@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
 import 'package:movie_booking_app/pages/profile/guest.dart';
 import 'package:movie_booking_app/provider/provider.dart';
@@ -24,7 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
   String? avatar;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getData();
   }
@@ -41,11 +41,11 @@ class _ProfilePageState extends State<ProfilePage> {
       future: pref.getUserName(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
+          return Scaffold(
             backgroundColor: Colors.white,
             extendBody: true,
             body: Center(
-              child: CircularProgressIndicator(),
+              child: loadingContent,
             ),
           );
         } else {
@@ -92,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               color: Colors.black,
               child: Padding(
-                padding: const EdgeInsets.only(top: 60.0),
+                padding: const EdgeInsets.only(top: 50.0),
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -156,14 +156,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
+                                  padding: const EdgeInsets.all(5.0),
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColors.iconThemeColor,
                                   ),
                                   child: SvgPicture.string(
                                     svgTv,
-                                    width: 40,
-                                    height: 40,
+                                    width: 30,
+                                    height: 30,
                                   ),
                                 ),
                                 const Text(
@@ -187,14 +188,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
+                                    padding: const EdgeInsets.all(5.0),
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: AppColors.iconThemeColor,
                                     ),
                                     child: SvgPicture.string(
                                       svgReview,
-                                      width: 40,
-                                      height: 40,
+                                      width: 30,
+                                      height: 30,
                                     )),
                                 const Text(
                                   '0',

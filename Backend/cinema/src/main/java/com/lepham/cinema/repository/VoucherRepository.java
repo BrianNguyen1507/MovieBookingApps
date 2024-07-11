@@ -13,8 +13,8 @@ public interface VoucherRepository extends JpaRepository<VoucherEntity,Long> {
     List<VoucherEntity> findAllByHide(boolean hide);
     @Query("SELECT v FROM AccountVoucher av " +
             "JOIN av.voucher v " +
-            "WHERE av.account.id = :accountId AND av.hide = false")
-    List<VoucherEntity> findAccountVoucherByAccount_IdAndNotHide(@Param("accountId") long accountId);
+            "WHERE av.account.email = :email AND av.hide = false AND v.expired > Now()")
+    List<VoucherEntity> findAccountVoucherByEmail(@Param("email") String email);
 
     Optional<VoucherEntity> findByIdAndHide(long id, boolean hide);
 

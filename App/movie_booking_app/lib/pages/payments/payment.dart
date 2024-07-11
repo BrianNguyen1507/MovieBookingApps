@@ -51,7 +51,6 @@ class _PaymentPageState extends State<PaymentPage> {
   String zpTransToken = "";
   String payResult = "";
   int payAmount = 0;
-  bool showResult = false;
 
   @override
   void initState() {
@@ -65,6 +64,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final numberSeats = ConverterUnit.convertStringToSet(widget.seats).length;
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -78,7 +78,7 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: AppSize.height(context) * 0.9,
+          height: AppSize.height(context),
           decoration: const BoxDecoration(
             color: AppColors.commonLightColor,
             borderRadius: BorderRadius.only(
@@ -261,8 +261,15 @@ class _PaymentPageState extends State<PaymentPage> {
                             children: [
                               Text('${AppLocalizations.of(context)!.seats}:',
                                   style: AppStyle.bodyText1),
-                              Text(widget.seats,
-                                  style: AppStyle.paymentInfoText),
+                              SizedBox(
+                                width: numberSeats > 10
+                                    ? AppSize.width(context) * 0.6
+                                    : null,
+                                child: Text(
+                                  widget.seats,
+                                  style: AppStyle.paymentInfoText,
+                                ),
+                              )
                             ],
                           )
                         : const SizedBox.shrink(),
@@ -300,12 +307,28 @@ class _PaymentPageState extends State<PaymentPage> {
               SizedBox(
                 height: 150,
                 child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      paymentCardWidget(widget.visible, payAmount, widget.seats,
-                          widget.foods),
-                    ]),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    paymentCardWidget(
+                        widget.visible,
+                        payAmount,
+                        widget.seats,
+                        widget.foods,
+                        () => handleZaloPay(widget.visible, widget.seats,
+                            widget.foods, payAmount.toDouble(), 'ZALOPAY'),
+                        'ZALOPAY',
+                        'assets/images/ZaloPay-vuong.png'),
+                    paymentCardWidget(
+                        widget.visible,
+                        payAmount,
+                        widget.seats,
+                        widget.foods,
+                        () {},
+                        'VNPAY',
+                        'assets/images/VNPAY-logo.png'),
+                  ],
+                ),
               ),
             ],
           ),
@@ -314,16 +337,20 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
+//ZALO PAY
   Widget paymentCardWidget(
     bool visible,
     int sumtotal,
     String? seats,
     List<Map<String, dynamic>> foods,
+    Function handlePayment,
+    String methodName,
+    String methodIcon,
   ) {
     return Container(
       padding: const EdgeInsets.all(5.0),
       child: Tooltip(
-        message: 'ZALO PAY',
+        message: 'Payment via $methodName',
         child: GestureDetector(
           onTap: () async {
             int amount = sumtotal;
@@ -360,7 +387,6 @@ class _PaymentPageState extends State<PaymentPage> {
                 setState(() {
                   print('SUMTOTAL $sumtotal');
                   zpTransToken = result.zptranstoken;
-                  showResult = true;
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => SizedBox(
@@ -368,8 +394,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       height: AppSize.height(context) * 0.2,
                       child: MaterialButton(
                         onPressed: () async {
-                          await handlePayment(widget.visible, widget.seats,
-                              widget.foods, widget.sumtotal);
+                          await handlePayment();
                         },
                         child: Container(
                           height: AppSize.height(context) * 0.1,
@@ -384,7 +409,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              '${AppLocalizations.of(context)!.open} ZALOPAY',
+                              '${AppLocalizations.of(context)!.open} $methodName',
                               style: AppStyle.buttonText2,
                             ),
                           ),
@@ -409,15 +434,15 @@ class _PaymentPageState extends State<PaymentPage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.asset(
-                    'assets/images/ZaloPay-vuong.png',
+                    methodIcon,
                     height: 70,
                     width: 70,
                     fit: BoxFit.fitHeight,
                   ),
                 ),
               ),
-              const Text(
-                'ZALO PAY',
+              Text(
+                methodName,
                 style: AppStyle.titleMovie,
               ),
             ],
@@ -427,8 +452,12 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  Future<void> handlePayment(bool visible, String seats,
-      List<Map<String, dynamic>> foods, double sumTotal) async {
+  Future<void> handleZaloPay(
+      bool visible,
+      String seats,
+      List<Map<String, dynamic>> foods,
+      double sumTotal,
+      String methodName) async {
     String response;
     String appTranId;
     try {
@@ -441,7 +470,6 @@ class _PaymentPageState extends State<PaymentPage> {
       if (mounted) {
         setState(() {
           payResult = response;
-          showResult = true;
         });
         showDialog(
           barrierDismissible: payResult == 'Payment Success' ? false : true,
@@ -478,21 +506,22 @@ class _PaymentPageState extends State<PaymentPage> {
             isReturn =
                 await ReturnSeatService.returnSeat(scheduleId, seatfotmat);
           }
-          if ((seats.isNotEmpty && isReturn) || seats.isEmpty) {}
-          CreateOrderService.createOrderTicket(scheduleId!, voucherId,
-              'ZALOPAY', appTranId, seats, foods, sumTotal);
-          Preferences().clearHoldSeats();
+          if ((seats.isNotEmpty && isReturn) || seats.isEmpty) {
+            CreateOrderService.createOrderTicket(scheduleId!, voucherId,
+                methodName, appTranId, seats, foods, sumTotal);
+            Preferences().clearHoldSeats();
 
-          Future.delayed(
-            const Duration(seconds: 3),
-            () {
-              return Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/listOrder',
-                ModalRoute.withName('/'),
-              );
-            },
-          );
+            Future.delayed(
+              const Duration(seconds: 3),
+              () {
+                return Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/listOrder',
+                  ModalRoute.withName('/'),
+                );
+              },
+            );
+          }
         }
       }
     } on PlatformException catch (e) {
@@ -501,3 +530,5 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
 }
+//VN PAY
+

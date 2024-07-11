@@ -7,7 +7,7 @@ import 'package:movie_booking_app/models/seat/seat.dart';
 
 class Seatservice {
   static Future<Seat> getMovieScheduleById(int scheduleId) async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_SEAT_BY_SCHEDULE_ID']!;
     final url = getURL + scheduleId.toString();
     try {

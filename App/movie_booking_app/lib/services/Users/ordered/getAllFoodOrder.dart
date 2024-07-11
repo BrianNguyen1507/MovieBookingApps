@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class FoodOrderService {
   static Future<List<OrderResponse>> getAllFoodOrder() async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_ALL_FOOD_ORDER']!;
     final url = getURL;
     dynamic token = await Preferences().getTokenUsers();

@@ -37,7 +37,7 @@ class BottomNavigator extends StatelessWidget {
               currentIndex: selectedIndex,
               onTap: onItemTapped,
               items: List.generate(
-                4,
+                3,
                 (index) => BottomNavigationBarItem(
                   backgroundColor: AppColors.backgroundColor,
                   icon: Stack(

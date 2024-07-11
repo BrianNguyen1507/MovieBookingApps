@@ -11,7 +11,7 @@ class ReturnSeatService {
       dynamic token = await pref.getTokenUsers();
       String seatString = ConverterUnit.convertSetToString(seats);
       print(seatString);
-      await dotenv.load();
+      
       final getURL = dotenv.env['RETURN_SEAT']!;
       final url = getURL
           .replaceAll('{scheduleId}', scheduleId.toString())

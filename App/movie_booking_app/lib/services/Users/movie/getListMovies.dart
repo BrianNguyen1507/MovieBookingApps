@@ -7,7 +7,7 @@ import 'package:movie_booking_app/models/movie/movie.dart';
 
 class MovieList {
   static Future<List<Movie>> getListReleased() async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_LIST_RELEASE']!;
     final url = getURL;
     try {
@@ -51,7 +51,7 @@ class MovieList {
   }
 
   static Future<List<Movie>> getListFutured() async {
-    await dotenv.load();
+    
     final getURL = dotenv.env['GET_LIST_FUTURE']!;
     final urlApi = getURL;
     final response = await http.get(
