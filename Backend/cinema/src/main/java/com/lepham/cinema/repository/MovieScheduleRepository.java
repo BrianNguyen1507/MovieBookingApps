@@ -2,6 +2,7 @@ package com.lepham.cinema.repository;
 
 import com.lepham.cinema.entity.FilmEntity;
 import com.lepham.cinema.entity.MovieScheduleEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,7 +31,8 @@ public interface MovieScheduleRepository extends JpaRepository<MovieScheduleEnti
     List<MovieScheduleEntity> findAllByFilmAndMovieTheater(long filmId, long theaterId, LocalDate date);
 
     @Query(value = "SELECT ms from MovieScheduleEntity ms inner join RoomEntity r on r.id = ms.room.id where Date( ms.timeStart) = ?2 and ms.room.id=?1")
-    List<MovieScheduleEntity> findAllByRoomIdAndDateStart(long roomId, LocalDate date);
+    List<MovieScheduleEntity> findAllByRoomIdAndDateStart(long roomId, LocalDate date, Sort sort);
+
 
 
 }

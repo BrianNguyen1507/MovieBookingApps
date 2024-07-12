@@ -1,5 +1,6 @@
 package com.lepham.cinema.service;
 
+import com.lepham.cinema.dto.request.ScheduleRequest;
 import com.lepham.cinema.dto.request.ShowTimeRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
 import com.lepham.cinema.dto.response.*;
@@ -26,5 +27,7 @@ public interface IMovieScheduleService {
     void returnSeat(long id,String seat);
 
     List<MovieScheduleDateResponse> getAllScheduleByRoomAndDate(long roomId, LocalDate dateStart);
+
+    MovieScheduleResponse addSchedule(ScheduleRequest request);
 
 }
