@@ -10,11 +10,14 @@ export async function fetchingSeclectionTheater() {
     theaterSelection.appendChild(option);
   });
   theaterSelection.addEventListener("change", async (event) => {
-    const roomSelection = document.querySelector("#room-selection");
     const selectedValue = theaterSelection.value;
     const $dateInput = $("#schedule-dateStart");
     $dateInput.val("");
     if (selectedValue != "none") fetchingSeclectionRoom(selectedValue);
+    const thead = document.querySelector("#schedule-table thead");
+    const tbody = document.querySelector("#schedule-table tbody");
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
   });
 }
 fetchingSeclectionTheater();

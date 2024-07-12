@@ -23,6 +23,11 @@ export async function fetchingSeclectionRoom(id) {
   roomSelection.addEventListener("change", async (event) => {
     const $dateInput = $("#schedule-dateStart");
     $dateInput.val("");
+    sessionStorage.setItem("roomId",roomSelection.value);
+    const thead = document.querySelector("#schedule-table thead");
+    const tbody = document.querySelector("#schedule-table tbody");
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
   });
 }
 function removeChild(selection) {
