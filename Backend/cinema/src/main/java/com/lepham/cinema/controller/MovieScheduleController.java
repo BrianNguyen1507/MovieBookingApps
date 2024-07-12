@@ -1,5 +1,6 @@
 package com.lepham.cinema.controller;
 
+import com.lepham.cinema.dto.request.ScheduleRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
 import com.lepham.cinema.dto.response.*;
 import com.lepham.cinema.service.imp.MovieScheduleService;
@@ -88,6 +89,12 @@ public class MovieScheduleController {
                                                                          @RequestParam("dateStart") LocalDate dateStart){
         return APIResponse.<List<MovieScheduleDateResponse>>builder()
                 .result(movieScheduleService.getAllScheduleByRoomAndDate(roomId,dateStart))
+                .build();
+    }
+    @PostMapping("/addSchedule")
+    APIResponse<MovieScheduleResponse> addSchedule(@RequestBody ScheduleRequest request){
+        return APIResponse.<MovieScheduleResponse>builder()
+                .result(movieScheduleService.addSchedule(request))
                 .build();
     }
 }

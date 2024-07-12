@@ -4,6 +4,7 @@ import com.lepham.cinema.constant.ConstantVariable;
 import com.lepham.cinema.converter.DateConverter;
 import com.lepham.cinema.converter.FilmConverter;
 import com.lepham.cinema.converter.MovieScheduleConverter;
+import com.lepham.cinema.dto.request.ScheduleRequest;
 import com.lepham.cinema.dto.request.ShowTimeRequest;
 import com.lepham.cinema.dto.request.ShowTimesRequest;
 import com.lepham.cinema.dto.response.*;
@@ -22,12 +23,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -370,14 +373,15 @@ public class MovieScheduleService implements IMovieScheduleService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<MovieScheduleDateResponse> getAllScheduleByRoomAndDate(long roomId, LocalDate dateStart) {
-        LocalDate dateEnd = dateStart.plusDays(7);
-
         List<MovieScheduleDateResponse> responses = new ArrayList<>();
         for (int i = 0; i < ConstantVariable.step; i++) {
             MovieScheduleDateResponse movieScheduleDateResponse = new MovieScheduleDateResponse();
             movieScheduleDateResponse.setDate(dateStart.plusDays(i));
             List<MovieScheduleEntity> scheduleEntities = movieScheduleRepository
-                    .findAllByRoomIdAndDateStart(roomId, movieScheduleDateResponse.getDate());
+                    .findAllByRoomIdAndDateStart(
+                            roomId,
+                            movieScheduleDateResponse.getDate(),
+                            Sort.by(Sort.Direction.ASC, "timeStart"));
             movieScheduleDateResponse.setMovieSchedule(
                     scheduleEntities.stream()
                             .map(schedule -> movieScheduleConverter
@@ -385,6 +389,34 @@ public class MovieScheduleService implements IMovieScheduleService {
             responses.add(movieScheduleDateResponse);
         }
         return responses;
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public MovieScheduleResponse addSchedule(ScheduleRequest request) {
+        FilmEntity film = filmRepository.findById(request.getFilmId())
+                .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
+        RoomEntity room = roomRepository.findByIdAndHide(request.getRoomId(), false)
+                .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
+        List<MovieScheduleEntity> movieScheduleEntities = movieScheduleRepository
+                .findAllByRoomIdAndDateStart(request.getRoomId(), request.getDate(), Sort.by(Sort.Direction.ASC, "timeStart"));
+        LocalTime time = LocalTime.of(8,0);
+        LocalDateTime timeStart = request.getDate().atTime(time);
+        if (!movieScheduleEntities.isEmpty()) {
+            MovieScheduleEntity movieScheduleLast = movieScheduleEntities.getLast();
+            int duration = (movieScheduleLast.getFilm().getDuration() % 10) <= 5 ?
+                    (movieScheduleLast.getFilm().getDuration() / 10) * 10 + 10 :
+                    (movieScheduleLast.getFilm().getDuration() / 10) * 10 + 15;
+            timeStart = movieScheduleLast.getTimeStart().plusMinutes(duration);
+            if (timeStart.getDayOfYear() == movieScheduleLast.getTimeStart().plusDays(1).getDayOfYear())
+                throw new AppException(ErrorCode.START_TIME_NOT_TODAY);
+        }
+        MovieScheduleEntity movieSchedule = new MovieScheduleEntity();
+        movieSchedule.setFilm(film);
+        movieSchedule.setRoom(room);
+        movieSchedule.setSeat(movieSchedule.generateSeat(room.getRow(), room.getColumn()));
+        movieSchedule.setTimeStart(timeStart);
+        return  movieScheduleConverter.toResponse(movieScheduleRepository.save(movieSchedule),filmConverter.toFilmScheduleResponse((film)));
     }
 
 }
