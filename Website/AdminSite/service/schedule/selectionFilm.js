@@ -1,9 +1,10 @@
-import { getAllMovies } from "../movie/getAllFilm";
-import { getFilmById } from "./getFilmById";
+
+import { getAllFilm } from "./getAllFilm.js";
+import { getFilmById } from "./getFilmById.js";
 
 
 export async function fetchingSeclectionFilm(){
-    const films = await getAllMovies();
+    const films = await getAllFilm();
    
     const filmSelection = document.querySelector("#film-selection");
     films.forEach(film => {
@@ -11,8 +12,6 @@ export async function fetchingSeclectionFilm(){
         option.value = film.id ;
         option.textContent = truncateText(film.title,30) ;
         filmSelection.appendChild(option);
-        
-       
     });
     filmSelection.addEventListener("change", async event=>{
         const filmSchedule = document.querySelector("#film-schedule");

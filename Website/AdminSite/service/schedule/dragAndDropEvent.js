@@ -1,6 +1,8 @@
-import { formatDate, formatDateRequest } from "./fetchSchedule";
+import { formatDate, formatDateRequest, loadingTable } from "./fetchSchedule";
 import { addSchedule } from "./addScheuleService";
 import { truncateText } from "./selectionFilm";
+import { swapSchedule } from "./swapScheduleService";
+import { deleteSchedule } from "./deleteScheduleService";
 
 document.addEventListener("DOMContentLoaded", function () {
   let draggedItem = null;
@@ -18,101 +20,112 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("drop", async function (event) {
     event.preventDefault();
     if (event.target.classList.contains("drop-column")) {
-      const indexColumn = event.target.id;
+      const cell = event.target;
+      const cellId = cell.id;
       const tbody = document.querySelector("#schedule-table tbody");
-      const existRow = document.querySelector(
-        "#row-" + (tbody.children.length - 2)
-      );
-
-      
-      const filmid = draggedItem.getAttribute("filmId");
-      const roomId = draggedItem.getAttribute("roomId");
       const date = formatDateRequest(
-        document.querySelector("#column-" + getIndexColumn(indexColumn))
-          .children[0].textContent
+        document.querySelector("#column-" + getIndexColumn(cellId)).children[0]
+          .textContent
       );
-      const checkAdd = await checkAddSchedule(roomId, filmid, date);
-      console.log(checkAdd);
-      if (checkAdd != null) {
-        if (existRow) {
-          for (let i = 1; i < tbody.children.length; i++) {
-            tbody.children[i].children[getIndexColumn(indexColumn)];
-            if (
-              tbody.children[i].children[getIndexColumn(indexColumn)]
-                .innerHTML == ""
-            ) {
-              const cell = document.querySelector("#row-" + (i - 1)).children[
-                getIndexColumn(indexColumn)
-              ];
-              cell.classList.add("draggable");
-              cell.setAttribute("draggable", "true");
-              cell.innerHTML = checkAdd;
-              return;
-            }
-          }
-          const row = document.createElement("tr");
-          row.id = "row-" + (tbody.children.length - 1);
-          row.classList.add("drop-row");
-          for (let i = 0; i < 7; i++) {
-            const cell = document.createElement("td");
-            cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
-            cell.classList.add("drop-column");
-            if (i == getIndexColumn(indexColumn)) {
-              cell.classList.add("draggable");
-              cell.setAttribute("draggable", "true");
-              cell.innerHTML = checkAdd;
 
+      if (draggedItem.getAttribute("data-id") == null) {
+        const existRow = document.querySelector(
+          "#row-" + (tbody.children.length - 2)
+        );
+
+        const filmid = draggedItem.getAttribute("filmId");
+        const roomId = draggedItem.getAttribute("roomId");
+       
+        const checkAdd = await checkAddSchedule(roomId, filmid, date);
+        const text = checkAdd[0];
+        const scheduleId = checkAdd[1];
+        if (checkAdd != null) {
+          if (existRow) {
+            for (let i = 1; i < tbody.children.length; i++) {
+              tbody.children[i].children[getIndexColumn(cellId)];
+              if (
+                tbody.children[i].children[getIndexColumn(cellId)].innerHTML ==
+                ""
+              ) {
+                const cell = document.querySelector("#row-" + (i - 1)).children[
+                  getIndexColumn(cellId)
+                ];
+                cell.classList.add("draggable");
+                cell.setAttribute("draggable", "true");
+                cell.setAttribute("data-id", scheduleId);
+                cell.innerHTML = text;
+                return;
+              }
             }
-            row.appendChild(cell);
-          }
-          tbody.appendChild(row);
-        } else {
-          const row = document.createElement("tr");
-          row.classList.add("drop-row");
-          row.id = "row-" + (tbody.children.length - 1);
-          for (let i = 0; i < 7; i++) {
-            const cell = document.createElement("td");
-            cell.classList.add("drop-column");
-            cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
-            if (i == getIndexColumn(indexColumn)) {
-              cell.classList.add("draggable");
-              cell.setAttribute("draggable", "true");
-              cell.innerHTML = checkAdd;
+            const row = document.createElement("tr");
+            row.id = "row-" + (tbody.children.length - 1);
+            row.classList.add("drop-row");
+            for (let i = 0; i < 7; i++) {
+              const cell = document.createElement("td");
+              cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
+              cell.classList.add("drop-column");
+              if (i == getIndexColumn(cellId)) {
+                cell.classList.add("draggable");
+                cell.setAttribute("draggable", "true");
+                cell.innerHTML = text;
+                cell.setAttribute("data-id", scheduleId);
+              }
+              row.appendChild(cell);
             }
-            row.appendChild(cell);
+            tbody.appendChild(row);
+          } else {
+            const row = document.createElement("tr");
+            row.classList.add("drop-row");
+            row.id = "row-" + (tbody.children.length - 1);
+            for (let i = 0; i < 7; i++) {
+              const cell = document.createElement("td");
+              cell.classList.add("drop-column");
+              cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
+              if (i == getIndexColumn(cellId)) {
+                cell.classList.add("draggable");
+                cell.setAttribute("draggable", "true");
+                cell.innerHTML = text;
+                cell.setAttribute("data-id", scheduleId);
+              }
+              row.appendChild(cell);
+            }
+            tbody.appendChild(row);
           }
-          tbody.appendChild(row);
+        }
+      } else {
+        let idSwap =-1;
+        if (cell.getAttribute("data-id") != null) {
+            idSwap = cell.getAttribute("data-id");
+        }
+        const id = draggedItem.getAttribute("data-id");
+        const result = await swapSchedule(id, idSwap, date);
+        
+        if (result) {
+          const dateTable = sessionStorage.getItem("date");
+          const roomId = sessionStorage.getItem("roomId");
+          loadingTable(roomId, dateTable);
+        }
+      }
+    }
+    else if (event.target.classList.contains("delete-zone")){
+      const id =draggedItem.getAttribute("data-id");
+      if(id!=null){
+        const result = await deleteSchedule(id);
+        if(result==1000){
+          const dateTable = sessionStorage.getItem("date");
+          const roomId = sessionStorage.getItem("roomId");
+          loadingTable(roomId, dateTable);
         }
       }
     }
   });
 
-  // document
-  //   .getElementById("drop-zone")
-  //   .addEventListener("click", function (event) {
-  //     if (event.target.classList.contains("drop-column")) {
-  //       const dropColumns = document.querySelectorAll(".drop-column");
-  //       const dropArray = Array.from(dropColumns);
-
-  //       const draggedIndex = dropArray.indexOf(draggedItem.parentElement);
-  //       const targetIndex = dropArray.indexOf(event.target.parentElement);
-
-  //       if (draggedIndex !== -1 && targetIndex !== -1) {
-  //         const temp = dropArray[draggedIndex].innerHTML;
-  //         dropArray[draggedIndex].innerHTML = dropArray[targetIndex].innerHTML;
-  //         dropArray[targetIndex].innerHTML = temp;
-  //       }
-  //     }
-  //   });
-
-  // document
-  //   .getElementById("delete-zone")
-  //   .addEventListener("drop", function (event) {
-  //     event.preventDefault();
-  //     if (event.target.id === "delete-zone") {
-  //       draggedItem.parentElement.removeChild(draggedItem);
-  //     }
-  //   });
+  document
+    .getElementById("delete-zone")
+    .addEventListener("drop", async function (event) {
+      event.preventDefault();
+      
+    });
 });
 
 function getIndexColumn(string) {
@@ -120,22 +133,36 @@ function getIndexColumn(string) {
   return parts[1];
 }
 async function checkAddSchedule(roomId, filmId, date) {
-  if(roomId!=null||filmId!=null){
-    const scheule = await addSchedule(roomId, filmId, date);
-    if (scheule != null) {
-      return (
-        scheule.timeStart +
-        "<br> - " +
-        scheule.timeEnd +
-        "<br>" +
-        truncateText(scheule.film.title,20) +
-        "<br>" +
-        scheule.film.duration +
-        " phút" +
-        "<br>" +
-        formatDate(scheule.film.releaseDate)
-      ).toString();
+  if (roomId != null || filmId != null) {
+    const schedule = await addSchedule(roomId, filmId, date);
+    if (schedule != null) {
+      return [
+        (
+          schedule.timeStart +
+          "<br> - " +
+          schedule.timeEnd +
+          "<br>" +
+          truncateText(schedule.film.title, 20) +
+          "<br>" +
+          schedule.film.duration +
+          " phút" +
+          "<br>" +
+          formatDate(schedule.film.releaseDate)
+        ).toString(),
+        schedule.id,
+      ];
     }
   }
   return null;
+}
+function removeRow(parent, tbody) {
+  var count = 0;
+  for (let i = 0; i < parent.children.length; i++) {
+    if (parent.children[i].children.length == 0) {
+      count++;
+    }
+  }
+  if (count == parent.children.length) {
+    tbody.removeChild(parent);
+  }
 }

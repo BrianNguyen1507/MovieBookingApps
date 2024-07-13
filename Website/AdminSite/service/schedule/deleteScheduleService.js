@@ -1,26 +1,21 @@
 import { getUserToken } from "../authenticate/authenticate";
 
-export async function addSchedule(roomId, filmId, date) {
-  const uri = "http://localhost:8083/cinema/addSchedule";
-  const body = JSON.stringify({
-    roomId: roomId,
-    filmId: filmId,
-    date: date,
-  });
+export async function deleteSchedule(id) {
+  const uri = "http://localhost:8083/cinema/deleteSchedule?id=";
+
   const token = await getUserToken();
-  const response = await fetch(uri, {
-    method: "POST",
+  const response = await fetch(uri + id, {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: body,
   });
   const responseData = await response.json();
 
   if (response.status == 200) {
     if (responseData.code == 1000) {
-      return responseData.result;
+      return responseData.code;
     }
   } else if (response.status == 400) {
     console.log(responseData.message);
