@@ -6,6 +6,7 @@ import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/ordered/components/detailWidget.dart';
 import 'package:movie_booking_app/services/Users/ordered/detailOrderService.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DetailOrderPage extends StatefulWidget {
   const DetailOrderPage({super.key, required this.id});
@@ -30,7 +31,7 @@ class DetailOrderPageState extends State<DetailOrderPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text("Detail Order"),
+        title: Text(AppLocalizations.of(context)!.detail_order),
         backgroundColor: AppColors.appbarColor,
         titleTextStyle: AppStyle.bannerText,
         centerTitle: true,

@@ -12,6 +12,7 @@ import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/services/Users/infomation/getMyInfoService.dart';
 import 'package:movie_booking_app/services/Users/infomation/updateAccount.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateInformation extends StatefulWidget {
   const UpdateInformation({super.key});
@@ -71,7 +72,7 @@ class UpdateInformationState extends State<UpdateInformation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Update Information"),
+        title: Text(AppLocalizations.of(context)!.update_info),
         backgroundColor: AppColors.appbarColor,
         titleTextStyle: AppStyle.headline2,
         centerTitle: true,
@@ -127,9 +128,9 @@ class UpdateInformationState extends State<UpdateInformation> {
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
                   controller: fullNameCtl,
-                  decoration: const InputDecoration(
-                    labelText: "Full Name",
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.fullname,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -140,9 +141,9 @@ class UpdateInformationState extends State<UpdateInformation> {
                 padding: const EdgeInsets.all(10.0),
                 child: TextFormField(
                   controller: phoneCrl,
-                  decoration: const InputDecoration(
-                    labelText: "Phone Number",
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.phone,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -156,9 +157,9 @@ class UpdateInformationState extends State<UpdateInformation> {
                   children: [
                     Row(
                       children: [
-                        const Text(
-                          'Gender:',
-                          style: TextStyle(fontSize: 16.0),
+                        Text(
+                          AppLocalizations.of(context)!.gender,
+                          style: const TextStyle(fontSize: 16.0),
                         ),
                         const SizedBox(width: 30),
                         Radio<String>(
@@ -167,7 +168,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                           onChanged: _onGenderChanged,
                           activeColor: AppColors.primaryColor,
                         ),
-                        const Text('Male'),
+                        Text(AppLocalizations.of(context)!.male),
                       ],
                     ),
                     const SizedBox(width: 30),
@@ -179,7 +180,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                           onChanged: _onGenderChanged,
                           activeColor: AppColors.primaryColor,
                         ),
-                        const Text('Female'),
+                        Text(AppLocalizations.of(context)!.female),
                       ],
                     ),
                   ],
@@ -193,7 +194,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                 child: TextFormField(
                   controller: dobCtl,
                   decoration: InputDecoration(
-                    labelText: "Day of birth",
+                    labelText: AppLocalizations.of(context)!.dob,
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.calendar_today),
@@ -230,13 +231,9 @@ class UpdateInformationState extends State<UpdateInformation> {
                   },
                   child: SizedBox(
                       width: AppSize.width(context) * 0.75,
-                      child: const Text(
-                        "Update",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColors.containerColor,
-                        ),
-                      )),
+                      child: Text(AppLocalizations.of(context)!.update_info,
+                          textAlign: TextAlign.center,
+                          style: AppStyle.buttonText2)),
                 ),
               ),
             )

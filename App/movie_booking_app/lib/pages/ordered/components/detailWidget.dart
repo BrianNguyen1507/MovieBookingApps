@@ -8,6 +8,7 @@ import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/pages/ordered/QrcodePage.dart';
 import 'package:movie_booking_app/pages/ratingfeedback/ratingfeedback.dart';
 import 'package:movie_booking_app/utils/widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget detailOrderFilm(BuildContext context, DetailOrder order) {
   return Container(
@@ -36,8 +37,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                   ),
-                  child: const Text(
-                    "Rating",
+                  child: Text(
+                    AppLocalizations.of(context)!.rating_feedback,
                     style: AppStyle.headline2,
                   ),
                 ),
@@ -121,7 +122,7 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                           Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: Text(
-                              "Duration: ${order.order.duration} minute",
+                              "${AppLocalizations.of(context)!.duration}: ${order.order.duration} ${AppLocalizations.of(context)!.minutes}",
                               style:
                                   const TextStyle(fontSize: AppFontSize.small),
                             ),
@@ -129,7 +130,7 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                           Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: Text(
-                              "Languge: ${order.order.language}",
+                              "${AppLocalizations.of(context)!.language}: ${order.order.language}",
                               style:
                                   const TextStyle(fontSize: AppFontSize.small),
                             ),
@@ -153,7 +154,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(3.0),
-                              child: const Text("Order code",
+                              child: Text(
+                                  AppLocalizations.of(context)!.payment_code,
                                   style: AppStyle.graySmallText),
                             ),
                             Text(
@@ -167,7 +169,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(3.0),
-                              child: const Text("Show time",
+                              child: Text(
+                                  AppLocalizations.of(context)!.showTime,
                                   style: AppStyle.graySmallText),
                             ),
                             Row(
@@ -199,8 +202,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                   ],
                 ),
               ),
-              const Text(
-                'Show this code to the staff to get tickets',
+              Text(
+                AppLocalizations.of(context)!.note1,
                 style: AppStyle.smallText,
               ),
               const Divider(),
@@ -217,7 +220,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text('CINEMA', style: AppStyle.bodyText1),
+                        Text(AppLocalizations.of(context)!.cinema,
+                            style: AppStyle.bodyText1),
                         Text(order.theaterName, style: AppStyle.headline1),
                       ],
                     ),
@@ -228,7 +232,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Text('Room', style: AppStyle.thinText),
+                            Text(AppLocalizations.of(context)!.room,
+                                style: AppStyle.thinText),
                             Text('Room ${order.roomNumber.toString()}',
                                 style: AppStyle.blackBold),
                           ],
@@ -236,7 +241,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const Text('Tickets', style: AppStyle.thinText),
+                            Text(AppLocalizations.of(context)!.ticket_quan,
+                                style: AppStyle.thinText),
                             Text(
                                 (ConverterUnit.convertStringToSet(order.seat)
                                         .length)
@@ -249,7 +255,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text('Seats', style: AppStyle.thinText),
+                              Text(AppLocalizations.of(context)!.seats,
+                                  style: AppStyle.thinText),
                               Text(order.seat, style: AppStyle.blackBold),
                             ],
                           ),
@@ -267,9 +274,10 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(top: 15.0),
-                      child: const Align(
+                      child: Align(
                         alignment: Alignment.center,
-                        child: Text("FOOD & DRINK", style: AppStyle.bodyText1),
+                        child: Text(AppLocalizations.of(context)!.fnd,
+                            style: AppStyle.bodyText1),
                       ),
                     ),
                     const Divider(),
@@ -332,14 +340,15 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                 ),
                 child: Column(
                   children: [
-                    const Text("PAYMENT", style: AppStyle.bodyText1),
+                    Text(AppLocalizations.of(context)!.payment_med,
+                        style: AppStyle.bodyText1),
                     Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Payment Method",
+                            Text(
+                              AppLocalizations.of(context)!.payment_med,
                               style: AppStyle.thinText,
                             ),
                             Text(order.order.paymentMethod,
@@ -349,8 +358,8 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Total",
+                            Text(
+                              AppLocalizations.of(context)!.total,
                               style: AppStyle.thinText,
                             ),
                             Text(
@@ -401,7 +410,7 @@ Widget detailOrderFood(BuildContext context, DetailOrder order) {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(3.0),
-                        child: const Text("Order code",
+                        child: Text(AppLocalizations.of(context)!.payment_code,
                             style: AppStyle.graySmallText),
                       ),
                       Text(
@@ -433,9 +442,10 @@ Widget detailOrderFood(BuildContext context, DetailOrder order) {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(top: 15.0),
-                      child: const Align(
+                      child: Align(
                         alignment: Alignment.center,
-                        child: Text("FOOD & DRINK", style: AppStyle.bodyText1),
+                        child: Text(AppLocalizations.of(context)!.fnd,
+                            style: AppStyle.bodyText1),
                       ),
                     ),
                     const Divider(),
@@ -505,14 +515,15 @@ Widget detailOrderFood(BuildContext context, DetailOrder order) {
                   ),
                   child: Column(
                     children: [
-                      const Text("PAYMENT", style: AppStyle.bodyText1),
+                      Text(AppLocalizations.of(context)!.payment_med,
+                          style: AppStyle.bodyText1),
                       Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                "Payment Method",
+                              Text(
+                                AppLocalizations.of(context)!.payment_med,
                                 style: AppStyle.thinText,
                               ),
                               Text(order.order.paymentMethod,
@@ -522,8 +533,8 @@ Widget detailOrderFood(BuildContext context, DetailOrder order) {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                "Total",
+                              Text(
+                                AppLocalizations.of(context)!.total,
                                 style: AppStyle.thinText,
                               ),
                               Text(

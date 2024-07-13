@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QrcodePage extends StatelessWidget {
   const QrcodePage({super.key, required this.qr});
@@ -22,12 +23,12 @@ class QrcodePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(child: Image.memory(ConverterUnit.base64ToUnit8(qr))),
-          const Text(
-            'Show this code to the staff to get tickets ',
+          Text(
+            AppLocalizations.of(context)!.note1,
             style: AppStyle.smallText,
           ),
-          const Text(
-            'Thank you for purchasing tickets on the app.',
+          Text(
+            AppLocalizations.of(context)!.note2,
             style: AppStyle.smallText,
           )
         ],

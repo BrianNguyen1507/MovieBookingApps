@@ -11,6 +11,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherApply.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherService.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class VoucherOrder extends StatefulWidget {
@@ -124,15 +125,15 @@ class _VoucherOrderState extends State<VoucherOrder> {
                                           style: AppStyle.smallText,
                                         ),
                                         Text(
-                                          'Lowest price: ${ConverterUnit.formatPrice(vouchers[index].minLimit)}₫',
+                                          '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(vouchers[index].minLimit)}₫',
                                           style: AppStyle.smallText,
                                         ),
                                         Text(
-                                          'Discount: ${vouchers[index].discount}',
+                                          '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}',
                                           style: AppStyle.smallText,
                                         ),
                                         Text(
-                                          'Expired: ${vouchers[index].expired}',
+                                          '${AppLocalizations.of(context)!.date_expired}: ${vouchers[index].expired}',
                                           style: AppStyle.smallText,
                                         ),
                                       ],
@@ -203,8 +204,8 @@ class _VoucherOrderState extends State<VoucherOrder> {
               Navigator.pop(context,
                   {'newTotal': totalApplyed, 'voucherId': selectedVocher});
             },
-            child: const Text(
-              'APPLY',
+            child: Text(
+              AppLocalizations.of(context)!.apply,
               style: AppStyle.buttonNavigator,
             ),
           ),

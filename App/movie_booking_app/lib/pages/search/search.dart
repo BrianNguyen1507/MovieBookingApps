@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/search/searchMovie.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -41,12 +45,8 @@ class SearchState extends State<Search> {
           iconTheme: const IconThemeData(
             color: AppColors.containerColor,
           ),
-          title: const Text(
-            'Search',
-            style: TextStyle(
-              color: AppColors.containerColor,
-            ),
-          ),
+          title: Text(AppLocalizations.of(context)!.search,
+              style: AppStyle.bannerText),
           backgroundColor: AppColors.backgroundColor,
         ),
         backgroundColor: AppColors.commonLightColor,
@@ -63,7 +63,7 @@ class SearchState extends State<Search> {
                         style: const TextStyle(color: AppColors.darktextColor),
                         controller: textFilter,
                         decoration: InputDecoration(
-                          hintText: 'Search movies',
+                          hintText: AppLocalizations.of(context)!.search_movie,
                           hintStyle: const TextStyle(
                               color: AppColors.commonDarkColor,
                               fontSize: AppFontSize.small),
@@ -152,31 +152,73 @@ class SearchState extends State<Search> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             SizedBox(
-                                              width: AppSize.width(context) / 2,
-                                              child: Text(
-                                                movieList[index].title,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
+                                                width:
+                                                    AppSize.width(context) / 2,
+                                                child: Consumer<ThemeProvider>(
+                                                  builder:
+                                                      (context, value, child) {
+                                                    return FutureBuilder(
+                                                      future:
+                                                          value.translateText(
+                                                              movieList[index]
+                                                                  .title),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        final titleTrans =
+                                                            snapshot.data ??
+                                                                movieList[index]
+                                                                    .title;
+                                                        return Text(
+                                                          titleTrans,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                )),
                                             SizedBox(
-                                              width: AppSize.width(context) / 2,
-                                              child: Text(
-                                                movieList[index]
-                                                    .categories
-                                                    .map((category) =>
-                                                        category.name)
-                                                    .join(', '),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ),
+                                                width:
+                                                    AppSize.width(context) / 2,
+                                                child: Consumer<ThemeProvider>(
+                                                  builder:
+                                                      (context, value, child) {
+                                                    return FutureBuilder(
+                                                      future:
+                                                          value.translateText(
+                                                        movieList[index]
+                                                            .categories
+                                                            .map((category) =>
+                                                                category.name)
+                                                            .join(', '),
+                                                      ),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        final catTrans = snapshot
+                                                                .data ??
+                                                            movieList[index]
+                                                                .categories
+                                                                .map((category) =>
+                                                                    category
+                                                                        .name)
+                                                                .join(', ');
+                                                        return Text(catTrans,
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: AppStyle
+                                                                .smallText);
+                                                      },
+                                                    );
+                                                  },
+                                                )),
                                             Container(
                                               padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/appdata.dart';
 import 'package:movie_booking_app/models/account/account.dart';
 import 'package:movie_booking_app/provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/changePassword.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -36,10 +38,10 @@ class ChangePasswordState extends State<ChangePassword> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Center(
+            Center(
               child: Text(
-                "Change Password",
-                style: TextStyle(
+                AppLocalizations.of(context)!.change_pass,
+                style: const TextStyle(
                     fontSize: AppFontSize.large,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor),
@@ -69,7 +71,7 @@ class ChangePasswordState extends State<ChangePassword> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        labelText: "Password",
+                        labelText: AppLocalizations.of(context)!.password,
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -108,7 +110,7 @@ class ChangePasswordState extends State<ChangePassword> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        labelText: "New Password",
+                        labelText: AppLocalizations.of(context)!.new_pass,
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -162,7 +164,7 @@ class ChangePasswordState extends State<ChangePassword> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            labelText: "Re-enter New Password",
+                            labelText: AppLocalizations.of(context)!.re_pass,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -213,33 +215,33 @@ class ChangePasswordState extends State<ChangePassword> {
                             await ChangePasswordService.changePassword(
                                 passwordController.text,
                                 newPasswordController.text);
-                        Preferences pre =  Preferences();
+                        Preferences pre = Preferences();
                         String? email = await pre.getEmail();
                         if (account.email == email) {
                           valid.showMessage(
                               context,
                               "Change password successfully",
                               AppColors.correctColor);
-                          valid.showAlertCustom(context, "Login version has expired", "OK", false, () => _onPressLogout(context),);
+                          valid.showAlertCustom(
+                            context,
+                            "Login version has expired",
+                            "OK",
+                            false,
+                            () => _onPressLogout(context),
+                          );
                         }
                       }
                     },
-                    child: const SizedBox(
+                    child: SizedBox(
                       width: 300,
                       child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Center(
-                          child: Text(
-                            "Continue",
-                            style: TextStyle(
-                              fontSize: AppFontSize.medium,
-                              color: AppColors.lightTextColor,
-                            ),
-                          ),
+                          child: Text(AppLocalizations.of(context)!.tieptuc,
+                              style: AppStyle.buttonText2),
                         ),
                       ),
-                    )
-                ),
+                    )),
               ),
             )
           ],
@@ -247,6 +249,7 @@ class ChangePasswordState extends State<ChangePassword> {
       ),
     );
   }
+
   void _onPressLogout(BuildContext context) {
     Preferences pref = Preferences();
     Provider.of<UserProvider>(context, listen: false).logout();

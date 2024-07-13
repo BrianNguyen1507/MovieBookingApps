@@ -4,6 +4,7 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/ordered/listFilmOrder.dart';
 import 'package:movie_booking_app/pages/ordered/listFoodOrder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ListOrdered extends StatefulWidget {
   const ListOrdered({super.key});
@@ -21,7 +22,7 @@ class ListOrderedState extends State<ListOrdered> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My orders list"),
+        title: Text(AppLocalizations.of(context)!.my_orders),
         backgroundColor: AppColors.appbarColor,
         titleTextStyle: AppStyle.bannerText,
         centerTitle: true,
@@ -53,10 +54,10 @@ class ListOrderedState extends State<ListOrdered> {
                           ),
                         ),
                         width: AppSize.width(context) / 2,
-                        child: const Text(
-                          "Movies",
+                        child: Text(
+                          AppLocalizations.of(context)!.movie_tickets,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: AppFontSize.medium,
                               fontWeight: FontWeight.bold),
                         )),
@@ -68,24 +69,25 @@ class ListOrderedState extends State<ListOrdered> {
                       });
                     },
                     child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: AppColors.primaryColor,
-                              width: isTabSelected ? 0 : 2,
-                            ),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: AppColors.primaryColor,
+                            width: isTabSelected ? 0 : 2,
                           ),
                         ),
-                        width: AppSize.width(context) / 2,
-                        child: const Text(
-                          "Foods",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: AppFontSize.medium,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )),
+                      ),
+                      width: AppSize.width(context) / 2,
+                      child: Text(
+                        AppLocalizations.of(context)!.food_tickets,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: AppFontSize.medium,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

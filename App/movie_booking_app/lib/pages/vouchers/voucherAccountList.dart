@@ -7,6 +7,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherService.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VoucherAccountList extends StatefulWidget {
   const VoucherAccountList({super.key});
@@ -31,8 +32,8 @@ class _VoucherAccountListState extends State<VoucherAccountList> {
         centerTitle: true,
         iconTheme: const IconThemeData(color: AppColors.iconThemeColor),
         backgroundColor: AppColors.appbarColor,
-        title: const Text(
-          'My Vouchers List',
+        title: Text(
+          AppLocalizations.of(context)!.my_vouchers,
           style: AppStyle.headline2,
         ),
       ),
@@ -82,15 +83,15 @@ class _VoucherAccountListState extends State<VoucherAccountList> {
                                         style: AppStyle.smallText,
                                       ),
                                       Text(
-                                        'Lowest price: ${ConverterUnit.formatPrice(listVoucher[index].minLimit)}₫',
+                                        '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(listVoucher[index].minLimit)}₫',
                                         style: AppStyle.smallText,
                                       ),
                                       Text(
-                                        'Discount: ${listVoucher[index].discount}',
+                                        '${AppLocalizations.of(context)!.discount}: ${listVoucher[index].discount}',
                                         style: AppStyle.smallText,
                                       ),
                                       Text(
-                                        'Expired: ${listVoucher[index].expired}',
+                                        '${AppLocalizations.of(context)!.date_expired}: ${listVoucher[index].expired}',
                                         style: AppStyle.smallText,
                                       ),
                                     ],
