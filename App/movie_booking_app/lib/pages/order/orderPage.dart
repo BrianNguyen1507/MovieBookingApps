@@ -15,10 +15,12 @@ import 'package:movie_booking_app/pages/order/components/orderWidget.dart';
 import 'package:movie_booking_app/pages/order/components/voucherOrder.dart';
 import 'package:movie_booking_app/pages/payments/payment.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/getFoodById.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
+import 'package:provider/provider.dart';
 
 double newTotal = 0;
 double discount = 0;
@@ -265,9 +267,7 @@ Widget buildSelectionInfo(
                 Text('${AppLocalizations.of(context)!.seats}:',
                     style: AppStyle.bodyText1),
                 SizedBox(
-                  width: numberSeats > 10
-                      ? AppSize.width(context) * 0.6
-                      : null,
+                  width: numberSeats > 10 ? AppSize.width(context) * 0.6 : null,
                   child: Text(
                     selectedSeat,
                     style: AppStyle.paymentInfoText,
@@ -351,32 +351,60 @@ Widget buildMovieInfo(
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Text(
-                                    getMovie.title,
-                                    style: AppStyle.titleOrder,
-                                  ),
+                                  Consumer<ThemeProvider>(
+                                    builder: (context, value, child) {
+                                      return FutureBuilder(
+                                        future:
+                                            value.translateText(getMovie.title),
+                                        builder: (context, snapshot) {
+                                          final titleTrans =
+                                              snapshot.data ?? getMovie.title;
+                                          return Text(
+                                            titleTrans,
+                                            style: AppStyle.titleOrder,
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )
                                 ],
                               ),
+                              Consumer<ThemeProvider>(
+                                builder: (context, value, child) {
+                                  return FutureBuilder(
+                                    future: value.translateText(getMovie
+                                        .categories
+                                        .map((category) => category.name)
+                                        .join(', ')),
+                                    builder: (context, snapshot) {
+                                      final cateTrans = snapshot.data ??
+                                          getMovie.categories
+                                              .map((category) => category.name)
+                                              .join(', ');
+                                      return Text(
+                                        '${AppLocalizations.of(context)!.category}: $cateTrans',
+                                        style: AppStyle.smallText,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                               Text(
-                                'Categories: ${getMovie.categories.map((category) => category.name).join(', ')}',
+                                '${AppLocalizations.of(context)!.duration}: ${getMovie.duration.toString()} minutes',
                                 style: AppStyle.smallText,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                'Duration: ${getMovie.duration.toString()} minutes',
+                                '${AppLocalizations.of(context)!.country}: ${getMovie.country.toString()}',
                                 style: AppStyle.smallText,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                'Country: ${getMovie.country.toString()}',
-                                style: AppStyle.smallText,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                'Languge: ${getMovie.language.toString()}',
+                                '${AppLocalizations.of(context)!.language}: ${getMovie.language.toString()}',
                                 style: AppStyle.smallText,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

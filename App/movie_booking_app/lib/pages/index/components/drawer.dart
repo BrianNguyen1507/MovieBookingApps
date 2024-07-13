@@ -9,6 +9,7 @@ import 'package:movie_booking_app/provider/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/svgString.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BuildDrawer extends StatefulWidget {
   const BuildDrawer(BuildContext context, {super.key});
@@ -24,7 +25,7 @@ class _BuildDrawerState extends State<BuildDrawer> {
         Provider.of<ThemeProvider>(context).locale.languageCode == 'en';
 
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.containerColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -38,14 +39,14 @@ class _BuildDrawerState extends State<BuildDrawer> {
                 color: AppColors.containerColor,
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.white,
+                    color: AppColors.containerColor,
                   ),
                 ),
               ),
               child: Center(
                 child: Text(
                   'MOVIES BOOKING APP',
-                  style: AppStyle.bannerText,
+                  style: AppStyle.headline1,
                 ),
               ),
             ),
@@ -56,26 +57,43 @@ class _BuildDrawerState extends State<BuildDrawer> {
               padding: const EdgeInsets.all(10.0),
               physics: const BouncingScrollPhysics(),
               children: [
-                buttonDrawer(context, AppIcon.arrowR, 'Cinema',
-                    const IndexPage(initialIndex: 2)),
-                buttonDrawer(context, AppIcon.arrowR, 'Cinema',
-                    const IndexPage(initialIndex: 2)),
-                buttonDrawer(context, AppIcon.arrowR, 'Cinema',
+                buttonDrawer(
+                    context,
+                    SvgPicture.string(
+                      svgTv,
+                      height: 35,
+                    ),
+                    AppLocalizations.of(context)!.cinema,
+                    const IndexPage(initialIndex: 1)),
+                buttonDrawer(
+                    context,
+                    SvgPicture.string(
+                      drinks,
+                      height: 35,
+                    ),
+                    AppLocalizations.of(context)!.store,
+                    const IndexPage(initialIndex: 0)),
+                buttonDrawer(
+                    context,
+                    SvgPicture.string(
+                      personal,
+                      height: 35,
+                    ),
+                    AppLocalizations.of(context)!.personal,
                     const IndexPage(initialIndex: 2)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        const Icon(
-                          Icons.language,
-                          size: 20.0,
-                          color: AppColors.commonColor,
+                        SvgPicture.string(
+                          languge,
+                          height: 35,
                         ),
                         Container(
                           padding: const EdgeInsets.all(16.0),
-                          child: const Text(
-                            'Languages',
+                          child: Text(
+                            AppLocalizations.of(context)!.language,
                             style: AppStyle.bodyText1,
                           ),
                         ),

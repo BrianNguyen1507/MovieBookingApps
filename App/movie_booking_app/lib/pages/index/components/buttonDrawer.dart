@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 
 Widget buttonDrawer(
-    BuildContext context, IconData icon, String titleText, Widget pages) {
+    BuildContext context, SvgPicture icon, String titleText, Widget pages) {
   return GestureDetector(
     onTap: () {
       Navigator.push(
@@ -17,11 +18,7 @@ Widget buttonDrawer(
       width: double.infinity,
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 20.0,
-            color: AppColors.commonColor,
-          ),
+          icon,
           Container(
             padding: const EdgeInsets.all(16.0),
             child: Text(

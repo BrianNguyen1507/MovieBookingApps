@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Builditem.buildSliverList(context),
                   BuildButton.commonbutton(
                       context,
-                      'Log out',
+                      AppLocalizations.of(context)!.logout,
                       () => valid.showAlertCustom(
                           context,
                           'Are you sure to logout?',

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
 
 class GuestPage extends StatelessWidget {

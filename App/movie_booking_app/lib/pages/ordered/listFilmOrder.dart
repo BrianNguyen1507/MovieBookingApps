@@ -7,6 +7,7 @@ import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/ordered/detailOrderPage.dart';
 import 'package:movie_booking_app/services/Users/ordered/getAllFilmOrder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ListFilmOrder extends StatefulWidget {
   const ListFilmOrder({super.key});
@@ -25,11 +26,13 @@ class ListFilmOrderState extends State<ListFilmOrder> {
     futureFilmOrder = FilmOrder.getAllFilmOrder();
     super.initState();
   }
-@override
+
+  @override
   void setState(VoidCallback fn) {
-  futureFilmOrder = FilmOrder.getAllFilmOrder();
+    futureFilmOrder = FilmOrder.getAllFilmOrder();
     super.setState(fn);
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<OrderResponse>>(
@@ -133,13 +136,13 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(3.0),
-                                    child: Text("Movie: ${filmOrder.title}",
+                                    child: Text(filmOrder.title,
                                         style: AppStyle.bodyText1),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(3.0),
                                     child: Text(
-                                      "Date order: ${ConverterUnit.formatDMYhm(filmOrder.date!)}",
+                                      "${AppLocalizations.of(context)!.date_order}: ${ConverterUnit.formatDMYhm(filmOrder.date!)}",
                                       style: const TextStyle(
                                           fontSize: AppFontSize.small),
                                     ),
@@ -147,7 +150,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                   Padding(
                                     padding: const EdgeInsets.all(3.0),
                                     child: Text(
-                                      "Payment: ${filmOrder.paymentMethod}",
+                                      "${AppLocalizations.of(context)!.payment_med}: ${filmOrder.paymentMethod}",
                                       style: const TextStyle(
                                           fontSize: AppFontSize.small),
                                     ),

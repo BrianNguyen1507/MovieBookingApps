@@ -5,6 +5,7 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/pages/ordered/listOrdered.dart';
 import 'package:movie_booking_app/pages/profile/informationChoice.dart';
 import 'package:movie_booking_app/pages/vouchers/voucherAccountList.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Builditem {
   static Widget buildSliverList(BuildContext context) {
@@ -15,7 +16,7 @@ class Builditem {
             case 0:
               return buildListItem(
                 context,
-                text: 'Personal information',
+                text: AppLocalizations.of(context)!.personal_inf,
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -26,7 +27,7 @@ class Builditem {
             case 1:
               return buildListItem(
                 context,
-                text: 'My orders list',
+                text: AppLocalizations.of(context)!.my_orders,
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -37,7 +38,7 @@ class Builditem {
             case 2:
               return buildListItem(
                 context,
-                text: 'My vouchers list',
+                text: AppLocalizations.of(context)!.my_vouchers,
                 onPressed: () {
                   Navigator.push(
                       context,

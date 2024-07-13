@@ -18,6 +18,7 @@ class AppRoutes {
   static const String otp = '/otp';
   static const String listOrder = '/listOrder';
   static const String cinema = '/';
+
   static Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const SplashScreen(),
     homeScreen: (context) => const HomePage(),
@@ -31,6 +32,6 @@ class AppRoutes {
         ),
     shimmer: (context) => const ShimmerHomeLoading(),
     listOrder: (context) => const ListOrdered(),
-    cinema: (context) => const IndexPage(initialIndex: 1)
+    cinema: (context) => const IndexPage(initialIndex: 1),
   };
 }

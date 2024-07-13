@@ -8,11 +8,12 @@ import 'package:http/http.dart' as http;
 class SearchMovieService {
   static Future<List<Movie>> findAllMovieByKeyWord(String keyword) async {
     try {
-      
       final getURL = dotenv.env['SEARCH']!;
       final url = getURL + keyword;
-      final response = await http
-          .get(Uri.parse(url), headers: {"Content-Type": "application/json"});
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+      );
       dynamic result = json.decode(response.body);
       if (result["code"] != 1000) {
         return result["message"];

@@ -5,6 +5,7 @@ import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/ordered/detailOrderPage.dart';
 import 'package:movie_booking_app/services/Users/ordered/getAllFoodOrder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ListFoodOrder extends StatefulWidget {
   const ListFoodOrder({super.key});
@@ -23,11 +24,13 @@ class ListFoodOrderState extends State<ListFoodOrder> {
     futureFoodOrder = FoodOrderService.getAllFoodOrder();
     super.initState();
   }
-@override
+
+  @override
   void setState(VoidCallback fn) {
     futureFoodOrder = FoodOrderService.getAllFoodOrder();
     super.setState(fn);
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<OrderResponse>>(
@@ -49,9 +52,9 @@ class ListFoodOrderState extends State<ListFoodOrder> {
         } else {
           List<OrderResponse> foodOrders = snapshot.data!;
           return SizedBox(
-            height: foodOrders.length * 75,
+            height: foodOrders.length * 120,
             child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               itemCount: foodOrders.length,
               itemBuilder: (context, index) {
                 OrderResponse foodOder = foodOrders[index];
@@ -112,7 +115,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                               Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: Text(
-                                  "Date order: ${ConverterUnit.formatDMYhm(foodOder.date!)}",
+                                  "${AppLocalizations.of(context)!.date_order}: ${ConverterUnit.formatDMYhm(foodOder.date!)}",
                                   style: const TextStyle(
                                       fontSize: AppFontSize.small),
                                 ),
@@ -120,29 +123,30 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                               Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: Text(
-                                  "Payment: ${foodOder.paymentMethod}",
+                                  "${AppLocalizations.of(context)!.payment_med}:  ${foodOder.paymentMethod}",
                                   style: const TextStyle(
                                       fontSize: AppFontSize.small),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const SizedBox.shrink(),
-                              Text(
-                                foodOder.status,
-                                style: TextStyle(
-                                    fontSize: AppFontSize.small,
-                                    fontWeight: FontWeight.bold,
-                                    color: foodOder.status == "Unused"
-                                        ? AppColors.correctColor
-                                        : AppColors.errorColor),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    const SizedBox.shrink(),
+                                    Text(
+                                      foodOder.status,
+                                      style: TextStyle(
+                                          fontSize: AppFontSize.small,
+                                          fontWeight: FontWeight.bold,
+                                          color: foodOder.status == "Unused"
+                                              ? AppColors.correctColor
+                                              : AppColors.errorColor),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

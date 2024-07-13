@@ -9,13 +9,18 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/orderPage.dart';
+import 'package:movie_booking_app/pages/payments/components/payment_webview.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/order/createOrder/createOrderTickets.dart';
 import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:movie_booking_app/services/payments/VnPay/vnPayResponse.dart';
+import 'package:movie_booking_app/services/payments/VnPay/vnPayService.dart';
 import 'package:movie_booking_app/services/payments/ZaloPay/ZaloPayService.dart';
+import 'package:provider/provider.dart';
 
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
@@ -165,32 +170,67 @@ class _PaymentPageState extends State<PaymentPage> {
                                                       TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                              Text(
-                                                getMovie.title,
-                                                style: AppStyle.titleOrder,
-                                              ),
+                                              Consumer<ThemeProvider>(
+                                                builder:
+                                                    (context, provider, child) {
+                                                  return FutureBuilder(
+                                                      future: provider
+                                                          .translateText(
+                                                              getMovie.title),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        final titleTrans =
+                                                            snapshot.data ??
+                                                                getMovie.title;
+                                                        return Text(titleTrans,
+                                                            style: AppStyle
+                                                                .titleOrder);
+                                                      });
+                                                },
+                                              )
                                             ],
                                           ),
+                                          Consumer<ThemeProvider>(
+                                            builder: (context, value, child) {
+                                              return FutureBuilder(
+                                                future: value.translateText(
+                                                    getMovie
+                                                        .categories
+                                                        .map((category) =>
+                                                            category.name)
+                                                        .join(', ')),
+                                                builder: (context, snapshot) {
+                                                  final categoryTrans =
+                                                      snapshot.data ??
+                                                          getMovie.categories
+                                                              .map((category) =>
+                                                                  category.name)
+                                                              .join(', ');
+                                                  return Text(
+                                                    '${AppLocalizations.of(context)!.category}: $categoryTrans',
+                                                    style: AppStyle.smallText,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
                                           Text(
-                                            'Categories: ${getMovie.categories.map((category) => category.name).join(', ')}',
+                                            '${AppLocalizations.of(context)!.duration}: ${getMovie.duration.toString()} minutes',
                                             style: AppStyle.smallText,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            'Duration: ${getMovie.duration.toString()} minutes',
+                                            '${AppLocalizations.of(context)!.country}: ${getMovie.country.toString()}',
                                             style: AppStyle.smallText,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            'Country: ${getMovie.country.toString()}',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            'Languge: ${getMovie.language.toString()}',
+                                            '${AppLocalizations.of(context)!.language}: ${getMovie.language.toString()}',
                                             style: AppStyle.smallText,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
@@ -324,7 +364,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         payAmount,
                         widget.seats,
                         widget.foods,
-                        () {},
+                        () => handleVnPay(widget.visible, widget.seats,
+                            widget.foods, payAmount.toDouble(), 'VNPAY'),
                         'VNPAY',
                         'assets/images/VNPAY-logo.png'),
                   ],
@@ -361,32 +402,9 @@ class _PaymentPageState extends State<PaymentPage> {
                     .showMessage(context, zpTransToken, AppColors.errorColor);
               });
             } else {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Center(
-                    child: loadingData(context),
-                  );
-                },
-              );
-              final Set<String>? seatQuantity =
-                  visible ? ConverterUnit.convertStringToSet(seats!) : null;
-
-              final itemList = [
-                {
-                  "movie_item": seatQuantity,
-                  "foods_item": foods.length,
-                  "item_price": amount,
-                }
-              ];
-
-              var result = await createOrder(amount, itemList);
-              if (result != null && mounted) {
-                Navigator.pop(context);
-                zpTransToken = result.zptranstoken;
+              if (mounted) {
                 setState(() {
                   print('SUMTOTAL $sumtotal');
-                  zpTransToken = result.zptranstoken;
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => SizedBox(
@@ -452,6 +470,32 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
+  Future<void> handleVnPay(
+      bool visible,
+      String seats,
+      List<Map<String, dynamic>> foods,
+      double sumTotal,
+      String methodName) async {
+    String urlpath;
+    String paymentCode;
+    try {
+      final VnPayResponse result =
+          await Vnpayservice.vnPayCreateOrder(sumTotal.toInt());
+      urlpath = result.url;
+      paymentCode = result.paymentCode;
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentWebView(urlResponse: urlpath),
+          ),
+        );
+      }
+    } on PlatformException catch (e) {
+      throw Exception("Error: '${e.message}'.");
+    }
+  }
+
   Future<void> handleZaloPay(
       bool visible,
       String seats,
@@ -460,75 +504,91 @@ class _PaymentPageState extends State<PaymentPage> {
       String methodName) async {
     String response;
     String appTranId;
-    try {
-      final Map<dynamic, dynamic> result =
-          await platform.invokeMethod('payOrder', {"zptoken": zpTransToken});
+    final Set<String>? seatQuantity =
+        visible ? ConverterUnit.convertStringToSet(seats!) : null;
 
-      response = result['result'].toString();
-      appTranId = result['appTransID'] ?? '';
+    final itemList = [
+      {
+        "movie_item": seatQuantity,
+        "foods_item": foods.length,
+        "item_price": sumTotal.toInt(),
+      }
+    ];
 
-      if (mounted) {
-        setState(() {
-          payResult = response;
-        });
-        showDialog(
-          barrierDismissible: payResult == 'Payment Success' ? false : true,
-          context: (context),
-          builder: (context) => AlertDialog(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                payResult == 'Payment failed' || payResult == 'User Canceled'
-                    ? SvgPicture.string(
-                        svgError,
-                        height: 70,
-                        width: 70,
-                      )
-                    : SvgPicture.string(
-                        svgSuccess,
-                        height: 100,
-                        width: 100,
-                      ),
-                Text(
-                  payResult,
-                  style: AppStyle.bodyText1,
-                )
-              ],
+    var createOrderResult = await createOrder(sumTotal.toInt(), itemList);
+
+    if (createOrderResult != null) {
+      zpTransToken = createOrderResult.zptranstoken;
+
+      try {
+        final Map<dynamic, dynamic> paymentResult =
+            await platform.invokeMethod('payOrder', {"zptoken": zpTransToken});
+
+        response = paymentResult['result'].toString();
+        appTranId = paymentResult['appTransID'] ?? '';
+
+        if (mounted) {
+          setState(() {
+            payResult = response;
+          });
+          showDialog(
+            barrierDismissible: payResult == 'Payment Success' ? false : true,
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  payResult == 'Payment failed' || payResult == 'User Canceled'
+                      ? SvgPicture.string(
+                          svgError,
+                          height: 70,
+                          width: 70,
+                        )
+                      : SvgPicture.string(
+                          svgSuccess,
+                          height: 100,
+                          width: 100,
+                        ),
+                  Text(
+                    payResult,
+                    style: AppStyle.bodyText1,
+                  )
+                ],
+              ),
             ),
-          ),
-        );
+          );
 
-        if (payResult == 'Payment Success') {
-          dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
-          Set<String> seatfotmat = ConverterUnit.convertStringToSet(seats);
-          bool isReturn = false;
-          if (seats.isNotEmpty) {
-            isReturn =
-                await ReturnSeatService.returnSeat(scheduleId, seatfotmat);
-          }
-          if ((seats.isNotEmpty && isReturn) || seats.isEmpty) {
-            CreateOrderService.createOrderTicket(scheduleId!, voucherId,
-                methodName, appTranId, seats, foods, sumTotal);
-            Preferences().clearHoldSeats();
+          if (payResult == 'Payment Success') {
+            dynamic scheduleId =
+                visible ? await Preferences().getSchedule() : -1;
+            Set<String> seatFormat = ConverterUnit.convertStringToSet(seats);
+            bool isReturn = false;
+            if (seats.isNotEmpty) {
+              isReturn =
+                  await ReturnSeatService.returnSeat(scheduleId, seatFormat);
+            }
+            if ((seats.isNotEmpty && isReturn) || seats.isEmpty) {
+              CreateOrderService.createOrderTicket(scheduleId!, voucherId,
+                  methodName, appTranId, seats, foods, sumTotal);
+              Preferences().clearHoldSeats();
 
-            Future.delayed(
-              const Duration(seconds: 3),
-              () {
-                return Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/listOrder',
-                  ModalRoute.withName('/'),
-                );
-              },
-            );
+              Future.delayed(
+                const Duration(seconds: 3),
+                () {
+                  return Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/listOrder',
+                    ModalRoute.withName('/'),
+                  );
+                },
+              );
+            }
           }
         }
+      } on PlatformException catch (e) {
+        response = 'Payment failed';
+        throw Exception("Error: '${e.message}'.");
       }
-    } on PlatformException catch (e) {
-      response = 'Payment failed';
-      throw Exception("Error: '${e.message}'.");
     }
   }
 }
-//VN PAY
-
