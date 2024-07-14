@@ -12,19 +12,16 @@ $(document).ready(function () {
 
   $dateInput.on("change", async function () {
     const selectedDate = $dateInput.val();
-    sessionStorage.setItem("date",selectedDate);
+    sessionStorage.setItem("date", selectedDate);
     console.log(roomValue);
     if (roomValue != "none") {
-      await loadingTable(roomValue,selectedDate);
+      await loadingTable(roomValue, selectedDate);
     }
   });
 });
 
-export async function loadingTable(roomId,date){
-  const schedules = await getAllScheduleByRoomAndDate(
-    roomId,
-    date
-  );
+export async function loadingTable(roomId, date) {
+  const schedules = await getAllScheduleByRoomAndDate(roomId, date);
 
   const thead = document.querySelector("#schedule-table thead");
   const tbody = document.querySelector("#schedule-table tbody");
@@ -57,16 +54,15 @@ export async function loadingTable(roomId,date){
 
         for (let i = 0; i < 8; i++) {
           const emptyCell = document.createElement("td");
-          if(i==7){
+          if (i == 7) {
             emptyCell.classList.add("delete-zone");
             emptyCell.style.backgroundColor = "red";
             const image = document.createElement("img");
             image.classList.add("delete-zone");
             image.src = "img/trash_icon.png";
-            image.width=50;
+            image.width = 20;
             emptyCell.appendChild(image);
-          }
-          else{
+          } else {
             emptyCell.id = "col-" + i + "-row-" + indexRow;
             emptyCell.classList.add("drop-column");
           }
@@ -77,13 +73,13 @@ export async function loadingTable(roomId,date){
       const row = document.querySelector("#row-" + indexRow);
       const cell = row.children[indexColumn];
       if (cell) {
-        cell.setAttribute("data-id",movieSchedule.id);
+        cell.setAttribute("data-id", movieSchedule.id);
         cell.innerHTML =
           movieSchedule.timeStart +
           "<br> - " +
           movieSchedule.timeEnd +
           "<br>" +
-          truncateText(movieSchedule.film.title,20) +
+          truncateText(movieSchedule.film.title, 20) +
           "<br>" +
           movieSchedule.film.duration +
           " phút" +
@@ -95,7 +91,7 @@ export async function loadingTable(roomId,date){
     });
   });
 }
- 
+
 export function formatDate(dateString) {
   const parts = dateString.split("-");
   return `${parts[2]}/${parts[1]}/${parts[0]}`;
@@ -105,8 +101,3 @@ export function formatDateRequest(dateString) {
   const parts = dateString.split("/");
   return `${parts[2]}-${parts[1]}-${parts[0]}`;
 }
-
-
-
-
-
