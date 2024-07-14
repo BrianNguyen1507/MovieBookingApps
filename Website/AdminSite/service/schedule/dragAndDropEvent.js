@@ -60,8 +60,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const row = document.createElement("tr");
             row.id = "row-" + (tbody.children.length - 1);
             row.classList.add("drop-row");
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < 8; i++) {
               const cell = document.createElement("td");
+              if(i==7){
+                cell.classList.add("delete-zone");
+                cell.style.backgroundColor = "red";
+                const image = document.createElement("img");
+                image.classList.add("delete-zone");
+                image.src = "img/trash_icon.png";
+                image.width=50;
+                cell.appendChild(image);
+                row.appendChild(cell);
+                break;
+              }
               cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
               cell.classList.add("drop-column");
               if (i == getIndexColumn(cellId)) {
@@ -77,17 +88,28 @@ document.addEventListener("DOMContentLoaded", function () {
             const row = document.createElement("tr");
             row.classList.add("drop-row");
             row.id = "row-" + (tbody.children.length - 1);
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < 8; i++) {
               const cell = document.createElement("td");
-              cell.classList.add("drop-column");
-              cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
-              if (i == getIndexColumn(cellId)) {
-                cell.classList.add("draggable");
-                cell.setAttribute("draggable", "true");
-                cell.innerHTML = text;
-                cell.setAttribute("data-id", scheduleId);
+              if(i==7){
+                cell.classList.add("delete-zone");
+                cell.style.backgroundColor = "red";
+                const image = document.createElement("img");
+                image.classList.add("delete-zone");
+                image.src = "img/trash_icon.png";
+                image.width=50;
+                cell.appendChild(image);
+              }else{
+                cell.classList.add("drop-column");
+                cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
+                if (i == getIndexColumn(cellId)) {
+                  cell.classList.add("draggable");
+                  cell.setAttribute("draggable", "true");
+                  cell.innerHTML = text;
+                  cell.setAttribute("data-id", scheduleId);
+                }
               }
               row.appendChild(cell);
+              
             }
             tbody.appendChild(row);
           }
