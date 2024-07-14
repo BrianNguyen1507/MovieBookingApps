@@ -12,7 +12,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.Map;
 import java.util.Objects;
 
-@ControllerAdvice
+//@ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
     private static final String MIN_ATTRIBUTE = "min";

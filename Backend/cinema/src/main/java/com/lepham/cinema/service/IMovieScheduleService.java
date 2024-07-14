@@ -15,7 +15,7 @@ public interface IMovieScheduleService {
     List<ShowTimeResponse> getEstimateShowTimeRemaining(ShowTimesRequest request) throws ParseException;
 
     List<MovieScheduleResponse> autoSortSchedule(ShowTimesRequest request, long idRoom) throws ParseException;
-    List<MovieScheduleResponse> swapSchedule(long id, long idSwap);
+    boolean swapSchedule(long id, long idSwap,LocalDate date);
 
     MovieScheduleResponse updateSchedule(long id,long filmId);
 
@@ -29,5 +29,6 @@ public interface IMovieScheduleService {
     List<MovieScheduleDateResponse> getAllScheduleByRoomAndDate(long roomId, LocalDate dateStart);
 
     MovieScheduleResponse addSchedule(ScheduleRequest request);
+    void deleteSchedule(long id);
 
 }
