@@ -8,12 +8,23 @@ final loadingContent = SpinKitSquareCircle(
   itemBuilder: (BuildContext context, int index) {
     return const DecoratedBox(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
         color: AppColors.primaryColor,
       ),
     );
   },
 );
-
+final progressLoading = SpinKitThreeBounce(
+  size: 40.0,
+  itemBuilder: (BuildContext context, int index) {
+    return const DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+        color: AppColors.iconThemeColor,
+      ),
+    );
+  },
+);
 void showLoadingDialog(BuildContext context) {
   showDialog(
     context: context,

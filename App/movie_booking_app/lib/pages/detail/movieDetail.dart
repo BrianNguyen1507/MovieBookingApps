@@ -11,7 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/components/feedbackList.dart';
 import 'package:movie_booking_app/pages/detail/components/widgetComponents.dart';
-import 'package:movie_booking_app/pages/detail/trailerScreen.dart';
+import 'package:movie_booking_app/pages/detail/trailerScreen_webview.dart';
 import 'package:movie_booking_app/pages/selection/theaterSelection.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
@@ -50,6 +50,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return loadingData(context);
         } else {
           MovieDetail detail = snapshot.data!;
+          print(detail.trailer);
           movieName = detail.title;
           return Expanded(
               child: Container(
@@ -193,8 +194,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => VideoScreen(
-                                              videoUrl: detail.trailer),
+                                          builder: (context) => TrailerScreen(
+                                              urlResponse: (detail.trailer)),
                                         ),
                                       );
                                     },

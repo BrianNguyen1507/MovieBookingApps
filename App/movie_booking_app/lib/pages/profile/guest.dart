@@ -11,35 +11,9 @@ class GuestPage extends StatelessWidget {
       extendBody: true,
       body: CustomScrollView(
         slivers: <Widget>[
-          _buildSliverProfileBar(context),
           BuildButton.commonbutton(context, 'Continue Sign in or Sign up',
               () => _onPressSignIn(context)),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSliverProfileBar(BuildContext context) {
-    return SliverAppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: Colors.transparent,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
-          children: [
-            Container(
-              color: Colors.black,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
