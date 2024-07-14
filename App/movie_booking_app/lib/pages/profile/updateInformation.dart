@@ -227,7 +227,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const IndexPage(initialIndex: 3)));
+                                const IndexPage(initialIndex: 2)));
                   },
                   child: SizedBox(
                       width: AppSize.width(context) * 0.75,
