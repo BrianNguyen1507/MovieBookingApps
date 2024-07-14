@@ -51,12 +51,12 @@ public class MovieScheduleController {
                 .result(movieScheduleService.swapSchedule(id,idSwap,date))
                 .build();
     }
-    @PutMapping(value = "/updateSchedule")
-    APIResponse<MovieScheduleResponse> updateSchedule(@RequestParam("id") long id,@RequestParam("filmId") long filmId) {
-        return APIResponse.<MovieScheduleResponse>builder()
-                .result(movieScheduleService.updateSchedule(id,filmId))
-                .build();
-    }
+//    @PutMapping(value = "/updateSchedule")
+//    APIResponse<MovieScheduleResponse> updateSchedule(@RequestParam("id") long id,@RequestParam("filmId") long filmId) {
+//        return APIResponse.<MovieScheduleResponse>builder()
+//                .result(movieScheduleService.updateSchedule(id,filmId))
+//                .build();
+//    }
     @GetMapping(value = "/getAllScheduleMobile")
     APIResponse<ScheduleMobileResponse> getAllScheduleByTheaterAndFilm(@RequestParam("filmId") long filmId,
                                                                        @RequestParam("theaterId") long theaterId,
