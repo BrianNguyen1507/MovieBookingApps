@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public interface MovieScheduleRepository extends JpaRepository<MovieScheduleEnti
 
     @Query(value = "SELECT ms from MovieScheduleEntity ms inner join RoomEntity r on r.id = ms.room.id where Date( ms.timeStart) = ?2 and ms.room.id=?1")
     List<MovieScheduleEntity> findAllByRoomIdAndDateStart(long roomId, LocalDate date, Sort sort);
-
-
+    @Query(value = "SELECT ms from MovieScheduleEntity ms where Date( ms.timeStart) = ?1 and ms.timeStart > ?2")
+    List<MovieScheduleEntity> findAllByTimeStartAfter(LocalDate date, LocalDateTime time);
 
 }

@@ -44,13 +44,15 @@ public class MovieScheduleController {
                 .build();
     }
     @PutMapping(value = "/swapSchedule")
-    APIResponse<List<MovieScheduleResponse>> swapSchedule(@RequestParam("id") long id,@RequestParam("idSwap") long idSwap) throws ParseException {
-        return APIResponse.<List<MovieScheduleResponse>>builder()
-                .result(movieScheduleService.swapSchedule(id,idSwap))
+    APIResponse<? > swapSchedule(@RequestParam("id") long id,
+                                @RequestParam("idSwap") long idSwap,
+                                @RequestParam("date") LocalDate date){
+        return APIResponse.<Boolean>builder()
+                .result(movieScheduleService.swapSchedule(id,idSwap,date))
                 .build();
     }
     @PutMapping(value = "/updateSchedule")
-    APIResponse<MovieScheduleResponse> updateSchedule(@RequestParam("id") long id,@RequestParam("filmId") long filmId) throws ParseException {
+    APIResponse<MovieScheduleResponse> updateSchedule(@RequestParam("id") long id,@RequestParam("filmId") long filmId) {
         return APIResponse.<MovieScheduleResponse>builder()
                 .result(movieScheduleService.updateSchedule(id,filmId))
                 .build();
@@ -95,6 +97,13 @@ public class MovieScheduleController {
     APIResponse<MovieScheduleResponse> addSchedule(@RequestBody ScheduleRequest request){
         return APIResponse.<MovieScheduleResponse>builder()
                 .result(movieScheduleService.addSchedule(request))
+                .build();
+    }
+    @DeleteMapping("/deleteSchedule")
+    APIResponse<?> deleteSchedule(@RequestParam("id") long id){
+        movieScheduleService.deleteSchedule(id);
+        return APIResponse.builder()
+                .message("Delete successful")
                 .build();
     }
 }

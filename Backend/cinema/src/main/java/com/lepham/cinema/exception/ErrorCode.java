@@ -48,6 +48,7 @@ public enum ErrorCode {
     DUPLICATE_PASSWORD(1035,"New password must difference old password", HttpStatus.BAD_REQUEST),
     START_TIME_NOT_TODAY(1036,"Start time is not today", HttpStatus.BAD_REQUEST),
     ROOM_NOT_FOUND(1037,"Room not found",HttpStatus.BAD_REQUEST),
+    SCHEDULE_NOT_FOUND(1038,"Movie schedule not found",HttpStatus.BAD_REQUEST),
     ;
 
 
