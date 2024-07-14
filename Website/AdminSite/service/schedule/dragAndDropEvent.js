@@ -24,7 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const cellId = cell.id;
       const tbody = document.querySelector("#schedule-table tbody");
       const date = formatDateRequest(
-        document.querySelector("#col-" + getIndexColumn(cellId)+ "-row-add").textContent 
+        document.querySelector("#col-" + getIndexColumn(cellId) + "-row-add")
+          .textContent
       );
 
       if (draggedItem.getAttribute("data-id") == null) {
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const filmid = draggedItem.getAttribute("filmId");
         const roomId = draggedItem.getAttribute("roomId");
-       
+
         const checkAdd = await checkAddSchedule(roomId, filmid, date);
         const text = checkAdd[0];
         const scheduleId = checkAdd[1];
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 tbody.children[i].children[getIndexColumn(cellId)].innerHTML ==
                 ""
               ) {
-                const cell = document.querySelector("#row-" + (i)).children[
+                const cell = document.querySelector("#row-" + i).children[
                   getIndexColumn(cellId)
                 ];
                 cell.classList.add("draggable");
@@ -57,22 +58,22 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             }
             const row = document.createElement("tr");
-            row.id = "row-" + (tbody.children.length);
+            row.id = "row-" + tbody.children.length;
             row.classList.add("drop-row");
             for (let i = 0; i < 8; i++) {
               const cell = document.createElement("td");
-              if(i==7){
+              if (i == 7) {
                 cell.classList.add("delete-zone");
                 cell.style.backgroundColor = "red";
                 const image = document.createElement("img");
                 image.classList.add("delete-zone");
                 image.src = "img/trash_icon.png";
-                image.width=50;
+                image.width = 30;
                 cell.appendChild(image);
                 row.appendChild(cell);
                 break;
               }
-              cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
+              cell.id = "col-" + i + "-row-" + tbody.children.length;
               cell.classList.add("drop-column");
               if (i == getIndexColumn(cellId)) {
                 cell.classList.add("draggable");
@@ -86,20 +87,20 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             const row = document.createElement("tr");
             row.classList.add("drop-row");
-            row.id = "row-" + (tbody.children.length - 1);
+            row.id = "row-" + tbody.children.length;
             for (let i = 0; i < 8; i++) {
               const cell = document.createElement("td");
-              if(i==7){
+              if (i == 7) {
                 cell.classList.add("delete-zone");
                 cell.style.backgroundColor = "red";
                 const image = document.createElement("img");
                 image.classList.add("delete-zone");
                 image.src = "img/trash_icon.png";
-                image.width=50;
+                image.width = 50;
                 cell.appendChild(image);
-              }else{
+              } else {
                 cell.classList.add("drop-column");
-                cell.id = "col-" + i + "-row-" + (tbody.children.length);
+                cell.id = "col-" + i + "-row-" + tbody.children.length;
                 if (i == getIndexColumn(cellId)) {
                   cell.classList.add("draggable");
                   cell.setAttribute("draggable", "true");
@@ -108,31 +109,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               }
               row.appendChild(cell);
-              
             }
             tbody.appendChild(row);
           }
         }
       } else {
-        let idSwap =-1;
+        let idSwap = -1;
         if (cell.getAttribute("data-id") != null) {
-            idSwap = cell.getAttribute("data-id");
+          idSwap = cell.getAttribute("data-id");
         }
         const id = draggedItem.getAttribute("data-id");
         const result = await swapSchedule(id, idSwap, date);
-        
+
         if (result) {
           const dateTable = sessionStorage.getItem("date");
           const roomId = sessionStorage.getItem("roomId");
           loadingTable(roomId, dateTable);
         }
       }
-    }
-    else if (event.target.classList.contains("delete-zone")){
-      const id =draggedItem.getAttribute("data-id");
-      if(id!=null){
+    } else if (event.target.classList.contains("delete-zone")) {
+      const id = draggedItem.getAttribute("data-id");
+      if (id != null) {
         const result = await deleteSchedule(id);
-        if(result==1000){
+        if (result == 1000) {
           const dateTable = sessionStorage.getItem("date");
           const roomId = sessionStorage.getItem("roomId");
           loadingTable(roomId, dateTable);
@@ -140,13 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
-
-  document
-    .getElementById("delete-zone")
-    .addEventListener("drop", async function (event) {
-      event.preventDefault();
-      
-    });
 });
 
 function getIndexColumn(string) {

@@ -228,7 +228,6 @@ public class MovieScheduleService implements IMovieScheduleService {
             schedule = movieScheduleRepository.save(schedule);
             scheduleSwap.setFilm(filmSwap);
             scheduleSwap= movieScheduleRepository.save(scheduleSwap);
-            // Extract hour, day of year, and year
             if(Objects.equals(schedule.getTimeStart(),scheduleSwap.getTimeStart())){
 
                 List<MovieScheduleEntity> scheduleToday = movieScheduleRepository.findAllByRoomIdAndDateStart(

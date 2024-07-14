@@ -54,7 +54,7 @@ export async function loadingTable(roomId, date) {
             const image = document.createElement("img");
             image.classList.add("delete-zone");
             image.src = "img/trash_icon.png";
-            image.width = 20;
+            image.width = 30;
             emptyCell.appendChild(image);
           } else {
             emptyCell.id = "col-" + i + "-row-" + indexRow;
