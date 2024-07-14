@@ -24,13 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const cellId = cell.id;
       const tbody = document.querySelector("#schedule-table tbody");
       const date = formatDateRequest(
-        document.querySelector("#column-" + getIndexColumn(cellId)).children[0]
-          .textContent
+        document.querySelector("#col-" + getIndexColumn(cellId)+ "-row-add").textContent 
       );
 
       if (draggedItem.getAttribute("data-id") == null) {
         const existRow = document.querySelector(
-          "#row-" + (tbody.children.length - 2)
+          "#row-" + (tbody.children.length - 1)
         );
 
         const filmid = draggedItem.getAttribute("filmId");
@@ -41,13 +40,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const scheduleId = checkAdd[1];
         if (checkAdd != null) {
           if (existRow) {
-            for (let i = 1; i < tbody.children.length; i++) {
+            for (let i = 0; i < tbody.children.length; i++) {
               tbody.children[i].children[getIndexColumn(cellId)];
               if (
                 tbody.children[i].children[getIndexColumn(cellId)].innerHTML ==
                 ""
               ) {
-                const cell = document.querySelector("#row-" + (i - 1)).children[
+                const cell = document.querySelector("#row-" + (i)).children[
                   getIndexColumn(cellId)
                 ];
                 cell.classList.add("draggable");
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             }
             const row = document.createElement("tr");
-            row.id = "row-" + (tbody.children.length - 1);
+            row.id = "row-" + (tbody.children.length);
             row.classList.add("drop-row");
             for (let i = 0; i < 8; i++) {
               const cell = document.createElement("td");
@@ -100,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 cell.appendChild(image);
               }else{
                 cell.classList.add("drop-column");
-                cell.id = "col-" + i + "-row-" + (tbody.children.length - 1);
+                cell.id = "col-" + i + "-row-" + (tbody.children.length);
                 if (i == getIndexColumn(cellId)) {
                   cell.classList.add("draggable");
                   cell.setAttribute("draggable", "true");

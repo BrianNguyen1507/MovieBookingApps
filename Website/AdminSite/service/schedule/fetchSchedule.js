@@ -34,24 +34,18 @@ export async function loadingTable(roomId,date){
   row.classList.add("drop-row");
   row.heigh = 100;
   for (let i = 0; i < 7; i++) {
-    const cell = document.createElement("td");
+    const cell = document.createElement("th");
     cell.id = "col-" + i + "-row-add";
     cell.classList.add("drop-column");
-    cell.textContent = "Add";
     row.appendChild(cell);
   }
-  tbody.appendChild(row);
+  thead.appendChild(row);
 
   schedules.forEach((schedule, indexColumn) => {
-    const column = document.createElement("th");
-    column.id = "column-" + indexColumn;
-    const date = document.createElement("h5");
-    date.textContent = formatDate(schedule.date);
-    column.appendChild(date);
-    thead.appendChild(column);
-
+    const column = document.querySelector("#col-" + indexColumn + "-row-add");
+    column.textContent = formatDate(schedule.date);
     schedule.movieSchedule.forEach((movieSchedule, indexRow) => {
-      if (tbody.children.length - 1 == indexRow) {
+      if (tbody.children.length == indexRow) {
         const row = document.createElement("tr");
         row.id = "row-" + indexRow;
 
