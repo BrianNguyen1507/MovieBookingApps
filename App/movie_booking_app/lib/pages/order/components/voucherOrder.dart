@@ -45,135 +45,150 @@ class _VoucherOrderState extends State<VoucherOrder> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      decoration: const BoxDecoration(
-        color: AppColors.commonLightColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              iconColor: AppColors.backgroundColor,
-              elevation: 0.0,
-              padding: EdgeInsets.zero,
-              backgroundColor: AppColors.commonLightColor,
-            ),
-            onPressed: () => Navigator.pop(context),
-            child: Icon(AppIcon.close),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.8,
-            width: MediaQuery.of(context).size.width,
-            child: FutureBuilder(
-              future: voucherData,
-              builder: (context, AsyncSnapshot<List<Voucher>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: loadingContent);
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  final vouchers = snapshot.data!;
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5.0),
+              decoration: const BoxDecoration(
+                color: AppColors.commonLightColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    width: MediaQuery.of(context).size.width,
+                    child: FutureBuilder(
+                      future: voucherData,
+                      builder:
+                          (context, AsyncSnapshot<List<Voucher>> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: loadingContent);
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          final vouchers = snapshot.data!;
 
-                  return ListView.builder(
-                    itemCount: vouchers.length,
-                    itemBuilder: (context, index) {
-                      return Opacity(
-                        opacity: vouchers[index].allowed ? 1.0 : 0.5,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(
-                              () {
-                                if (vouchers[index].allowed) {
-                                  if (selectedVoucherIndex ==
-                                      vouchers[index].id) {
-                                    selectedVoucherIndex = null;
-                                  } else {
-                                    selectedVoucherIndex = vouchers[index].id;
-                                  }
-                                } else {
-                                  selectedVoucherIndex = null;
-                                }
-                              },
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              Card(
-                                child: SizedBox(
-                                  child: ListTile(
-                                    leading: SvgPicture.string(
-                                      svgVoucherCard,
-                                      height: 50,
-                                      width: 50,
-                                    ),
-                                    title: Text(
-                                      vouchers[index].title,
-                                      style: AppStyle.detailText,
-                                    ),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          vouchers[index].content,
-                                          style: AppStyle.smallText,
+                          return ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: vouchers.length,
+                            itemBuilder: (context, index) {
+                              return Opacity(
+                                opacity: vouchers[index].allowed ? 1.0 : 0.5,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        if (vouchers[index].allowed) {
+                                          if (selectedVoucherIndex ==
+                                              vouchers[index].id) {
+                                            selectedVoucherIndex = null;
+                                          } else {
+                                            selectedVoucherIndex =
+                                                vouchers[index].id;
+                                          }
+                                        } else {
+                                          selectedVoucherIndex = null;
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Card(
+                                        child: SizedBox(
+                                          child: ListTile(
+                                            leading: SvgPicture.string(
+                                              svgVoucherCard,
+                                              height: 50,
+                                              width: 50,
+                                            ),
+                                            title: Text(
+                                              vouchers[index].title,
+                                              style: AppStyle.detailText,
+                                            ),
+                                            subtitle: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  vouchers[index].content,
+                                                  style: AppStyle.smallText,
+                                                ),
+                                                Text(
+                                                  '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(vouchers[index].minLimit)}₫',
+                                                  style: AppStyle.smallText,
+                                                ),
+                                                Text(
+                                                  '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}',
+                                                  style: AppStyle.smallText,
+                                                ),
+                                                Text(
+                                                  '${AppLocalizations.of(context)!.date_expired}: ${vouchers[index].expired}',
+                                                  style: AppStyle.smallText,
+                                                ),
+                                              ],
+                                            ),
+                                            trailing: Checkbox(
+                                              activeColor:
+                                                  AppColors.primaryColor,
+                                              shape: const CircleBorder(),
+                                              value: selectedVoucherIndex ==
+                                                  vouchers[index].id,
+                                              onChanged: vouchers[index].allowed
+                                                  ? (bool? value) {
+                                                      setState(() {
+                                                        if (value!) {
+                                                          selectedVoucherIndex =
+                                                              vouchers[index]
+                                                                  .id;
+                                                        } else {
+                                                          selectedVoucherIndex =
+                                                              null;
+                                                        }
+                                                      });
+                                                    }
+                                                  : null,
+                                            ),
+                                          ),
                                         ),
-                                        Text(
-                                          '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(vouchers[index].minLimit)}₫',
-                                          style: AppStyle.smallText,
-                                        ),
-                                        Text(
-                                          '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}',
-                                          style: AppStyle.smallText,
-                                        ),
-                                        Text(
-                                          '${AppLocalizations.of(context)!.date_expired}: ${vouchers[index].expired}',
-                                          style: AppStyle.smallText,
-                                        ),
-                                      ],
-                                    ),
-                                    trailing: Checkbox(
-                                      activeColor: AppColors.primaryColor,
-                                      shape: const CircleBorder(),
-                                      value: selectedVoucherIndex ==
-                                          vouchers[index].id,
-                                      onChanged: vouchers[index].allowed
-                                          ? (bool? value) {
-                                              setState(() {
-                                                if (value!) {
-                                                  selectedVoucherIndex =
-                                                      vouchers[index].id;
-                                                } else {
-                                                  selectedVoucherIndex = null;
-                                                }
-                                              });
-                                            }
-                                          : null,
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
+                              );
+                            },
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  renderApplyVoucher(
+                      context, selectedVoucherIndex, widget.total),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child:
-                renderApplyVoucher(context, selectedVoucherIndex, widget.total),
-          )
-        ],
+            Positioned(
+              right: 10,
+              top: 10,
+              child: IconButton(
+                icon: Icon(AppIcon.close, color: AppColors.backgroundColor),
+                onPressed: () => Navigator.pop(context),
+                color: AppColors.commonDarkColor,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

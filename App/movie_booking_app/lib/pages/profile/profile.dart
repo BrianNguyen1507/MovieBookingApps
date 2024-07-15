@@ -10,6 +10,7 @@ import 'package:movie_booking_app/pages/profile/guest.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
+import 'package:movie_booking_app/services/Users/ordered/getOrderInfo.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,9 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   ValidInput valid = ValidInput();
+
+  int numMovies = 0;
+  int numReviews = 0;
   String? avatar;
   @override
   void initState() {
@@ -32,6 +36,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> getData() async {
     Preferences pref = Preferences();
     avatar = await pref.getAvatar();
+    int numberMovie = await GetOrderInfo.accountNumberMovieInfo();
+    int numberReview = await GetOrderInfo.accountNumberReviewInfo();
+    setState(() {
+      numReviews = numberReview;
+      numMovies = numberMovie;
+    });
   }
 
   @override
@@ -57,7 +67,8 @@ class _ProfilePageState extends State<ProfilePage> {
               extendBody: true,
               body: CustomScrollView(
                 slivers: <Widget>[
-                  _buildSliverProfileBar(context, snapshot.data),
+                  _buildSliverProfileBar(
+                      context, snapshot.data, numMovies, numReviews),
                   const SliverToBoxAdapter(
                     child: SizedBox(height: 50),
                   ),
@@ -80,7 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildSliverProfileBar(BuildContext context, String? userEmail) {
+  Widget _buildSliverProfileBar(BuildContext context, String? userEmail,
+      int? numberMovie, int? numberReview) {
     String? email = userEmail;
     return SliverAppBar(
       automaticallyImplyLeading: false,
@@ -167,9 +179,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     height: 30,
                                   ),
                                 ),
-                                const Text(
-                                  '0',
-                                  style: TextStyle(
+                                Text(
+                                  numberMovie.toString(),
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: AppFontSize.medium),
                                 ),
@@ -198,8 +210,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       width: 30,
                                       height: 30,
                                     )),
-                                const Text(
-                                  '0',
+                                Text(
+                                  numberReview.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: AppFontSize.medium),

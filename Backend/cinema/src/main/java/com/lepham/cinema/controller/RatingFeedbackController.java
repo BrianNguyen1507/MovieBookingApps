@@ -35,4 +35,11 @@ public class RatingFeedbackController {
             .result(ratingFeedBackService.getAllRatingFeedback(filmId))
             .build();
     }
+
+    @GetMapping(value = "/getNumberOfReviews")
+    APIResponse<Integer> getNumberOfReviews(){
+        return APIResponse.<Integer>builder()
+                .result(ratingFeedBackService.getNumberOfReviews())
+                .build();
+    }
 }

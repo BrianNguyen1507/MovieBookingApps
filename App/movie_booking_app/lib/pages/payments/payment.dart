@@ -9,7 +9,6 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/orderPage.dart';
-import 'package:movie_booking_app/pages/detail/trailerScreen_webview.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

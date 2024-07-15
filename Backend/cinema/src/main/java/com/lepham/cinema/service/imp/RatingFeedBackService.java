@@ -70,4 +70,15 @@ public class RatingFeedBackService implements IRatingFeedbackService {
         });
         return responseList;
     }
+
+    @Override
+    public int getNumberOfReviews() {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        return ratingFeedBackRepository.countAllByOrder_AccountVoucher_Account(account);
+    }
+
+
 }
