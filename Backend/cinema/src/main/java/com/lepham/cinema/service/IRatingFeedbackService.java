@@ -8,4 +8,6 @@ import java.util.List;
 public interface IRatingFeedbackService {
     RatingFeedbackResponse creatingRatingFeedback(RatingFeedbackRequest request, long orderId);
     List<RatingFeedbackResponse> getAllRatingFeedback(long id);
+
+    int getNumberOfReviews();
 }
