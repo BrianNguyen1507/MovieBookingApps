@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -95,11 +96,13 @@ public class OrderService implements IOrderService {
 
     @Override
     @PreAuthorize("hasRole('USER')")
+    @Transactional
     public OrderResponse order(OrderFilmRequest request) {
         OrderEntity order = orderConverter.toEntity(request);
         order.setSeat(null);
         if (request.getMovieScheduleId()!=-1){
             MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(request.getMovieScheduleId()).orElseThrow();
+            if(movieSchedule.getFilm().getActive()==ConstantVariable.FILM_STOP_RELEASE) throw new AppException(ErrorCode.FILM_NOT_FOUND);
             order.setMovieSchedule(movieSchedule);
             if (LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart()))
                 throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
