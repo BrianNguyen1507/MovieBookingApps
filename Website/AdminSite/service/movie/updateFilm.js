@@ -16,6 +16,7 @@ export async function updateMovie(id, movie) {
     });
 
     if (response.code !== 1000) {
+      console.log(response.message)
       return response.message;
     }
 

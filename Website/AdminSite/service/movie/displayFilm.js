@@ -69,7 +69,7 @@ export async function displayFilm(movies) {
     activeBtn.classList.add("btn", "btn-secondary", "more-details-btn");
     activeBtn.textContent = movie.active == 0 ? "Inactive" : "Active";
     activeBtn.addEventListener("click", () => {
-      activeFilm(movie.id);
+      activeFilm(movieData.id);
     });
 
     const btnContainer = document.createElement("div");
