@@ -17,13 +17,5 @@ export async function addSchedule(roomId, filmId, date) {
     body: body,
   });
   const responseData = await response.json();
-
-  if (response.status == 200) {
-    if (responseData.code == 1000) {
-      return responseData.result;
-    }
-  } else if (response.status == 400) {
-    console.log(responseData.message);
-    return null;
-  }
+  return responseData;
 }

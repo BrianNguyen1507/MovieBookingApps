@@ -79,12 +79,12 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse updateFilm(long id, FilmRequest request) {
-        if (filmRepository.findByTitle(request.getTitle()).isPresent())
+        if (filmRepository.findById(id).isEmpty()) throw new AppException(ErrorCode.FILM_NOT_FOUND);
+        if (filmRepository.findByTitleAndIdIsNot(request.getTitle(), id).isPresent())
             throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
-        FilmEntity entity = filmRepository.getReferenceById(id);
-        FilmEntity entityUpdate = filmConverter.toFilmEntity(request);
-        entityUpdate.setId(entity.getId());
-        return filmConverter.toFilmResponse(filmRepository.save(entityUpdate));
+        FilmEntity entity = filmConverter.toFilmEntity(request);
+        entity.setId(id);
+        return filmConverter.toFilmResponse(filmRepository.save(entity));
     }
 
     @Override

@@ -18,6 +18,7 @@ export async function fetchingSeclectionTheater() {
     const tbody = document.querySelector("#schedule-table tbody");
     thead.innerHTML = "";
     tbody.innerHTML = "";
+    sessionStorage.removeItem('roomId');
   });
 }
 fetchingSeclectionTheater();
