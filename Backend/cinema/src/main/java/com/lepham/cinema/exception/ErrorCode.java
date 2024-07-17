@@ -49,6 +49,8 @@ public enum ErrorCode {
     START_TIME_NOT_TODAY(1036,"Start time is not today", HttpStatus.BAD_REQUEST),
     ROOM_NOT_FOUND(1037,"Room not found",HttpStatus.BAD_REQUEST),
     SCHEDULE_NOT_FOUND(1038,"Movie schedule not found",HttpStatus.BAD_REQUEST),
+    FILM_NOT_RELEASE(1039,"The movie has not been released yet",HttpStatus.BAD_REQUEST),
+    DATE_AFTER_NOW(1040,"Date's schedule must after now 7 days",HttpStatus.BAD_REQUEST),
     ;
 
 

@@ -222,6 +222,8 @@ public class MovieScheduleService implements IMovieScheduleService {
                     .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
             MovieScheduleEntity scheduleSwap = movieScheduleRepository.findById(idSwap)
                     .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
+            if(!schedule.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
+            if(!scheduleSwap.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
             if(Objects.equals(schedule.getFilm(),scheduleSwap.getFilm())) return true;
             FilmEntity filmSwap = schedule.getFilm();
             schedule.setFilm(scheduleSwap.getFilm());
@@ -361,6 +363,8 @@ public class MovieScheduleService implements IMovieScheduleService {
                 .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
         RoomEntity room = roomRepository.findByIdAndHide(request.getRoomId(), false)
                 .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
+        if(film.getReleaseDate().isAfter(request.getDate())) throw  new AppException(ErrorCode.FILM_NOT_RELEASE);
+        if(!request.getDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
         List<MovieScheduleEntity> movieScheduleEntities = movieScheduleRepository
                 .findAllByRoomIdAndDateStart(request.getRoomId(), request.getDate(), Sort.by(Sort.Direction.ASC, "timeStart"));
         LocalTime time = LocalTime.of(8, 0);
@@ -387,7 +391,7 @@ public class MovieScheduleService implements IMovieScheduleService {
         MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
         LocalDateTime timeStart = movieSchedule.getTimeStart();
-
+        if(!movieSchedule.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
         movieScheduleRepository.delete(movieSchedule);
         List<MovieScheduleEntity> scheduleAfter = movieScheduleRepository.findAllByTimeStartAfter(timeStart.toLocalDate(),timeStart);
         scheduleAfter.forEach(schedule -> {

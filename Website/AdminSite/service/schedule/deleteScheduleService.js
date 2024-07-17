@@ -18,7 +18,6 @@ export async function deleteSchedule(id) {
       return responseData.code;
     }
   } else if (response.status == 400) {
-    console.log(responseData.message);
-    return null;
+    return responseData.message;
   }
 }

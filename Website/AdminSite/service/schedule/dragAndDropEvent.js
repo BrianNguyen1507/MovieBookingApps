@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         const filmid = draggedItem.getAttribute("filmId");
-        const roomId = draggedItem.getAttribute("roomId");
+        const roomId = sessionStorage.getItem("roomId");
 
         const checkAdd = await checkAddSchedule(roomId, filmid, date);
         const text = checkAdd[0];
@@ -119,22 +119,57 @@ document.addEventListener("DOMContentLoaded", function () {
           idSwap = cell.getAttribute("data-id");
         }
         const id = draggedItem.getAttribute("data-id");
-        const result = await swapSchedule(id, idSwap, date);
+        const response = await swapSchedule(id, idSwap, date);
 
-        if (result) {
+        if (response.code==1000) {
           const dateTable = sessionStorage.getItem("date");
           const roomId = sessionStorage.getItem("roomId");
-          loadingTable(roomId, dateTable);
+          Swal.fire({
+            title: "Success!",
+            text: "Swap schedule successful!",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            loadingTable(roomId, dateTable);
+          });
+          
+        }
+        else{
+          Swal.fire({
+            title: "Failed!",
+            text: response.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          }).then(() => {
+            
+          });
         }
       }
     } else if (event.target.classList.contains("delete-zone")) {
       const id = draggedItem.getAttribute("data-id");
       if (id != null) {
         const result = await deleteSchedule(id);
+        const dateTable = sessionStorage.getItem("date");
+        const roomId = sessionStorage.getItem("roomId");
         if (result == 1000) {
-          const dateTable = sessionStorage.getItem("date");
-          const roomId = sessionStorage.getItem("roomId");
-          loadingTable(roomId, dateTable);
+          Swal.fire({
+            title: "Success!",
+            text: "Delete schedule successful!",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            loadingTable(roomId, dateTable);
+          });
+         
+        } else {
+          Swal.fire({
+            title: "Failed!",
+            text: result,
+            icon: "error",
+            confirmButtonText: "OK",
+          }).then(() => {
+            
+          });
         }
       }
     }
@@ -147,8 +182,9 @@ function getIndexColumn(string) {
 }
 async function checkAddSchedule(roomId, filmId, date) {
   if (roomId != null || filmId != null) {
-    const schedule = await addSchedule(roomId, filmId, date);
-    if (schedule != null) {
+    const response = await addSchedule(roomId, filmId, date);
+    if (response.code == 1000) {
+      const schedule = response.result;
       return [
         (
           schedule.timeStart +
@@ -165,17 +201,17 @@ async function checkAddSchedule(roomId, filmId, date) {
         schedule.id,
       ];
     }
+    else{
+      Swal.fire({
+        title: "Failed!",
+        text: response.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      }).then(() => {
+        
+      });
+    }
   }
   return null;
 }
-function removeRow(parent, tbody) {
-  var count = 0;
-  for (let i = 0; i < parent.children.length; i++) {
-    if (parent.children[i].children.length == 0) {
-      count++;
-    }
-  }
-  if (count == parent.children.length) {
-    tbody.removeChild(parent);
-  }
-}
+
