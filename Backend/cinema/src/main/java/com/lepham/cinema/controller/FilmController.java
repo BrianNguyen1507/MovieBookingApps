@@ -53,7 +53,7 @@ public class FilmController {
     }
 
     @PutMapping(value = "/updateFilm")
-    APIResponse<FilmResponse> updateFilm(@RequestParam("id") long id, @RequestBody @Valid FilmRequest request) {
+    APIResponse<FilmResponse> updateFilm(@RequestParam("id") long id, @RequestBody FilmRequest request) {
         return APIResponse.<FilmResponse>builder()
                 .result(filmService.updateFilm(id, request))
                 .build();
