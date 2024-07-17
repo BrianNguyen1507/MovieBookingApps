@@ -122,6 +122,12 @@ public class FilmService implements IFilmService {
     }
 
     @Override
+    public List<FilmResponse> getAllListMovie() {
+        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide();
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
+    }
+
+    @Override
     @PreAuthorize("hasRole('ADMIN')")
     public int activeFilm(long id) {
         FilmEntity entity = filmRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));

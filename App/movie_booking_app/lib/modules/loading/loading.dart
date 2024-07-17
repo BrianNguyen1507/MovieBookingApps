@@ -20,7 +20,7 @@ final progressLoading = SpinKitThreeBounce(
     return const DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(100)),
-        color: AppColors.iconThemeColor,
+        color: AppColors.primaryColor,
       ),
     );
   },

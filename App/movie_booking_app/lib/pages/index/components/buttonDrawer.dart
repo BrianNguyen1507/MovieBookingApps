@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 
 Widget buttonDrawer(

@@ -19,5 +19,7 @@ public interface IFilmService {
     List<FilmResponse> getListMovieFuture();
     List<FilmResponse> getListMovieFutureByMonth(int month);
 
+    List<FilmResponse> getAllListMovie();
+
     int activeFilm(long id);
 }

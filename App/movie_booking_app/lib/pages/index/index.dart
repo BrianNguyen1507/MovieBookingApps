@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/index/components/bottomnav.dart';
 import 'package:movie_booking_app/pages/index/components/drawer.dart';
@@ -92,17 +91,19 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
             elevation: 0.0,
             backgroundColor: AppColors.backgroundColor,
             iconTheme: const IconThemeData(color: AppColors.iconThemeColor),
-            pinned: true,
+            pinned: false,
             floating: true,
             snap: true,
             flexibleSpace: const FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
             ),
+            title: Image.asset(
+              'assets/icons/ic_logo.png',
+              height: 70,
+              width: 70,
+            ),
+            centerTitle: true,
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(AppIcon.tickets),
-              ),
               IconButton(
                 onPressed: () {
                   Navigator.push(context,

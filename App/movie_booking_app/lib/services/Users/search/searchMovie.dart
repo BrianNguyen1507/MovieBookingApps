@@ -35,6 +35,7 @@ class SearchMovieService {
           categories: listCategory,
           poster: movieData['poster'],
           isRelease: movieData['release'],
+          trailer: movieData['trailer'],
         );
       }));
       return movies;

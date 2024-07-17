@@ -61,10 +61,8 @@ class MovieListingByMonth extends StatelessWidget {
                         height: isPortrait
                             ? monthsWithMovies.length *
                                 AppSize.height(context) /
-                                5
-                            : monthsWithMovies.length *
-                                AppSize.height(context) /
-                                2.5,
+                                3.5
+                            : monthsWithMovies.length * AppSize.height(context),
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +77,7 @@ class MovieListingByMonth extends StatelessWidget {
                                   : AppSize.height(context),
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                physics: const BouncingScrollPhysics(),
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 itemCount: movies.length,
                                 itemBuilder: (context, movieIndex) {
                                   final movie = movies[movieIndex];

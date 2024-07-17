@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class AppStyle {
+  static const TextStyle smallblackBold = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.superSmall,
+    fontWeight: FontWeight.bold,
+    color: Color.fromARGB(255, 0, 0, 0),
+  );
   static const TextStyle blackBold = TextStyle(
     fontFamily: 'Roboto',
     fontSize: AppFontSize.small,
@@ -68,7 +74,7 @@ class AppStyle {
 //home
   static const TextStyle titleMovie = TextStyle(
     fontFamily: 'Roboto',
-    fontSize: AppFontSize.lowMedium,
+    fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
@@ -186,5 +192,12 @@ class AppStyle {
     fontSize: AppFontSize.midlarge,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
+  );
+  static const TextStyle primaryBigText = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.midlarge,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primaryColor,
+    overflow: TextOverflow.ellipsis,
   );
 }

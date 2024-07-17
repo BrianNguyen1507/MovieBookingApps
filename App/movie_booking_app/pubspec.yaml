@@ -37,6 +37,7 @@ flutter:
   assets:
     - .env
     - assets/images/
+    - assets/images/banner/
     - assets/icons/
   fonts:
     - family: Roboto

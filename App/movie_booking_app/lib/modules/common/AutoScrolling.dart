@@ -72,12 +72,9 @@ class _AutoScrollingBannerState extends State<AutoScrollingBanner> {
 }
 
 final List<String> images = [
-  'assets/images/image.png',
-  'assets/images/image.png',
-  'assets/images/image.png',
-  'assets/images/image.png',
-  'assets/images/image.png',
-  'assets/images/image.png',
-  'assets/images/image.png',
+  'assets/images/banner/banner1.jpg',
+  'assets/images/banner/banner2.png',
+  'assets/images/banner/banner3.jpg',
+  'assets/images/banner/monthList.png',
   'assets/images/image.png',
 ];

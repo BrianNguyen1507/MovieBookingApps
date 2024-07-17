@@ -29,13 +29,13 @@ class _BuildDrawerState extends State<BuildDrawer> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            height: AppSize.height(context) / 10,
-            child: const DrawerHeader(
+          SizedBox(
+            height: AppSize.height(context) * 0.2,
+            child: DrawerHeader(
               padding: EdgeInsets.zero,
               margin: EdgeInsets.zero,
               curve: Curves.bounceOut,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.containerColor,
                 border: Border(
                   bottom: BorderSide(
@@ -44,9 +44,8 @@ class _BuildDrawerState extends State<BuildDrawer> {
                 ),
               ),
               child: Center(
-                child: Text(
-                  'MOVIES BOOKING APP',
-                  style: AppStyle.headline1,
+                child: Image.asset(
+                  'assets/icons/ic_logo.png',
                 ),
               ),
             ),
