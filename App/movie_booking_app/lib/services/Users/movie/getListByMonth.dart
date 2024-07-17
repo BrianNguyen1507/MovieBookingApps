@@ -12,7 +12,6 @@ class GetListByMonth {
     Map<int, List<Movie>> moviesByMonth = {};
     try {
       for (int month in months) {
-        
         final getURL = dotenv.env['GET_LIST_MONTH']!;
         final url = getURL;
         final response = await http.get(
@@ -43,6 +42,7 @@ class GetListByMonth {
                   categories: listCategory,
                   poster: movieData['poster'],
                   isRelease: movieData['release'],
+                  trailer: movieData['trailer'],
                 );
               },
             ),

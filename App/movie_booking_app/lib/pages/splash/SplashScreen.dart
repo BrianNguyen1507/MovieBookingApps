@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/constant/appdata.dart';
@@ -37,22 +39,22 @@ class _SplashScreenState extends State<SplashScreen>
             width: AppSize.width(context),
             height: AppSize.height(context),
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.blue,
-                  Color.fromARGB(255, 206, 31, 250),
-                ],
-              ),
+              color: AppColors.containerColor,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+              
                 Image.asset(
-                  'assets/icons/ic_launcher_adaptive_fore.png',
-                  width: 400,
-                  height: 400,
+                  'assets/icons/ic_logo.png',
+                  width: 350,
+                  height: 350,
                 ),
                 progressLoading,
+                const Text(
+                  'Please wait for the app to load...',
+                  style: AppStyle.titleOrder,
+                )
               ],
             ),
           ),

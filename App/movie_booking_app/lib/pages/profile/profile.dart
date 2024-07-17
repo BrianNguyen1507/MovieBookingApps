@@ -23,10 +23,13 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   ValidInput valid = ValidInput();
-
+  Preferences pref = Preferences();
   int numMovies = 0;
   int numReviews = 0;
   String? avatar;
+  String? userName;
+  dynamic token;
+  bool _dataFetched = false;
   @override
   void initState() {
     super.initState();
@@ -34,64 +37,59 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> getData() async {
-    Preferences pref = Preferences();
+    token = await pref.getTokenUsers();
+    if (token == null) {
+      setState(() {
+        _dataFetched = true;
+      });
+      return;
+    }
+    userName = await pref.getUserName();
     avatar = await pref.getAvatar();
     int numberMovie = await GetOrderInfo.accountNumberMovieInfo();
     int numberReview = await GetOrderInfo.accountNumberReviewInfo();
     setState(() {
       numReviews = numberReview;
       numMovies = numberMovie;
+      _dataFetched = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Preferences pref = Preferences();
-    return FutureBuilder<String?>(
-      future: pref.getUserName(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            extendBody: true,
-            body: Center(
-              child: loadingContent,
-            ),
-          );
-        } else {
-          if (snapshot.data == null) {
-            return const GuestPage();
-          } else {
-            return Scaffold(
-              backgroundColor: Colors.white,
-              extendBody: true,
-              body: CustomScrollView(
-                slivers: <Widget>[
-                  _buildSliverProfileBar(
-                      context, snapshot.data, numMovies, numReviews),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 50),
-                  ),
-                  Builditem.buildSliverList(context),
-                  BuildButton.commonbutton(
-                      context,
-                      AppLocalizations.of(context)!.logout,
-                      () => valid.showAlertCustom(
-                          context,
-                          'Are you sure to logout?',
-                          'Yes, logout',
-                          true,
-                          () => _onPressLogout(context))),
-                ],
-              ),
-            );
-          }
-        }
-      },
+    if (!_dataFetched) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: loadingContent,
+        ),
+      );
+    }
+    if (token == null) {
+      return const GuestPage();
+    }
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      extendBody: true,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          _buildSliverProfileBar(context, userName!, numMovies, numReviews),
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 50),
+          ),
+          Builditem.buildSliverList(context),
+          BuildButton.commonbutton(
+              context,
+              AppLocalizations.of(context)!.logout,
+              () => valid.showAlertCustom(context, 'Are you sure to logout?',
+                  'Yes, logout', true, () => _onPressLogout(context))),
+        ],
+      ),
     );
   }
 
-  Widget _buildSliverProfileBar(BuildContext context, String? userEmail,
+  Widget _buildSliverProfileBar(BuildContext context, String userEmail,
       int? numberMovie, int? numberReview) {
     String? email = userEmail;
     return SliverAppBar(
@@ -143,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    email!,
+                    email,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: AppFontSize.medium,
@@ -212,7 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     )),
                                 Text(
                                   numberReview.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: AppFontSize.medium),
                                 ),

@@ -17,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +51,7 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<FilmResponse> getAllFilm() {
-        List<FilmEntity> entities = filmRepository.findAllByHide(false, Sort.by(Sort.Direction.ASC,"active"));
+        List<FilmEntity> entities = filmRepository.findAllByHide(false, Sort.by(Sort.Direction.ASC, "active"));
         return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
     }
 
@@ -68,8 +67,9 @@ public class FilmService implements IFilmService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public FilmResponse addFilm(FilmRequest request)  {
-        if(filmRepository.findByTitle(request.getTitle()).isPresent()) throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
+    public FilmResponse addFilm(FilmRequest request) {
+        if (filmRepository.findByTitle(request.getTitle()).isPresent())
+            throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
         FilmEntity entity = filmConverter.toFilmEntity(request);
         entity.setHide(false);
         entity.setActive(ConstantVariable.FILM_RELEASE);
@@ -79,7 +79,8 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public FilmResponse updateFilm(long id, FilmRequest request) {
-        if(filmRepository.findByTitle(request.getTitle()).isPresent()) throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
+        if (filmRepository.findByTitle(request.getTitle()).isPresent())
+            throw new AppException(ErrorCode.FILM_NAME_DUPLICATE);
         FilmEntity entity = filmRepository.getReferenceById(id);
         FilmEntity entityUpdate = filmConverter.toFilmEntity(request);
         entityUpdate.setId(entity.getId());
@@ -121,13 +122,19 @@ public class FilmService implements IFilmService {
     }
 
     @Override
+    public List<FilmResponse> getAllListMovie() {
+        List<FilmEntity> entities = filmRepository.findAllByActiveAndHide();
+        return entities.stream().map(filmConverter::toFilmResponse).toList();
+    }
+
+    @Override
     @PreAuthorize("hasRole('ADMIN')")
     public int activeFilm(long id) {
         FilmEntity entity = filmRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
-        if(entity.getActive()==ConstantVariable.FILM_RELEASE) entity.setActive(ConstantVariable.FILM_STOP_RELEASE);
+        if (entity.getActive() == ConstantVariable.FILM_RELEASE) entity.setActive(ConstantVariable.FILM_STOP_RELEASE);
         else entity.setActive(ConstantVariable.FILM_RELEASE);
         entity = filmRepository.save(entity);
-        return  entity.getActive();
+        return entity.getActive();
     }
 
 }

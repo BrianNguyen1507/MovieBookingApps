@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/AppStyle.dart';
+import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/common/AutoScrolling.dart';
+import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/modules/loading/shimmer/shimmerloading.dart';
+import 'package:movie_booking_app/pages/home/components/buildList.dart';
 import 'package:movie_booking_app/pages/home/components/moviesList.dart';
 import 'package:movie_booking_app/services/Users/movie/getListByMonth.dart';
 import 'package:movie_booking_app/services/Users/movie/getListMovies.dart';
@@ -10,6 +14,7 @@ import 'package:movie_booking_app/services/Users/movie/getListMovies.dart';
 Future<List<Movie>>? movieRelease;
 Future<List<Movie>>? movieFuture;
 Future<Map<int, List<Movie>>>? movieByMonth;
+Future<List<Movie>>? movieList;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +36,8 @@ class _HomePageState extends State<HomePage> {
     movieRelease ??= MovieList.getListReleased();
     movieFuture ??= MovieList.getListFutured();
     movieByMonth ??= GetListByMonth.getListByMonth();
+    movieList ??= MovieList.getAllListMovie();
+
     setState(() {
       isLoading = false;
     });
@@ -57,6 +64,8 @@ class _HomePageState extends State<HomePage> {
                           _buildNowShowingSliver(context),
                           _buildComingSoonSliver(context),
                           _buildMovieListByMonthSliver(context),
+                          _buildItemsList(context),
+                          _buildvideosList(context, movieList!)
                         ],
                       ),
                     ],
@@ -87,6 +96,89 @@ class _HomePageState extends State<HomePage> {
     return SliverToBoxAdapter(
       child: MovieFutureByMonth(
         movieByMonth: movieByMonth!,
+      ),
+    );
+  }
+
+  Widget _buildItemsList(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        color: AppColors.containerColor,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Store',
+                textAlign: TextAlign.center,
+                style: AppStyle.headline1,
+              ),
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: AppSize.height(context) * 0.15,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ListMovie.buildItem(Icons.food_bank),
+                      ListMovie.buildItem(Icons.fastfood),
+                      ListMovie.buildItem(Icons.local_pizza),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildvideosList(BuildContext context, Future<List<Movie>> movies) {
+    return SliverToBoxAdapter(
+      child: Container(
+        color: AppColors.containerColor,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Video trailer',
+                textAlign: TextAlign.center,
+                style: AppStyle.headline1,
+              ),
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: AppSize.height(context) * 0.25,
+                  child: FutureBuilder(
+                    future: movies,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return loadingContent;
+                      } else if (snapshot.hasError) {
+                        return loadingContent;
+                      } else {
+                        final movies = snapshot.data!;
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: movies.length,
+                          itemBuilder: (context, index) {
+                            return ListMovie.buildVideo(context, movies[index]);
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

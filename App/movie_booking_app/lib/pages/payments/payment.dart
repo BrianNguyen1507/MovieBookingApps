@@ -504,7 +504,7 @@ class _PaymentPageState extends State<PaymentPage> {
     String response;
     String appTranId;
     final Set<String>? seatQuantity =
-        visible ? ConverterUnit.convertStringToSet(seats!) : null;
+        visible ? ConverterUnit.convertStringToSet(seats) : null;
 
     final itemList = [
       {

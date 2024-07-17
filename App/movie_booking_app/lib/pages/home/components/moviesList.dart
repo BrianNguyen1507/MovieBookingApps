@@ -5,6 +5,7 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/modules/common/AutoScrolling.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/home/components/buildList.dart';
 import 'package:movie_booking_app/pages/list/Listings.dart';
@@ -20,7 +21,7 @@ class NowShowingSection extends StatelessWidget {
     var isPortrait = orientation == Orientation.portrait;
     return Container(
       height:
-          isPortrait ? AppSize.height(context) / 2 : AppSize.height(context),
+          isPortrait ? AppSize.height(context) * 0.55 : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
         borderRadius: BorderRadius.only(
@@ -45,24 +46,37 @@ class NowShowingSection extends StatelessWidget {
                   ),
                 ),
               ),
-              TextButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MovieListings(
-                        listTitle: AppLocalizations.of(context)!.nowshowing,
-                        movies: movieRelease,
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: TextButton.icon(
+                  style: ButtonStyle(
+                    side: WidgetStateProperty.all<BorderSide>(
+                      BorderSide(
+                        color: AppColors.backgroundColor.withOpacity(0.4),
+                        width: 1,
                       ),
                     ),
-                  );
-                },
-                label: Text(AppLocalizations.of(context)!.seeAll,
-                    style: AppStyle.bodyText1),
-                iconAlignment: IconAlignment.end,
-                icon: Icon(
-                  color: AppColors.darktextColor,
-                  AppIcon.arrowR,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieListings(
+                          listTitle: AppLocalizations.of(context)!.nowshowing,
+                          movies: movieRelease,
+                        ),
+                      ),
+                    );
+                  },
+                  label: Text(
+                    AppLocalizations.of(context)!.seeAll,
+                    style: AppStyle.smallblackBold,
+                  ),
+                  icon: Icon(
+                    AppIcon.arrowR,
+                    color: AppColors.backgroundColor.withOpacity(0.4),
+                  ),
+                  iconAlignment: IconAlignment.end,
                 ),
               ),
             ],
@@ -87,7 +101,7 @@ class NowShowingSection extends StatelessWidget {
                       itemCount: films.length,
                       options: CarouselOptions(
                         scrollPhysics: const BouncingScrollPhysics(),
-                        aspectRatio: 16 / 20,
+                        aspectRatio: 16 / 30,
                         enableInfiniteScroll: true,
                         viewportFraction: 0.45,
                         initialPage: 0,
@@ -139,24 +153,37 @@ class ComingSoonSection extends StatelessWidget {
                   ),
                 ),
               ),
-              TextButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MovieListings(
-                        listTitle: AppLocalizations.of(context)!.comming,
-                        movies: movieFuture,
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: TextButton.icon(
+                  style: ButtonStyle(
+                    side: WidgetStateProperty.all<BorderSide>(
+                      BorderSide(
+                        color: AppColors.backgroundColor.withOpacity(0.4),
+                        width: 1,
                       ),
                     ),
-                  );
-                },
-                label: Text(AppLocalizations.of(context)!.seeAll,
-                    style: AppStyle.bodyText1),
-                iconAlignment: IconAlignment.end,
-                icon: Icon(
-                  color: AppColors.grayTextColor,
-                  AppIcon.arrowR,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieListings(
+                          listTitle: AppLocalizations.of(context)!.comming,
+                          movies: movieFuture,
+                        ),
+                      ),
+                    );
+                  },
+                  label: Text(
+                    AppLocalizations.of(context)!.seeAll,
+                    style: AppStyle.smallblackBold,
+                  ),
+                  icon: Icon(
+                    AppIcon.arrowR,
+                    color: AppColors.backgroundColor.withOpacity(0.4),
+                  ),
+                  iconAlignment: IconAlignment.end,
                 ),
               ),
             ],
@@ -204,25 +231,33 @@ class MovieFutureByMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          color: AppColors.containerColor,
-          child: GestureDetector(
+    return Container(
+      color: AppColors.containerColor,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              'Movies by month',
+              textAlign: TextAlign.center,
+              style: AppStyle.headline1,
+            ),
+          ),
+          GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => MovieListingByMonth(
-                      movies: movieByMonth,
-                      listTitle: 'Top Movies of the Month'),
+                      movies: movieByMonth, listTitle: 'Movies by month'),
                 ),
               );
             },
-            child: const Text('abc'),
+            child: const AutoScrollingBanner(),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

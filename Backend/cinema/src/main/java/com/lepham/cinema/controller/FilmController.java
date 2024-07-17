@@ -99,4 +99,12 @@ public class FilmController {
                 .message(filmService.activeFilm(id)== ConstantVariable.FILM_RELEASE?"Active successful":"Inactive successful")
                 .build();
     }
+    @GetMapping(value = "/getAllListMovie")
+    APIResponse<List<FilmResponse>>  getAllListMovie() {
+        return APIResponse.<List<FilmResponse>>builder()
+                .result(filmService.getAllListMovie())
+                .build();
+    }
+
+
 }

@@ -16,10 +16,10 @@ class BottomNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(0.3),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+      padding: const EdgeInsets.all(1.5),
+      decoration: const BoxDecoration(
+        color: AppColors.transpanrent,
+        borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
