@@ -178,38 +178,35 @@ class ListMovie {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(5.0),
         margin: const EdgeInsets.all(5.0),
-        decoration: BoxDecoration(
-          color: AppColors.commonLightColor,
-          borderRadius: BorderRadius.circular(12),
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(
-              children: [
-                SizedBox(
-                  child: Image.memory(
-                    ConverterUnit.base64ToUnit8(movie.poster),
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  height: 100,
-                  width: 100,
-                  color: AppColors.grayTextColor.withOpacity(0.2),
-                  child: Center(
-                    child: Icon(
-                      AppIcon.playCircle,
-                      color: AppColors.iconThemeColor,
-                      size: 50.0,
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              child: Stack(
+                children: [
+                  SizedBox(
+                    child: Image.memory(
+                      ConverterUnit.base64ToUnit8(movie.poster),
+                      height: 80,
+                      width: 150,
+                      fit: BoxFit.fitWidth,
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 80,
+                    width: 150,
+                    child: Center(
+                      child: Icon(
+                        AppIcon.playCircle,
+                        color: AppColors.iconThemeColor,
+                        size: 50.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               width: 100,
