@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                     } else {
                       final movies = snapshot.data!;
                       return SizedBox(
-                        height: movies.length * 30,
+                        height: movies.length * 20,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: movies.length,
