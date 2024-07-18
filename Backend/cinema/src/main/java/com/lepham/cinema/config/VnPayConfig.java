@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class VnPayConfig {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "http://webadmin/signin.html";
+    public static String vnp_ReturnUrl = "http://adminweb/signin.html";
 
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
     public static String hmacSHA512(final String key, final String data) {

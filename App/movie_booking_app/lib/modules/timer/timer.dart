@@ -9,7 +9,7 @@ class TimerController {
   static int remainingSeconds = 0;
 
   static dynamic timerHoldSeatStart(BuildContext context) {
-    const int durationInSeconds = 240;
+    const int durationInSeconds = 20;
     remainingSeconds = durationInSeconds;
 
     _timer = Timer(Duration(seconds: remainingSeconds), () {});

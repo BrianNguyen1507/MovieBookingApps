@@ -89,7 +89,9 @@ class _TrailerScreenState extends State<TrailerScreen> {
 
   String _getYouTubeEmbedUrl(String url) {
     final videoId = _extractYouTubeId(url);
-    return 'https://www.youtube.com/embed/$videoId?autoplay=1&modestbranding=1';
+    String embed =
+        'https://www.youtube.com/embed/$videoId?autoplay=1&modestbranding=1';
+    return embed;
   }
 
   String _extractYouTubeId(String url) {

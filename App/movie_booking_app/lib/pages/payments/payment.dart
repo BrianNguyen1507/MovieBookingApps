@@ -9,6 +9,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/orderPage.dart';
+import 'package:movie_booking_app/pages/payments/components/paymentsWidget.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -363,8 +364,14 @@ class _PaymentPageState extends State<PaymentPage> {
                         payAmount,
                         widget.seats,
                         widget.foods,
-                        () => handleVnPay(widget.visible, widget.seats,
-                            widget.foods, payAmount.toDouble(), 'VNPAY'),
+                        () => handleVnPay(
+                              widget.visible,
+                              'VNPAY',
+                              widget.seats,
+                              widget.foods,
+                              payAmount.toDouble(),
+                              'VNPAY',
+                            ),
                         'VNPAY',
                         'assets/images/VNPAY-logo.png'),
                   ],
@@ -471,28 +478,125 @@ class _PaymentPageState extends State<PaymentPage> {
 
   Future<void> handleVnPay(
       bool visible,
+      String payMethod,
       String seats,
       List<Map<String, dynamic>> foods,
       double sumTotal,
       String methodName) async {
     String urlpath;
-    String paymentCode;
+
     try {
       final VnPayResponse result =
           await Vnpayservice.vnPayCreateOrder(sumTotal.toInt());
       urlpath = result.url;
-      paymentCode = result.paymentCode;
+
       if (mounted) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => PaymentWebView(urlResponse: urlpath),
-        //   ),
-        // );
+        final returnData = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentWebview(url: urlpath),
+          ),
+        );
+
+        if (returnData != null) {
+          int? scheduleId = visible ? await Preferences().getSchedule() : -1;
+          String result = returnData['result'];
+          String tranCode = returnData['transaction'];
+          double amount = double.parse(returnData['amount']);
+
+          setState(() {
+            sumTotal = amount;
+          });
+
+          Set<String> seatFormat = ConverterUnit.convertStringToSet(seats);
+          bool isReturn = false;
+          if (seats.isNotEmpty) {
+            try {
+              isReturn =
+                  await ReturnSeatService.returnSeat(scheduleId!, seatFormat);
+            } catch (e) {
+              print('Error returning seats: $e');
+              showErrorDialog('Error returning seats');
+              return;
+            }
+          }
+
+          if ((seats.isNotEmpty && isReturn) ||
+              (seats.isEmpty && result == '00')) {
+            try {
+              await CreateOrderService.createOrderTicket(scheduleId!, voucherId,
+                  methodName, tranCode, seats, foods, sumTotal);
+              Preferences().clearHoldSeats();
+            } catch (e) {
+              print('Error creating order ticket: $e');
+              showErrorDialog('Error creating order ticket');
+              return;
+            }
+
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.string(
+                      svgSuccess,
+                      height: 70,
+                      width: 70,
+                    ),
+                    const Text(
+                      'SUCCESS',
+                      style: AppStyle.bodyText1,
+                    ),
+                  ],
+                ),
+              ),
+            );
+
+            await Future.delayed(const Duration(seconds: 3));
+            if (mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/listOrder',
+                ModalRoute.withName('/'),
+              );
+            }
+          } else {
+            showErrorDialog('Payment failed');
+          }
+        }
       }
     } on PlatformException catch (e) {
-      throw Exception("Error: '${e.message}'.");
+      print("PlatformException: ${e.message}");
+      showErrorDialog("Platform error: ${e.message}");
+    } catch (e) {
+      print("Exception: $e");
+      showErrorDialog("An unexpected error occurred");
     }
+  }
+
+  void showErrorDialog(String message) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.string(
+              svgError,
+              height: 70,
+              width: 70,
+            ),
+            Text(
+              message,
+              style: AppStyle.bodyText1,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> handleZaloPay(
