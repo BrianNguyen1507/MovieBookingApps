@@ -118,5 +118,8 @@
   "search_movie": "Tìm kiếm phim",
   "update": "Cập nhật",
   "new_pass": "Mật khẩu mới",
-  "re_pass": "Nhập lại mật khẩu mới"
+  "re_pass": "Nhập lại mật khẩu mới",
+  "movie_by_month": "Phim hay theo tháng",
+  "vid_trailer": "Video trailer",
+  "month":"Tháng"
 }

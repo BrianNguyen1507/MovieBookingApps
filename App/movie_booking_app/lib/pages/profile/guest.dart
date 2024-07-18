@@ -40,9 +40,9 @@ class GuestPage extends StatelessWidget {
                       children: [
                         Container(
                           decoration: const BoxDecoration(
-                              color: AppColors.backgroundColor,
+                              color: AppColors.iconThemeColor,
                               shape: BoxShape.circle),
-                          padding: const EdgeInsets.all(5.0),
+                          
                           child: ClipOval(
                               child: Image.asset(
                             'assets/images/avatarDefault.png',

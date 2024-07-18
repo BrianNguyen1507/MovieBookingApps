@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
@@ -208,8 +207,7 @@ class _StorePageState extends State<StorePage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          utf8.decode(
-                                              foodData[index].name.codeUnits),
+                                          foodData[index].name,
                                           style: AppStyle.bodyText1,
                                         ),
                                         Row(

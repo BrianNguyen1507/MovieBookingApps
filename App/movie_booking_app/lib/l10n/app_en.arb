@@ -119,5 +119,8 @@
   "search_movie": "Search movie",
   "update": "Update",
   "new_pass": "New password",
-  "re_pass": "Re-enter new password"
+  "re_pass": "Re-enter new password",
+  "movie_by_month": "Upcoming Movies by Month",
+  "vid_trailer": "Video trailer",
+  "month": "Month"
 }

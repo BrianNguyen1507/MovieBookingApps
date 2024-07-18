@@ -102,7 +102,7 @@ class _OrderPageState extends State<OrderPage> {
       ),
       backgroundColor: AppColors.backgroundColor,
       body: Container(
-        padding: const EdgeInsets.only(top: 10.0),
+        padding: const EdgeInsets.only(top: 20.0),
         decoration: const BoxDecoration(
             color: AppColors.commonLightColor,
             borderRadius: BorderRadius.all(Radius.circular(20.0))),
