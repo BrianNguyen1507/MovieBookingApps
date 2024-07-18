@@ -4,6 +4,7 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
@@ -128,24 +129,37 @@ class ListMovie {
     );
   }
 
-  static Widget buildItem(IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(5.0),
-      margin: const EdgeInsets.all(5.0),
-      decoration: const BoxDecoration(
-        color: Colors.yellow,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
+  static Widget buildItem(BuildContext context, Food food) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/foods');
+      },
       child: Container(
+        padding: const EdgeInsets.all(5.0),
+        margin: const EdgeInsets.all(5.0),
         decoration: const BoxDecoration(
-          color: Colors.red,
-          shape: BoxShape.circle,
+          color: AppColors.commonLightColor,
+          borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
-        child: Center(
-          child: Icon(
-            icon,
-            size: 50.0,
-          ),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: Image.memory(
+                ConverterUnit.base64ToUnit8(food.image),
+                height: 100,
+                width: 100,
+              ),
+            ),
+            SizedBox(
+              width: 100,
+              child: Text(
+                food.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -173,13 +187,29 @@ class ListMovie {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              child: Image.memory(
-                ConverterUnit.base64ToUnit8(movie.poster),
-                height: 100,
-                width: 100,
-                fit: BoxFit.fitHeight,
-              ),
+            Stack(
+              children: [
+                SizedBox(
+                  child: Image.memory(
+                    ConverterUnit.base64ToUnit8(movie.poster),
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  height: 100,
+                  width: 100,
+                  color: AppColors.grayTextColor.withOpacity(0.2),
+                  child: Center(
+                    child: Icon(
+                      AppIcon.playCircle,
+                      color: AppColors.iconThemeColor,
+                      size: 50.0,
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               width: 100,

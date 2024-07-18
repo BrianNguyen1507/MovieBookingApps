@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 class FoodService {
   static Future<List<Food>> getAllFood() async {
     try {
-      
       final getUrl = dotenv.env['GET_ALL_FOOD']!;
       final url = getUrl;
       final response = await http.get(
@@ -16,7 +15,7 @@ class FoodService {
         },
       );
       if (response.statusCode == 200) {
-        final result = jsonDecode(response.body);
+        final result = jsonDecode(utf8.decode(response.body.codeUnits));
         if (result['code'] != 1000) {
           return result['message'];
         }

@@ -6,6 +6,9 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class MovieListingByMonth extends StatelessWidget {
   const MovieListingByMonth({
@@ -68,12 +71,12 @@ class MovieListingByMonth extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Month ${month.toString()}',
+                              '${AppLocalizations.of(context)!.month} ${month.toString()}',
                               style: AppStyle.bodyText1,
                             ),
                             SizedBox(
                               height: isPortrait
-                                  ? AppSize.height(context) / 2
+                                  ? AppSize.height(context) * 0.5
                                   : AppSize.height(context),
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -92,7 +95,7 @@ class MovieListingByMonth extends StatelessWidget {
                                       );
                                     },
                                     child: Container(
-                                      width: AppSize.width(context) / 2.5,
+                                      width: AppSize.width(context) * 0.53,
                                       margin: const EdgeInsets.all(5.0),
                                       child: Column(
                                         crossAxisAlignment:
@@ -110,19 +113,48 @@ class MovieListingByMonth extends StatelessWidget {
                                             ),
                                           ),
                                           const SizedBox(height: 8),
-                                          Text(movie.title,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: AppStyle.titleMovie),
+                                          Consumer<ThemeProvider>(
+                                            builder: (context, value, child) {
+                                              return FutureBuilder(
+                                                future: value
+                                                    .translateText(movie.title),
+                                                builder: (context, snapshot) =>
+                                                    Text(
+                                                        snapshot.data ??
+                                                            movie.title,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: AppStyle
+                                                            .titleMovie),
+                                              );
+                                            },
+                                          ),
                                           const SizedBox(height: 4),
-                                          Text(
-                                              movie.categories
-                                                  .map((category) =>
-                                                      category.name)
-                                                  .join(', '),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: AppStyle.smallText),
+                                          Consumer<ThemeProvider>(
+                                            builder: (context, value, child) =>
+                                                FutureBuilder(
+                                              future: value.translateText(
+                                                movie.categories
+                                                    .map((category) =>
+                                                        category.name)
+                                                    .join(', '),
+                                              ),
+                                              builder: (context, snapshot) {
+                                                final catTrans =
+                                                    snapshot.data ??
+                                                        movie.categories
+                                                            .map((category) =>
+                                                                category.name)
+                                                            .join(', ');
+                                                return Text(catTrans,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: AppStyle.smallText);
+                                              },
+                                            ),
+                                          ),
                                           const SizedBox(height: 4),
                                           Container(
                                             padding: const EdgeInsets.symmetric(

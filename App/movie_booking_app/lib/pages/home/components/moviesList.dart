@@ -21,7 +21,7 @@ class NowShowingSection extends StatelessWidget {
     var isPortrait = orientation == Orientation.portrait;
     return Container(
       height:
-          isPortrait ? AppSize.height(context) * 0.55 : AppSize.height(context),
+          isPortrait ? AppSize.height(context) * 0.53 : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
         borderRadius: BorderRadius.only(
@@ -133,7 +133,7 @@ class ComingSoonSection extends StatelessWidget {
     var isPortrait = orientation == Orientation.portrait;
     return Container(
       height:
-          isPortrait ? AppSize.height(context) / 1.8 : AppSize.height(context),
+          isPortrait ? AppSize.height(context) * 0.53 : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
       ),
@@ -238,8 +238,8 @@ class MovieFutureByMonth extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10.0),
             alignment: Alignment.centerLeft,
-            child: const Text(
-              'Movies by month',
+            child: Text(
+              AppLocalizations.of(context)!.movie_by_month,
               textAlign: TextAlign.center,
               style: AppStyle.headline1,
             ),
@@ -250,7 +250,8 @@ class MovieFutureByMonth extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MovieListingByMonth(
-                      movies: movieByMonth, listTitle: 'Movies by month'),
+                      movies: movieByMonth,
+                      listTitle: AppLocalizations.of(context)!.movie_by_month),
                 ),
               );
             },
