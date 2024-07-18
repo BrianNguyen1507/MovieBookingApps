@@ -222,31 +222,35 @@ public class MovieScheduleService implements IMovieScheduleService {
                     .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
             MovieScheduleEntity scheduleSwap = movieScheduleRepository.findById(idSwap)
                     .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
-            if(!schedule.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
-            if(!scheduleSwap.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
-            if(Objects.equals(schedule.getFilm(),scheduleSwap.getFilm())) return true;
+            if (!schedule.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7))
+                    || !scheduleSwap.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7)))
+                throw new AppException(ErrorCode.DATE_AFTER_NOW);
+            if (schedule.getFilm().getReleaseDate().isAfter(scheduleSwap.getTimeStart().toLocalDate())
+                    || (scheduleSwap.getFilm().getReleaseDate().isAfter(schedule.getTimeStart().toLocalDate())))
+                throw new AppException(ErrorCode.FILM_NOT_RELEASE);
+            if (Objects.equals(schedule.getFilm(), scheduleSwap.getFilm())) return true;
             FilmEntity filmSwap = schedule.getFilm();
             schedule.setFilm(scheduleSwap.getFilm());
             schedule = movieScheduleRepository.save(schedule);
             scheduleSwap.setFilm(filmSwap);
-            scheduleSwap= movieScheduleRepository.save(scheduleSwap);
-            if(Objects.equals(schedule.getTimeStart(),scheduleSwap.getTimeStart())){
+            scheduleSwap = movieScheduleRepository.save(scheduleSwap);
+            if (Objects.equals(schedule.getTimeStart(), scheduleSwap.getTimeStart())) {
 
                 List<MovieScheduleEntity> scheduleToday = movieScheduleRepository.findAllByRoomIdAndDateStart(
                         schedule.getRoom().getId(),
                         schedule.getTimeStart().toLocalDate(),
-                        Sort.by(Sort.Direction.ASC,"timeStart"));
+                        Sort.by(Sort.Direction.ASC, "timeStart"));
 
                 generateScheduleByDate(scheduleToday);
-            }else{
+            } else {
                 List<MovieScheduleEntity> scheduleList = movieScheduleRepository.findAllByRoomIdAndDateStart(
                         schedule.getRoom().getId(),
                         schedule.getTimeStart().toLocalDate(),
-                        Sort.by(Sort.Direction.ASC,"timeStart"));
-                List<MovieScheduleEntity> scheduleSwapList= movieScheduleRepository.findAllByRoomIdAndDateStart(
+                        Sort.by(Sort.Direction.ASC, "timeStart"));
+                List<MovieScheduleEntity> scheduleSwapList = movieScheduleRepository.findAllByRoomIdAndDateStart(
                         scheduleSwap.getRoom().getId(),
                         scheduleSwap.getTimeStart().toLocalDate(),
-                        Sort.by(Sort.Direction.ASC,"timeStart"));
+                        Sort.by(Sort.Direction.ASC, "timeStart"));
                 generateScheduleByDate(scheduleList);
                 generateScheduleByDate(scheduleSwapList);
             }
@@ -310,6 +314,7 @@ public class MovieScheduleService implements IMovieScheduleService {
         schedule.setSeat(schedule.generateSeat(room.getRow(), room.getColumn()));
         return schedule;
     }
+
     @Override
     @PreAuthorize("hasRole('USER')")
     public void holeSeat(long id, String seat) {
@@ -363,8 +368,8 @@ public class MovieScheduleService implements IMovieScheduleService {
                 .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
         RoomEntity room = roomRepository.findByIdAndHide(request.getRoomId(), false)
                 .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
-        if(film.getReleaseDate().isAfter(request.getDate())) throw  new AppException(ErrorCode.FILM_NOT_RELEASE);
-        if(!request.getDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
+        if (film.getReleaseDate().isAfter(request.getDate())) throw new AppException(ErrorCode.FILM_NOT_RELEASE);
+        if (!request.getDate().isAfter(LocalDate.now().plusDays(7))) throw new AppException(ErrorCode.DATE_AFTER_NOW);
         List<MovieScheduleEntity> movieScheduleEntities = movieScheduleRepository
                 .findAllByRoomIdAndDateStart(request.getRoomId(), request.getDate(), Sort.by(Sort.Direction.ASC, "timeStart"));
         LocalTime time = LocalTime.of(8, 0);
@@ -391,9 +396,10 @@ public class MovieScheduleService implements IMovieScheduleService {
         MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
         LocalDateTime timeStart = movieSchedule.getTimeStart();
-        if(!movieSchedule.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7))) throw  new AppException(ErrorCode.DATE_AFTER_NOW);
+        if (!movieSchedule.getTimeStart().toLocalDate().isAfter(LocalDate.now().plusDays(7)))
+            throw new AppException(ErrorCode.DATE_AFTER_NOW);
         movieScheduleRepository.delete(movieSchedule);
-        List<MovieScheduleEntity> scheduleAfter = movieScheduleRepository.findAllByTimeStartAfter(timeStart.toLocalDate(),timeStart);
+        List<MovieScheduleEntity> scheduleAfter = movieScheduleRepository.findAllByTimeStartAfter(timeStart.toLocalDate(), timeStart);
         scheduleAfter.forEach(schedule -> {
             //Rounding duration
             int duration = durationRounding(schedule.getFilm().getDuration());
@@ -409,16 +415,18 @@ public class MovieScheduleService implements IMovieScheduleService {
                 (duration / 10) * 10 + 10 :
                 (duration / 10) * 10 + 15;
     }
-    private void generateScheduleByDate(List<MovieScheduleEntity> movieScheduleEntities){
-        LocalDateTime timeStart = movieScheduleEntities.getFirst().getTimeStart();;
-        for (MovieScheduleEntity movieSchedule : movieScheduleEntities){
+
+    private void generateScheduleByDate(List<MovieScheduleEntity> movieScheduleEntities) {
+        LocalDateTime timeStart = movieScheduleEntities.getFirst().getTimeStart();
+        ;
+        for (MovieScheduleEntity movieSchedule : movieScheduleEntities) {
             int duration = durationRounding(movieSchedule.getFilm().getDuration());
             movieSchedule.setTimeStart(timeStart);
             movieScheduleRepository.save(movieSchedule);
-            try{
+            try {
                 timeStart = timeStart.plusMinutes(duration);
-            }catch (Exception exception){
-                throw  new AppException(ErrorCode.START_TIME_NOT_TODAY);
+            } catch (Exception exception) {
+                throw new AppException(ErrorCode.START_TIME_NOT_TODAY);
             }
         }
     }

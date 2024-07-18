@@ -8,7 +8,6 @@ import 'package:movie_booking_app/models/schedule/schedule.dart';
 class ScheduleService {
   static Future<Schedule?> getAllSchedule(
       String date, int theaterId, int movieId) async {
-    
     final getURL = dotenv.env['GET_ALL_SCHEDULE_MOBILE']!;
     final url = getURL
         .replaceAll('{filmInput}', movieId.toString())
@@ -24,20 +23,23 @@ class ScheduleService {
       );
 
       final result = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        return null;
+      }
 
       if (result['code'] != 1000) {
         throw Exception(result['message'] ?? 'Unknown error');
       }
-
-      final scheduleData = result['result'];
-
-      if (scheduleData == null) {
+      dynamic scheduleData;
+      if (result['result'] != null) {
+        scheduleData = result['result'];
+      } else {
         return null;
       }
 
       return Schedule.fromJson(scheduleData);
     } catch (e) {
-      return null;
+      throw Exception('cant fetchign data schedule');
     }
   }
 }

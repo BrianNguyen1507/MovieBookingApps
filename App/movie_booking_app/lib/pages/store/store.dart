@@ -197,7 +197,7 @@ class _StorePageState extends State<StorePage> {
                                             foodData[index].image),
                                         height: 150,
                                         width: 100,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.fitHeight,
                                       ),
                                     ),
                                     Column(

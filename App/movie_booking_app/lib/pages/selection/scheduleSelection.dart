@@ -92,8 +92,8 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
                 } else if (snapshot.data == null) {
                   return scheduleInvalid(context);
                 } else {
-                  final scheduleSnapshot = snapshot.data!;
-                  return buildScheduleList(scheduleSnapshot, context,
+                  final scheduleSnapshot = snapshot.data;
+                  return buildScheduleList(scheduleSnapshot!, context,
                       widget.theaterName, widget.movieId, dateformated);
                 }
               },

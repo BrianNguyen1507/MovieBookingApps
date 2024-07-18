@@ -20,8 +20,9 @@ class NowShowingSection extends StatelessWidget {
     var orientation = MediaQuery.of(context).orientation;
     var isPortrait = orientation == Orientation.portrait;
     return Container(
-      height:
-          isPortrait ? AppSize.height(context) * 0.53 : AppSize.height(context),
+      height: isPortrait
+          ? AppSize.height(context) * 0.5333333333333333
+          : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
         borderRadius: BorderRadius.only(
@@ -133,7 +134,7 @@ class ComingSoonSection extends StatelessWidget {
     var isPortrait = orientation == Orientation.portrait;
     return Container(
       height:
-          isPortrait ? AppSize.height(context) * 0.53 : AppSize.height(context),
+          isPortrait ? AppSize.height(context) * 0.55 : AppSize.height(context),
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
       ),
@@ -208,7 +209,7 @@ class ComingSoonSection extends StatelessWidget {
                       itemCount: filmsFuture.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: ListMovie.buildListMovie(
                               context, filmsFuture[index]),
                         );

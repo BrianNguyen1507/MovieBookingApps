@@ -39,7 +39,7 @@ class ValidInput {
                 Padding(
                   padding: const EdgeInsets.only(left: 1.0),
                   child: SizedBox(
-                    width: AppSize.width(context) *0.7,
+                    width: AppSize.width(context) * 0.7,
                     child: Text(
                       message,
                       style: const TextStyle(
@@ -75,11 +75,11 @@ class ValidInput {
           actions: <Widget>[
             cancelButton!
                 ? TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
                 : const SizedBox.shrink(),
             TextButton(
               onPressed: onPress,
