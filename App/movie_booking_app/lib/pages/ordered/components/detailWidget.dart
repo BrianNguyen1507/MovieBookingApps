@@ -170,7 +170,7 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                             Container(
                               padding: const EdgeInsets.all(3.0),
                               child: Text(
-                                  AppLocalizations.of(context)!.showTime,
+                                  AppLocalizations.of(context)!.show_time,
                                   style: AppStyle.graySmallText),
                             ),
                             Row(

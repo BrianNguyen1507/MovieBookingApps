@@ -254,7 +254,7 @@ Widget buildSelectionInfo(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${AppLocalizations.of(context)!.showTime}:',
+                Text('${AppLocalizations.of(context)!.show_time}:',
                     style: AppStyle.bodyText1),
                 Text(
                     '${ConverterUnit.formatToDmY(selectedDate)} | $selectedSchedule',

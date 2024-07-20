@@ -63,7 +63,7 @@ public class AccountService implements IAccountService {
         if(!checkEmailValid(request.getEmail())) throw new AppException(ErrorCode.INVALID_EMAIL);
         if(checkEmailExists(request.getEmail())) throw new AppException(ErrorCode.EXISTS_EMAIL);
 
-        if(checkPasswordValid(request.getPassword())) throw new AppException(ErrorCode.PASSWORD_INVALID);
+        if(!checkPasswordValid(request.getPassword())) throw new AppException(ErrorCode.PASSWORD_INVALID);
         if(!checkPhoneValid(request.getPhoneNumber())) throw new AppException(ErrorCode.INVALID_PHONE);
 
         AccountEntity entity = accountConverter.toEntity(request);

@@ -38,7 +38,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: loadingContent,
+            child: loadingData(context),
           );
         } else if (snapshot.data == null) {
           return const Center(

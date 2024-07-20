@@ -8,119 +8,236 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/modules/common/AutoScrolling.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/home/components/buildList.dart';
+import 'package:movie_booking_app/pages/home/homePage.dart';
 import 'package:movie_booking_app/pages/list/Listings.dart';
 import 'package:movie_booking_app/pages/list/listingByMonth.dart';
+import 'package:movie_booking_app/provider/provider.dart';
+import 'package:provider/provider.dart';
 
-class NowShowingSection extends StatelessWidget {
+class NowShowingSection extends StatefulWidget {
   final Future<List<Movie>> movieRelease;
+
   const NowShowingSection({super.key, required this.movieRelease});
 
   @override
+  _NowShowingSectionState createState() => _NowShowingSectionState();
+}
+
+class _NowShowingSectionState extends State<NowShowingSection> {
+  late PageController _pageController;
+  late ValueNotifier<int> _currentPageNotifier;
+  late List<Movie> _films;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.8);
+    _currentPageNotifier = ValueNotifier<int>(0);
+    _films = [];
+    _loadMovies();
+  }
+
+  Future<void> _loadMovies() async {
+    try {
+      List<Movie> movies = await widget.movieRelease;
+      if (mounted) {
+        setState(() {
+          _films = movies;
+        });
+      }
+    } catch (error) {
+      print('Error loading movies: $error');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var orientation = MediaQuery.of(context).orientation;
-    var isPortrait = orientation == Orientation.portrait;
     return Container(
-      height: isPortrait
-          ? AppSize.height(context) * 0.5333333333333333
-          : AppSize.height(context),
-      decoration: const BoxDecoration(
-        color: AppColors.containerColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12),
-          topRight: Radius.circular(12),
+        height: MediaQuery.of(context).size.height * 0.50,
+        decoration: const BoxDecoration(
+          color: AppColors.containerColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(10.0),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    AppLocalizations.of(context)!.nowshowing,
-                    textAlign: TextAlign.center,
-                    style: AppStyle.headline1,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: TextButton.icon(
-                  style: ButtonStyle(
-                    side: WidgetStateProperty.all<BorderSide>(
-                      BorderSide(
-                        color: AppColors.backgroundColor.withOpacity(0.4),
-                        width: 1,
-                      ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(10.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      AppLocalizations.of(context)!.nowshowing,
+                      textAlign: TextAlign.center,
+                      style: AppStyle.headline1,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MovieListings(
-                          listTitle: AppLocalizations.of(context)!.nowshowing,
-                          movies: movieRelease,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: TextButton.icon(
+                    style: ButtonStyle(
+                      side: WidgetStateProperty.all<BorderSide>(
+                        BorderSide(
+                          color: AppColors.backgroundColor.withOpacity(0.4),
+                          width: 1,
                         ),
                       ),
-                    );
-                  },
-                  label: Text(
-                    AppLocalizations.of(context)!.seeAll,
-                    style: AppStyle.smallblackBold,
-                  ),
-                  icon: Icon(
-                    AppIcon.arrowR,
-                    color: AppColors.backgroundColor.withOpacity(0.4),
-                  ),
-                  iconAlignment: IconAlignment.end,
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: FutureBuilder<List<Movie>>(
-              future: movieRelease,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: loadingContent);
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: loadingContent);
-                } else {
-                  List<Movie> films = snapshot.data!;
-
-                  return SizedBox(
-                    height: AppSize.height(context),
-                    width: AppSize.width(context),
-                    child: CarouselSlider.builder(
-                      itemCount: films.length,
-                      options: CarouselOptions(
-                        scrollPhysics: const BouncingScrollPhysics(),
-                        aspectRatio: 16 / 30,
-                        enableInfiniteScroll: true,
-                        viewportFraction: 0.45,
-                        initialPage: 0,
-                        enlargeCenterPage: true,
-                        padEnds: true,
-                      ),
-                      itemBuilder: (BuildContext context, int index, _) {
-                        return ListMovie.buildListMovie(context, films[index]);
-                      },
                     ),
-                  );
-                }
-              },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieListings(
+                            listTitle: AppLocalizations.of(context)!.nowshowing,
+                            movies: movieRelease!,
+                          ),
+                        ),
+                      );
+                    },
+                    label: Text(
+                      AppLocalizations.of(context)!.seeAll,
+                      style: AppStyle.smallblackBold,
+                    ),
+                    icon: Icon(
+                      AppIcon.arrowR,
+                      color: AppColors.backgroundColor.withOpacity(0.4),
+                    ),
+                    iconAlignment: IconAlignment.end,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              child: _films.isEmpty
+                  ? loadingContent
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: _films.isEmpty
+                              ? loadingContent
+                              : Column(
+                                  children: [
+                                    Expanded(
+                                      child: CarouselSlider.builder(
+                                        itemCount: _films.length,
+                                        options: CarouselOptions(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.50,
+                                          viewportFraction: 0.50,
+                                          enableInfiniteScroll: true,
+                                          enlargeCenterPage: true,
+                                          onPageChanged: (index, reason) {
+                                            _currentPageNotifier.value = index;
+                                          },
+                                        ),
+                                        itemBuilder: (BuildContext context,
+                                            int index, int realIndex) {
+                                          return ListMovie.buildListMovie(
+                                            context,
+                                            _films[index],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                      child: Center(
+                                        child: ValueListenableBuilder<int>(
+                                          valueListenable: _currentPageNotifier,
+                                          builder: (context, value, child) {
+                                            return Consumer<ThemeProvider>(
+                                              builder:
+                                                  (context, provider, child) {
+                                                return FutureBuilder(
+                                                  future:
+                                                      provider.translateText(
+                                                          _films[value].title),
+                                                  builder: (context, snapshot) {
+                                                    return Text(
+                                                      snapshot.data ??
+                                                          _films[value].title,
+                                                      key: ValueKey<String>(
+                                                          _films[value].title),
+                                                      style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 120.0,
+                                      child: Center(
+                                        child: AnimatedSwitcher(
+                                          duration:
+                                              const Duration(milliseconds: 100),
+                                          child: ValueListenableBuilder<int>(
+                                            valueListenable:
+                                                _currentPageNotifier,
+                                            builder: (context, value, child) {
+                                              return Consumer<ThemeProvider>(
+                                                  builder: (context, provider,
+                                                      child) {
+                                                return FutureBuilder<String>(
+                                                  future:
+                                                      provider.translateText(
+                                                    _films[value]
+                                                        .categories
+                                                        .map((category) =>
+                                                            category.name)
+                                                        .join(', '),
+                                                  ),
+                                                  builder: (context, snapshot) {
+                                                    return Text(
+                                                      snapshot.data ??
+                                                          _films[value]
+                                                              .categories
+                                                              .map((category) =>
+                                                                  category.name)
+                                                              .join(', '),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: AppStyle.smallText,
+                                                    );
+                                                  },
+                                                );
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ],
+                    ),
+            ),
+          ],
+        ));
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _currentPageNotifier.dispose();
+    super.dispose();
   }
 }
 
@@ -130,11 +247,8 @@ class ComingSoonSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var orientation = MediaQuery.of(context).orientation;
-    var isPortrait = orientation == Orientation.portrait;
     return Container(
-      height:
-          isPortrait ? AppSize.height(context) * 0.55 : AppSize.height(context),
+      height: AppSize.height(context) * 0.55,
       decoration: const BoxDecoration(
         color: AppColors.containerColor,
       ),
@@ -201,20 +315,78 @@ class ComingSoonSection extends StatelessWidget {
                   return Center(child: loadingContent);
                 } else {
                   List<Movie> filmsFuture = snapshot.data!;
-                  return SizedBox(
-                    height: AppSize.height(context),
-                    width: AppSize.width(context),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: filmsFuture.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          padding: const EdgeInsets.all(5.0),
-                          child: ListMovie.buildListMovie(
-                              context, filmsFuture[index]),
-                        );
-                      },
-                    ),
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: AppSize.height(context) * 0.45,
+                        width: AppSize.width(context),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: filmsFuture.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: ListMovie.buildListMovie(
+                                      context, filmsFuture[index]),
+                                ),
+                                SizedBox(
+                                  child: Center(
+                                    child: Consumer<ThemeProvider>(
+                                      builder: (context, provider, child) {
+                                        return FutureBuilder<String>(
+                                          future: provider.translateText(
+                                              filmsFuture[index].title),
+                                          builder: (context, snapshot) {
+                                            return Text(
+                                              snapshot.data ??
+                                                  filmsFuture[index].title,
+                                              maxLines: 2,
+                                              style: AppStyle.titleMovie,
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  child: Center(
+                                    child: Consumer<ThemeProvider>(
+                                      builder: (context, provider, child) {
+                                        return FutureBuilder<String>(
+                                          future: provider.translateText(
+                                            filmsFuture[index]
+                                                .categories
+                                                .map(
+                                                    (category) => category.name)
+                                                .join(', '),
+                                          ),
+                                          builder: (context, snapshot) {
+                                            return Text(
+                                              snapshot.data ??
+                                                  filmsFuture[index]
+                                                      .categories
+                                                      .map((category) =>
+                                                          category.name)
+                                                      .join(', '),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppStyle.smallText,
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 }
               },
