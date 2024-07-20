@@ -48,22 +48,19 @@ class _ProfilePageState extends State<ProfilePage> {
     avatar = await pref.getAvatar();
     int numberMovie = await GetOrderInfo.accountNumberMovieInfo();
     int numberReview = await GetOrderInfo.accountNumberReviewInfo();
-    setState(() {
-      numReviews = numberReview;
-      numMovies = numberMovie;
-      _dataFetched = true;
-    });
+    if (mounted) {
+      setState(() {
+        numReviews = numberReview;
+        numMovies = numberMovie;
+        _dataFetched = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     if (!_dataFetched) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: loadingContent,
-        ),
-      );
+      return loadingData(context);
     }
     if (token == null) {
       return const GuestPage();

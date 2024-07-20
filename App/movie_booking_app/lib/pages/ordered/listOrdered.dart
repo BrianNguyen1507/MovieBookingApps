@@ -21,6 +21,7 @@ class ListOrderedState extends State<ListOrdered> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.containerColor,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.my_orders),
         backgroundColor: AppColors.appbarColor,

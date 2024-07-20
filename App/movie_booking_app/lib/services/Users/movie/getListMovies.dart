@@ -97,7 +97,6 @@ class MovieList {
   static Future<List<Movie>> getAllListMovie() async {
     try {
       final getUri = dotenv.env['GET_ALL_LIST_MOVIE']!;
-      print(getUri);
       final response = await http.get(
         Uri.parse(getUri),
         headers: {

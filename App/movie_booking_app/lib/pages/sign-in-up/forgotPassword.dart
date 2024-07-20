@@ -66,7 +66,7 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                     onPressed: () async {
                       String email = "";
                       setState(() {
-                        email = emailController.text.trim();
+                        email = emailController.text;
                       });
                       try {
                         showLoadingDialog(context);

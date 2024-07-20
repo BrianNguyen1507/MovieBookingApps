@@ -13,12 +13,12 @@ class HandleSignupState {
   Future<void> validSignUp(BuildContext context, String email, String password,
       String name, String gender, String phone, String dob) async {
     final user = User(
-        email: email.trim(),
-        password: password.trim(),
-        fullName: name.trim(),
+        email: email,
+        password: password,
+        fullName: name,
         gender: gender,
-        phoneNumber: phone.trim(),
-        dayOfBirth: dob.trim());
+        phoneNumber: phone,
+        dayOfBirth: dob);
 
     showLoadingDialog(context);
     final result = await SignUpService.signup(user);

@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/order/orderPage.dart';
 import 'package:movie_booking_app/pages/payments/components/paymentsWidget.dart';
+import 'package:movie_booking_app/pages/payments/handlePayments/handlePayments.dart';
 import 'package:movie_booking_app/provider/provider.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
-import 'package:movie_booking_app/services/Users/order/createOrder/createOrderTickets.dart';
-import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:movie_booking_app/services/payments/VnPay/vnPayResponse.dart';
 import 'package:movie_booking_app/services/payments/VnPay/vnPayService.dart';
@@ -49,8 +46,6 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  static const MethodChannel platform =
-      MethodChannel('flutter.native/channelPayOrder');
   late Future<MovieDetail> movieData;
 
   String zpTransToken = "";
@@ -283,7 +278,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('${AppLocalizations.of(context)!.showTime}:',
+                              Text(
+                                  '${AppLocalizations.of(context)!.show_time}:',
                                   style: AppStyle.bodyText1),
                               Text(
                                   '${ConverterUnit.formatToDmY(
@@ -355,7 +351,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         payAmount,
                         widget.seats,
                         widget.foods,
-                        () => handleZaloPay(widget.visible, widget.seats,
+                        () => zaloPayFuction(widget.visible, widget.seats,
                             widget.foods, payAmount.toDouble(), 'ZALOPAY'),
                         'ZALOPAY',
                         'assets/images/ZaloPay-vuong.png'),
@@ -364,7 +360,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         payAmount,
                         widget.seats,
                         widget.foods,
-                        () => handleVnPay(
+                        () => vnPayFunction(
                               widget.visible,
                               'VNPAY',
                               widget.seats,
@@ -384,7 +380,6 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-//ZALO PAY
   Widget paymentCardWidget(
     bool visible,
     int sumtotal,
@@ -476,7 +471,7 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  Future<void> handleVnPay(
+  Future<void> vnPayFunction(
       bool visible,
       String payMethod,
       String seats,
@@ -499,107 +494,22 @@ class _PaymentPageState extends State<PaymentPage> {
         );
 
         if (returnData != null) {
-          int? scheduleId = visible ? await Preferences().getSchedule() : -1;
-          String result = returnData['result'];
           String tranCode = returnData['transaction'];
-          double amount = double.parse(returnData['amount']);
-
-          setState(() {
-            sumTotal = amount;
-          });
-
-          Set<String> seatFormat = ConverterUnit.convertStringToSet(seats);
-          bool isReturn = false;
-          if (seats.isNotEmpty) {
-            try {
-              isReturn =
-                  await ReturnSeatService.returnSeat(scheduleId!, seatFormat);
-            } catch (e) {
-              print('Error returning seats: $e');
-              showErrorDialog('Error returning seats');
-              return;
-            }
-          }
-
-          if ((seats.isNotEmpty && isReturn) ||
-              (seats.isEmpty && result == '00')) {
-            try {
-              await CreateOrderService.createOrderTicket(scheduleId!, voucherId,
-                  methodName, tranCode, seats, foods, sumTotal);
-              Preferences().clearHoldSeats();
-            } catch (e) {
-              print('Error creating order ticket: $e');
-              showErrorDialog('Error creating order ticket');
-              return;
-            }
-
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.string(
-                      svgSuccess,
-                      height: 70,
-                      width: 70,
-                    ),
-                    const Text(
-                      'SUCCESS',
-                      style: AppStyle.bodyText1,
-                    ),
-                  ],
-                ),
-              ),
-            );
-
-            await Future.delayed(const Duration(seconds: 3));
-            if (mounted) {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/listOrder',
-                ModalRoute.withName('/'),
-              );
-            }
-          } else {
-            showErrorDialog('Payment failed');
-          }
+          sumTotal = double.parse(returnData['amount']);
+          Handlepayments.handlePaymentSuccess(context, visible, seats,
+              voucherId, methodName, tranCode, foods, sumTotal);
+        } else {
+          Handlepayments.handlePaymentFail(context);
         }
       }
     } on PlatformException catch (e) {
       print("PlatformException: ${e.message}");
-      showErrorDialog("Platform error: ${e.message}");
     } catch (e) {
       print("Exception: $e");
-      showErrorDialog("An unexpected error occurred");
     }
   }
 
-  void showErrorDialog(String message) {
-    showDialog(
-      barrierDismissible: true,
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.string(
-              svgError,
-              height: 70,
-              width: 70,
-            ),
-            Text(
-              message,
-              style: AppStyle.bodyText1,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> handleZaloPay(
+  Future<void> zaloPayFuction(
       bool visible,
       String seats,
       List<Map<String, dynamic>> foods,
@@ -607,90 +517,34 @@ class _PaymentPageState extends State<PaymentPage> {
       String methodName) async {
     String response;
     String appTranId;
-    final Set<String>? seatQuantity =
-        visible ? ConverterUnit.convertStringToSet(seats) : null;
 
-    final itemList = [
-      {
-        "movie_item": seatQuantity,
-        "foods_item": foods.length,
-        "item_price": sumTotal.toInt(),
-      }
-    ];
-
-    var createOrderResult = await createOrder(sumTotal.toInt(), itemList);
+//create order zalopay
+    var createOrderResult = await createOrder(sumTotal.toInt());
 
     if (createOrderResult != null) {
       zpTransToken = createOrderResult.zptranstoken;
 
       try {
+//call invoke apptoapp
         final Map<dynamic, dynamic> paymentResult =
-            await platform.invokeMethod('payOrder', {"zptoken": zpTransToken});
+            await Handlepayments.handleZaloPay(zpTransToken);
 
         response = paymentResult['result'].toString();
         appTranId = paymentResult['appTransID'] ?? '';
 
         if (mounted) {
-          setState(() {
-            payResult = response;
-          });
-          showDialog(
-            barrierDismissible: payResult == 'Payment Success' ? false : true,
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  payResult == 'Payment failed' || payResult == 'User Canceled'
-                      ? SvgPicture.string(
-                          svgError,
-                          height: 70,
-                          width: 70,
-                        )
-                      : SvgPicture.string(
-                          svgSuccess,
-                          height: 100,
-                          width: 100,
-                        ),
-                  Text(
-                    payResult,
-                    style: AppStyle.bodyText1,
-                  )
-                ],
-              ),
-            ),
-          );
-
-          if (payResult == 'Payment Success') {
-            dynamic scheduleId =
-                visible ? await Preferences().getSchedule() : -1;
-            Set<String> seatFormat = ConverterUnit.convertStringToSet(seats);
-            bool isReturn = false;
-            if (seats.isNotEmpty) {
-              isReturn =
-                  await ReturnSeatService.returnSeat(scheduleId, seatFormat);
-            }
-            if ((seats.isNotEmpty && isReturn) || seats.isEmpty) {
-              CreateOrderService.createOrderTicket(scheduleId!, voucherId,
-                  methodName, appTranId, seats, foods, sumTotal);
-              Preferences().clearHoldSeats();
-
-              Future.delayed(
-                const Duration(seconds: 3),
-                () {
-                  return Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/listOrder',
-                    ModalRoute.withName('/'),
-                  );
-                },
-              );
-            }
+          if (response == 'Payment failed' || response == 'User Canceled') {
+            Handlepayments.handlePaymentFail(context);
+            return;
+          }
+          if (response == 'Payment Success') {
+            return Handlepayments.handlePaymentSuccess(context, visible, seats,
+                voucherId, methodName, appTranId, foods, sumTotal);
           }
         }
       } on PlatformException catch (e) {
         response = 'Payment failed';
-        throw Exception("Error: '${e.message}'.");
+        print("PlatformException: ${e.message}");
       }
     }
   }

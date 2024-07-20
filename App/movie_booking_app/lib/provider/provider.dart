@@ -75,7 +75,8 @@ class ThemeProvider with ChangeNotifier {
 
       return translation.text;
     } catch (e) {
-      throw Exception('Error translating text: $e');
+      print(e);
+      return text;
     }
   }
 }

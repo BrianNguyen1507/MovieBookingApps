@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label">
         <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="@string/google_maps_api_key" />
+            android:value="@string/google_maps_api_key" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
@@ -24,10 +24,11 @@
             android:launchMode="singleTop"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            android:enableOnBackInvokedCallback="true">
+            android:enableOnBackInvokedCallback="true"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />

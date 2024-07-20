@@ -13,9 +13,9 @@ import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
-    Key? key,
+    super.key,
     required this.initialIndex,
-  }) : super(key: key);
+  });
 
   final int initialIndex;
 

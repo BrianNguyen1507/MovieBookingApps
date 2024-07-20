@@ -2,18 +2,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/services/payments/ZaloPay/CreateOrder.dart';
 import 'dart:convert';
-import 'package:movie_booking_app/services/payments/ZaloPay/ZaloConfig.dart' as utils;
+import 'package:movie_booking_app/services/payments/ZaloPay/ZaloConfig.dart'
+    as utils;
 import 'package:sprintf/sprintf.dart';
 
-Future<CreateOrderResponse?> createOrder(
-    int price, List<Map<String, dynamic>> items) async {
+Future<CreateOrderResponse?> createOrder(int price) async {
   final headers = {
     "Content-Type": "application/x-www-form-urlencoded",
   };
 
   final appTime = DateTime.now().millisecondsSinceEpoch.toString();
   final appTransId = utils.getAppTransId();
-  
+
   final getAppId = dotenv.env['ZALO_APP_ID'];
   final getAppUser = dotenv.env['ZALO_APP_USER'];
   final body = {
@@ -23,7 +23,7 @@ Future<CreateOrderResponse?> createOrder(
     "amount": price.toString(),
     "app_trans_id": appTransId,
     "embed_data": "{}",
-    "item": "[]",
+    "item": '[]',
     "bank_code": utils.getBankCode(),
     "description": utils.getDescription(appTransId),
   };
@@ -41,7 +41,6 @@ Future<CreateOrderResponse?> createOrder(
   body["mac"] = await utils.getMacCreateOrder(dataGetMac);
 
   try {
-    
     final getUrl = dotenv.env['ZALO_CREATE_ORDER']!;
     final response = await http.post(
       Uri.parse(getUrl),

@@ -389,7 +389,7 @@ Widget renderBooking(
                                 '${AppLocalizations.of(context)!.room}: $roomNumber',
                                 style: AppStyle.smallText),
                             Text(
-                                '${AppLocalizations.of(context)!.showTime}: $times',
+                                '${AppLocalizations.of(context)!.show_time}: $times',
                                 style: AppStyle.smallText),
                           ],
                         ),
