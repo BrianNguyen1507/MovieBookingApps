@@ -149,11 +149,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: AppColors.commonLightColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
+                          borderRadius: ContainerRadius.radius20,
                         ),
                         height: 100,
                         child: Row(

@@ -67,7 +67,7 @@ class MovieListings extends StatelessWidget {
                                   height: 150,
                                   width: 100,
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: ContainerRadius.radius12,
                                     child: Image.memory(
                                         ConverterUnit.base64ToUnit8(
                                             movieList[index].poster)),
@@ -144,9 +144,7 @@ class MovieListings extends StatelessWidget {
                                             ClassifyClass.classifyType(
                                                 movieList[index].classify),
                                           ),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(3.0),
-                                          ),
+                                          borderRadius: ContainerRadius.radius2,
                                         ),
                                         child: Text(
                                           movieList[index].classify,

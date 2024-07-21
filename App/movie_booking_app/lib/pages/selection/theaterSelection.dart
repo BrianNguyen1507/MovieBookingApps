@@ -69,8 +69,7 @@ class _TheaterSelectionState extends State<TheaterSelection> {
           children: [
             Container(
               padding: const EdgeInsets.all(10.0),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              decoration: BoxDecoration(borderRadius: ContainerRadius.radius10),
               child: Row(
                 children: [
                   SizedBox(
@@ -83,9 +82,7 @@ class _TheaterSelectionState extends State<TheaterSelection> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: DropdownButton<String>(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5.0),
-                      ),
+                      borderRadius: ContainerRadius.radius5,
                       isExpanded: true,
                       items: const [
                         DropdownMenuItem<String>(

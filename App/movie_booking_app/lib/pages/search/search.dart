@@ -68,13 +68,13 @@ class SearchState extends State<Search> {
                               color: AppColors.commonDarkColor,
                               fontSize: AppFontSize.small),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+                              borderRadius: ContainerRadius.radius12,
                               borderSide: const BorderSide(
                                   color: AppColors.backgroundColor)),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
                                 color: AppColors.primaryColor, width: 2.0),
-                            borderRadius: BorderRadius.circular(12.0),
+                            borderRadius: ContainerRadius.radius12,
                           ),
                         ),
                       ),
@@ -138,7 +138,7 @@ class SearchState extends State<Search> {
                                         width: 100,
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(12),
+                                              ContainerRadius.radius12,
                                           child: Image.memory(
                                               ConverterUnit.base64ToUnit8(
                                                   movieList[index].poster)),
@@ -229,9 +229,7 @@ class SearchState extends State<Search> {
                                                           .classify),
                                                 ),
                                                 borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(3.0),
-                                                ),
+                                                    ContainerRadius.radius2,
                                               ),
                                               child: Text(
                                                 movieList[index].classify,
@@ -250,8 +248,7 @@ class SearchState extends State<Search> {
                                               margin: const EdgeInsets.all(3.0),
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(5.0)),
+                                                    ContainerRadius.radius5,
                                                 border: Border.all(
                                                   color: movieList[index]
                                                           .isRelease

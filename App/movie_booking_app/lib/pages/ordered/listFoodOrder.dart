@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
@@ -72,27 +73,24 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                   child: Container(
                     padding: const EdgeInsets.all(5.0),
                     margin: const EdgeInsets.all(5.0),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                         color: AppColors.containerColor,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             blurRadius: 6.0,
                             color: AppColors.shadowColor,
                             offset: Offset(2, 1),
                           ),
                         ],
-                        borderRadius: BorderRadius.all(Radius.circular(12))),
+                        borderRadius: ContainerRadius.radius12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(5.0),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor.withOpacity(0.4),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(12),
-                            ),
-                          ),
+                              color: AppColors.primaryColor.withOpacity(0.4),
+                              borderRadius: ContainerRadius.radius12),
                           margin: const EdgeInsets.all(5.0),
                           child: const Column(
                             children: [

@@ -28,10 +28,10 @@ class TheaterItems {
         width: AppSize.width(context),
         padding: const EdgeInsets.all(5.0),
         margin: const EdgeInsets.all(5.0),
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
+        decoration: BoxDecoration(
+            borderRadius: ContainerRadius.radius12,
             color: AppColors.containerColor,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 6.0,
                 color: AppColors.shadowColor,
@@ -50,9 +50,7 @@ class TheaterItems {
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: AppColors.primaryColor, width: 2.0),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
+                        borderRadius: ContainerRadius.radius10,
                       ),
                       padding: const EdgeInsets.all(5.0),
                       margin: const EdgeInsets.all(5.0),
@@ -107,7 +105,7 @@ class TheaterItems {
                     );
                   },
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                    borderRadius: ContainerRadius.radius20,
                     child: SizedBox(
                       width: 30.0,
                       height: 30.0,

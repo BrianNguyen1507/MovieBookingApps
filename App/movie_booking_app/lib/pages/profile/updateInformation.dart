@@ -267,7 +267,7 @@ class UpdateInformationState extends State<UpdateInformation> {
       return Image.file(image);
     }
     return ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(100.0)),
+        borderRadius: ContainerRadius.radius100,
         child: Image.memory(ConverterUnit.base64ToUnit8(imgUnit8Bit)));
   }
 

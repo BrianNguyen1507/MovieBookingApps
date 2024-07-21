@@ -42,7 +42,6 @@ class GuestPage extends StatelessWidget {
                           decoration: const BoxDecoration(
                               color: AppColors.iconThemeColor,
                               shape: BoxShape.circle),
-                          
                           child: ClipOval(
                               child: Image.asset(
                             'assets/images/avatarDefault.png',
@@ -64,11 +63,9 @@ class GuestPage extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Container(
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: AppColors.commonLightColor,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
+                                borderRadius: ContainerRadius.radius20,
                               ),
                             ),
                           ),

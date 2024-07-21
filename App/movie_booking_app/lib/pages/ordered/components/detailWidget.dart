@@ -13,8 +13,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 Widget detailOrderFilm(BuildContext context, DetailOrder order) {
   return Container(
     margin: const EdgeInsets.all(15.0),
-    decoration: const BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    decoration: BoxDecoration(
+      borderRadius: ContainerRadius.radius20,
       color: AppColors.containerColor,
     ),
     width: AppSize.width(context),
@@ -58,23 +58,19 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
           margin: const EdgeInsets.all(10.0),
           padding: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20.0),
-              ),
+              borderRadius: ContainerRadius.radius20,
               color: AppColors.primaryColor.withOpacity(0.2)),
           child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20.0),
-                    ),
+                    borderRadius: ContainerRadius.radius20,
                     color: AppColors.containerColor.withOpacity(0.5)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: ContainerRadius.radius12,
                       child: Image.memory(
                           height: 100,
                           ConverterUnit.base64ToUnit8(order.order.poster)),
@@ -91,14 +87,11 @@ Widget detailOrderFilm(BuildContext context, DetailOrder order) {
                                 margin: const EdgeInsets.only(left: 5),
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                  color: ClassifyClass.toFlutterColor(
-                                    ClassifyClass.classifyType(
-                                        order.order.classify),
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(3.0),
-                                  ),
-                                ),
+                                    color: ClassifyClass.toFlutterColor(
+                                      ClassifyClass.classifyType(
+                                          order.order.classify),
+                                    ),
+                                    borderRadius: ContainerRadius.radius2),
                                 child: Text(
                                   order.order.classify,
                                   style: const TextStyle(
@@ -385,8 +378,8 @@ Widget detailOrderFood(BuildContext context, DetailOrder order) {
     height: AppSize.height(context),
     child: Container(
       margin: const EdgeInsets.all(15.0),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+      decoration: BoxDecoration(
+        borderRadius: ContainerRadius.radius20,
         color: AppColors.containerColor,
       ),
       width: AppSize.width(context),

@@ -66,11 +66,8 @@ class _OTPPageState extends State<OTPPage> {
                     backgroundColor:
                         WidgetStateProperty.all(AppColors.buttonColor),
                     shape: WidgetStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
+                      RoundedRectangleBorder(
+                          borderRadius: ContainerRadius.radius10),
                     ),
                   ),
                   onPressed: () async {

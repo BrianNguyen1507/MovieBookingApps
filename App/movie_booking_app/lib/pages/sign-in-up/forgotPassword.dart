@@ -45,13 +45,11 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                   decoration: InputDecoration(
                     labelText: "Email",
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
+                        borderRadius: ContainerRadius.radius12),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: AppColors.primaryColor, width: 2.0),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
+                        borderSide: const BorderSide(
+                            color: AppColors.primaryColor, width: 2.0),
+                        borderRadius: ContainerRadius.radius12),
                   ),
                 ),
               ),

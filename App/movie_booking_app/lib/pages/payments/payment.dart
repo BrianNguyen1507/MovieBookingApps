@@ -114,9 +114,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                   margin: const EdgeInsets.all(5.0),
                                   padding: const EdgeInsets.all(5.0),
                                   width: AppSize.width(context),
-                                  decoration: const BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
+                                  decoration: BoxDecoration(
+                                    borderRadius: ContainerRadius.radius12,
                                     color: AppColors.containerColor,
                                   ),
                                   child: Row(
@@ -127,7 +126,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                         margin: const EdgeInsets.all(5.0),
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
+                                              ContainerRadius.radius10,
                                           child: Image.memory(
                                               height: 90,
                                               width: 60,
@@ -151,9 +150,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                                         getMovie.classify),
                                                   ),
                                                   borderRadius:
-                                                      const BorderRadius.all(
-                                                    Radius.circular(2),
-                                                  ),
+                                                      ContainerRadius.radius2,
                                                 ),
                                                 padding:
                                                     const EdgeInsets.all(1.5),
@@ -254,12 +251,9 @@ class _PaymentPageState extends State<PaymentPage> {
                 margin: const EdgeInsets.all(5.0),
                 padding: const EdgeInsets.all(15.0),
                 width: AppSize.width(context),
-                decoration: const BoxDecoration(
-                  color: AppColors.containerColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
+                decoration: BoxDecoration(
+                    color: AppColors.containerColor,
+                    borderRadius: ContainerRadius.radius12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -419,10 +413,8 @@ class _PaymentPageState extends State<PaymentPage> {
                           height: AppSize.height(context) * 0.1,
                           width: AppSize.width(context),
                           padding: const EdgeInsets.all(10.0),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(12),
-                            ),
+                          decoration: BoxDecoration(
+                            borderRadius: ContainerRadius.radius12,
                             color: AppColors.primaryColor,
                           ),
                           child: Align(
@@ -443,15 +435,13 @@ class _PaymentPageState extends State<PaymentPage> {
           child: Column(
             children: [
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.containerColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
+                  borderRadius: ContainerRadius.radius12,
                 ),
                 margin: const EdgeInsets.all(10.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: ContainerRadius.radius10,
                   child: Image.asset(
                     methodIcon,
                     height: 70,

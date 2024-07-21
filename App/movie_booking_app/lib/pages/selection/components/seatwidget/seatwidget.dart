@@ -17,9 +17,8 @@ Widget seatStateList(BuildContext context) {
               width: 15,
               height: 15,
               decoration: BoxDecoration(
-                color: SeatClass.getSeatColor(0),
-                borderRadius: BorderRadius.circular(2),
-              ),
+                  color: SeatClass.getSeatColor(0),
+                  borderRadius: ContainerRadius.radius2),
             ),
             Text(
               AppLocalizations.of(context)!.seat_available,
@@ -34,9 +33,8 @@ Widget seatStateList(BuildContext context) {
               width: 15,
               height: 15,
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(2),
-              ),
+                  color: AppColors.primaryColor.withOpacity(0.8),
+                  borderRadius: ContainerRadius.radius2),
             ),
             Text(
               AppLocalizations.of(context)!.seat_selected,
@@ -51,9 +49,8 @@ Widget seatStateList(BuildContext context) {
               width: 15,
               height: 15,
               decoration: BoxDecoration(
-                color: SeatClass.getSeatColor(1),
-                borderRadius: BorderRadius.circular(2),
-              ),
+                  color: SeatClass.getSeatColor(1),
+                  borderRadius: ContainerRadius.radius2),
             ),
             Text(
               AppLocalizations.of(context)!.seat_sold,
@@ -69,7 +66,7 @@ Widget seatStateList(BuildContext context) {
               height: 15,
               decoration: BoxDecoration(
                 color: SeatClass.getSeatColor(2),
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: ContainerRadius.radius2,
               ),
             ),
             Text(
@@ -86,7 +83,7 @@ Widget seatStateList(BuildContext context) {
               height: 15,
               decoration: BoxDecoration(
                 color: SeatClass.getSeatColor(3),
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: ContainerRadius.radius2
               ),
             ),
             Text(

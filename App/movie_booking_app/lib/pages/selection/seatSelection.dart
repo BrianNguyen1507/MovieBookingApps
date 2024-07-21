@@ -211,7 +211,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                     color: isSelected
                         ? AppColors.primaryColor.withOpacity(0.76)
                         : seatColor,
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: ContainerRadius.radius2,
                   ),
                   child: Center(
                     child: Text(
@@ -281,7 +281,7 @@ Widget renderBooking(
                         child: Row(
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: ContainerRadius.radius5,
                               child: FutureBuilder<Uint8List>(
                                 future: ConverterUnit.bytesToImage(
                                     movieData.poster),
@@ -318,9 +318,7 @@ Widget renderBooking(
                                             ClassifyClass.classifyType(
                                                 movieData.classify),
                                           ),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(2),
-                                          ),
+                                          borderRadius: ContainerRadius.radius2,
                                         ),
                                         padding: const EdgeInsets.all(1.5),
                                         child: Text(
@@ -460,8 +458,7 @@ Widget renderBooking(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+                  borderRadius: ContainerRadius.radius10),
               backgroundColor: AppColors.primaryColor,
             ),
             onPressed: () async {

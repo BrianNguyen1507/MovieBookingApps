@@ -69,7 +69,7 @@ class ChangePasswordState extends State<ChangePassword> {
                               BorderSide(color: Colors.black54, width: 1.0),
                         ),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: ContainerRadius.radius10,
                         ),
                         labelText: AppLocalizations.of(context)!.password,
                         suffixIcon: IconButton(
@@ -108,7 +108,7 @@ class ChangePasswordState extends State<ChangePassword> {
                               BorderSide(color: Colors.black54, width: 1.0),
                         ),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: ContainerRadius.radius10,
                         ),
                         labelText: AppLocalizations.of(context)!.new_pass,
                         suffixIcon: IconButton(
@@ -162,7 +162,7 @@ class ChangePasswordState extends State<ChangePassword> {
                                   BorderSide(color: Colors.black54, width: 1.0),
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius:ContainerRadius.radius10,
                             ),
                             labelText: AppLocalizations.of(context)!.re_pass,
                             suffixIcon: IconButton(

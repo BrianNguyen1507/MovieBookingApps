@@ -202,7 +202,7 @@ class _VoucherOrderState extends State<VoucherOrder> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: ContainerRadius.radius10,
               ),
               backgroundColor: AppColors.primaryColor,
             ),

@@ -50,7 +50,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return loadingData(context);
         } else {
           MovieDetail detail = snapshot.data!;
-          print(detail.trailer);
           movieName = detail.title;
           return Expanded(
               child: Container(
@@ -66,7 +65,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: ContainerRadius.radius12,
                           child: FutureBuilder<Uint8List>(
                             future: ConverterUnit.bytesToImage(detail.poster),
                             builder: (BuildContext context,
@@ -136,14 +135,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: ClassifyClass.toFlutterColor(
-                                      ClassifyClass.classifyType(
-                                          detail.classify),
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(2),
-                                    ),
-                                  ),
+                                      color: ClassifyClass.toFlutterColor(
+                                        ClassifyClass.classifyType(
+                                            detail.classify),
+                                      ),
+                                      borderRadius: ContainerRadius.radius2),
                                   padding: const EdgeInsets.all(1.5),
                                   child: Text(
                                     detail.classify,
@@ -174,8 +170,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                     style: ButtonStyle(
                                       shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
+                                          borderRadius: ContainerRadius.radius5,
                                         ),
                                       ),
                                       minimumSize: WidgetStateProperty.all(
@@ -253,10 +248,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        ),
+                      decoration: BoxDecoration(
+                        borderRadius: ContainerRadius.radius20,
                       ),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,7 +323,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: ContainerRadius.radius10,
             ),
             backgroundColor: AppColors.primaryColor,
           ),

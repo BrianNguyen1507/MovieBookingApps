@@ -75,8 +75,8 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                     margin: const EdgeInsets.all(5.0),
                     width: AppSize.width(context),
                     height: 100,
-                    decoration: const BoxDecoration(
-                        boxShadow: [
+                    decoration: BoxDecoration(
+                        boxShadow: const [
                           BoxShadow(
                             blurRadius: 6.0,
                             color: AppColors.shadowColor,
@@ -84,7 +84,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                           ),
                         ],
                         color: AppColors.containerColor,
-                        borderRadius: BorderRadius.all(Radius.circular(12))),
+                        borderRadius: ContainerRadius.radius12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -97,9 +97,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                   SizedBox(
                                     width: 60,
                                     child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(5.0),
-                                      ),
+                                      borderRadius: ContainerRadius.radius5,
                                       child: Image.memory(
                                           ConverterUnit.base64ToUnit8(
                                               filmOrder.poster)),

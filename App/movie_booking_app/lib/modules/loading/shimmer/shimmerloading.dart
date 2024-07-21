@@ -16,9 +16,7 @@ class ShimmerHomeLoading extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-        ),
+            color: Colors.white, borderRadius: ContainerRadius.radius5),
       ),
     );
   }
