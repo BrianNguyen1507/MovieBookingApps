@@ -17,12 +17,12 @@ class BottomNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(1.5),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.transpanrent,
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: ContainerRadius.radius20,
       ),
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        borderRadius: ContainerRadius.radius20,
         child: Theme(
           data: Theme.of(context).copyWith(
             splashFactory: NoSplash.splashFactory,

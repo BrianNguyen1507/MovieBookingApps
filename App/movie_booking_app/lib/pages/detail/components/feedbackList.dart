@@ -37,11 +37,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
+      decoration: BoxDecoration(borderRadius: ContainerRadius.radius20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -100,17 +96,15 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                             width: MediaQuery.of(context).size.width,
                             margin: const EdgeInsets.all(5.0),
                             padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
-                              boxShadow: [
+                            decoration: BoxDecoration(
+                              boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 6.0,
                                   color: AppColors.shadowColor,
                                   offset: Offset(2, 1),
                                 ),
                               ],
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
-                              ),
+                              borderRadius: ContainerRadius.radius12,
                               color: AppColors.containerColor,
                             ),
                             child: Column(
@@ -182,7 +176,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
                           style: ButtonStyle(
                             shape: WidgetStateProperty.all(
                               RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
+                                borderRadius: ContainerRadius.radius5,
                               ),
                             ),
                             backgroundColor: WidgetStateProperty.all(

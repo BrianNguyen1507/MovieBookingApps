@@ -41,23 +41,19 @@ Widget buildScheduleWidget(int roomNumber, List<ScheduleByHour> schedules,
   return Container(
     padding: const EdgeInsets.all(10.0),
     margin: const EdgeInsets.all(5.0),
-    decoration: const BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          blurRadius: 6.0,
-          color: AppColors.shadowColor,
-          offset: Offset(2, 1),
-        ),
-      ],
-      color: AppColors.containerColor,
-      borderRadius: BorderRadius.all(Radius.circular(12)),
-    ),
+    decoration: BoxDecoration(boxShadow: const [
+      BoxShadow(
+        blurRadius: 6.0,
+        color: AppColors.shadowColor,
+        offset: Offset(2, 1),
+      ),
+    ], color: AppColors.containerColor, borderRadius: ContainerRadius.radius12),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          decoration: BoxDecoration(
+            borderRadius: ContainerRadius.radius10,
             color: AppColors.containerColor,
           ),
           padding: const EdgeInsets.all(5.0),
@@ -67,9 +63,7 @@ Widget buildScheduleWidget(int roomNumber, List<ScheduleByHour> schedules,
                 margin: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
                     color: AppColors.commonLightColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
+                    borderRadius: ContainerRadius.radius5,
                     border: Border.all(width: 0.5)),
                 height: 30,
                 width: 30,
@@ -197,7 +191,7 @@ class _ScheduleButtonState extends State<ScheduleButton> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+          borderRadius: ContainerRadius.radius5,
           color:
               isSelected ? AppColors.primaryColor : AppColors.commonDarkColor,
         ),

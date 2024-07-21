@@ -30,7 +30,7 @@ class ListMovie {
               alignment: Alignment.topLeft,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: ContainerRadius.radius10,
                   child: FutureBuilder<Uint8List>(
                     future: ConverterUnit.bytesToImage(movie.poster),
                     builder: (BuildContext context,
@@ -56,12 +56,11 @@ class ListMovie {
                   child: Container(
                     padding: const EdgeInsets.all(3.0),
                     decoration: BoxDecoration(
-                        color: ClassifyClass.toFlutterColor(
-                          ClassifyClass.classifyType(movie.classify),
-                        ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(3.0),
-                        )),
+                      color: ClassifyClass.toFlutterColor(
+                        ClassifyClass.classifyType(movie.classify),
+                      ),
+                      borderRadius: ContainerRadius.radius2,
+                    ),
                     child: Text(
                       movie.classify,
                       style: AppStyle.classifyText,
@@ -70,7 +69,6 @@ class ListMovie {
                 ),
               ],
             ),
-            
           ],
         ),
       ),
@@ -85,14 +83,20 @@ class ListMovie {
       child: Container(
         padding: const EdgeInsets.all(5.0),
         margin: const EdgeInsets.all(5.0),
-        decoration: const BoxDecoration(
-          color: AppColors.commonLightColor,
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
+        decoration: BoxDecoration(
+            color: AppColors.containerColor,
+            boxShadow: const [
+              BoxShadow(
+                blurRadius: 6.0,
+                color: AppColors.shadowColor,
+                offset: Offset(1, 1),
+              ),
+            ],
+            borderRadius: ContainerRadius.radius12),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              borderRadius: ContainerRadius.radius12,
               child: Image.memory(
                 ConverterUnit.base64ToUnit8(food.image),
                 height: 100,
@@ -131,7 +135,7 @@ class ListMovie {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: ContainerRadius.radius10,
               child: Stack(
                 children: [
                   SizedBox(

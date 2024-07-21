@@ -6,9 +6,9 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 final loadingContent = SpinKitSquareCircle(
   size: 60.0,
   itemBuilder: (BuildContext context, int index) {
-    return const DecoratedBox(
+    return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        borderRadius: ContainerRadius.radius5,
         color: AppColors.primaryColor,
       ),
     );
@@ -17,9 +17,9 @@ final loadingContent = SpinKitSquareCircle(
 final progressLoading = SpinKitThreeBounce(
   size: 40.0,
   itemBuilder: (BuildContext context, int index) {
-    return const DecoratedBox(
+    return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderRadius: ContainerRadius.radius100,
         color: AppColors.primaryColor,
       ),
     );

@@ -103,7 +103,7 @@ class MovieListingByMonth extends StatelessWidget {
                                         children: [
                                           ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(12),
+                                                ContainerRadius.radius12,
                                             child: Image.memory(
                                               ConverterUnit.base64ToUnit8(
                                                   movie.poster),
@@ -166,7 +166,7 @@ class MovieListingByMonth extends StatelessWidget {
                                                           .classifyType(
                                                               movie.classify)),
                                               borderRadius:
-                                                  BorderRadius.circular(3.0),
+                                             ContainerRadius.radius2,
                                             ),
                                             child: Text(movie.classify,
                                                 style: AppStyle.classifyText),

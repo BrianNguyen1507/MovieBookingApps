@@ -103,9 +103,9 @@ class _OrderPageState extends State<OrderPage> {
       backgroundColor: AppColors.backgroundColor,
       body: Container(
         padding: const EdgeInsets.only(top: 20.0),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             color: AppColors.commonLightColor,
-            borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            borderRadius: ContainerRadius.radius20),
         child: Column(
           children: [
             Expanded(
@@ -236,8 +236,8 @@ Widget buildSelectionInfo(
       Container(
         padding: const EdgeInsets.all(10.0),
         width: AppSize.width(context),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+        decoration: BoxDecoration(
+          borderRadius: ContainerRadius.radius12,
           color: AppColors.containerColor,
         ),
         child: Column(
@@ -310,8 +310,8 @@ Widget buildMovieInfo(
                     Container(
                       padding: const EdgeInsets.all(5.0),
                       width: AppSize.width(context),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      decoration: BoxDecoration(
+                        borderRadius: ContainerRadius.radius12,
                         color: AppColors.containerColor,
                       ),
                       child: Row(
@@ -320,7 +320,7 @@ Widget buildMovieInfo(
                           Container(
                             margin: const EdgeInsets.all(5.0),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: ContainerRadius.radius10,
                               child: Image.memory(
                                   height: 90,
                                   width: 60,
@@ -339,9 +339,7 @@ Widget buildMovieInfo(
                                         ClassifyClass.classifyType(
                                             getMovie.classify),
                                       ),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(2),
-                                      ),
+                                      borderRadius: ContainerRadius.radius2,
                                     ),
                                     padding: const EdgeInsets.all(1.5),
                                     child: Text(
@@ -511,8 +509,8 @@ Widget buildCustomerInfo(BuildContext context) {
       Container(
         padding: const EdgeInsets.all(10.0),
         width: AppSize.width(context),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
+        decoration: BoxDecoration(
+          borderRadius: ContainerRadius.radius12,
           color: AppColors.containerColor,
         ),
         child: FutureBuilder(
@@ -628,7 +626,7 @@ Widget renderBooking(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: ContainerRadius.radius10,
               ),
               backgroundColor: AppColors.primaryColor,
             ),

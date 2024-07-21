@@ -64,8 +64,7 @@ class ResetPasswordState extends State<ResetPassword> {
                               BorderSide(color: Colors.black54, width: 1.0),
                         ),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                            borderRadius: ContainerRadius.radius10),
                         labelText: "Password",
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -117,8 +116,7 @@ class ResetPasswordState extends State<ResetPassword> {
                                   BorderSide(color: Colors.black54, width: 1.0),
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                                borderRadius: ContainerRadius.radius10),
                             labelText: "Password",
                             suffixIcon: IconButton(
                               onPressed: () {

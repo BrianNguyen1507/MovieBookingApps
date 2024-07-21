@@ -112,7 +112,7 @@ class _BuildDrawerState extends State<BuildDrawer> {
                           color: isEnglish
                               ? AppColors.primaryColor
                               : AppColors.commonColor,
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: ContainerRadius.radius20,
                         ),
                         child: Stack(
                           alignment: isEnglish
@@ -123,11 +123,11 @@ class _BuildDrawerState extends State<BuildDrawer> {
                               width: 24.0,
                               height: 24.0,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                color: Colors.white,
+                                borderRadius: ContainerRadius.radius12,
+                                color: AppColors.containerColor,
                               ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12.0),
+                                borderRadius: ContainerRadius.radius12,
                                 child: isEnglish
                                     ? SvgPicture.string(
                                         svgEng,

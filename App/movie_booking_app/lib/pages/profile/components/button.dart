@@ -18,7 +18,7 @@ class BuildButton {
               backgroundColor: WidgetStateProperty.all(AppColors.buttonColor),
               shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: ContainerRadius.radius10,
                 ),
               ),
             ),

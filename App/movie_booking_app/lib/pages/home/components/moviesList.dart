@@ -53,7 +53,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.50,
+        height: MediaQuery.of(context).size.height * 0.55,
         decoration: const BoxDecoration(
           color: AppColors.containerColor,
           borderRadius: BorderRadius.only(
@@ -115,118 +115,126 @@ class _NowShowingSectionState extends State<NowShowingSection> {
             ),
             Expanded(
               child: _films.isEmpty
-                  ? loadingContent
-                  : Column(
-                      children: [
-                        Expanded(
-                          child: _films.isEmpty
-                              ? loadingContent
-                              : Column(
-                                  children: [
-                                    Expanded(
-                                      child: CarouselSlider.builder(
-                                        itemCount: _films.length,
-                                        options: CarouselOptions(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.50,
-                                          viewportFraction: 0.50,
-                                          enableInfiniteScroll: true,
-                                          enlargeCenterPage: true,
-                                          onPageChanged: (index, reason) {
-                                            _currentPageNotifier.value = index;
-                                          },
-                                        ),
-                                        itemBuilder: (BuildContext context,
-                                            int index, int realIndex) {
-                                          return ListMovie.buildListMovie(
-                                            context,
-                                            _films[index],
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                      child: Center(
-                                        child: ValueListenableBuilder<int>(
-                                          valueListenable: _currentPageNotifier,
-                                          builder: (context, value, child) {
-                                            return Consumer<ThemeProvider>(
-                                              builder:
-                                                  (context, provider, child) {
-                                                return FutureBuilder(
-                                                  future:
-                                                      provider.translateText(
-                                                          _films[value].title),
-                                                  builder: (context, snapshot) {
-                                                    return Text(
-                                                      snapshot.data ??
-                                                          _films[value].title,
-                                                      key: ValueKey<String>(
-                                                          _films[value].title),
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              },
+                  ? progressLoading
+                  : Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: _films.isEmpty
+                                ? progressLoading
+                                : Column(
+                                    children: [
+                                      Expanded(
+                                        child: CarouselSlider.builder(
+                                          itemCount: _films.length,
+                                          options: CarouselOptions(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.50,
+                                            viewportFraction: 0.50,
+                                            enableInfiniteScroll: true,
+                                            enlargeCenterPage: true,
+                                            onPageChanged: (index, reason) {
+                                              _currentPageNotifier.value =
+                                                  index;
+                                            },
+                                          ),
+                                          itemBuilder: (BuildContext context,
+                                              int index, int realIndex) {
+                                            return ListMovie.buildListMovie(
+                                              context,
+                                              _films[index],
                                             );
                                           },
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 120.0,
-                                      child: Center(
-                                        child: AnimatedSwitcher(
-                                          duration:
-                                              const Duration(milliseconds: 100),
+                                      SizedBox(
+                                        width: AppSize.width(context),
+                                        child: Center(
                                           child: ValueListenableBuilder<int>(
                                             valueListenable:
                                                 _currentPageNotifier,
                                             builder: (context, value, child) {
                                               return Consumer<ThemeProvider>(
-                                                  builder: (context, provider,
-                                                      child) {
-                                                return FutureBuilder<String>(
-                                                  future:
-                                                      provider.translateText(
-                                                    _films[value]
-                                                        .categories
-                                                        .map((category) =>
-                                                            category.name)
-                                                        .join(', '),
-                                                  ),
-                                                  builder: (context, snapshot) {
-                                                    return Text(
-                                                      snapshot.data ??
-                                                          _films[value]
-                                                              .categories
-                                                              .map((category) =>
-                                                                  category.name)
-                                                              .join(', '),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: AppStyle.smallText,
-                                                    );
-                                                  },
-                                                );
-                                              });
+                                                builder:
+                                                    (context, provider, child) {
+                                                  return FutureBuilder(
+                                                    future:
+                                                        provider.translateText(
+                                                            _films[value]
+                                                                .title),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      return Text(
+                                                          snapshot.data ??
+                                                              _films[value]
+                                                                  .title,
+                                                          key: ValueKey<String>(
+                                                              _films[value]
+                                                                  .title),
+                                                          style: AppStyle
+                                                              .headline1);
+                                                    },
+                                                  );
+                                                },
+                                              );
                                             },
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                      ],
+                                      SizedBox(
+                                        width: AppSize.width(context),
+                                        child: Center(
+                                          child: AnimatedSwitcher(
+                                            duration: const Duration(
+                                                milliseconds: 100),
+                                            child: ValueListenableBuilder<int>(
+                                              valueListenable:
+                                                  _currentPageNotifier,
+                                              builder: (context, value, child) {
+                                                return Consumer<ThemeProvider>(
+                                                    builder: (context, provider,
+                                                        child) {
+                                                  return FutureBuilder<String>(
+                                                    future:
+                                                        provider.translateText(
+                                                      _films[value]
+                                                          .categories
+                                                          .map((category) =>
+                                                              category.name)
+                                                          .join(', '),
+                                                    ),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      return Text(
+                                                        snapshot.data ??
+                                                            _films[value]
+                                                                .categories
+                                                                .map((category) =>
+                                                                    category
+                                                                        .name)
+                                                                .join(', '),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style:
+                                                            AppStyle.smallText,
+                                                      );
+                                                    },
+                                                  );
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
             ),
           ],
@@ -308,11 +316,11 @@ class ComingSoonSection extends StatelessWidget {
               future: movieFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: loadingContent);
+                  return Center(child: progressLoading);
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: loadingContent);
+                  return Center(child: progressLoading);
                 } else {
                   List<Movie> filmsFuture = snapshot.data!;
                   return Column(

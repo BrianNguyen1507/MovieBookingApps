@@ -57,7 +57,7 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                     Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: ContainerRadius.radius12,
                         child: Image.memory(
                             ConverterUnit.base64ToUnit8(widget.order.poster)),
                       ),
@@ -100,9 +100,7 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                                 ClassifyClass.classifyType(
                                     widget.order.classify),
                               ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(3.0),
-                              ),
+                              borderRadius: ContainerRadius.radius10,
                             ),
                             child: Text(
                               widget.order.classify,

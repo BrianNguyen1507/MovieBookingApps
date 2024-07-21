@@ -2,7 +2,7 @@
 *.env
 .vscode
 .idea
-
+untrans_msg.txt
 # Miscellaneous
 *.class
 *.lock

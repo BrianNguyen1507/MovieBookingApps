@@ -47,6 +47,27 @@ class AppFontSize {
   static const double big = 50.0;
 }
 
+class ContainerRadius {
+  static BorderRadius radius2 = const BorderRadius.all(
+    Radius.circular(2),
+  );
+  static BorderRadius radius5 = const BorderRadius.all(
+    Radius.circular(5),
+  );
+  static BorderRadius radius10 = const BorderRadius.all(
+    Radius.circular(10),
+  );
+  static BorderRadius radius12 = const BorderRadius.all(
+    Radius.circular(12),
+  );
+  static BorderRadius radius20 = const BorderRadius.all(
+    Radius.circular(20),
+  );
+  static BorderRadius radius100 = const BorderRadius.all(
+    Radius.circular(100),
+  );
+}
+
 class AppStringMethod {
   static const String register = "register";
   static const String forgotPassword = "forgotPassword";

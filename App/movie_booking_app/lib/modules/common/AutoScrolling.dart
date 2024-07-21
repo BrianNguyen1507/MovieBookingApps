@@ -37,9 +37,7 @@ class _AutoScrollingBannerState extends State<AutoScrollingBanner> {
             itemCount: images.length,
             itemBuilder: (BuildContext context, int index, int realIndex) {
               return ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(
-                  10.0,
-                )),
+                borderRadius: ContainerRadius.radius12,
                 child: Image.asset(
                   images[index],
                   width: double.infinity,

@@ -226,9 +226,8 @@ class _SignInPageState extends State<SignInPage> {
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.black54, width: 1.0),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+              border:
+                  OutlineInputBorder(borderRadius: ContainerRadius.radius10),
               labelText: labelText,
             ),
           ),
@@ -257,9 +256,8 @@ class _SignInPageState extends State<SignInPage> {
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.black54, width: 1.0),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+              border:
+                  OutlineInputBorder(borderRadius: ContainerRadius.radius10),
               labelText: labelText,
               suffixIcon: IconButton(
                 onPressed: () {
@@ -364,11 +362,7 @@ class _SignInPageState extends State<SignInPage> {
                   : AppColors.commonColor,
             ),
             shape: WidgetStateProperty.all(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
+              RoundedRectangleBorder(borderRadius: ContainerRadius.radius10),
             ),
           ),
           onPressed: isSignUp ? (_isChecked ? onPressed : null) : onPressed,
@@ -441,10 +435,8 @@ class _SignInPageState extends State<SignInPage> {
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(AppColors.commonColor),
             shape: WidgetStateProperty.all(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
+               RoundedRectangleBorder(
+                borderRadius: ContainerRadius.radius10,
               ),
             ),
           ),

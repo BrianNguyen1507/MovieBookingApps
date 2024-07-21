@@ -165,19 +165,16 @@ class _StorePageState extends State<StorePage> {
                           margin: const EdgeInsets.all(10.0),
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                            color: AppColors.containerColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                              color: AppColors.containerColor,
+                              borderRadius: ContainerRadius.radius5),
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Row(
@@ -187,7 +184,7 @@ class _StorePageState extends State<StorePage> {
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
+                                        borderRadius: ContainerRadius.radius12,
                                       ),
                                       margin: const EdgeInsets.only(right: 5.0),
                                       height: 60,
@@ -312,9 +309,7 @@ Widget renderBooking(
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: ContainerRadius.radius10),
           backgroundColor: AppColors.primaryColor,
         ),
         onPressed: () async {

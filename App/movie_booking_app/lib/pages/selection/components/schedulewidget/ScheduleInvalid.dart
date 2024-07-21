@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/constant/svgString.dart';
@@ -18,8 +19,8 @@ Widget scheduleInvalid(BuildContext context) {
         ),
         Container(
           width: AppSize.width(context),
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12))),
+          decoration:
+               BoxDecoration(borderRadius: ContainerRadius.radius12),
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
