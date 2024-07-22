@@ -15,7 +15,7 @@ import 'package:movie_booking_app/provider/provider.dart';
 import 'package:provider/provider.dart';
 
 class NowShowingSection extends StatefulWidget {
-  final Future<List<Movie>> movieRelease;
+  final Future<List<Movie>?> movieRelease;
 
   const NowShowingSection({super.key, required this.movieRelease});
 
@@ -39,10 +39,10 @@ class _NowShowingSectionState extends State<NowShowingSection> {
 
   Future<void> _loadMovies() async {
     try {
-      List<Movie> movies = await widget.movieRelease;
+      List<Movie>? movies = await widget.movieRelease;
       if (mounted) {
         setState(() {
-          _films = movies;
+          _films = movies!;
         });
       }
     } catch (error) {
@@ -53,6 +53,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        width: AppSize.width(context),
         height: MediaQuery.of(context).size.height * 0.55,
         decoration: const BoxDecoration(
           color: AppColors.containerColor,
@@ -116,125 +117,114 @@ class _NowShowingSectionState extends State<NowShowingSection> {
             Expanded(
               child: _films.isEmpty
                   ? progressLoading
-                  : Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: _films.isEmpty
-                                ? progressLoading
-                                : Column(
-                                    children: [
-                                      Expanded(
-                                        child: CarouselSlider.builder(
-                                          itemCount: _films.length,
-                                          options: CarouselOptions(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.50,
-                                            viewportFraction: 0.50,
-                                            enableInfiniteScroll: true,
-                                            enlargeCenterPage: true,
-                                            onPageChanged: (index, reason) {
-                                              _currentPageNotifier.value =
-                                                  index;
-                                            },
-                                          ),
-                                          itemBuilder: (BuildContext context,
-                                              int index, int realIndex) {
-                                            return ListMovie.buildListMovie(
-                                              context,
-                                              _films[index],
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: _films.isEmpty
+                              ? progressLoading
+                              : Column(
+                                  children: [
+                                    Expanded(
+                                      child: CarouselSlider.builder(
+                                        itemCount: _films.length,
+                                        options: CarouselOptions(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.50,
+                                          viewportFraction: 0.50,
+                                          enableInfiniteScroll: true,
+                                          enlargeCenterPage: true,
+                                          onPageChanged: (index, reason) {
+                                            _currentPageNotifier.value = index;
+                                          },
+                                        ),
+                                        itemBuilder: (BuildContext context,
+                                            int index, int realIndex) {
+                                          return ListMovie.buildListMovie(
+                                            context,
+                                            _films[index],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: AppSize.width(context),
+                                      child: Center(
+                                        child: ValueListenableBuilder<int>(
+                                          valueListenable: _currentPageNotifier,
+                                          builder: (context, value, child) {
+                                            return Consumer<ThemeProvider>(
+                                              builder:
+                                                  (context, provider, child) {
+                                                return FutureBuilder(
+                                                  future:
+                                                      provider.translateText(
+                                                          _films[value].title),
+                                                  builder: (context, snapshot) {
+                                                    return Text(
+                                                        snapshot.data ??
+                                                            _films[value].title,
+                                                        key: ValueKey<String>(
+                                                            _films[value]
+                                                                .title),
+                                                        style:
+                                                            AppStyle.headline1);
+                                                  },
+                                                );
+                                              },
                                             );
                                           },
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: AppSize.width(context),
-                                        child: Center(
+                                    ),
+                                    SizedBox(
+                                      width: AppSize.width(context),
+                                      child: Center(
+                                        child: AnimatedSwitcher(
+                                          duration:
+                                              const Duration(milliseconds: 100),
                                           child: ValueListenableBuilder<int>(
                                             valueListenable:
                                                 _currentPageNotifier,
                                             builder: (context, value, child) {
                                               return Consumer<ThemeProvider>(
-                                                builder:
-                                                    (context, provider, child) {
-                                                  return FutureBuilder(
-                                                    future:
-                                                        provider.translateText(
-                                                            _films[value]
-                                                                .title),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      return Text(
-                                                          snapshot.data ??
-                                                              _films[value]
-                                                                  .title,
-                                                          key: ValueKey<String>(
-                                                              _films[value]
-                                                                  .title),
-                                                          style: AppStyle
-                                                              .headline1);
-                                                    },
-                                                  );
-                                                },
-                                              );
+                                                  builder: (context, provider,
+                                                      child) {
+                                                return FutureBuilder<String>(
+                                                  future:
+                                                      provider.translateText(
+                                                    _films[value]
+                                                        .categories
+                                                        .map((category) =>
+                                                            category.name)
+                                                        .join(', '),
+                                                  ),
+                                                  builder: (context, snapshot) {
+                                                    return Text(
+                                                      snapshot.data ??
+                                                          _films[value]
+                                                              .categories
+                                                              .map((category) =>
+                                                                  category.name)
+                                                              .join(', '),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: AppStyle.smallText,
+                                                    );
+                                                  },
+                                                );
+                                              });
                                             },
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: AppSize.width(context),
-                                        child: Center(
-                                          child: AnimatedSwitcher(
-                                            duration: const Duration(
-                                                milliseconds: 100),
-                                            child: ValueListenableBuilder<int>(
-                                              valueListenable:
-                                                  _currentPageNotifier,
-                                              builder: (context, value, child) {
-                                                return Consumer<ThemeProvider>(
-                                                    builder: (context, provider,
-                                                        child) {
-                                                  return FutureBuilder<String>(
-                                                    future:
-                                                        provider.translateText(
-                                                      _films[value]
-                                                          .categories
-                                                          .map((category) =>
-                                                              category.name)
-                                                          .join(', '),
-                                                    ),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      return Text(
-                                                        snapshot.data ??
-                                                            _films[value]
-                                                                .categories
-                                                                .map((category) =>
-                                                                    category
-                                                                        .name)
-                                                                .join(', '),
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            AppStyle.smallText,
-                                                      );
-                                                    },
-                                                  );
-                                                });
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                        ],
-                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ],
                     ),
             ),
           ],
@@ -250,7 +240,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
 }
 
 class ComingSoonSection extends StatelessWidget {
-  final Future<List<Movie>> movieFuture;
+  final Future<List<Movie>?> movieFuture;
   const ComingSoonSection({super.key, required this.movieFuture});
 
   @override
@@ -312,13 +302,13 @@ class ComingSoonSection extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: FutureBuilder<List<Movie>>(
+            child: FutureBuilder<List<Movie>?>(
               future: movieFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: progressLoading);
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(child: progressLoading);
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(child: progressLoading);
                 } else {
@@ -407,7 +397,7 @@ class ComingSoonSection extends StatelessWidget {
 }
 
 class MovieFutureByMonth extends StatelessWidget {
-  final Future<Map<int, List<Movie>>> movieByMonth;
+  final Future<Map<int, List<Movie>>?> movieByMonth;
   const MovieFutureByMonth({super.key, required this.movieByMonth});
 
   @override

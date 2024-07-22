@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/category/categories.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
+import 'package:movie_booking_app/modules/valid/validException.dart';
 
 class GetListByMonth {
-  static Future<Map<int, List<Movie>>> getListByMonth() async {
+  static Future<Map<int, List<Movie>>?> getListByMonth(context) async {
     List<int> months = ConverterUnit.caculateMonth();
     Map<int, List<Movie>> moviesByMonth = {};
     try {
@@ -20,41 +23,43 @@ class GetListByMonth {
             'Content-Type': 'application/json',
           },
         );
-        if (response.statusCode == 200) {
-          final result = json.decode(response.body);
-          if (result['code'] != 1000) {
-            throw Exception(result['message']);
-          }
-          final List<Movie> movies = List<Movie>.from(
-            result['result'].map(
-              (movieData) {
-                List<dynamic> categories = movieData['categories'];
-                List<Categories> listCategory = List<Categories>.from(
-                    categories.map((category) => Categories(
-                          id: category['id'],
-                          name: category['name'],
-                        )));
-
-                return Movie(
-                  id: movieData['id'],
-                  title: movieData['title'],
-                  classify: movieData['classify'],
-                  categories: listCategory,
-                  poster: movieData['poster'],
-                  isRelease: movieData['release'],
-                  trailer: movieData['trailer'],
-                );
-              },
-            ),
-          );
-          moviesByMonth[month] = movies;
-        } else {
-          throw Exception('Failed to fetch data: ${response.statusCode}');
+        if (response.statusCode != 200) {
+          debugPrint('List Movie By month error: ${response.statusCode}');
         }
+        final result = json.decode(response.body);
+        if (result['code'] != 1000) {
+          debugPrint('List Movie By month message: ${result['message']}');
+        }
+        final List<Movie> movies = List<Movie>.from(
+          result['result'].map(
+            (movieData) {
+              List<dynamic> categories = movieData['categories'];
+              List<Categories> listCategory =
+                  List<Categories>.from(categories.map((category) => Categories(
+                        id: category['id'],
+                        name: category['name'],
+                      )));
+
+              return Movie(
+                id: movieData['id'],
+                title: movieData['title'],
+                classify: movieData['classify'],
+                categories: listCategory,
+                poster: movieData['poster'],
+                isRelease: movieData['release'],
+                trailer: movieData['trailer'],
+              );
+            },
+          ),
+        );
+        moviesByMonth[month] = movies;
       }
       return moviesByMonth;
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
     } catch (err) {
-      throw Exception(err);
+      ShowMessage.unExpectedError(context);
     }
+    return null;
   }
 }

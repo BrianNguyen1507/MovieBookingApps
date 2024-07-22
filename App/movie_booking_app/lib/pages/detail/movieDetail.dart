@@ -29,21 +29,23 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  late Future<MovieDetail> movieDetail;
-  late Future<List<RatingFeedback>> listFeedback;
+  late Future<MovieDetail?> movieDetail;
+  late Future<List<RatingFeedback>?> listFeedback;
   late String movieName;
 
   @override
   void initState() {
-    movieDetail = MovieDetailService.deatailMovieService(widget.movieId);
-    listFeedback = RatingFeedbackService.getAllRatingFeedback(widget.movieId);
+    movieDetail =
+        MovieDetailService.deatailMovieService(context, widget.movieId);
+    listFeedback =
+        RatingFeedbackService.getAllRatingFeedback(context, widget.movieId);
     super.initState();
   }
 
   Widget renderBody(BuildContext context) {
-    return FutureBuilder<MovieDetail>(
+    return FutureBuilder<MovieDetail?>(
       future: movieDetail,
-      builder: (BuildContext context, AsyncSnapshot<MovieDetail> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox();
         } else if (snapshot.hasError) {
@@ -343,10 +345,20 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: movieDetail,
-      builder: (context, AsyncSnapshot<MovieDetail> snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: loadingData(context),
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: loadingData(context),
+            ),
+          );
+        } else if (snapshot.hasError || snapshot.data == null) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: loadingData(context),
+            ),
           );
         } else {
           MovieDetail data = snapshot.data!;

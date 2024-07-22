@@ -19,38 +19,33 @@ class ListFilmOrder extends StatefulWidget {
 }
 
 class ListFilmOrderState extends State<ListFilmOrder> {
-  late Future<List<OrderResponse>> futureFilmOrder;
+  late Future<List<OrderResponse>?> futureFilmOrder;
 
   @override
   void initState() {
-    futureFilmOrder = FilmOrder.getAllFilmOrder();
+    futureFilmOrder = FilmOrder.getAllFilmOrder(context);
     super.initState();
   }
 
   @override
   void setState(VoidCallback fn) {
-    futureFilmOrder = FilmOrder.getAllFilmOrder();
+    futureFilmOrder = FilmOrder.getAllFilmOrder(context);
     super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<OrderResponse>>(
+    return FutureBuilder<List<OrderResponse>?>(
       future: futureFilmOrder,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: loadingData(context),
           );
-        } else if (snapshot.data == null) {
-          return const Center(
-            child: Text(
-              "Ticket list is empty",
-              style: TextStyle(
-                fontSize: AppFontSize.medium,
-              ),
-            ),
-          );
+        } else if (snapshot.data == null ||
+            !snapshot.hasData ||
+            snapshot.hasError) {
+          return progressLoading;
         } else {
           List<OrderResponse> filmOrders = snapshot.data!;
           return SizedBox(
@@ -63,13 +58,14 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                 return GestureDetector(
                   onTap: () async {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailOrderPage(
-                            key: widget.key,
-                            id: filmOrder.id.toInt(),
-                          ),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailOrderPage(
+                          key: widget.key,
+                          id: filmOrder.id.toInt(),
+                        ),
+                      ),
+                    );
                   },
                   child: Container(
                     margin: const EdgeInsets.all(5.0),

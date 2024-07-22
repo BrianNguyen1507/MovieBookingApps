@@ -18,12 +18,12 @@ class DetailOrderPage extends StatefulWidget {
 }
 
 class DetailOrderPageState extends State<DetailOrderPage> {
-  late Future<DetailOrder> orderFuture;
+  late Future<DetailOrder?> orderFuture;
   late RatingFeedback ratingFeedback;
   @override
   void initState() {
     super.initState();
-    orderFuture = DetailOrderService.detailOrder(widget.id);
+    orderFuture = DetailOrderService.detailOrder(context, widget.id);
   }
 
   @override
@@ -39,13 +39,13 @@ class DetailOrderPageState extends State<DetailOrderPage> {
           color: AppColors.iconThemeColor,
         ),
       ),
-      body: FutureBuilder<DetailOrder>(
+      body: FutureBuilder<DetailOrder?>(
         future: orderFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return loadingData(context);
-          } else if (!snapshot.hasData) {
-            return const Text('No data available');
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return progressLoading;
           } else {
             DetailOrder order = snapshot.data!;
             return SingleChildScrollView(

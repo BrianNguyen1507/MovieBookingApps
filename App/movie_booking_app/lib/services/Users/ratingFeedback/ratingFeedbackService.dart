@@ -1,18 +1,15 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
+import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class RatingFeedbackService {
   static Future<void> createRatingFeedback(
-      int rating, String comment, int orderId, BuildContext context) async {
-    ValidInput valid = ValidInput();
-    
+      int rating, String comment, int orderId, context) async {
     final getURL = dotenv.env['CREATE_RATING_FEEDBACK']!;
     final uri = getURL + orderId.toString();
     final token = await Preferences().getTokenUsers();
@@ -30,24 +27,23 @@ class RatingFeedbackService {
         body: body,
       );
       final result = jsonDecode(utf8.decode(response.body.runes.toList()));
-      if (response.statusCode == 200) {
-        if (result['code'] != 1000) {
-          valid.showMessage(context, result['message'], AppColors.errorColor);
-          return;
-        }
-        valid.showMessage(context, 'Rating feedBack successful! Thanks you',
-            AppColors.correctColor);
-      } else {
-        valid.showMessage(context, result['message'], AppColors.errorColor);
+      if (response.statusCode != 200) {
+        debugPrint('Error rating service code: ${response.statusCode}');
       }
+      if (result['code'] != 1000) {
+        debugPrint('Error rating service message: ${result['message']}');
+      }
+      ShowMessage.ratingSuccess(context);
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
     } catch (err) {
-      throw Exception(err);
+      ShowMessage.unExpectedError(context);
     }
   }
 
-  static Future<List<RatingFeedback>> getAllRatingFeedback(int movieId) async {
+  static Future<List<RatingFeedback>?> getAllRatingFeedback(
+      context, int movieId) async {
     try {
-      
       final getURL = dotenv.env['GET_RATING_FEEDBACK']!;
       final url = getURL + movieId.toString();
 
@@ -57,8 +53,14 @@ class RatingFeedbackService {
       final result =
           jsonDecode(utf8.decode(responseFeedBack.body.runes.toList()));
 
-      if (responseFeedBack.statusCode != 200 || result['code'] != 1000) {
-        throw Exception(result['message']);
+      if (responseFeedBack.statusCode != 200) {
+        debugPrint(
+            'Error get all rating service code: ${responseFeedBack.statusCode}');
+      }
+      if (result['code'] != 1000) {
+        ShowMessage.unExpectedError(context);
+        debugPrint(
+            'Error get all rating service message: ${result['message']}');
       }
 
       List<RatingFeedback> listFeedback = List<RatingFeedback>.from(
@@ -66,13 +68,16 @@ class RatingFeedbackService {
               .map((feedback) => RatingFeedback.fromjson(feedback)));
 
       return listFeedback;
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
     } catch (err) {
-      throw Exception('Can\'t get all rating feedback: $err');
+      ShowMessage.unExpectedError(context);
     }
+    return null;
   }
 
-  static Future<RatingFeedback?> getRatingFeedback(BigInt orderId) async {
-    
+  static Future<RatingFeedback?> getRatingFeedback(
+      context, BigInt orderId) async {
     final getURL = dotenv.env['GET_RATING_FEEDBACK_BY_ORDER_ID']!;
     final uri = getURL + orderId.toString();
     final token = await Preferences().getTokenUsers();
@@ -91,8 +96,11 @@ class RatingFeedbackService {
         }
       }
       return null;
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
     } catch (err) {
-      throw Exception(err);
+      ShowMessage.unExpectedError(context);
     }
+    return null;
   }
 }

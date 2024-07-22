@@ -13,11 +13,11 @@ import 'package:movie_booking_app/services/Users/movie/getListByMonth.dart';
 import 'package:movie_booking_app/services/Users/movie/getListMovies.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Future<List<Movie>>? movieRelease;
-Future<List<Movie>>? movieFuture;
-Future<Map<int, List<Movie>>>? movieByMonth;
-Future<List<Movie>>? movieList;
-Future<List<Food>>? foodList;
+Future<List<Movie>?>? movieRelease;
+Future<List<Movie>?>? movieFuture;
+Future<Map<int, List<Movie>>?>? movieByMonth;
+Future<List<Movie>?>? movieList;
+Future<List<Food>?>? foodList;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,11 +36,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadData() {
-    movieRelease ??= MovieList.getListReleased();
-    movieFuture ??= MovieList.getListFutured();
-    movieByMonth ??= GetListByMonth.getListByMonth();
-    movieList ??= MovieList.getAllListMovie();
-    foodList ??= FoodService.getAllFood();
+    movieRelease = MovieList.getListReleased(context);
+    movieFuture = MovieList.getListFutured(context);
+    movieByMonth = GetListByMonth.getListByMonth(context);
+    movieList = MovieList.getAllListMovie(context);
+    foodList = FoodService.getAllFood(context);
     setState(() {
       isLoading = false;
     });
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildItemsList(BuildContext context, Future<List<Food>> foods) {
+  Widget _buildItemsList(BuildContext context, Future<List<Food>?> foods) {
     return SliverToBoxAdapter(
       child: Container(
         color: AppColors.containerColor,
@@ -122,9 +122,9 @@ class _HomePageState extends State<HomePage> {
               future: foods,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return loadingContent;
-                } else if (snapshot.hasError) {
-                  return loadingContent;
+                  return progressLoading;
+                } else if (snapshot.hasError || snapshot.data == null) {
+                  return progressLoading;
                 } else {
                   final data = snapshot.data!;
                   return SizedBox(
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildvideosList(BuildContext context, Future<List<Movie>> movies) {
+  Widget _buildvideosList(BuildContext context, Future<List<Movie>?> movies) {
     return SliverToBoxAdapter(
       child: Container(
         color: AppColors.containerColor,
@@ -167,9 +167,9 @@ class _HomePageState extends State<HomePage> {
                   future: movies,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return loadingContent;
-                    } else if (snapshot.hasError) {
-                      return loadingContent;
+                      return progressLoading;
+                    } else if (snapshot.hasError || snapshot.data == null) {
+                      return progressLoading;
                     } else {
                       final movies = snapshot.data!;
                       return SizedBox(

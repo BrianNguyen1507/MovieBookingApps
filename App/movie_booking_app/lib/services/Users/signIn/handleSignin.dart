@@ -11,7 +11,7 @@ class HandleSigninState {
   ValidInput valid = ValidInput();
 
   Future<bool> validSignIn(
-    BuildContext context,
+    context,
     String email,
     String password,
   ) async {
@@ -25,7 +25,7 @@ class HandleSigninState {
 
     _isSubmitting = true;
     showLoadingDialog(context);
-    final result = await SignInService.signin(email, password);
+    final result = await SignInService.signin(context, email, password);
     Navigator.of(context).pop();
     if (result != true) {
       valid.showMessage(

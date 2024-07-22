@@ -162,7 +162,7 @@ class ChangePasswordState extends State<ChangePassword> {
                                   BorderSide(color: Colors.black54, width: 1.0),
                             ),
                             border: OutlineInputBorder(
-                              borderRadius:ContainerRadius.radius10,
+                              borderRadius: ContainerRadius.radius10,
                             ),
                             labelText: AppLocalizations.of(context)!.re_pass,
                             suffixIcon: IconButton(
@@ -214,7 +214,8 @@ class ChangePasswordState extends State<ChangePassword> {
                         Account account =
                             await ChangePasswordService.changePassword(
                                 passwordController.text,
-                                newPasswordController.text);
+                                newPasswordController.text,
+                                context);
                         Preferences pre = Preferences();
                         String? email = await pre.getEmail();
                         if (account.email == email) {
@@ -252,7 +253,7 @@ class ChangePasswordState extends State<ChangePassword> {
 
   void _onPressLogout(BuildContext context) {
     Preferences pref = Preferences();
-    Provider.of<UserProvider>(context, listen: false).logout();
+    Provider.of<UserProvider>(context, listen: false).logout(context);
     pref.removeSinginInfo();
     Navigator.pushReplacementNamed(context, '/login');
   }

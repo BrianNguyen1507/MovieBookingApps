@@ -3,7 +3,7 @@ import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 
 class ValidInput {
-  bool isValidEmail(String email, BuildContext context) {
+  bool isValidEmail(String email, context) {
     RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     showMessage(context, 'Please enter a valid email', AppColors.errorColor);
     return emailRegex.hasMatch(email);
@@ -15,8 +15,7 @@ class ValidInput {
     return passwordRegex.hasMatch(password);
   }
 
-  bool checkRepassword(
-      String password, String repassword, BuildContext context) {
+  bool checkRepassword(String password, String repassword, context) {
     if (password != repassword) {
       return false;
     }
@@ -29,38 +28,40 @@ class ValidInput {
 
   void showMessage(BuildContext context, String message, Color colors) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          content: SizedBox(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 1.0),
-                  child: SizedBox(
-                    width: AppSize.width(context) * 0.7,
-                    child: Text(
-                      message,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppFontSize.small),
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            content: SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 1.0),
+                    child: SizedBox(
+                      width: AppSize.width(context) * 0.7,
+                      child: Text(
+                        message,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: AppFontSize.small),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            backgroundColor: colors,
+            behavior: SnackBarBehavior.floating,
           ),
-          backgroundColor: colors,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+        );
+      }
     });
   }
 
   void showAlertCustom(
-    BuildContext context,
+    context,
     String content,
     String? buttonText,
     bool? cancelButton,

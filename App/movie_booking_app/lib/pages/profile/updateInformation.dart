@@ -8,6 +8,8 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/account/account.dart';
+import 'package:movie_booking_app/modules/connection/networkControl.dart';
+import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/services/Users/infomation/getMyInfoService.dart';
 import 'package:movie_booking_app/services/Users/infomation/updateAccount.dart';
@@ -30,7 +32,7 @@ class UpdateInformationState extends State<UpdateInformation> {
   String base64Avatar = "";
   String email = "";
   String avatar = "";
-
+  late Future<bool> checker;
   ImagePicker picker = ImagePicker();
   late File image;
   ValidInput valid = ValidInput();
@@ -44,12 +46,21 @@ class UpdateInformationState extends State<UpdateInformation> {
   @override
   void initState() {
     super.initState();
-    _fetchMyInformation();
+
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    checker = ConnectionController.checkConnection();
+    bool isConnected = await checker;
+    if (isConnected) {
+      await _fetchMyInformation();
+    }
   }
 
   Future<void> _fetchMyInformation() async {
     try {
-      Account account = await MyInformation.getMyInformation();
+      Account account = await MyInformation.getMyInformation(context);
       setState(() {
         account = account;
         phoneCrl.text = account.phoneNumber;
@@ -71,176 +82,191 @@ class UpdateInformationState extends State<UpdateInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.update_info),
-        backgroundColor: AppColors.appbarColor,
-        titleTextStyle: AppStyle.headline2,
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: AppColors.containerColor,
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.update_info),
+          backgroundColor: AppColors.appbarColor,
+          titleTextStyle: AppStyle.headline2,
+          centerTitle: true,
+          iconTheme: const IconThemeData(
+            color: AppColors.containerColor,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              width: 150,
-              height: 150,
-              child: GestureDetector(
-                  onTap: () {
-                    _pickAndCropImage();
-                  },
-                  child: imageAvatar(avatar)),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Email",
-                        style: TextStyle(),
+        body: FutureBuilder<bool>(
+            future: checker,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: loadingContent);
+              } else if (snapshot.hasError ||
+                  !snapshot.hasData ||
+                  !snapshot.data!) {
+                return Center(child: loadingContent);
+              } else {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        width: 150,
+                        height: 150,
+                        child: GestureDetector(
+                            onTap: () {
+                              _pickAndCropImage();
+                            },
+                            child: imageAvatar(avatar)),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          email,
-                          style:
-                              const TextStyle(fontSize: AppFontSize.lowMedium),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Email",
+                                  style: TextStyle(),
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    email,
+                                    style: const TextStyle(
+                                        fontSize: AppFontSize.lowMedium),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: fullNameCtl,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.fullname,
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextFormField(
-                  controller: phoneCrl,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.phone,
-                    border: const OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.gender,
-                          style: const TextStyle(fontSize: 16.0),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: TextFormField(
+                            controller: fullNameCtl,
+                            decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.fullname,
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: 30),
-                        Radio<String>(
-                          value: 'Male',
-                          groupValue: selectedGender,
-                          onChanged: _onGenderChanged,
-                          activeColor: AppColors.primaryColor,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: TextFormField(
+                            controller: phoneCrl,
+                            decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.phone,
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
                         ),
-                        Text(AppLocalizations.of(context)!.male),
-                      ],
-                    ),
-                    const SizedBox(width: 30),
-                    Row(
-                      children: [
-                        Radio<String>(
-                          value: 'Female',
-                          groupValue: selectedGender,
-                          onChanged: _onGenderChanged,
-                          activeColor: AppColors.primaryColor,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.gender,
+                                    style: const TextStyle(fontSize: 16.0),
+                                  ),
+                                  const SizedBox(width: 30),
+                                  Radio<String>(
+                                    value: 'Male',
+                                    groupValue: selectedGender,
+                                    onChanged: _onGenderChanged,
+                                    activeColor: AppColors.primaryColor,
+                                  ),
+                                  Text(AppLocalizations.of(context)!.male),
+                                ],
+                              ),
+                              const SizedBox(width: 30),
+                              Row(
+                                children: [
+                                  Radio<String>(
+                                    value: 'Female',
+                                    groupValue: selectedGender,
+                                    onChanged: _onGenderChanged,
+                                    activeColor: AppColors.primaryColor,
+                                  ),
+                                  Text(AppLocalizations.of(context)!.female),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        Text(AppLocalizations.of(context)!.female),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextFormField(
-                  controller: dobCtl,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.dob,
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () => _selectDate(context),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 30),
-              width: AppSize.width(context),
-              child: Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.buttonColor,
-                  ),
-                  onPressed: () async {
-                    Account accountRequest = Account(
-                        email: "",
-                        avatar: base64Avatar,
-                        fullName: fullNameCtl.text,
-                        phoneNumber: phoneCrl.text,
-                        gender: selectedGender == "Male" ? "Nam" : "Nữ",
-                        dayOfBirth: ConverterUnit.convertToDate(dobCtl.text));
-                    accountRequest = await UpdateAccount.updateAccount(
-                        accountRequest, context);
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: TextFormField(
+                            controller: dobCtl,
+                            decoration: InputDecoration(
+                              labelText: AppLocalizations.of(context)!.dob,
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.calendar_today),
+                                onPressed: () => _selectDate(context),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        width: AppSize.width(context),
+                        child: Center(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.buttonColor,
+                            ),
+                            onPressed: () async {
+                              Account? accountRequest = Account(
+                                  email: "",
+                                  avatar: base64Avatar,
+                                  fullName: fullNameCtl.text,
+                                  phoneNumber: phoneCrl.text,
+                                  gender:
+                                      selectedGender == "Male" ? "Nam" : "Nữ",
+                                  dayOfBirth:
+                                      ConverterUnit.convertToDate(dobCtl.text));
+                              accountRequest =
+                                  await UpdateAccount.updateAccount(
+                                      accountRequest, context);
 
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const IndexPage(initialIndex: 2)));
-                  },
-                  child: SizedBox(
-                      width: AppSize.width(context) * 0.75,
-                      child: Text(AppLocalizations.of(context)!.update_info,
-                          textAlign: TextAlign.center,
-                          style: AppStyle.buttonText2)),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const IndexPage(initialIndex: 2)));
+                            },
+                            child: SizedBox(
+                                width: AppSize.width(context) * 0.75,
+                                child: Text(
+                                    AppLocalizations.of(context)!.update_info,
+                                    textAlign: TextAlign.center,
+                                    style: AppStyle.buttonText2)),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }
+            }));
   }
 
   DateTime? _selectedDate;

@@ -18,38 +18,33 @@ class ListFoodOrder extends StatefulWidget {
 }
 
 class ListFoodOrderState extends State<ListFoodOrder> {
-  late Future<List<OrderResponse>> futureFoodOrder;
+  late Future<List<OrderResponse>?> futureFoodOrder;
 
   @override
   void initState() {
-    futureFoodOrder = FoodOrderService.getAllFoodOrder();
+    futureFoodOrder = FoodOrderService.getAllFoodOrder(context);
     super.initState();
   }
 
   @override
   void setState(VoidCallback fn) {
-    futureFoodOrder = FoodOrderService.getAllFoodOrder();
+    futureFoodOrder = FoodOrderService.getAllFoodOrder(context);
     super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<OrderResponse>>(
+    return FutureBuilder<List<OrderResponse>?>(
       future: futureFoodOrder,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: loadingData(context),
           );
-        } else if (snapshot.data == null) {
-          return const Center(
-            child: Text(
-              "Ticket list is empty",
-              style: TextStyle(
-                fontSize: AppFontSize.medium,
-              ),
-            ),
-          );
+        } else if (snapshot.data == null ||
+            snapshot.hasError ||
+            !snapshot.hasData) {
+          return progressLoading;
         } else {
           List<OrderResponse> foodOrders = snapshot.data!;
           return SizedBox(

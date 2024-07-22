@@ -32,6 +32,7 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
   @override
   void initState() {
     scheduleData = ScheduleService.getAllSchedule(
+      context,
       dateformated,
       widget.theaterId,
       widget.movieId,
@@ -73,7 +74,7 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
                     () {
                       dateformated =
                           ConverterUnit.convertToDate(date.toString());
-                      scheduleData = ScheduleService.getAllSchedule(
+                      scheduleData = ScheduleService.getAllSchedule(context,
                           dateformated, widget.theaterId, widget.movieId);
                     },
                   );

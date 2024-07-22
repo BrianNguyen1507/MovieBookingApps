@@ -1,21 +1,25 @@
-import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
 
-class ConnectivityService {
-  final _controller = StreamController<bool>.broadcast();
-  Stream<bool> get isConnected => _controller.stream;
-
-  ConnectivityService() {
-    Connectivity().onConnectivityChanged.listen(_updateConnectionStatus);
+class ConnectionController {
+  static MethodChannel platform =
+      const MethodChannel('flutter.native/internetConnection');
+  static Future<bool> checkConnection() async {
+    try {
+      final bool result =
+          await platform.invokeMethod('checkInternetConnection');
+      return result;
+    } on PlatformException catch (e) {
+      print('connection internet check fail $e');
+      return false;
+    }
   }
-  void _updateConnectionStatus(List<ConnectivityResult> result) {
-    bool isConnected = result.contains(ConnectivityResult.wifi) ||
-        result.contains(ConnectivityResult.mobile) ||
-        result.contains(ConnectivityResult.ethernet);
-    _controller.sink.add(isConnected);
-  }
 
-  void dispose() {
-    _controller.close();
+  static void startListening(Function(bool) onStatusChange) {
+    platform.setMethodCallHandler((call) async {
+      if (call.method == "networkStatusChanged") {
+        final bool isConnected = call.arguments;
+        onStatusChange(isConnected);
+      }
+    });
   }
 }

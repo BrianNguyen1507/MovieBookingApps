@@ -69,7 +69,8 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                       try {
                         showLoadingDialog(context);
                         bool result =
-                            await ForgotPasswordService.forgotPassword(email);
+                            await ForgotPasswordService.forgotPassword(
+                                email, context);
                         if (!result && !valid.isValidEmail(email, context)) {
                           Navigator.pop(context);
                           return;

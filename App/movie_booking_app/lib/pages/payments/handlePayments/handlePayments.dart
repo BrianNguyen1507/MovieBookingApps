@@ -19,7 +19,7 @@ class Handlepayments {
   }
 
   static handlePaymentSuccess(
-      BuildContext context,
+      context,
       bool visible,
       String seat,
       int voucherId,
@@ -53,11 +53,11 @@ class Handlepayments {
     Set<String> seatFormat = ConverterUnit.convertStringToSet(seat);
     bool isReturn = false;
     if (seat.isNotEmpty) {
-      isReturn = await ReturnSeatService.returnSeat(scheduleId, seatFormat);
+      isReturn = await ReturnSeatService.returnSeat(context,scheduleId, seatFormat);
     }
     if ((seat.isNotEmpty && isReturn) || seat.isEmpty) {
-      CreateOrderService.createOrderTicket(
-          scheduleId!, voucherId, methodName, appTranId, seat, foods, total);
+      CreateOrderService.createOrderTicket(context, scheduleId!, voucherId,
+          methodName, appTranId, seat, foods, total);
       Preferences().clearHoldSeats();
 
       Future.delayed(

@@ -166,7 +166,7 @@ class ResetPasswordState extends State<ResetPassword> {
                       if (passwordController.text ==
                           passwordRefController.text) {
                         email = await ResetPasswordService.resetPassword(
-                            widget.email, passwordController.text);
+                            widget.email, passwordController.text, context);
                       }
                       if (email != "") {
                         Navigator.pushReplacement(

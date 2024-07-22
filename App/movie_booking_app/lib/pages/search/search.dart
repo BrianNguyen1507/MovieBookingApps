@@ -22,12 +22,12 @@ class Search extends StatefulWidget {
 }
 
 class SearchState extends State<Search> {
-  late Future<List<Movie>> movies;
+  late Future<List<Movie>?> movies;
   TextEditingController textFilter = TextEditingController();
 
   @override
   void initState() {
-    movies = SearchMovieService.findAllMovieByKeyWord(textFilter.text);
+    movies = SearchMovieService.findAllMovieByKeyWord(context, textFilter.text);
     super.initState();
   }
 
@@ -86,7 +86,7 @@ class SearchState extends State<Search> {
                       onPressed: () {
                         setState(() {
                           movies = SearchMovieService.findAllMovieByKeyWord(
-                              textFilter.text);
+                              context, textFilter.text);
                         });
                       },
                       child: Icon(

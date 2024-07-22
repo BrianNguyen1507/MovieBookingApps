@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/modules/valid/validException.dart';
 
 class ResetPasswordService {
-  static Future<String> resetPassword(String email, String password) async {
-    
+  static Future<String> resetPassword(
+      String email, String password, context) async {
     final getUrl = dotenv.env['RESET_PASSWORD']!;
     final url = getUrl;
     final body = json.encode({'email': email, 'password': password});
@@ -17,8 +19,10 @@ class ResetPasswordService {
           return responseData['result']['email'];
         }
       }
-    } catch (error) {
-      throw Exception(error);
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
+    } catch (err) {
+      ShowMessage.unExpectedError(context);
     }
     return "";
   }

@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 class MovieListings extends StatelessWidget {
   const MovieListings(
       {super.key, required this.movies, required this.listTitle});
-  final Future<List<Movie>> movies;
+  final Future<List<Movie>?> movies;
   final String listTitle;
   @override
   Widget build(BuildContext context) {

@@ -39,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
   void init() {
     super.initState();
     _pref.clear();
-    Provider.of<UserProvider>(context, listen: false).logout();
+    Provider.of<UserProvider>(context, listen: false).logout(context);
   }
 
   @override
@@ -435,7 +435,7 @@ class _SignInPageState extends State<SignInPage> {
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(AppColors.commonColor),
             shape: WidgetStateProperty.all(
-               RoundedRectangleBorder(
+              RoundedRectangleBorder(
                 borderRadius: ContainerRadius.radius10,
               ),
             ),

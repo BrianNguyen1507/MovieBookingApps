@@ -93,15 +93,15 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> logout() async {
+  Future<void> logout(context) async {
     _isLoggedIn = false;
     notifyListeners();
-    LogOutServices.logout();
+    LogOutServices.logout(context);
     _user = null;
     notifyListeners();
   }
 
-  Future<void> trySignIn(BuildContext context) async {
+  Future<void> trySignIn(context) async {
     Preferences preferences = Preferences();
     Map<String, String?>? loginInfo;
     try {

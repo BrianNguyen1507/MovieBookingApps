@@ -17,7 +17,7 @@ class MovieListingByMonth extends StatelessWidget {
     required this.listTitle,
   });
 
-  final Future<Map<int, List<Movie>>> movies;
+  final Future<Map<int, List<Movie>>?> movies;
   final String listTitle;
 
   @override
@@ -32,7 +32,7 @@ class MovieListingByMonth extends StatelessWidget {
             style: AppStyle.headline1,
           ),
         ),
-        body: FutureBuilder<Map<int, List<Movie>>>(
+        body: FutureBuilder<Map<int, List<Movie>>?>(
           future: movies,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -40,12 +40,7 @@ class MovieListingByMonth extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text(
-                  'No movies found',
-                  style: TextStyle(color: AppColors.primaryColor),
-                ),
-              );
+              return Center(child: progressLoading);
             } else {
               final movieMap = snapshot.data!;
               final monthsWithMovies = movieMap.entries
@@ -166,7 +161,7 @@ class MovieListingByMonth extends StatelessWidget {
                                                           .classifyType(
                                                               movie.classify)),
                                               borderRadius:
-                                             ContainerRadius.radius2,
+                                                  ContainerRadius.radius2,
                                             ),
                                             child: Text(movie.classify,
                                                 style: AppStyle.classifyText),
