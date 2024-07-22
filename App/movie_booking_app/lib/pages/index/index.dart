@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/modules/connection/networkControl.dart';
+import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/pages/index/components/bottomnav.dart';
 import 'package:movie_booking_app/pages/index/components/drawer.dart';
+import 'package:movie_booking_app/pages/order/orderPage.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/routes/AppRoutes.dart';
 import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
@@ -25,14 +28,23 @@ class IndexPage extends StatefulWidget {
 
 class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   late int _selectedIndex;
-
   late List<Widget> pages;
   ValidInput valid = ValidInput();
   PageController _pageController = PageController();
-
+  bool _isConnected = false;
   @override
   void initState() {
     super.initState();
+    ConnectionController.startListening((isConnected) {
+      setState(() {
+        _isConnected = isConnected;
+        if (_isConnected == false) {
+          ShowMessage.noNetworkConnection(context);
+          pref.clear();
+        }
+      });
+    });
+
     _selectedIndex = widget.initialIndex;
     WidgetsBinding.instance.addObserver(this);
     _pageController = PageController(initialPage: _selectedIndex);
@@ -60,19 +72,19 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.detached) {
-      handleAppDetached();
+      handleAppDetached(context);
     }
   }
 
-  Future<void> handleAppDetached() async {
+  Future<void> handleAppDetached(context) async {
     Preferences pref = Preferences();
-    await LogOutServices.logout();
+    await LogOutServices.logout(context);
     TokenManager.cancelTokenRefreshTimer();
     String? seatpref = await pref.getHoldSeats();
     int? scheduleIdpref = await pref.getSchedule();
     if (seatpref != null && seatpref.isNotEmpty && scheduleIdpref != null) {
       Set<String> heldSeats = ConverterUnit.convertStringToSet(seatpref);
-      ReturnSeatService.returnSeat(scheduleIdpref, heldSeats);
+      ReturnSeatService.returnSeat(context, scheduleIdpref, heldSeats);
       pref.clearHoldSeats();
       pref.clearSchedule();
       print("Hold seats returned successfully");

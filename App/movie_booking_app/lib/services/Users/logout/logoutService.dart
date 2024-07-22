@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 class LogOutServices {
-  static Future<dynamic> logout() async {
+  static Future<dynamic> logout(context) async {
     Preferences pref = Preferences();
     String? token = await pref.getTokenUsers();
     try {
@@ -20,20 +23,19 @@ class LogOutServices {
         body: logoutBody,
       );
 
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        if (responseData['code'] == 1000) {
-          print('LOG OUT THANH CONG');
-          await pref.clear();
-          return;
-        } else {
-          return responseData['message'];
-        }
-      } else {
-        throw Exception('Failed to logout');
+      if (response.statusCode != 200) {
+        debugPrint('Log out Service Code: ${response.statusCode}');
       }
-    } catch (error) {
-      return 'Error during logout';
+      final responseData = json.decode(response.body);
+      if (responseData['code'] != 1000) {
+        await pref.clear();
+        return;
+      }
+      return responseData['message'];
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
+    } catch (err) {
+      ShowMessage.unExpectedError(context);
     }
   }
 }

@@ -1,13 +1,16 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:movie_booking_app/models/user/user.dart';
+import 'package:movie_booking_app/modules/valid/validException.dart';
 
 class SignUpService {
-  static Future<dynamic> signup(User user) async {
+  static Future<dynamic> signup(context, User user) async {
     try {
-      
       final getURL = dotenv.env['SIGN_UP']!;
       final apiUrl = getURL;
       final response = await http.post(
@@ -19,21 +22,24 @@ class SignUpService {
       );
       final responseData = json.decode(response.body);
       if (responseData['code'] != 1000) {
-        return responseData['message'];
+        ShowMessage.unExpectedError(context);
+        debugPrint('Error create Order message: ${responseData['message']}');
+        return false;
       }
-      if (responseData['code'] == 1000) {
-        return true;
-      }
-    } catch (error) {
-      print('Exception: $error');
+
+      return true;
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
+    } catch (err) {
+      ShowMessage.unExpectedError(context);
     }
+    return false;
   }
 }
 
 class OTPService {
   static Future<dynamic> otpService(String email, String otp) async {
     try {
-      
       final getURL = dotenv.env['GET_OTP_ACTIVE']!;
       final apiUrl = getURL;
       final response = await http.put(

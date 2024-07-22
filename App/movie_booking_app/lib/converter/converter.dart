@@ -25,7 +25,7 @@ class ConverterUnit {
   }
 
   static String convertToDate(String dateTimeString) {
-    DateTime dateTime = DateTime.parse(dateTimeString);
+    DateTime? dateTime = DateTime.parse(dateTimeString);
     DateFormat dateFormat = DateFormat('yyyy-MM-dd');
     return dateFormat.format(dateTime);
   }

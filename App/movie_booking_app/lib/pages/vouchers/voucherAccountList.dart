@@ -17,11 +17,11 @@ class VoucherAccountList extends StatefulWidget {
 }
 
 class _VoucherAccountListState extends State<VoucherAccountList> {
-  late Future<List<Voucher>> myVoucher;
+  late Future<List<Voucher>?> myVoucher;
 
   @override
   void initState() {
-    myVoucher = VoucherService.getVoucherByEmail();
+    myVoucher = VoucherService.getVoucherByEmail(context);
     super.initState();
   }
 
@@ -38,15 +38,13 @@ class _VoucherAccountListState extends State<VoucherAccountList> {
         ),
       ),
       body: SingleChildScrollView(
-        child: FutureBuilder<List<Voucher>>(
+        child: FutureBuilder<List<Voucher>?>(
           future: myVoucher,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return loadingData(context);
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
+              return progressLoading;
+            } else if (snapshot.hasError || !snapshot.hasData) {
+              return progressLoading;
             } else {
               final listVoucher = snapshot.data!;
               return SizedBox(

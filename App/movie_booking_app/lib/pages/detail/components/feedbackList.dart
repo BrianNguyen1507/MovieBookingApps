@@ -8,7 +8,7 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RatingFeedbackWidget extends StatefulWidget {
-  final Future<List<RatingFeedback>> listFeedback;
+  final Future<List<RatingFeedback>?> listFeedback;
 
   RatingFeedbackWidget({required this.listFeedback});
 
@@ -25,7 +25,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
     super.initState();
     widget.listFeedback.then((feedback) {
       setState(() {
-        countFeedback = feedback.length;
+        countFeedback = feedback!.length;
         averageRating = ConverterUnit.calculateAverageRating(feedback);
       });
     }).catchError((error) {
@@ -72,7 +72,7 @@ class _RatingFeedbackWidgetState extends State<RatingFeedbackWidget> {
             color: Colors.grey,
             thickness: 0.35,
           ),
-          FutureBuilder<List<RatingFeedback>>(
+          FutureBuilder<List<RatingFeedback>?>(
             future: widget.listFeedback,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

@@ -11,23 +11,35 @@ import vn.zalopay.sdk.Environment
 import vn.zalopay.sdk.ZaloPayError
 import vn.zalopay.sdk.ZaloPaySDK
 import vn.zalopay.sdk.listeners.PayOrderListener
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 
 class MainActivity: FlutterActivity() {
-
+    private lateinit var networkChangeReceiver: NetworkChangeReceiver
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+      
         ZaloPaySDK.init(2554, Environment.SANDBOX)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+       
+        unregisterReceiver(networkChangeReceiver)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         Log.d("newIntent", intent.toString())
+     
         ZaloPaySDK.getInstance().onResult(intent)
     }
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
+       
         val channelPayOrder = "flutter.native/channelPayOrder"
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelPayOrder).setMethodCallHandler { call, result ->
             if (call.method == "payOrder") {
@@ -57,6 +69,7 @@ class MainActivity: FlutterActivity() {
             }
         }
 
+        
         val channelBrightness = "flutter.native/IncreaseBrightness"
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelBrightness).setMethodCallHandler { call, result ->
             when (call.method) {
@@ -73,5 +86,19 @@ class MainActivity: FlutterActivity() {
                 }
             }
         }
+
+      
+        val channelInternet = "flutter.native/internetConnection"
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelInternet).setMethodCallHandler { call, result ->
+            if (call.method == "checkInternetConnection") {
+                val isConnected = InternetController.checkInternetConnection(this)
+                result.success(isConnected)
+            } else {
+                result.notImplemented()
+            }
+        }
+        networkChangeReceiver = NetworkChangeReceiver(MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelInternet))
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(networkChangeReceiver, filter)
     }
 }

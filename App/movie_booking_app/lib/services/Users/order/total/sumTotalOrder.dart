@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,7 +11,7 @@ class GetTotalService {
       int movieId, int quantity, List? food) async {
     Preferences pref = Preferences();
     String? token = await pref.getTokenUsers();
-    
+
     final getURL = dotenv.env['GET_SUM_TOTAL']!;
     final url = getURL;
 
@@ -27,20 +28,19 @@ class GetTotalService {
       }),
     );
 
-    if (response.statusCode == 200) {
-      final result = jsonDecode(response.body);
-      final getData = result['result'];
-      if (result['code'] != 1000) {
-        throw Exception(result['message']);
-      }
-
-      return GetTotal(
-        priceMovie: getData['priceTicket'],
-        priceFood: getData['priceFood'],
-        total: getData['total'],
-      );
-    } else {
-      throw Exception('Failed to sum total order: ${response.statusCode}');
+    if (response.statusCode != 200) {
+      debugPrint('Error sumtotal Service code: ${response.statusCode}');
     }
+    final result = jsonDecode(response.body);
+    final getData = result['result'];
+    if (result['code'] != 1000) {
+      debugPrint('Error sumtotal Service message: ${result['message']}');
+    }
+
+    return GetTotal(
+      priceMovie: getData['priceTicket'],
+      priceFood: getData['priceFood'],
+      total: getData['total'],
+    );
   }
 }

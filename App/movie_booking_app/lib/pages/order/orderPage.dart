@@ -52,7 +52,7 @@ class OrderPage extends StatefulWidget {
   State<OrderPage> createState() => _OrderPageState();
 }
 
-late Future<MovieDetail> movieData;
+late Future<MovieDetail?> movieData;
 late Future<Food> foodData;
 Preferences pref = Preferences();
 
@@ -60,7 +60,8 @@ class _OrderPageState extends State<OrderPage> {
   @override
   void initState() {
     widget.visible
-        ? movieData = MovieDetailService.deatailMovieService(widget.movieId)
+        ? movieData =
+            MovieDetailService.deatailMovieService(context, widget.movieId)
         : null;
     newTotal = widget.total.total;
     discount = widget.total.total - newTotal;
@@ -71,18 +72,18 @@ class _OrderPageState extends State<OrderPage> {
   void dispose() {
     Preferences().clearVoucher();
     TimerController.timerHoldSeatCancel();
-    _handleAsyncDisposal();
+    _handleAsyncDisposal(context);
     super.dispose();
   }
 
-  void _handleAsyncDisposal() async {
+  void _handleAsyncDisposal(context) async {
     final latestSeats = await pref.getHoldSeats();
 
     if (widget.visible && latestSeats != null) {
       Set<String> prefSeats = ConverterUnit.convertStringToSet(latestSeats);
       dynamic scheduleId = await pref.getSchedule();
-      print('seat was closed $prefSeats');
-      await ReturnSeatService.returnSeat(scheduleId, prefSeats);
+      debugPrint('seat was closed $prefSeats');
+      await ReturnSeatService.returnSeat(context, scheduleId, prefSeats);
 
       await pref.clearHoldSeats();
     }
@@ -283,7 +284,7 @@ Widget buildSelectionInfo(
 }
 
 Widget buildMovieInfo(
-  Future<MovieDetail> fetchMovieData,
+  Future<MovieDetail?> fetchMovieData,
 ) {
   return FutureBuilder(
     future: movieData,
@@ -442,8 +443,9 @@ Widget buildFoodInfo(
           itemCount: selectedFoods.length,
           itemBuilder: (context, index) {
             final food = selectedFoods[index];
-            return FutureBuilder<Food>(
-              future: FindFoodService.getFoodById(food['id'].toString()),
+            return FutureBuilder<Food?>(
+              future:
+                  FindFoodService.getFoodById(food['id'].toString(), context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

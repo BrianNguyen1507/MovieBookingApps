@@ -34,7 +34,7 @@ class _VoucherOrderState extends State<VoucherOrder> {
   }
 
   void loadVoucherData() async {
-    voucherData = VoucherService.getAllVoucherByAccount(widget.total);
+    voucherData = VoucherService.getAllVoucherByAccount(context, widget.total);
     final voucherId = await pref.getVoucher();
     print(voucherId);
 
@@ -193,8 +193,7 @@ class _VoucherOrderState extends State<VoucherOrder> {
     );
   }
 
-  Widget renderApplyVoucher(
-      BuildContext context, int? selectedVocher, double total) {
+  Widget renderApplyVoucher(context, int? selectedVocher, double total) {
     return Column(
       children: [
         SizedBox(
@@ -213,8 +212,8 @@ class _VoucherOrderState extends State<VoucherOrder> {
                 return;
               }
               pref.saveSVoucher(selectedVoucherIndex = selectedVocher);
-              double totalApplyed =
-                  await VoucherApply.applyVoucher(selectedVocher, total);
+              double? totalApplyed = await VoucherApply.applyVoucher(
+                  context, selectedVocher, total);
               //update total vua apply voucher
               Navigator.pop(context,
                   {'newTotal': totalApplyed, 'voucherId': selectedVocher});

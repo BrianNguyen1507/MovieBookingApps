@@ -20,11 +20,11 @@ class AppIcon {
 }
 
 class AppSize {
-  static double width(BuildContext context) {
+  static double width(context) {
     return MediaQuery.of(context).size.width;
   }
 
-  static double height(BuildContext context) {
+  static double height(context) {
     return MediaQuery.of(context).size.height;
   }
 }
@@ -44,13 +44,13 @@ class Appdata {
     }
   }
 
-  static String getReleased(BuildContext context, bool isRelease) {
+  static String getReleased(context, bool isRelease) {
     return isRelease
         ? AppLocalizations.of(context)!.nowshowing
         : AppLocalizations.of(context)!.comming;
   }
 
-  static String? getLabelForIndex(BuildContext context, int index) {
+  static String? getLabelForIndex(context, int index) {
     switch (index) {
       case 0:
         return AppLocalizations.of(context)!.store;
@@ -128,7 +128,7 @@ class ClassifyClass {
     }
   }
 
-  static String contentClassify(BuildContext context, String type) {
+  static String contentClassify(context, String type) {
     switch (type.toLowerCase()) {
       case 'k':
         return AppLocalizations.of(context)!.classify_K;
@@ -149,7 +149,7 @@ class ClassifyClass {
 }
 
 class RatingContent {
-  static String contentRating(BuildContext context, int rate) {
+  static String contentRating(context, int rate) {
     switch (rate) {
       case 1:
         return AppLocalizations.of(context)!.rating_1;

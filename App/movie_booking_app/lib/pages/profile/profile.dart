@@ -233,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _onPressLogout(BuildContext context) {
     Preferences pref = Preferences();
-    Provider.of<UserProvider>(context, listen: false).logout();
+    Provider.of<UserProvider>(context, listen: false).logout(context);
     pref.removeSinginInfo();
     Navigator.pushReplacementNamed(context, '/login');
   }

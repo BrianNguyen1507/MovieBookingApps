@@ -43,16 +43,16 @@ class SeatSelection extends StatefulWidget {
 }
 
 class _SeatSelectionState extends State<SeatSelection> {
-  late Future<Seat> seats;
-  late Future<MovieDetail> getMovie;
+  late Future<Seat?> seats;
+  late Future<MovieDetail?> getMovie;
   late Future<GetTotal> getTotal;
   Set<String> selectedSeats = {};
 
   @override
   void initState() {
     super.initState();
-    seats = Seatservice.getMovieScheduleById(widget.scheduleId);
-    getMovie = MovieDetailService.deatailMovieService(widget.movieId);
+    seats = Seatservice.getMovieScheduleById(context, widget.scheduleId);
+    getMovie = MovieDetailService.deatailMovieService(context, widget.movieId);
     getTotal = _fetchTotal();
   }
 
@@ -84,7 +84,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                   Column(
                     children: [
                       Expanded(
-                        child: FutureBuilder<Seat>(
+                        child: FutureBuilder<Seat?>(
                           future: seats,
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -245,7 +245,7 @@ Widget renderBooking(
     int roomNumber,
     int scheduleId,
     int movieId,
-    Future<MovieDetail> movieInfo,
+    Future<MovieDetail?> movieInfo,
     Future<GetTotal> totalInfo,
     Set<String> selectedSeats) {
   return Container(
@@ -262,7 +262,7 @@ Widget renderBooking(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FutureBuilder<MovieDetail>(
+        FutureBuilder<MovieDetail?>(
           future: movieInfo,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

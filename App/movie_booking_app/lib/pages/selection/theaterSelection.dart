@@ -20,13 +20,13 @@ class TheaterSelection extends StatefulWidget {
   State<TheaterSelection> createState() => _TheaterSelectionState();
 }
 
-late Future<List<Theater>> listTheater;
+late Future<List<Theater>?> listTheater;
 
 class _TheaterSelectionState extends State<TheaterSelection> {
   @override
   void initState() {
     super.initState();
-    listTheater = GetAllMovieTheater.getAllMovieTheater();
+    listTheater = GetAllMovieTheater.getAllMovieTheater(context);
   }
 
   @override
@@ -80,22 +80,22 @@ class _TheaterSelectionState extends State<TheaterSelection> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Expanded(
-                    child: DropdownButton<String>(
-                      borderRadius: ContainerRadius.radius5,
-                      isExpanded: true,
-                      items: const [
-                        DropdownMenuItem<String>(
-                            value: 'option1', child: Text('Option 1')),
-                        DropdownMenuItem<String>(
-                            value: 'option2', child: Text('Option 2')),
-                      ],
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      value: null,
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: DropdownButton<String>(
+                  //     borderRadius: ContainerRadius.radius5,
+                  //     isExpanded: true,
+                  //     items: const [
+                  //       DropdownMenuItem<String>(
+                  //           value: 'option1', child: Text('Option 1')),
+                  //       DropdownMenuItem<String>(
+                  //           value: 'option2', child: Text('Option 2')),
+                  //     ],
+                  //     onChanged: (value) {
+                  //       setState(() {});
+                  //     },
+                  //     value: null,
+                  //   ),
+                  // ),
                 ],
               ),
             ),

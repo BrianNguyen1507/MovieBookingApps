@@ -40,7 +40,7 @@ class StorePage extends StatefulWidget {
 }
 
 class _StorePageState extends State<StorePage> {
-  late Future<List<Food>> foods;
+  late Future<List<Food>?> foods;
   late List<TextEditingController> _controllers;
   late List<int> _values;
   late List<Map<String, dynamic>> foodOrder;
@@ -55,7 +55,7 @@ class _StorePageState extends State<StorePage> {
   }
 
   void initAsync() async {
-    foods = FoodService.getAllFood();
+    foods = FoodService.getAllFood(context);
     _controllers = [];
     _values = [];
     foodOrder = [];
@@ -131,7 +131,7 @@ class _StorePageState extends State<StorePage> {
               ),
             ),
             Expanded(
-              child: FutureBuilder<List<Food>>(
+              child: FutureBuilder<List<Food>?>(
                 future: foods,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -289,7 +289,7 @@ class _StorePageState extends State<StorePage> {
 }
 
 Widget renderBooking(
-  BuildContext context,
+  context,
   bool visible,
   String selectedDate,
   String selectedTheater,
@@ -340,17 +340,19 @@ Widget renderBooking(
           } else {
             //set tg hold
             bool isSeatHold = visible
-                ? await HoldSeatService.holdSeat(scheduleId, seats!)
+                ? await HoldSeatService.holdSeat(context, scheduleId, seats!)
                 : false;
             pref.saveHoldSeats(seats!);
 
             isSeatHold ? TimerController.timerHoldSeatStart(context) : null;
 
             String? data = await pref.getHoldSeats();
-            print('PReF $data');
+            //
+            debugPrint('Pref hold Seat:  $data');
             GetTotal getTotal = await GetTotalService.sumTotalOrder(
                 movieId, seats.length, listOrdered);
-            print(listOrdered);
+            //
+            debugPrint('Store list:  $listOrdered');
 
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {

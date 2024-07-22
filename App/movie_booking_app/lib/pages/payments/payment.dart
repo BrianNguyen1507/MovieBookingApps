@@ -46,7 +46,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  late Future<MovieDetail> movieData;
+  late Future<MovieDetail?> movieData;
 
   String zpTransToken = "";
   String payResult = "";
@@ -55,7 +55,8 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     widget.visible
-        ? movieData = MovieDetailService.deatailMovieService(widget.movieId)
+        ? movieData =
+            MovieDetailService.deatailMovieService(context, widget.movieId)
         : null;
 
     payAmount = widget.sumtotal.toInt();

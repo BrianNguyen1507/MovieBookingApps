@@ -10,8 +10,8 @@ import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 class HandleSignupState {
   ValidInput valid = ValidInput();
 
-  Future<void> validSignUp(BuildContext context, String email, String password,
-      String name, String gender, String phone, String dob) async {
+  Future<void> validSignUp(context, String email, String password, String name,
+      String gender, String phone, String dob) async {
     final user = User(
         email: email,
         password: password,
@@ -21,7 +21,7 @@ class HandleSignupState {
         dayOfBirth: dob);
 
     showLoadingDialog(context);
-    final result = await SignUpService.signup(user);
+    final result = await SignUpService.signup(context, user);
     if (result == null) {
       valid.showMessage(
           context, 'Invalid Sign up, Please try again.', AppColors.errorColor);
@@ -44,7 +44,7 @@ class HandleSignupState {
   }
 
   Future<void> validOTP(
-      BuildContext context, String email, String otp, String method) async {
+      context, String email, String otp, String method) async {
     showLoadingDialog(context);
     final result = await OTPService.otpService(email, otp);
     if (result != true) {

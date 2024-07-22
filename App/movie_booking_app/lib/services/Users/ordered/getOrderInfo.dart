@@ -30,7 +30,8 @@ class GetOrderInfo {
 
       return filmOrders.length;
     } catch (err) {
-      throw Exception('Unable to get order info: $err');
+      print(Exception('Unable to get order info: $err'));
+      return 0;
     }
   }
 
@@ -56,7 +57,8 @@ class GetOrderInfo {
       final data = result['result'];
       return data;
     } catch (err) {
-      throw Exception('Unable to get order info: $err');
+      print(Exception('Unable to get order info: $err'));
+      return 0;
     }
   }
 }

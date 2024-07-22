@@ -1,12 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/models/account/account.dart';
+import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 class MyInformation {
-  static Future<Account> getMyInformation() async {
+  static Future<Account> getMyInformation(context) async {
     Preferences pref = Preferences();
     dynamic token = await pref.getTokenUsers();
     final getURL = dotenv.env['GET_INFO']!;
@@ -27,8 +29,19 @@ class MyInformation {
       final result = responseData['result'];
 
       return Account.fromJson(result);
+    } on SocketException {
+      ShowMessage.noNetworkConnection(context);
     } catch (err) {
-      throw Exception(err);
+      ShowMessage.unExpectedError(context);
     }
+    //null
+    return Account(
+      email: '',
+      avatar: '',
+      fullName: '',
+      phoneNumber: '',
+      gender: '',
+      dayOfBirth: '',
+    );
   }
 }
