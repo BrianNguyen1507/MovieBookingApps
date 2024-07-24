@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
@@ -172,8 +171,8 @@ class _OrderPageState extends State<OrderPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      SvgPicture.string(
-                                        svgVoucherCard,
+                                      SvgPicture.asset(
+                                        'assets/svg/discount-voucher.svg',
                                         height: 35,
                                         width: 35,
                                       ),

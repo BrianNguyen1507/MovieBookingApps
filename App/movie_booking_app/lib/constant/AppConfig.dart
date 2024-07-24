@@ -24,7 +24,7 @@ class AppColors {
   static const Color shimmerColor = Color.fromARGB(255, 97, 97, 97);
   static const Color shimmerLightColor = Color.fromARGB(255, 117, 117, 117);
   static const Color correctColor = Color.fromARGB(255, 51, 122, 29);
-  static const Color errorColor = Color.fromARGB(255, 182, 47, 23);
+  static const Color errorColor = Color.fromARGB(255, 235, 70, 70);
   static const Color shadowColor = Color.fromARGB(255, 151, 146, 146);
 
   static const Color seatAvailable = Color.fromARGB(255, 151, 146, 146);

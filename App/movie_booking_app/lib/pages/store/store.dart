@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
+import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/order/Total.dart';
 import 'package:movie_booking_app/modules/timer/timer.dart';
 import 'package:movie_booking_app/pages/order/orderPage.dart';
+import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/foodService.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/services/Users/order/holdSeat/holdSeat.dart';
 import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
   final int scheduleId;
@@ -203,21 +206,42 @@ class _StorePageState extends State<StorePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          foodData[index].name,
-                                          style: AppStyle.bodyText1,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '${AppLocalizations.of(context)!.price}: ',
-                                              style: AppStyle.smallText,
-                                            ),
-                                            Text(
-                                              '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
-                                              style: AppStyle.priceText,
-                                            ),
-                                          ],
+                                        SizedBox(
+                                            width: AppSize.width(context) * 0.4,
+                                            child: Consumer<ThemeProvider>(
+                                              builder: (context, value, child) {
+                                                return FutureBuilder(
+                                                  future: value.translateText(
+                                                      foodData[index].name),
+                                                  builder: (context, snapshot) {
+                                                    final nameTrans =
+                                                        snapshot.data;
+                                                    return Text(
+                                                      maxLines: 2,
+                                                      nameTrans ??
+                                                          foodData[index].name,
+                                                      style: AppStyle.bodyText1,
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            )),
+                                        SizedBox(
+                                          width: AppSize.width(context) * 0.4,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                maxLines: 1,
+                                                '${AppLocalizations.of(context)!.price}: ',
+                                                style: AppStyle.smallText,
+                                              ),
+                                              Text(
+                                                maxLines: 1,
+                                                '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
+                                                style: AppStyle.priceText,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

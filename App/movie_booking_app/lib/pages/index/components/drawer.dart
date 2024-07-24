@@ -8,7 +8,6 @@ import 'package:movie_booking_app/pages/index/index.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BuildDrawer extends StatefulWidget {
@@ -58,24 +57,24 @@ class _BuildDrawerState extends State<BuildDrawer> {
               children: [
                 buttonDrawer(
                     context,
-                    SvgPicture.string(
-                      svgTv,
+                    SvgPicture.asset(
+                      'assets/svg/tv.svg',
                       height: 35,
                     ),
                     AppLocalizations.of(context)!.cinema,
                     const IndexPage(initialIndex: 1)),
                 buttonDrawer(
                     context,
-                    SvgPicture.string(
-                      drinks,
+                    SvgPicture.asset(
+                      'assets/svg/popcorn.svg',
                       height: 35,
                     ),
                     AppLocalizations.of(context)!.store,
                     const IndexPage(initialIndex: 0)),
                 buttonDrawer(
                     context,
-                    SvgPicture.string(
-                      personal,
+                    SvgPicture.asset(
+                      'assets/svg/user.svg',
                       height: 35,
                     ),
                     AppLocalizations.of(context)!.personal,
@@ -85,8 +84,8 @@ class _BuildDrawerState extends State<BuildDrawer> {
                   children: [
                     Row(
                       children: [
-                        SvgPicture.string(
-                          languge,
+                        SvgPicture.asset(
+                          'assets/svg/language.svg',
                           height: 35,
                         ),
                         Container(
@@ -129,14 +128,14 @@ class _BuildDrawerState extends State<BuildDrawer> {
                               child: ClipRRect(
                                 borderRadius: ContainerRadius.radius12,
                                 child: isEnglish
-                                    ? SvgPicture.string(
-                                        svgEng,
+                                    ? SvgPicture.asset(
+                                        'assets/svg/united-kingdom.svg',
                                         width: 24.0,
                                         height: 24.0,
                                         fit: BoxFit.cover,
                                       )
-                                    : SvgPicture.string(
-                                        svgVie,
+                                    : SvgPicture.asset(
+                                        'assets/svg/vietnam.svg',
                                         width: 24.0,
                                         height: 24.0,
                                         fit: BoxFit.cover,

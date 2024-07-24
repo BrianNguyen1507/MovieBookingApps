@@ -5,7 +5,6 @@ import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/common/AutoScrolling.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
-import 'package:movie_booking_app/modules/loading/shimmer/shimmerloading.dart';
 import 'package:movie_booking_app/pages/home/components/buildList.dart';
 import 'package:movie_booking_app/pages/home/components/moviesList.dart';
 import 'package:movie_booking_app/services/Users/food/foodService.dart';
@@ -27,8 +26,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -41,42 +38,37 @@ class _HomePageState extends State<HomePage> {
     movieByMonth = GetListByMonth.getListByMonth(context);
     movieList = MovieList.getAllListMovie(context);
     foodList = FoodService.getAllFood(context);
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const ShimmerHomeLoading()
-        : Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            extendBody: true,
-            body: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  const AutoScrollingBanner(),
-                  Stack(
-                    children: [
-                      CustomScrollView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        slivers: [
-                          _buildNowShowingSliver(context),
-                          _buildComingSoonSliver(context),
-                          _buildMovieListByMonthSliver(context),
-                          _buildItemsList(context, foodList!),
-                          _buildvideosList(context, movieList!)
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+    return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+      extendBody: true,
+      body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            const AutoScrollingBanner(),
+            Stack(
+              children: [
+                CustomScrollView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  slivers: [
+                    _buildNowShowingSliver(context),
+                    _buildComingSoonSliver(context),
+                    _buildMovieListByMonthSliver(context),
+                    _buildItemsList(context, foodList!),
+                    _buildvideosList(context, movieList!)
+                  ],
+                ),
+              ],
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 
   SliverToBoxAdapter _buildNowShowingSliver(BuildContext context) {
@@ -128,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   final data = snapshot.data!;
                   return SizedBox(
-                    height: data.length * 50,
+                    height: data.length * 80,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: data.length,
@@ -173,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                     } else {
                       final movies = snapshot.data!;
                       return SizedBox(
-                        height: movies.length * 20,
+                        height: movies.length * 60,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: movies.length,

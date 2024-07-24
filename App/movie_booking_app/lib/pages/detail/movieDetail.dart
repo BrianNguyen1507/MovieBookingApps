@@ -210,40 +210,38 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                       ),
                     ],
                   ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.transparent,
-                    ),
-                    margin: const EdgeInsets.only(top: 20.0),
-                    width: double.infinity,
+                  Center(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          detailTitle(
-                              AppLocalizations.of(context)!.releaseDate,
-                              ConverterUnit.formatToDmY(
-                                  detail.releaseDate.toString())),
-                          const SizedBox(width: 10),
-                          Container(
-                            height: 50,
-                            width: 1,
-                            color: Colors.grey,
-                          ),
-                          const SizedBox(width: 10),
-                          detailTitle(AppLocalizations.of(context)!.duration,
-                              '${detail.duration} ${AppLocalizations.of(context)!.minutes}'),
-                          const SizedBox(width: 10),
-                          Container(
-                            height: 50,
-                            width: 1,
-                            color: Colors.grey,
-                          ),
-                          const SizedBox(width: 10),
-                          detailTitle(AppLocalizations.of(context)!.language,
-                              detail.language),
-                        ],
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            detailTitle(
+                                AppLocalizations.of(context)!.releaseDate,
+                                ConverterUnit.formatToDmY(
+                                    detail.releaseDate.toString())),
+                            const SizedBox(width: 10),
+                            Container(
+                              height: 50,
+                              width: 1,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(width: 10),
+                            detailTitle(AppLocalizations.of(context)!.duration,
+                                '${detail.duration} ${AppLocalizations.of(context)!.minutes}'),
+                            const SizedBox(width: 10),
+                            Container(
+                              height: 50,
+                              width: 1,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(width: 10),
+                            detailTitle(AppLocalizations.of(context)!.language,
+                                detail.language),
+                          ],
+                        ),
                       ),
                     ),
                   ),

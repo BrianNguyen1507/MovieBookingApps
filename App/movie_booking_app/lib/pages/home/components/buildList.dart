@@ -15,10 +15,11 @@ class ListMovie {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MovieDetailPage(movieId: movie.id),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => MovieDetailPage(movieId: movie.id),
+          ),
+        );
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -37,14 +38,19 @@ class ListMovie {
                         AsyncSnapshot<Uint8List> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return loadingContent;
-                      } else if (snapshot.hasError) {
+                      } else if (snapshot.hasError || !snapshot.hasData) {
                         return loadingContent;
                       } else {
-                        return Image.memory(
-                          height: 220,
-                          width: 160,
-                          snapshot.data!,
-                          fit: BoxFit.cover,
+                        return SizedBox(
+                          height: AppSize.height(context) / 3,
+                          width: AppSize.width(context) / 2,
+                          child: AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Image.memory(
+                              snapshot.data!,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
                         );
                       }
                     },
@@ -52,7 +58,7 @@ class ListMovie {
                 ),
                 Positioned(
                   top: 5,
-                  right: 5,
+                  right: 20,
                   child: Container(
                     padding: const EdgeInsets.all(3.0),
                     decoration: BoxDecoration(
@@ -132,7 +138,6 @@ class ListMovie {
       child: Container(
         margin: const EdgeInsets.all(5.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ClipRRect(
               borderRadius: ContainerRadius.radius10,

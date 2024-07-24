@@ -3,13 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'dart:convert';
 
 import 'package:movie_booking_app/models/user/user.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
+import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
 class SignUpService {
-  static Future<dynamic> signup(context, User user) async {
+  static Future<bool> signup(context, User user) async {
     try {
       final getURL = dotenv.env['SIGN_UP']!;
       final apiUrl = getURL;
@@ -21,9 +23,16 @@ class SignUpService {
         body: json.encode(user.toJson()),
       );
       final responseData = json.decode(response.body);
+      if (response.statusCode != 200) {
+        debugPrint('Error signup code: ${response.statusCode}');
+        ValidInput().showMessage(
+            context, responseData['message'], AppColors.errorColor);
+        return false;
+      }
       if (responseData['code'] != 1000) {
-        ShowMessage.unExpectedError(context);
-        debugPrint('Error create Order message: ${responseData['message']}');
+        debugPrint('Error signup message: ${responseData['message']}');
+        ValidInput().showMessage(
+            context, responseData['message'], AppColors.errorColor);
         return false;
       }
 

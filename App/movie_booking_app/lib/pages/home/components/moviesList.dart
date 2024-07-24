@@ -54,7 +54,7 @@ class _NowShowingSectionState extends State<NowShowingSection> {
   Widget build(BuildContext context) {
     return Container(
         width: AppSize.width(context),
-        height: MediaQuery.of(context).size.height * 0.55,
+        height: AppSize.height(context) / 2,
         decoration: const BoxDecoration(
           color: AppColors.containerColor,
           borderRadius: BorderRadius.only(
@@ -128,11 +128,9 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                                       child: CarouselSlider.builder(
                                         itemCount: _films.length,
                                         options: CarouselOptions(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.50,
-                                          viewportFraction: 0.50,
+                                          height:
+                                              AppSize.height(context) * 0.50,
+                                          viewportFraction: 0.45,
                                           enableInfiniteScroll: true,
                                           enlargeCenterPage: true,
                                           onPageChanged: (index, reason) {
