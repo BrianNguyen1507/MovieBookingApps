@@ -75,7 +75,6 @@ class ThemeProvider with ChangeNotifier {
 
       return translation.text;
     } catch (e) {
-      print(e);
       return text;
     }
   }
