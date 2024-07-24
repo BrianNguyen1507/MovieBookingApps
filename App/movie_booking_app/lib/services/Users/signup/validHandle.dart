@@ -9,7 +9,7 @@ class ValidInput {
     return emailRegex.hasMatch(email);
   }
 
-  bool isValidPassword(String password, BuildContext context) {
+  bool isValidPassword(String password, context) {
     RegExp passwordRegex = RegExp(r'^.{6,50}$');
     showMessage(context, 'Please enter a valid password', AppColors.errorColor);
     return passwordRegex.hasMatch(password);
@@ -26,7 +26,7 @@ class ValidInput {
     return gender == '0' ? 'Nam' : 'Nữ';
   }
 
-  void showMessage(BuildContext context, String message, Color colors) {
+  void showMessage(context, String message, Color colors) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

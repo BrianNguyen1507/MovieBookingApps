@@ -8,7 +8,7 @@ import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:http/http.dart' as http;
 
 class RatingFeedbackService {
-  static Future<void> createRatingFeedback(
+  static Future<dynamic> createRatingFeedback(
       int rating, String comment, int orderId, context) async {
     final getURL = dotenv.env['CREATE_RATING_FEEDBACK']!;
     final uri = getURL + orderId.toString();
@@ -26,14 +26,15 @@ class RatingFeedbackService {
         },
         body: body,
       );
-      final result = jsonDecode(utf8.decode(response.body.runes.toList()));
+      final result = jsonDecode(response.body);
       if (response.statusCode != 200) {
         debugPrint('Error rating service code: ${response.statusCode}');
       }
       if (result['code'] != 1000) {
         debugPrint('Error rating service message: ${result['message']}');
+        return result['message'];
       }
-      ShowMessage.ratingSuccess(context);
+      return result['code'].toString();
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {
