@@ -1,4 +1,4 @@
-import { getName } from "../service/authenticate/authenticate";
+import { getName } from "../service/authenticate/authenticate.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   try {
