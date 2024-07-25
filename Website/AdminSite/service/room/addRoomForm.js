@@ -1,10 +1,10 @@
-import { screenSizeWith } from "../../constant/screenSize";
-import { addRoom } from "./addRoom";
-import { getTheater } from "./getTheaters";
-import { Room } from "../../models/room";
-import { getAllRoom } from "./getAllRoom";
-import { updateData } from "./updateRoomData";
-import { updateRoom } from "./updateRoom";
+import { screenSizeWith } from "../../constant/screenSize.js";
+import { addRoom } from "./addRoom.js";
+import { getTheater } from "./getTheaters.js";
+import { Room } from "../../models/room.js";
+import { getAllRoom } from "./getAllRoom.js";
+import { updateData } from "./updateRoomData.js";
+import { updateRoom } from "./updateRoom.js";
 
 $(document).on("click", "#btn-add-room", async function (event) {
   try {

@@ -1,5 +1,5 @@
-import { getUserToken } from "../authenticate/authenticate";
-const url = "http://localhost:8083/cinema/activeFilm?id=";
+import { getUserToken } from "../authenticate/authenticate.js";
+const url = "http://103.200.20.167:8083/cinema/activeFilm?id=";
 
 export async function activeFilm(id) {
   try {

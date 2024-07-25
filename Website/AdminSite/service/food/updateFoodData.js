@@ -1,4 +1,4 @@
-import { Food } from "../../models/food";
+import { Food } from "../../models/food.js";
 
 export async function updateFoodData(id, image, name, price) {
   const food = new Food(id, image, name, price);

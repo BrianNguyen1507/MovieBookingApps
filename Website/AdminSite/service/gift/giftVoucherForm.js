@@ -1,5 +1,5 @@
-import { giftVoucher } from "./giftVoucher";
-import { screenSizeWith } from "../../constant/screenSize";
+import { giftVoucher } from "./giftVoucher.js";
+import { screenSizeWith } from "../../constant/screenSize.js";
 
 $(document).on("click", "#btn-gift-voucher", async function (event) {
     try {

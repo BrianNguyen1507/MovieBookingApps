@@ -1,4 +1,4 @@
-const apiurl = "http://localhost:8083/cinema/login";
+const apiurl = "http://103.200.20.167:8083/cinema/login";
 import { displayErrorMessage } from "../../util/common.js";
 async function signin(email, password) {
   try {

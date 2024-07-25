@@ -1,4 +1,4 @@
-import { classify } from "../models/classify";
+import { classify } from "../models/classify.js";
 
 export function populateSelectWithOptions(classityValue) {
   const selectElement = document.getElementById("classifyInput");

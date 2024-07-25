@@ -1,5 +1,5 @@
 
-import { getRoomById } from "./getRoomById";
+import { getRoomById } from "./getRoomById.js";
 
 export async function updateData(id){
     const room = await getRoomById(id);

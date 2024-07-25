@@ -1,10 +1,10 @@
-import { screenSizeWith } from "../../../constant/screenSize";
-import { Food } from "../../../models/food";
-import { updateFood } from "../updateFood";
+import { screenSizeWith } from "../../../constant/screenSize.js";
+import { Food } from "../../../models/food.js";
+import { updateFood } from "../updateFood.js";
 
-import { addFood } from "../addFood";
-import { updateFoodData } from "../updateFoodData";
-import { getAllFoodDisplay } from "../getAllFoodDisplay";
+import { addFood } from "../addFood.js";
+import { updateFoodData } from "../updateFoodData.js";
+import { getAllFoodDisplay } from "../getAllFoodDisplay.js";
 
 $(document).on("click", "#btn-add-food", async function (event) {
   try {

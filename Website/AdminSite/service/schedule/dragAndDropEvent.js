@@ -1,8 +1,8 @@
-import { formatDate, formatDateRequest, loadingTable } from "./fetchSchedule";
-import { addSchedule } from "./addScheuleService";
-import { truncateText } from "./selectionFilm";
-import { swapSchedule } from "./swapScheduleService";
-import { deleteSchedule } from "./deleteScheduleService";
+import { formatDate, formatDateRequest, loadingTable } from "./fetchSchedule.js";
+import { addSchedule } from "./addScheuleService.js";
+import { truncateText } from "./selectionFilm.js";
+import { swapSchedule } from "./swapScheduleService.js";
+import { deleteSchedule } from "./deleteScheduleService.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   let draggedItem = null;

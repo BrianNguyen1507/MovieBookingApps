@@ -1,6 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
-const apiUrl = "http://localhost:8083/cinema/updateFood?id=";
+const apiUrl = "http://103.200.20.167:8083/cinema/updateFood?id=";
 
 export async function updateFood(food) {
   try {

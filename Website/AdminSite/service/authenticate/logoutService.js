@@ -1,5 +1,5 @@
 export function logoutService() {
-  fetch("http://localhost:8083/cinema/logout", {
+  fetch("http://103.200.20.167:8083/cinema/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

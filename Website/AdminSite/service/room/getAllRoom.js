@@ -1,5 +1,5 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-const url = "http://localhost:8083/cinema/getAllRoom";
+const url = "http://103.200.20.167:8083/cinema/getAllRoom";
 import { Room } from "../../models/room.js";
 
 
@@ -98,7 +98,7 @@ export async function getAllRoom() {
         }
       });
       async function deleteRoom(id) {
-        const url = "http://localhost:8083/cinema/deleteRoom?id=";
+        const url = "http://103.200.20.167:8083/cinema/deleteRoom?id=";
         try {
           const token = await getUserToken();
           const response = await fetch(url + id, {
@@ -119,7 +119,7 @@ export async function getAllRoom() {
         }
       }
       async function deleteRoom(id) {
-        const url = "http://localhost:8083/cinema/deleteRoom?id=";
+        const url = "http://103.200.20.167:8083/cinema/deleteRoom?id=";
         try {
           const token = await getUserToken();
           const response = await fetch(url + id, {

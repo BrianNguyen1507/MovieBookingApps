@@ -1,4 +1,4 @@
-import { getAllRoomByTheater } from "./getAllRoomByTheater";
+import { getAllRoomByTheater } from "./getAllRoomByTheater.js";
 
 export async function fetchingSeclectionRoom(id) {
   const roomSelection = document.querySelector("#room-selection");

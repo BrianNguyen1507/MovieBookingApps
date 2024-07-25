@@ -1,6 +1,6 @@
-import { screenSizeWith } from "../../constant/screenSize";
-import { addTheater } from "./addMovieTheater";
-import { getAndDisplayTheater } from "./getTheater";
+import { screenSizeWith } from "../../constant/screenSize.js";
+import { addTheater } from "./addMovieTheater.js";
+import { getAndDisplayTheater } from "./getTheater.js";
 $(document).on("click", "#btn-add-theater", async function (event) {
   try {
     const showForm = async () => {
