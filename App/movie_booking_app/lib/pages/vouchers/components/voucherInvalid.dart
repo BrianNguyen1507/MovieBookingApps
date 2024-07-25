@@ -5,7 +5,7 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget scheduleInvalid(BuildContext context) {
+Widget vouchersInvalid(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(20.0),
     child: Column(
@@ -24,11 +24,7 @@ Widget scheduleInvalid(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.error_schedule,
-                  style: AppStyle.thinText,
-                ),
-                Text(
-                  AppLocalizations.of(context)!.error_schedule_bonus,
+                  AppLocalizations.of(context)!.no_voucher,
                   style: AppStyle.smallText,
                 ),
               ],

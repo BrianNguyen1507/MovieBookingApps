@@ -22,8 +22,6 @@ class MovieListingByMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var orientation = MediaQuery.of(context).orientation;
-    var isPortrait = orientation == Orientation.portrait;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -56,11 +54,6 @@ class MovieListingByMonth extends StatelessWidget {
                       final movies = monthEntry.value;
 
                       return Container(
-                        height: isPortrait
-                            ? monthsWithMovies.length *
-                                AppSize.height(context) /
-                                3.5
-                            : monthsWithMovies.length * AppSize.height(context),
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,9 +63,7 @@ class MovieListingByMonth extends StatelessWidget {
                               style: AppStyle.bodyText1,
                             ),
                             SizedBox(
-                              height: isPortrait
-                                  ? AppSize.height(context) * 0.5
-                                  : AppSize.height(context),
+                              height: monthsWithMovies.length * 250,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 physics: const AlwaysScrollableScrollPhysics(),
@@ -90,22 +81,44 @@ class MovieListingByMonth extends StatelessWidget {
                                       );
                                     },
                                     child: Container(
-                                      width: AppSize.width(context) * 0.53,
                                       margin: const EdgeInsets.all(5.0),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                ContainerRadius.radius12,
-                                            child: Image.memory(
-                                              ConverterUnit.base64ToUnit8(
-                                                  movie.poster),
-                                              height: 200,
-                                              width: 150,
-                                              fit: BoxFit.cover,
-                                            ),
+                                          Stack(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    ContainerRadius.radius12,
+                                                child: Image.memory(
+                                                  ConverterUnit.base64ToUnit8(
+                                                      movie.poster),
+                                                  height: 150,
+                                                  width: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.all(5),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 2,
+                                                        horizontal: 5),
+                                                decoration: BoxDecoration(
+                                                  color: ClassifyClass
+                                                      .toFlutterColor(
+                                                          ClassifyClass
+                                                              .classifyType(movie
+                                                                  .classify)),
+                                                  borderRadius:
+                                                      ContainerRadius.radius2,
+                                                ),
+                                                child: Text(movie.classify,
+                                                    style:
+                                                        AppStyle.classifyText),
+                                              ),
+                                            ],
                                           ),
                                           const SizedBox(height: 8),
                                           Consumer<ThemeProvider>(
@@ -151,21 +164,6 @@ class MovieListingByMonth extends StatelessWidget {
                                             ),
                                           ),
                                           const SizedBox(height: 4),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 2, horizontal: 5),
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  ClassifyClass.toFlutterColor(
-                                                      ClassifyClass
-                                                          .classifyType(
-                                                              movie.classify)),
-                                              borderRadius:
-                                                  ContainerRadius.radius2,
-                                            ),
-                                            child: Text(movie.classify,
-                                                style: AppStyle.classifyText),
-                                          ),
                                         ],
                                       ),
                                     ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/order/createOrder/createOrderTickets.dart';
@@ -35,8 +34,8 @@ class Handlepayments {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.string(
-              svgSuccess,
+            SvgPicture.asset(
+              'assets/svg/success.svg',
               height: 100,
               width: 100,
             ),
@@ -53,7 +52,8 @@ class Handlepayments {
     Set<String> seatFormat = ConverterUnit.convertStringToSet(seat);
     bool isReturn = false;
     if (seat.isNotEmpty) {
-      isReturn = await ReturnSeatService.returnSeat(context,scheduleId, seatFormat);
+      isReturn =
+          await ReturnSeatService.returnSeat(context, scheduleId, seatFormat);
     }
     if ((seat.isNotEmpty && isReturn) || seat.isEmpty) {
       CreateOrderService.createOrderTicket(context, scheduleId!, voucherId,
@@ -81,8 +81,8 @@ class Handlepayments {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.string(
-              svgError,
+            SvgPicture.asset(
+              'assets/svg/fail.svg',
               height: 70,
               width: 70,
             ),

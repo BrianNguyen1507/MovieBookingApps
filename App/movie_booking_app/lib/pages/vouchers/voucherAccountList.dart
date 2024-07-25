@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/vouchers/components/voucherInvalid.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherService.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -47,63 +47,65 @@ class _VoucherAccountListState extends State<VoucherAccountList> {
               return progressLoading;
             } else {
               final listVoucher = snapshot.data!;
-              return SizedBox(
-                height: listVoucher.length * 150,
-                child: ListView.builder(
-                  itemCount: listVoucher.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.all(2.0),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Card(
-                              child: SizedBox(
-                                child: ListTile(
-                                  leading: SvgPicture.string(
-                                    svgVoucherCard,
-                                    height: 50,
-                                    width: 50,
+              return listVoucher.isNotEmpty
+                  ? SizedBox(
+                      height: listVoucher.length * 150,
+                      child: ListView.builder(
+                        itemCount: listVoucher.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.all(2.0),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Card(
+                                    child: SizedBox(
+                                      child: ListTile(
+                                        leading: SvgPicture.asset(
+                                          'assets/svg/discount-voucher.svg',
+                                          height: 50,
+                                          width: 50,
+                                        ),
+                                        title: Text(
+                                          listVoucher[index].title,
+                                          style: AppStyle.detailText,
+                                          maxLines: 2,
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              listVoucher[index].content,
+                                              style: AppStyle.smallText,
+                                            ),
+                                            Text(
+                                              '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(listVoucher[index].minLimit)}₫',
+                                              style: AppStyle.smallText,
+                                            ),
+                                            Text(
+                                              '${AppLocalizations.of(context)!.discount}: ${listVoucher[index].discount}',
+                                              style: AppStyle.smallText,
+                                            ),
+                                            Text(
+                                              '${AppLocalizations.of(context)!.date_expired}: ${listVoucher[index].expired}',
+                                              style: AppStyle.smallText,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                  title: Text(
-                                    listVoucher[index].title,
-                                    style: AppStyle.detailText,
-                                    maxLines: 2,
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        listVoucher[index].content,
-                                        style: AppStyle.smallText,
-                                      ),
-                                      Text(
-                                        '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(listVoucher[index].minLimit)}₫',
-                                        style: AppStyle.smallText,
-                                      ),
-                                      Text(
-                                        '${AppLocalizations.of(context)!.discount}: ${listVoucher[index].discount}',
-                                        style: AppStyle.smallText,
-                                      ),
-                                      Text(
-                                        '${AppLocalizations.of(context)!.date_expired}: ${listVoucher[index].expired}',
-                                        style: AppStyle.smallText,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              );
+                    )
+                  : vouchersInvalid(context);
             }
           },
         ),

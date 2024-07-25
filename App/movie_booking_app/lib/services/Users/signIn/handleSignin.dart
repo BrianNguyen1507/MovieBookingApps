@@ -34,7 +34,6 @@ class HandleSigninState {
       return false;
     }
 
-    await Future.delayed(const Duration(seconds: 1));
     TokenManager.startTokenRefreshTimer(context);
     Navigator.pushReplacement(
       context,

@@ -36,7 +36,7 @@ class UpdateInformationState extends State<UpdateInformation> {
   ImagePicker picker = ImagePicker();
   late File image;
   ValidInput valid = ValidInput();
-
+  bool _isImagePickerActive = false;
   void _onGenderChanged(String? value) {
     setState(() {
       selectedGender = value;
@@ -298,33 +298,45 @@ class UpdateInformationState extends State<UpdateInformation> {
   }
 
   Future<void> _pickAndCropImage() async {
-    final ImagePicker picker = ImagePicker();
+    if (_isImagePickerActive) return;
+    setState(() {
+      _isImagePickerActive = true;
+    });
 
-    final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile =
+          await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      final File? croppedFile = await ImageCropper().cropImage(
-        sourcePath: pickedFile.path,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        androidUiSettings: const AndroidUiSettings(
-          toolbarTitle: 'Cropper',
-          toolbarColor: AppColors.backgroundColor,
-          toolbarWidgetColor: AppColors.containerColor,
-          initAspectRatio: CropAspectRatioPreset.square,
-          lockAspectRatio: true,
-        ),
-        iosUiSettings: const IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        ),
-      );
-      setState(() {
+      if (pickedFile != null) {
+        final File? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+          androidUiSettings: const AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: AppColors.backgroundColor,
+            toolbarWidgetColor: AppColors.containerColor,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+          ),
+          iosUiSettings: const IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        );
+
         if (croppedFile != null) {
-          image = File(croppedFile.path);
-          print(image.path);
-          avatar = "file";
-          base64Avatar = base64Encode(image.readAsBytesSync());
+          setState(() {
+            image = File(croppedFile.path);
+            avatar = "file";
+            base64Avatar = base64Encode(image.readAsBytesSync());
+          });
         }
+      }
+    } catch (e) {
+      print('Error picking or cropping image: $e');
+    } finally {
+      setState(() {
+        _isImagePickerActive = false;
       });
     }
   }

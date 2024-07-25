@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
@@ -27,9 +26,10 @@ class _ProfilePageState extends State<ProfilePage> {
   int numMovies = 0;
   int numReviews = 0;
   String? avatar;
-  String? userName;
+  String? userName = 'Guest';
   dynamic token;
   bool _dataFetched = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,17 +41,22 @@ class _ProfilePageState extends State<ProfilePage> {
     if (token == null) {
       setState(() {
         _dataFetched = true;
+        userName = null;
       });
       return;
     }
-    userName = await pref.getUserName();
-    avatar = await pref.getAvatar();
+
+    String? getuserName = await pref.getUserName();
+    String? getavatar = await pref.getAvatar();
     int numberMovie = await GetOrderInfo.accountNumberMovieInfo();
     int numberReview = await GetOrderInfo.accountNumberReviewInfo();
+
     if (mounted) {
       setState(() {
         numReviews = numberReview;
         numMovies = numberMovie;
+        userName = getuserName;
+        avatar = getavatar;
         _dataFetched = true;
       });
     }
@@ -60,85 +65,69 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     if (!_dataFetched) {
-      return loadingData(context);
+      return progressLoading;
     }
-    if (token == null) {
+    if (token == null && userName == null) {
       return const GuestPage();
+    } else {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        extendBody: true,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            _buildSliverProfileBar(context, userName!, numMovies, numReviews),
+            Builditem.buildSliverList(context),
+            BuildButton.commonbutton(
+                context,
+                AppLocalizations.of(context)!.logout,
+                () => valid.showAlertCustom(context, 'Are you sure to logout?',
+                    'Yes, logout', true, () => _onPressLogout(context))),
+          ],
+        ),
+      );
     }
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      extendBody: true,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          _buildSliverProfileBar(context, userName!, numMovies, numReviews),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 50),
-          ),
-          Builditem.buildSliverList(context),
-          BuildButton.commonbutton(
-              context,
-              AppLocalizations.of(context)!.logout,
-              () => valid.showAlertCustom(context, 'Are you sure to logout?',
-                  'Yes, logout', true, () => _onPressLogout(context))),
-        ],
-      ),
-    );
   }
 
   Widget _buildSliverProfileBar(BuildContext context, String userEmail,
       int? numberMovie, int? numberReview) {
-    String? email = userEmail;
     return SliverAppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.containerColor,
       expandedHeight: 270.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           children: [
-            Container(
-              color: Colors.black,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-            ),
             Align(
               alignment: Alignment.topCenter,
               child: Column(
                 children: [
                   Container(
                     decoration: const BoxDecoration(
-                        color: AppColors.backgroundColor,
-                        shape: BoxShape.circle),
+                      shape: BoxShape.circle,
+                      color: AppColors.backgroundColor,
+                    ),
                     padding: const EdgeInsets.all(5.0),
-                    child: ClipOval(
-                      child: (avatar ?? "") == ""
-                          ? Image.asset(
+                    child: (avatar ?? "") == ""
+                        ? ClipOval(
+                            child: Image.asset(
                               'assets/images/avatarDefault.png',
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,
-                            )
-                          : Image.memory(
+                            ),
+                          )
+                        : ClipOval(
+                            child: Image.memory(
                               ConverterUnit.base64ToUnit8(avatar!),
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,
                             ),
-                    ),
+                          ),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    email,
+                    userEmail,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: AppFontSize.medium,
@@ -166,8 +155,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     shape: BoxShape.circle,
                                     color: AppColors.iconThemeColor,
                                   ),
-                                  child: SvgPicture.string(
-                                    svgTv,
+                                  child: SvgPicture.asset(
+                                    'assets/svg/tv.svg',
                                     width: 30,
                                     height: 30,
                                   ),
@@ -198,8 +187,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       shape: BoxShape.circle,
                                       color: AppColors.iconThemeColor,
                                     ),
-                                    child: SvgPicture.string(
-                                      svgReview,
+                                    child: SvgPicture.asset(
+                                      'assets/svg/feedback.svg',
                                       width: 30,
                                       height: 30,
                                     )),
@@ -235,6 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Preferences pref = Preferences();
     Provider.of<UserProvider>(context, listen: false).logout(context);
     pref.removeSinginInfo();
+    pref.clear();
     Navigator.pushReplacementNamed(context, '/login');
   }
 

@@ -121,5 +121,6 @@
   "re_pass": "Nhập lại mật khẩu mới",
   "movie_by_month": "Phim hay theo tháng",
   "vid_trailer": "Video trailer",
-  "month":"Tháng"
+  "month":"Tháng",
+     "no_voucher": "Ơ!, Bạn chưa có ưu đãi nào. Vui lòng quay lại sau"
 }

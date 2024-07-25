@@ -122,5 +122,6 @@
   "re_pass": "Re-enter new password",
   "movie_by_month": "Upcoming Movies by Month",
   "vid_trailer": "Video trailer",
-  "month": "Month"
-}
+  "month": "Month",
+  "no_voucher": "Oops! You don't have any vouchers. Please come back later"
+  }

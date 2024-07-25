@@ -21,7 +21,7 @@ class MovieDetailService {
       if (response.statusCode != 200) {
         debugPrint('Error movie detail $id code: ${response.statusCode}');
       }
-      final data = json.decode(response.body);
+      final data = json.decode(utf8.decode(response.body.codeUnits));
 
       if (data['code'] != 1000) {
         debugPrint('Failed to fetch movie detail: ${data['message']}');

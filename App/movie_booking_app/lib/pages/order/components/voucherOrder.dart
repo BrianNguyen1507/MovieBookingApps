@@ -3,10 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/appdata.dart';
-import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/vouchers/components/voucherInvalid.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherApply.dart';
@@ -72,101 +72,111 @@ class _VoucherOrderState extends State<VoucherOrder> {
                             ConnectionState.waiting) {
                           return Center(child: loadingContent);
                         } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
+                          return const SizedBox.shrink();
                         } else {
-                          final vouchers = snapshot.data!;
+                          final vouchers = snapshot.data;
 
-                          return ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: vouchers.length,
-                            itemBuilder: (context, index) {
-                              return Opacity(
-                                opacity: vouchers[index].allowed ? 1.0 : 0.5,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(
-                                      () {
-                                        if (vouchers[index].allowed) {
-                                          if (selectedVoucherIndex ==
-                                              vouchers[index].id) {
-                                            selectedVoucherIndex = null;
-                                          } else {
-                                            selectedVoucherIndex =
-                                                vouchers[index].id;
-                                          }
-                                        } else {
-                                          selectedVoucherIndex = null;
-                                        }
-                                      },
-                                    );
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Card(
-                                        child: SizedBox(
-                                          child: ListTile(
-                                            leading: SvgPicture.string(
-                                              svgVoucherCard,
-                                              height: 50,
-                                              width: 50,
-                                            ),
-                                            title: Text(
-                                              vouchers[index].title,
-                                              style: AppStyle.detailText,
-                                            ),
-                                            subtitle: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  vouchers[index].content,
-                                                  style: AppStyle.smallText,
+                          return vouchers!.isNotEmpty
+                              ? ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemCount: vouchers.length,
+                                  itemBuilder: (context, index) {
+                                    return Opacity(
+                                      opacity:
+                                          vouchers[index].allowed ? 1.0 : 0.5,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(
+                                            () {
+                                              if (vouchers[index].allowed) {
+                                                if (selectedVoucherIndex ==
+                                                    vouchers[index].id) {
+                                                  selectedVoucherIndex = null;
+                                                } else {
+                                                  selectedVoucherIndex =
+                                                      vouchers[index].id;
+                                                }
+                                              } else {
+                                                selectedVoucherIndex = null;
+                                              }
+                                            },
+                                          );
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Card(
+                                              child: SizedBox(
+                                                child: ListTile(
+                                                  leading: SvgPicture.asset(
+                                                    'assets/svg/discount-voucher.svg',
+                                                    height: 50,
+                                                    width: 50,
+                                                  ),
+                                                  title: Text(
+                                                    vouchers[index].title,
+                                                    style: AppStyle.detailText,
+                                                  ),
+                                                  subtitle: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        vouchers[index].content,
+                                                        style:
+                                                            AppStyle.smallText,
+                                                      ),
+                                                      Text(
+                                                        '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(vouchers[index].minLimit)}₫',
+                                                        style:
+                                                            AppStyle.smallText,
+                                                      ),
+                                                      Text(
+                                                        '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}',
+                                                        style:
+                                                            AppStyle.smallText,
+                                                      ),
+                                                      Text(
+                                                        '${AppLocalizations.of(context)!.date_expired}: ${vouchers[index].expired}',
+                                                        style:
+                                                            AppStyle.smallText,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  trailing: Checkbox(
+                                                    activeColor:
+                                                        AppColors.primaryColor,
+                                                    shape: const CircleBorder(),
+                                                    value:
+                                                        selectedVoucherIndex ==
+                                                            vouchers[index].id,
+                                                    onChanged:
+                                                        vouchers[index].allowed
+                                                            ? (bool? value) {
+                                                                setState(() {
+                                                                  if (value!) {
+                                                                    selectedVoucherIndex =
+                                                                        vouchers[index]
+                                                                            .id;
+                                                                  } else {
+                                                                    selectedVoucherIndex =
+                                                                        null;
+                                                                  }
+                                                                });
+                                                              }
+                                                            : null,
+                                                  ),
                                                 ),
-                                                Text(
-                                                  '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(vouchers[index].minLimit)}₫',
-                                                  style: AppStyle.smallText,
-                                                ),
-                                                Text(
-                                                  '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}',
-                                                  style: AppStyle.smallText,
-                                                ),
-                                                Text(
-                                                  '${AppLocalizations.of(context)!.date_expired}: ${vouchers[index].expired}',
-                                                  style: AppStyle.smallText,
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                            trailing: Checkbox(
-                                              activeColor:
-                                                  AppColors.primaryColor,
-                                              shape: const CircleBorder(),
-                                              value: selectedVoucherIndex ==
-                                                  vouchers[index].id,
-                                              onChanged: vouchers[index].allowed
-                                                  ? (bool? value) {
-                                                      setState(() {
-                                                        if (value!) {
-                                                          selectedVoucherIndex =
-                                                              vouchers[index]
-                                                                  .id;
-                                                        } else {
-                                                          selectedVoucherIndex =
-                                                              null;
-                                                        }
-                                                      });
-                                                    }
-                                                  : null,
-                                            ),
-                                          ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
+                                    );
+                                  },
+                                )
+                              : vouchersInvalid(context);
                         }
                       },
                     ),

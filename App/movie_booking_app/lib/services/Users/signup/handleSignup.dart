@@ -21,26 +21,19 @@ class HandleSignupState {
         dayOfBirth: dob);
 
     showLoadingDialog(context);
-    final result = await SignUpService.signup(context, user);
-    if (result == null) {
-      valid.showMessage(
-          context, 'Invalid Sign up, Please try again.', AppColors.errorColor);
-      return;
-    }
+    final signup = await SignUpService.signup(context, user);
     Navigator.of(context).pop();
-    if (result != true) {
-      valid.showMessage(context, result, AppColors.errorColor);
-      return;
-    }
-
-    valid.showMessage(context, 'Sign up successful!', AppColors.correctColor);
-    Future.delayed(const Duration(seconds: 1)).then((_) {});
-    Navigator.push(
+    if (signup) {
+      valid.showMessage(context, 'Sign up successful!', AppColors.correctColor);
+      Future.delayed(const Duration(seconds: 1)).then((_) {});
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) =>
               OTPPage(email: email, method: AppStringMethod.register),
-        ));
+        ),
+      );
+    }
   }
 
   Future<void> validOTP(
