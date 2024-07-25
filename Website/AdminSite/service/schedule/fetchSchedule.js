@@ -1,5 +1,5 @@
-import { getAllScheduleByRoomAndDate } from "./getAllSchedule";
-import { truncateText } from "./selectionFilm";
+import { getAllScheduleByRoomAndDate } from "./getAllSchedule.js";
+import { truncateText } from "./selectionFilm.js";
 
 $(document).ready(function () {
   const $dateInput = $("#schedule-dateStart");

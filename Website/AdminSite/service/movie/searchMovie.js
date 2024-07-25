@@ -1,4 +1,4 @@
-import { displayFilm } from "./displayFilm";
+import { displayFilm } from "./displayFilm.js";
 $('#search-movie').on('input', function() {
     timeout = setTimeout( async function() {
       let keyword = $('#search-movie').val();
@@ -8,7 +8,7 @@ $('#search-movie').on('input', function() {
   }); 
 
 export async function searchMovie(keyword) {
-  const url = "http://localhost:8083/cinema/searchFilm?keyword=";
+  const url = "http://103.200.20.167:8083/cinema/searchFilm?keyword=";
   try {
     
     const response = await fetch(url + keyword, {

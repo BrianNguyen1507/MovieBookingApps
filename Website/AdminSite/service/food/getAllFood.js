@@ -1,6 +1,6 @@
-import { getUserToken } from "../authenticate/authenticate";
+import { getUserToken } from "../authenticate/authenticate.js";
 
-const url = "http://localhost:8083/cinema/getAllFood";
+const url = "http://103.200.20.167:8083/cinema/getAllFood";
 
 export async function getAllFood() {
   try {

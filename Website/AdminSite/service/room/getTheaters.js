@@ -1,6 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
-const url = "http://localhost:8083/cinema/getAllMovieTheater";
+const url = "http://103.200.20.167:8083/cinema/getAllMovieTheater";
 export async function getTheater() {
   try {
     const token = await getUserToken();
@@ -25,7 +25,6 @@ export async function getTheater() {
       selectElement.appendChild(option);
     });
   } catch (error) {
-    console.error("Error fetching and displaying theaters:", error);
   }
 }
 

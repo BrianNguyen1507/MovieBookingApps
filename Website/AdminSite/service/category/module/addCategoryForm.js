@@ -1,6 +1,6 @@
 import { screenSizeWith } from "../../../constant/screenSize.js";
 import { addCategory } from "../addCategory.js";
-import { getAndDisplayCategories } from "../getCategory";
+import { getAndDisplayCategories } from "../getCategory.js";
 
 $(document).on("click", "#btn-add-category", async function (event) {
   try {

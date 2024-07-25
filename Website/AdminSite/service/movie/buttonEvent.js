@@ -1,9 +1,9 @@
-import { classify } from "../../models/classify";
-import { Movie } from "../../models/movie";
-import { stringToBase64 } from "../../util/converter";
-import { deleteMovie } from "./deleteFilm";
-import { getMovieById } from "./getFilmById";
-import { updateMovie } from "./updateFilm";
+
+import { Movie } from "../../models/movie.js";
+import { stringToBase64 } from "../../util/converter.js";
+import { deleteMovie } from "./deleteFilm.js";
+import { getMovieById } from "./getFilmById.js";
+import { updateMovie } from "./updateFilm.js";
 
 function getMovieFromForm() {
   const movieTitleInput = $("#movieTitleInput").val().trim();

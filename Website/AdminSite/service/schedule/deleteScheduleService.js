@@ -1,7 +1,7 @@
-import { getUserToken } from "../authenticate/authenticate";
+import { getUserToken } from "../authenticate/authenticate.js";
 
 export async function deleteSchedule(id) {
-  const uri = "http://localhost:8083/cinema/deleteSchedule?id=";
+  const uri = "http://103.200.20.167:8083/cinema/deleteSchedule?id=";
 
   const token = await getUserToken();
   const response = await fetch(uri + id, {

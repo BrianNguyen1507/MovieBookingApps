@@ -1,6 +1,5 @@
 import { Voucher } from "../../models/voucher.js";
 import { addVoucher } from "./addVoucher.js";
-import { formatToDmyHHmmss } from "../../util/converter.js";
 import { screenSizeWith } from "../../constant/screenSize.js";
 import { getAndDisplayvoucher } from "./getAllVoucher.js";
 $(document).on("click", "#btn-add-voucher", async function (event) {

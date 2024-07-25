@@ -1,5 +1,5 @@
-import { getUserToken } from "../authenticate/authenticate";
-import { getAndDisplayTheater } from "./getTheater";
+import { getUserToken } from "../authenticate/authenticate.js";
+import { getAndDisplayTheater } from "./getTheater.js";
 const tokenUser = await getUserToken();
 export const UpdateTheater = (id, name, address) => {
   Swal.fire({
@@ -20,7 +20,7 @@ export const UpdateTheater = (id, name, address) => {
     preConfirm: () => {
       const name = document.getElementById("editTheaterName").value;
       const address = document.getElementById("editTheaterAddress").value;
-      return fetch(`http://localhost:8083/cinema/updateMovieTheater?id=${id}`, {
+      return fetch(`http://103.200.20.167:8083/cinema/updateMovieTheater?id=${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

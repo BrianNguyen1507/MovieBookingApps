@@ -1,7 +1,7 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
 export async function getAllScheduleByRoomAndDate(roomId, dateStart) {
-  const url = `http://localhost:8083/cinema/getAllScheduleByRoomAndDate?roomId=${roomId}&dateStart=${dateStart}`;
+  const url = `http://103.200.20.167:8083/cinema/getAllScheduleByRoomAndDate?roomId=${roomId}&dateStart=${dateStart}`;
   console.log(url);
   try {
     const token = await getUserToken();
