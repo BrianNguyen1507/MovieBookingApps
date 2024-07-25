@@ -1,5 +1,5 @@
 
-import { logoutService } from "../service/authenticate/logoutService";
+import { logoutService } from "../service/authenticate/logoutService.js";
 
 $(document).on("click", "#logoutButton", async function (event) {
   try {
