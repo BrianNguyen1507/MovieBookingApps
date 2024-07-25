@@ -486,7 +486,6 @@ class _PaymentPageState extends State<PaymentPage> {
 
         if (returnData != null) {
           String tranCode = returnData['transaction'];
-          sumTotal = double.parse(returnData['amount']);
           Handlepayments.handlePaymentSuccess(context, visible, seats,
               voucherId, methodName, tranCode, foods, sumTotal);
         } else {

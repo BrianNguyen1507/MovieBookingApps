@@ -96,19 +96,15 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: false,
       drawer: BuildDrawer(context),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            elevation: 0.0,
+            floating: false,
+            pinned: true,
             backgroundColor: AppColors.backgroundColor,
             iconTheme: const IconThemeData(color: AppColors.iconThemeColor),
-            pinned: false,
-            floating: true,
-            snap: true,
-            flexibleSpace: const FlexibleSpaceBar(
-              collapseMode: CollapseMode.pin,
-            ),
             title: Image.asset(
               'assets/icons/ic_logo.png',
               height: 70,
