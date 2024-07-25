@@ -28,7 +28,7 @@ class ListMovie {
         child: Column(
           children: [
             Stack(
-              alignment: Alignment.topLeft,
+              alignment: Alignment.topRight,
               children: [
                 ClipRRect(
                   borderRadius: ContainerRadius.radius10,
@@ -43,12 +43,12 @@ class ListMovie {
                       } else {
                         return SizedBox(
                           height: AppSize.height(context) / 3,
-                          width: AppSize.width(context) / 2,
+                          width: AppSize.width(context) / 2.5,
                           child: AspectRatio(
                             aspectRatio: 16 / 9,
                             child: Image.memory(
                               snapshot.data!,
-                              fit: BoxFit.fitHeight,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         );
@@ -57,15 +57,15 @@ class ListMovie {
                   ),
                 ),
                 Positioned(
+                  right: 5,
                   top: 5,
-                  right: 20,
                   child: Container(
-                    padding: const EdgeInsets.all(3.0),
+                    padding: const EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                       color: ClassifyClass.toFlutterColor(
                         ClassifyClass.classifyType(movie.classify),
                       ),
-                      borderRadius: ContainerRadius.radius2,
+                      borderRadius: ContainerRadius.radius5,
                     ),
                     child: Text(
                       movie.classify,

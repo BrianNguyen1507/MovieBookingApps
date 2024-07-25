@@ -313,9 +313,7 @@ class ComingSoonSection extends StatelessWidget {
                   List<Movie> filmsFuture = snapshot.data!;
                   return Column(
                     children: [
-                      SizedBox(
-                        height: AppSize.height(context) * 0.45,
-                        width: AppSize.width(context),
+                      Expanded(
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: filmsFuture.length,

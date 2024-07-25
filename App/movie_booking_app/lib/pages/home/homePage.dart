@@ -44,9 +44,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      extendBody: true,
       body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             const AutoScrollingBanner(),
@@ -120,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   final data = snapshot.data!;
                   return SizedBox(
-                    height: data.length * 80,
+                    height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: data.length,
@@ -165,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                     } else {
                       final movies = snapshot.data!;
                       return SizedBox(
-                        height: movies.length * 60,
+                        height: 120,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: movies.length,

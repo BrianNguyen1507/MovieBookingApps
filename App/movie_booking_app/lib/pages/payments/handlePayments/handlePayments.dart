@@ -27,7 +27,8 @@ class Handlepayments {
       List<Map<String, dynamic>> foods,
       double total) async {
     //hien thi dialog
-    showDialog(
+    print('THANH TOAN THANH CONG');
+     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
