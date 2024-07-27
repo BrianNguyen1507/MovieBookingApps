@@ -41,11 +41,7 @@ Widget infMovie(String title, String value) {
           color: Colors.grey,
           thickness: 0.35,
         ),
-        Text(
-          value,
-          style: const TextStyle(
-              fontSize: AppFontSize.small, color: AppColors.grayTextColor),
-        ),
+        Text(value, style: AppStyle.detailText),
       ]),
     ),
   );

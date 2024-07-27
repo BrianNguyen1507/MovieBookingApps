@@ -1,10 +1,10 @@
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -114,24 +114,72 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                               ),
                             ),
                             SizedBox(
-                                width: AppSize.width(context) / 1.8,
-                                child: Consumer<ThemeProvider>(
-                                  builder: (context, provider, child) =>
-                                      FutureBuilder<String>(
-                                    future:
-                                        provider.translateText(detail.country),
-                                    builder: (context, snapshot) {
-                                      final countrytrans =
-                                          snapshot.data ?? detail.country;
-                                      return Text(
-                                        "${AppLocalizations.of(context)!.country}: $countrytrans",
-                                        style: AppStyle.smallText,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                      );
-                                    },
+                              width: AppSize.width(context) / 1.8,
+                              child: Consumer<ThemeProvider>(
+                                builder: (context, provider, child) =>
+                                    FutureBuilder<String>(
+                                  future:
+                                      provider.translateText(detail.country),
+                                  builder: (context, snapshot) {
+                                    final countrytrans =
+                                        snapshot.data ?? detail.country;
+                                    return Text(
+                                      "${AppLocalizations.of(context)!.country}: $countrytrans",
+                                      style: AppStyle.smallText,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: AppSize.width(context) / 1.8,
+                              child: Consumer<ThemeProvider>(
+                                builder: (context, provider, child) =>
+                                    FutureBuilder<String>(
+                                  future: provider.translateText(
+                                    detail.categories
+                                        .map((category) => category.name)
+                                        .join(', '),
                                   ),
-                                )),
+                                  builder: (context, snapshot) {
+                                    final categories = (snapshot.data ?? "")
+                                        .split(', ')
+                                        .map((e) => e.trim())
+                                        .toList();
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Wrap(
+                                          spacing: 5.0,
+                                          runSpacing: 5.0,
+                                          children: categories.map((category) {
+                                            return Container(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.transpanrent,
+                                                  border: Border.all(
+                                                      width: 1,
+                                                      color: AppColors
+                                                          .commonColor),
+                                                  borderRadius:
+                                                      ContainerRadius.radius5),
+                                              child: Text(
+                                                category,
+                                                style: AppStyle.smallText,
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [

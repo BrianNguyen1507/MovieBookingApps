@@ -48,7 +48,7 @@ function updateMovieInputs(movieData) {
     "movieDescriptionInput"
   );
   const posterInput = document.getElementById("posterinput");
-
+  moviePoster.style.height = "350px";
   movieTitleInput.value = movieData.title;
   movieDurationInput.value = movieData.duration;
   releaseDateInput.value = movieData.releaseDate;

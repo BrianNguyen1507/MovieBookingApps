@@ -346,6 +346,7 @@ class ComingSoonSection extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(
+                                  width: AppSize.width(context) / 2,
                                   child: Center(
                                     child: Consumer<ThemeProvider>(
                                       builder: (context, provider, child) {

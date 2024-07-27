@@ -1,4 +1,3 @@
-
 import { Movie } from "../../models/movie.js";
 import { stringToBase64 } from "../../util/converter.js";
 import { deleteMovie } from "./deleteFilm.js";
@@ -44,7 +43,7 @@ function getMovieFromForm() {
     classifyInputValue
   );
 }
-
+//edit movie button
 document.getElementById("btn-edit").addEventListener("click", function () {
   const id = this.getAttribute("data-id");
   const movie = getMovieFromForm();
@@ -59,9 +58,17 @@ document.getElementById("btn-edit").addEventListener("click", function () {
     reverseButtons: true,
   }).then((result) => {
     if (result.isConfirmed) {
-      updateMovie(id, movie);
-      getMovieById(id);
-      window.location.reload();
+      updateMovie(id, movie)
+        .then(() => {
+          getMovieById(id);
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error",
+            text: "Opps!, There was an error updating the movie.",
+            icon: "error",
+          });
+        });
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire({
         title: "Cancelled",
@@ -71,7 +78,7 @@ document.getElementById("btn-edit").addEventListener("click", function () {
     }
   });
 });
-
+//soft delete movie button
 document.getElementById("btn-del").addEventListener("click", function () {
   const id = this.getAttribute("data-id");
 
@@ -85,8 +92,17 @@ document.getElementById("btn-del").addEventListener("click", function () {
     reverseButtons: true,
   }).then((result) => {
     if (result.isConfirmed) {
-      deleteMovie(id);
-      window.location.href = "./movieManagement.html";
+      deleteMovie(id)
+        .then(() => {
+          window.location.href = "./movieManagement.html";
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error",
+            text: "Opps!, There was an error hide movie.",
+            icon: "error",
+          });
+        });
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire({
         title: "Cancelled",
