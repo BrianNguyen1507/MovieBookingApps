@@ -66,11 +66,15 @@ class ThemeProvider with ChangeNotifier {
   }
 
   Future<String> translateText(String text) async {
+    if (_isEnglish) {
+      return text;
+    }
+
     try {
       final translation = await translator.translate(
         text,
-        from: _isEnglish ? 'vi' : 'en',
-        to: _isEnglish ? 'en' : 'vi',
+        from: 'en',
+        to: 'vi',
       );
 
       return translation.text;

@@ -217,7 +217,7 @@ class _StorePageState extends State<StorePage> {
                                                     final nameTrans =
                                                         snapshot.data;
                                                     return Text(
-                                                      maxLines: 2,
+                                                      maxLines: 3,
                                                       nameTrans ??
                                                           foodData[index].name,
                                                       style: AppStyle.bodyText1,

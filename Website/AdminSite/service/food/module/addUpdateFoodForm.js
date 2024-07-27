@@ -18,6 +18,11 @@ $(document).on("click", "#btn-add-food", async function (event) {
         action = "Sửa";
         $(document).ready(function () {
           updateFoodData(dataId, dataImage, dataName, dataPrice);
+
+          $("#imageInput").data("base64", dataImage);
+          $("#imagePreview")
+            .attr("src", `data:image/png;base64,${dataImage}`)
+            .show();
         });
       }
       return await Swal.fire({
@@ -84,7 +89,7 @@ $(document).on("click", "#btn-add-food", async function (event) {
         showLoaderOnConfirm: true,
         preConfirm: () => {
           const id = dataId;
-          const imageFood = $("#imageInput").data("base64") || "";
+          const imageFood = $("#imageInput").data("base64");
           const name = $("#nameInput").val().trim();
           const price = parseInt($("#priceInput").val(), 10);
           if (!imageFood || !name || isNaN(price)) {
@@ -118,7 +123,7 @@ $(document).on("click", "#btn-add-food", async function (event) {
         if (result === true) {
           Swal.fire({
             title: "Success!",
-            text: "New room has been added.",
+            text: "New food has been added.",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -140,7 +145,7 @@ $(document).on("click", "#btn-add-food", async function (event) {
         if (result == true) {
           Swal.fire({
             title: "Success!",
-            text: "New room has been added.",
+            text: "New food has been added.",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
