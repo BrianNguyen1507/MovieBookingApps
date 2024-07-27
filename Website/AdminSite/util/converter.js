@@ -38,7 +38,9 @@ export function handleFileSelect(event) {
   reader.readAsDataURL(file);
 }
 export function stringToBase64(input) {
-  return btoa(input);
+  const utf8Bytes = new TextEncoder().encode(input);
+  const binaryString = String.fromCharCode(...utf8Bytes);
+  return btoa(binaryString);
 }
 
 export function base64ToString(base64) {
