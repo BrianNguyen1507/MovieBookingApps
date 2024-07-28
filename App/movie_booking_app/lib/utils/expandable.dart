@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExpandableText extends StatefulWidget {
   final String text;
@@ -49,7 +50,10 @@ class _ExpandableTextState extends State<ExpandableText> {
             });
           },
           child: widget.text.length > 50
-              ? Text(isExpanded ? 'Show less' : 'Show more',
+              ? Text(
+                  isExpanded
+                      ? AppLocalizations.of(context)!.showless
+                      : AppLocalizations.of(context)!.showmore,
                   style: AppStyle.buttonText)
               : const SizedBox.shrink(),
         ),

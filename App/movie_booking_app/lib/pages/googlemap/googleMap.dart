@@ -1,12 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 
 class MapTheater extends StatefulWidget {
-  final String theaeterName;
-  const MapTheater({super.key, required this.theaeterName});
+  final String theaterName;
+  const MapTheater({super.key, required this.theaterName});
 
   @override
   State<MapTheater> createState() => MapTheaterState();
@@ -20,7 +19,7 @@ class MapTheaterState extends State<MapTheater> {
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(10.738023187285005, 106.67783119566148),
-    zoom: 18.54321,
+    zoom: 18,
   );
 
   @override
@@ -33,7 +32,7 @@ class MapTheaterState extends State<MapTheater> {
         backgroundColor: Colors.black.withOpacity(0.3),
       ),
       body: GoogleMap(
-        mapType: MapType.normal,
+        mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
@@ -43,7 +42,7 @@ class MapTheaterState extends State<MapTheater> {
             markerId: const MarkerId('theater'),
             position: _theaterLocation,
             infoWindow: InfoWindow(
-              title: widget.theaeterName,
+              title: widget.theaterName,
             ),
           ),
         },

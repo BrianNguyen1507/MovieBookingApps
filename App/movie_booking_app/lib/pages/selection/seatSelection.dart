@@ -13,13 +13,12 @@ import 'package:movie_booking_app/models/seat/seat.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/seatwidget/seatwidget.dart';
 import 'package:movie_booking_app/pages/store/store.dart';
-import 'package:movie_booking_app/provider/provider.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
 import 'package:movie_booking_app/services/Users/seat/seatService.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 
 class SeatSelection extends StatefulWidget {
   final int scheduleId;
@@ -133,33 +132,78 @@ class _SeatSelectionState extends State<SeatSelection> {
     List<String> rowLabels = List.generate(seatData.seats.length, (index) {
       return String.fromCharCode(index + 65);
     });
-    return InteractiveViewer(
-      constrained: true,
-      minScale: 0.5,
-      maxScale: 20.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.screen,
-                style: AppStyle.screenText,
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: InteractiveViewer(
+          constrained: true,
+          minScale: 0.1,
+          maxScale: 20.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      const Text(
+                        'Exit',
+                        style: AppStyle.screenText,
+                      ),
+                      SvgPicture.asset(
+                        'assets/svg/logout.svg',
+                        height: 30.0,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.screen,
+                        style: AppStyle.screenText,
+                      ),
+                      SvgPicture.string(
+                        svgScreen,
+                        height: 50.0,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    children: [
+                      const Text(
+                        'Exit',
+                        style: AppStyle.screenText,
+                      ),
+                      SvgPicture.asset(
+                        'assets/svg/logout-revert.svg',
+                        height: 30.0,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              SvgPicture.string(svgScreen),
+              Container(
+                padding: const EdgeInsets.only(top: 30.0),
+                height: AppSize.height(context) / 2,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: List.generate(
+                      seatData.seats.length,
+                      (index) {
+                        return buildSeatRow(
+                            seatData.seats[index], index + 1, rowLabels);
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
-          SizedBox(
-            height: 300,
-            child: ListView.builder(
-              itemCount: seatData.seats.length,
-              itemBuilder: (context, index) {
-                return buildSeatRow(
-                    seatData.seats[index], index + 1, rowLabels);
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -329,46 +373,17 @@ Widget renderBooking(
                                         ),
                                       ),
                                       SizedBox(
-                                          width: AppSize.width(context) / 3,
-                                          child: Consumer<ThemeProvider>(
-                                            builder: (context, value, child) {
-                                              return FutureBuilder(
-                                                future: value.translateText(
-                                                    movieData.title),
-                                                builder: (context, snapshot) {
-                                                  final titleTrans =
-                                                      snapshot.data ??
-                                                          movieData.title;
-                                                  return Text(
-                                                    titleTrans,
-                                                    style: AppStyle.smallText,
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          )),
+                                        width: AppSize.width(context) / 3,
+                                        child: TranslateConsumer()
+                                            .translateProvider(movieData.title,
+                                                1, AppStyle.titleMovie),
+                                      ),
                                     ],
                                   ),
-                                  Consumer<ThemeProvider>(
-                                    builder: (context, value, child) {
-                                      return FutureBuilder(
-                                        future: value
-                                            .translateText(movieData.country),
-                                        builder: (context, snapshot) {
-                                          final countryTrans = snapshot.data ??
-                                              movieData.country;
-                                          return Text(
-                                            countryTrans,
-                                            style: AppStyle.smallText,
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  Text(
-                                    '${movieData.duration.toString()} ${AppLocalizations.of(context)!.minutes}',
-                                    style: AppStyle.smallText,
-                                  ),
+                                  TranslateConsumer().translateProvider(
+                                      '${movieData.duration} ${AppLocalizations.of(context)!.minutes}',
+                                      1,
+                                      AppStyle.smallText),
                                 ],
                               ),
                             ),

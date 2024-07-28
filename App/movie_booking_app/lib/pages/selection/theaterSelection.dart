@@ -5,9 +5,8 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/models/theater/theater.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/theaterwidget/theaterItem.dart';
-import 'package:movie_booking_app/provider/provider.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 import 'package:movie_booking_app/services/Users/theater/theaterService.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TheaterSelection extends StatefulWidget {
@@ -39,22 +38,8 @@ class _TheaterSelectionState extends State<TheaterSelection> {
         iconTheme: const IconThemeData(
           color: AppColors.containerColor,
         ),
-        title: Consumer<ThemeProvider>(
-          builder: (context, value, child) {
-            return FutureBuilder<String>(
-              future: value.translateText(widget.name),
-              builder: (context, snapshot) {
-                final titleTrans = snapshot.data ?? widget.name;
-                return Text(
-                  titleTrans,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                );
-              },
-            );
-          },
-        ),
-        titleTextStyle: AppStyle.bannerText,
+        title: TranslateConsumer()
+            .translateProvider(widget.name, 1, AppStyle.bannerText),
       ),
       body: Container(
         decoration: const BoxDecoration(
