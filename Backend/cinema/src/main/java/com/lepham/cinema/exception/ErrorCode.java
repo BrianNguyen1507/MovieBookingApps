@@ -51,6 +51,7 @@ public enum ErrorCode {
     SCHEDULE_NOT_FOUND(1038,"Movie schedule not found",HttpStatus.BAD_REQUEST),
     FILM_NOT_RELEASE(1039,"The movie has not been released yet",HttpStatus.BAD_REQUEST),
     DATE_AFTER_NOW(1040,"Date's schedule must after now 7 days",HttpStatus.BAD_REQUEST),
+    ORDER_CAN_NOT_USED(1041,"Order was used or expired",HttpStatus.BAD_REQUEST),
     ;
 
 

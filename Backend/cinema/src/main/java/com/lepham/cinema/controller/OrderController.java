@@ -64,5 +64,18 @@ public class OrderController {
                 .result(orderService.detailOrder(id))
                 .build();
     }
+    @GetMapping("/detailOrderByOrderCode")
+    APIResponse<OrderResponse> detailOrderByOrderCode(@RequestParam("orderCode") String orderCode){
+        return APIResponse.<OrderResponse>builder()
+                .result(orderService.detailOrderByOrderCode(orderCode))
+                .build();
+    }
+    @PostMapping("/usedOrder")
+    APIResponse<?> changeOrderStatus(@RequestParam("id") long id){
+        orderService.changeOrderStatus(id);
+        return APIResponse.builder()
+                .message("Use successful!")
+                .build();
+    }
 
 }

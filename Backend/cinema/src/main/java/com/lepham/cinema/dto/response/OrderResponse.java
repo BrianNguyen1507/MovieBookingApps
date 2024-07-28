@@ -20,7 +20,6 @@ public class OrderResponse {
     long id;
     String orderCode;
     String seat;
-
     double sumTotal;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     LocalDateTime date;
@@ -28,5 +27,5 @@ public class OrderResponse {
     String paymentCode;
     String status;
     FilmResponse film;
-
+    boolean allowUse = false;
 }

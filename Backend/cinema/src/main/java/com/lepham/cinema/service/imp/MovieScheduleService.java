@@ -369,7 +369,6 @@ public class MovieScheduleService implements IMovieScheduleService {
         RoomEntity room = roomRepository.findByIdAndHide(request.getRoomId(), false)
                 .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
         if (film.getReleaseDate().isAfter(request.getDate())) throw new AppException(ErrorCode.FILM_NOT_RELEASE);
-        if (!request.getDate().isAfter(LocalDate.now().plusDays(7))) throw new AppException(ErrorCode.DATE_AFTER_NOW);
         List<MovieScheduleEntity> movieScheduleEntities = movieScheduleRepository
                 .findAllByRoomIdAndDateStart(request.getRoomId(), request.getDate(), Sort.by(Sort.Direction.ASC, "timeStart"));
         LocalTime time = LocalTime.of(8, 0);
