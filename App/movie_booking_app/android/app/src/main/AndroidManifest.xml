@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_api_key" />
+            android:value="AIzaSyCTaS0UCXnEWh3FdLaSuS4_VIVJatn-Rsw" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

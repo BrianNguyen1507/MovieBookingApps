@@ -20,7 +20,7 @@ class MovieList {
     if (response.statusCode != 200) {
       debugPrint('ListMovie Error code: ${response.statusCode}');
     }
-    final responseData = json.decode(response.body);
+    final responseData = json.decode(utf8.decode(response.body.codeUnits));
     if (responseData['code'] != 1000) {
       debugPrint('Error get list release message: ${responseData['message']}');
     }

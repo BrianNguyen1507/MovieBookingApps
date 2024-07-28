@@ -11,8 +11,7 @@ import 'package:movie_booking_app/pages/home/components/buildList.dart';
 import 'package:movie_booking_app/pages/home/homePage.dart';
 import 'package:movie_booking_app/pages/list/Listings.dart';
 import 'package:movie_booking_app/pages/list/listingByMonth.dart';
-import 'package:movie_booking_app/provider/provider.dart';
-import 'package:provider/provider.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 
 class NowShowingSection extends StatefulWidget {
   final Future<List<Movie>?> movieRelease;
@@ -152,26 +151,11 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                                         child: ValueListenableBuilder<int>(
                                           valueListenable: _currentPageNotifier,
                                           builder: (context, value, child) {
-                                            return Consumer<ThemeProvider>(
-                                              builder:
-                                                  (context, provider, child) {
-                                                return FutureBuilder(
-                                                  future:
-                                                      provider.translateText(
-                                                          _films[value].title),
-                                                  builder: (context, snapshot) {
-                                                    return Text(
-                                                        snapshot.data ??
-                                                            _films[value].title,
-                                                        key: ValueKey<String>(
-                                                            _films[value]
-                                                                .title),
-                                                        style:
-                                                            AppStyle.headline1);
-                                                  },
-                                                );
-                                              },
-                                            );
+                                            return TranslateConsumer()
+                                                .translateProvider(
+                                                    _films[value].title,
+                                                    1,
+                                                    AppStyle.headline1);
                                           },
                                         ),
                                       ),
@@ -179,43 +163,19 @@ class _NowShowingSectionState extends State<NowShowingSection> {
                                     SizedBox(
                                       width: AppSize.width(context),
                                       child: Center(
-                                        child: AnimatedSwitcher(
-                                          duration:
-                                              const Duration(milliseconds: 100),
-                                          child: ValueListenableBuilder<int>(
-                                            valueListenable:
-                                                _currentPageNotifier,
-                                            builder: (context, value, child) {
-                                              return Consumer<ThemeProvider>(
-                                                  builder: (context, provider,
-                                                      child) {
-                                                return FutureBuilder<String>(
-                                                  future:
-                                                      provider.translateText(
+                                        child: ValueListenableBuilder<int>(
+                                          valueListenable: _currentPageNotifier,
+                                          builder: (context, value, child) {
+                                            return TranslateConsumer()
+                                                .translateProvider(
                                                     _films[value]
                                                         .categories
                                                         .map((category) =>
                                                             category.name)
                                                         .join(', '),
-                                                  ),
-                                                  builder: (context, snapshot) {
-                                                    return Text(
-                                                      snapshot.data ??
-                                                          _films[value]
-                                                              .categories
-                                                              .map((category) =>
-                                                                  category.name)
-                                                              .join(', '),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: AppStyle.smallText,
-                                                    );
-                                                  },
-                                                );
-                                              });
-                                            },
-                                          ),
+                                                    1,
+                                                    AppStyle.smallText);
+                                          },
                                         ),
                                       ),
                                     ),
@@ -326,54 +286,27 @@ class ComingSoonSection extends StatelessWidget {
                                       context, filmsFuture[index]),
                                 ),
                                 SizedBox(
+                                  width: AppSize.width(context) / 2,
                                   child: Center(
-                                    child: Consumer<ThemeProvider>(
-                                      builder: (context, provider, child) {
-                                        return FutureBuilder<String>(
-                                          future: provider.translateText(
-                                              filmsFuture[index].title),
-                                          builder: (context, snapshot) {
-                                            return Text(
-                                              snapshot.data ??
-                                                  filmsFuture[index].title,
-                                              maxLines: 2,
-                                              style: AppStyle.titleMovie,
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
+                                    child: TranslateConsumer()
+                                        .translateProvider(
+                                            filmsFuture[index].title,
+                                            1,
+                                            AppStyle.titleMovie),
                                   ),
                                 ),
                                 SizedBox(
                                   width: AppSize.width(context) / 2,
                                   child: Center(
-                                    child: Consumer<ThemeProvider>(
-                                      builder: (context, provider, child) {
-                                        return FutureBuilder<String>(
-                                          future: provider.translateText(
+                                    child: TranslateConsumer()
+                                        .translateProvider(
                                             filmsFuture[index]
                                                 .categories
                                                 .map(
                                                     (category) => category.name)
                                                 .join(', '),
-                                          ),
-                                          builder: (context, snapshot) {
-                                            return Text(
-                                              snapshot.data ??
-                                                  filmsFuture[index]
-                                                      .categories
-                                                      .map((category) =>
-                                                          category.name)
-                                                      .join(', '),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: AppStyle.smallText,
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
+                                            1,
+                                            AppStyle.smallText),
                                   ),
                                 ),
                               ],

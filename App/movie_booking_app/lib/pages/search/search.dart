@@ -6,11 +6,10 @@ import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
-import 'package:movie_booking_app/provider/provider.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 import 'package:movie_booking_app/services/Users/search/searchMovie.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -152,73 +151,25 @@ class SearchState extends State<Search> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             SizedBox(
-                                                width:
-                                                    AppSize.width(context) / 2,
-                                                child: Consumer<ThemeProvider>(
-                                                  builder:
-                                                      (context, value, child) {
-                                                    return FutureBuilder(
-                                                      future:
-                                                          value.translateText(
-                                                              movieList[index]
-                                                                  .title),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        final titleTrans =
-                                                            snapshot.data ??
-                                                                movieList[index]
-                                                                    .title;
-                                                        return Text(
-                                                          titleTrans,
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  },
-                                                )),
+                                              width: AppSize.width(context) / 2,
+                                              child: TranslateConsumer()
+                                                  .translateProvider(
+                                                      movieList[index].title,
+                                                      2,
+                                                      AppStyle.titleMovie),
+                                            ),
                                             SizedBox(
-                                                width:
-                                                    AppSize.width(context) / 2,
-                                                child: Consumer<ThemeProvider>(
-                                                  builder:
-                                                      (context, value, child) {
-                                                    return FutureBuilder(
-                                                      future:
-                                                          value.translateText(
-                                                        movieList[index]
-                                                            .categories
-                                                            .map((category) =>
-                                                                category.name)
-                                                            .join(', '),
-                                                      ),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        final catTrans = snapshot
-                                                                .data ??
-                                                            movieList[index]
-                                                                .categories
-                                                                .map((category) =>
-                                                                    category
-                                                                        .name)
-                                                                .join(', ');
-                                                        return Text(catTrans,
-                                                            maxLines: 2,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: AppStyle
-                                                                .smallText);
-                                                      },
-                                                    );
-                                                  },
-                                                )),
+                                              width: AppSize.width(context) / 2,
+                                              child: TranslateConsumer()
+                                                  .translateProvider(
+                                                      movieList[index]
+                                                          .categories
+                                                          .map((category) =>
+                                                              category.name)
+                                                          .join(', '),
+                                                      1,
+                                                      AppStyle.smallText),
+                                            ),
                                             Container(
                                               padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(

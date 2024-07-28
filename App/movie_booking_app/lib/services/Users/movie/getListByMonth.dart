@@ -26,7 +26,7 @@ class GetListByMonth {
         if (response.statusCode != 200) {
           debugPrint('List Movie By month error: ${response.statusCode}');
         }
-        final result = json.decode(response.body);
+        final result = json.decode(utf8.decode(response.body.codeUnits));
         if (result['code'] != 1000) {
           debugPrint('List Movie By month message: ${result['message']}');
         }

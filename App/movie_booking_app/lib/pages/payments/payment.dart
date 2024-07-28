@@ -7,17 +7,16 @@ import 'package:movie_booking_app/constant/Appdata.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movieDetail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/pages/order/components/movieCard.dart';
 import 'package:movie_booking_app/pages/order/orderPage.dart';
 import 'package:movie_booking_app/pages/payments/components/paymentsWidget.dart';
 import 'package:movie_booking_app/pages/payments/handlePayments/handlePayments.dart';
-import 'package:movie_booking_app/provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:movie_booking_app/services/payments/VnPay/vnPayResponse.dart';
 import 'package:movie_booking_app/services/payments/VnPay/vnPayService.dart';
 import 'package:movie_booking_app/services/payments/ZaloPay/ZaloPayService.dart';
-import 'package:provider/provider.dart';
 
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
@@ -100,142 +99,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           return loadingContent;
                         } else {
                           final getMovie = snapshot.data!;
-                          return SizedBox(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(5.0),
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(
-                                      AppLocalizations.of(context)!.movieDetail,
-                                      style: AppStyle.bodyText1),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.all(5.0),
-                                  padding: const EdgeInsets.all(5.0),
-                                  width: AppSize.width(context),
-                                  decoration: BoxDecoration(
-                                    borderRadius: ContainerRadius.radius12,
-                                    color: AppColors.containerColor,
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.all(5.0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              ContainerRadius.radius10,
-                                          child: Image.memory(
-                                              height: 90,
-                                              width: 60,
-                                              ConverterUnit.base64ToUnit8(
-                                                  getMovie.poster)),
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    right: 2.0),
-                                                decoration: BoxDecoration(
-                                                  color: ClassifyClass
-                                                      .toFlutterColor(
-                                                    ClassifyClass.classifyType(
-                                                        getMovie.classify),
-                                                  ),
-                                                  borderRadius:
-                                                      ContainerRadius.radius2,
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(1.5),
-                                                child: Text(
-                                                  getMovie.classify,
-                                                  style: AppStyle.classifyText,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                              Consumer<ThemeProvider>(
-                                                builder:
-                                                    (context, provider, child) {
-                                                  return FutureBuilder(
-                                                      future: provider
-                                                          .translateText(
-                                                              getMovie.title),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        final titleTrans =
-                                                            snapshot.data ??
-                                                                getMovie.title;
-                                                        return Text(titleTrans,
-                                                            style: AppStyle
-                                                                .titleOrder);
-                                                      });
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                          Consumer<ThemeProvider>(
-                                            builder: (context, value, child) {
-                                              return FutureBuilder(
-                                                future: value.translateText(
-                                                    getMovie
-                                                        .categories
-                                                        .map((category) =>
-                                                            category.name)
-                                                        .join(', ')),
-                                                builder: (context, snapshot) {
-                                                  final categoryTrans =
-                                                      snapshot.data ??
-                                                          getMovie.categories
-                                                              .map((category) =>
-                                                                  category.name)
-                                                              .join(', ');
-                                                  return Text(
-                                                    '${AppLocalizations.of(context)!.category}: $categoryTrans',
-                                                    style: AppStyle.smallText,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          ),
-                                          Text(
-                                            '${AppLocalizations.of(context)!.duration}: ${getMovie.duration.toString()} minutes',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            '${AppLocalizations.of(context)!.country}: ${getMovie.country.toString()}',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            '${AppLocalizations.of(context)!.language}: ${getMovie.language.toString()}',
-                                            style: AppStyle.smallText,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                          return movieCard(context, getMovie);
                         }
                       },
                     )

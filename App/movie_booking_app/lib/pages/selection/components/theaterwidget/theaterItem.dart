@@ -7,9 +7,8 @@ import 'package:movie_booking_app/constant/svgString.dart';
 import 'package:movie_booking_app/models/theater/theater.dart';
 import 'package:movie_booking_app/pages/googlemap/googleMap.dart';
 import 'package:movie_booking_app/pages/selection/scheduleSelection.dart';
-import 'package:movie_booking_app/provider/provider.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
-import 'package:provider/provider.dart';
 
 class TheaterItems {
   static Widget theaterTag(
@@ -71,22 +70,10 @@ class TheaterItems {
                           ),
                         ),
                         SizedBox(
-                            width: AppSize.width(context) * 0.6,
-                            child: Consumer<ThemeProvider>(
-                              builder: (context, value, child) => FutureBuilder(
-                                future: value
-                                    .translateText(theaters[index].address),
-                                builder: (context, snapshot) {
-                                  final addressTrans = snapshot.data;
-                                  return Text(
-                                    addressTrans ?? theaters[index].address,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppStyle.smallText,
-                                  );
-                                },
-                              ),
-                            )),
+                          width: AppSize.width(context) * 0.6,
+                          child: TranslateConsumer().translateProvider(
+                              theaters[index].address, 2, AppStyle.smallText),
+                        ),
                       ],
                     )
                   ],
@@ -106,7 +93,7 @@ class TheaterItems {
                           builder: (context) {
                             return FractionallySizedBox(
                               child: MapTheater(
-                                theaeterName: theaters[index].name,
+                                theaterName: theaters[index].name,
                               ),
                             );
                           },

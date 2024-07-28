@@ -7,8 +7,7 @@ import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/detail/movieDetail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movie_booking_app/provider/provider.dart';
-import 'package:provider/provider.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 
 class MovieListingByMonth extends StatelessWidget {
   const MovieListingByMonth({
@@ -53,126 +52,98 @@ class MovieListingByMonth extends StatelessWidget {
                       final month = monthEntry.key;
                       final movies = monthEntry.value;
 
-                      return Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${AppLocalizations.of(context)!.month} ${month.toString()}',
-                              style: AppStyle.bodyText1,
-                            ),
-                            SizedBox(
-                              height: monthsWithMovies.length * 250,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: movies.length,
-                                itemBuilder: (context, movieIndex) {
-                                  final movie = movies[movieIndex];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MovieDetailPage(
-                                              movieId: movie.id),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.all(5.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    ContainerRadius.radius12,
-                                                child: Image.memory(
-                                                  ConverterUnit.base64ToUnit8(
-                                                      movie.poster),
-                                                  height: 150,
-                                                  width: 100,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.all(5),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 2,
-                                                        horizontal: 5),
-                                                decoration: BoxDecoration(
-                                                  color: ClassifyClass
-                                                      .toFlutterColor(
-                                                          ClassifyClass
-                                                              .classifyType(movie
-                                                                  .classify)),
-                                                  borderRadius:
-                                                      ContainerRadius.radius2,
-                                                ),
-                                                child: Text(movie.classify,
-                                                    style:
-                                                        AppStyle.classifyText),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Consumer<ThemeProvider>(
-                                            builder: (context, value, child) {
-                                              return FutureBuilder(
-                                                future: value
-                                                    .translateText(movie.title),
-                                                builder: (context, snapshot) =>
-                                                    Text(
-                                                        snapshot.data ??
-                                                            movie.title,
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: AppStyle
-                                                            .titleMovie),
-                                              );
-                                            },
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Consumer<ThemeProvider>(
-                                            builder: (context, value, child) =>
-                                                FutureBuilder(
-                                              future: value.translateText(
-                                                movie.categories
-                                                    .map((category) =>
-                                                        category.name)
-                                                    .join(', '),
-                                              ),
-                                              builder: (context, snapshot) {
-                                                final catTrans =
-                                                    snapshot.data ??
-                                                        movie.categories
-                                                            .map((category) =>
-                                                                category.name)
-                                                            .join(', ');
-                                                return Text(catTrans,
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: AppStyle.smallText);
-                                              },
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                        ],
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context)!.month} ${month.toString()}',
+                            style: AppStyle.bodyText1,
+                          ),
+                          SizedBox(
+                            height: 250,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: movies.length,
+                              itemBuilder: (context, movieIndex) {
+                                final movie = movies[movieIndex];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            MovieDetailPage(movieId: movie.id),
                                       ),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.all(5.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  ContainerRadius.radius12,
+                                              child: Image.memory(
+                                                ConverterUnit.base64ToUnit8(
+                                                    movie.poster),
+                                                height: 150,
+                                                width: 100,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            Container(
+                                              margin: const EdgeInsets.all(5),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 2,
+                                                      horizontal: 5),
+                                              decoration: BoxDecoration(
+                                                color: ClassifyClass
+                                                    .toFlutterColor(
+                                                        ClassifyClass
+                                                            .classifyType(movie
+                                                                .classify)),
+                                                borderRadius:
+                                                    ContainerRadius.radius2,
+                                              ),
+                                              child: Text(movie.classify,
+                                                  style: AppStyle.classifyText),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        SizedBox(
+                                          width: 150,
+                                          child: TranslateConsumer()
+                                              .translateProvider(movie.title, 1,
+                                                  AppStyle.titleMovie),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        SizedBox(
+                                          width: 150,
+                                          child: TranslateConsumer()
+                                              .translateProvider(
+                                                  movie.categories
+                                                      .map((category) =>
+                                                          category.name)
+                                                      .join(', '),
+                                                  1,
+                                                  AppStyle.smallText),
+                                        ),
+                                        const SizedBox(height: 4),
+                                      ],
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       );
                     },
                   ).toList(),
