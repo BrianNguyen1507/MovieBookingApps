@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<OrderEntity,Long> {
     List<OrderEntity> findByAccountVoucher_AccountAndMovieScheduleNotNull(AccountEntity account, Sort sort);
     List<OrderEntity> findByAccountVoucher_AccountAndMovieScheduleNull(AccountEntity account,Sort sort);
+    Optional<OrderEntity> findByOrderCode(String orderCode);
 }

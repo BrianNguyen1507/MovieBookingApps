@@ -16,10 +16,11 @@ public interface IOrderService {
 
     OrderResponse order(OrderFilmRequest request);
 
-
-
     List<OrderResponse> listFilmOrder();
     List<OrderResponse> listFoodOrder();
 
     DetailOrderResponse detailOrder(long id);
+
+    OrderResponse detailOrderByOrderCode(String orderCode);
+    void changeOrderStatus(long id);
 }

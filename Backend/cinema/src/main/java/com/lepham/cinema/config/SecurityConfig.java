@@ -50,6 +50,8 @@ public class SecurityConfig {
             "/cinema/getAllRatingFeedback",
             "/cinema/paymentVnPay",
             "/cinema/getAllListMovie",
+            "/cinema/detailOrderByOrderCode",
+            "/cinema/usedOrder"
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

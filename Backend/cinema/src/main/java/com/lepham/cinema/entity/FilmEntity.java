@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "film",uniqueConstraints = {@UniqueConstraint(columnNames = "title")})
+@Table(name = "film",uniqueConstraints = {@UniqueConstraint(columnNames = "tilte")})
 public class FilmEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class FilmEntity {
     long id;
     @Column(name = "title", nullable = false, unique = true)
     String title;
-    @Column(name = "duration", length = 30,nullable = false,unique = true)
+    @Column(name = "duration", length = 30,nullable = false)
     int duration;
     @Column(name = "description", length = 65535,nullable = false)
     @Lob
