@@ -62,6 +62,7 @@ public class FilmConverter {
         FilmScheduleResponse response = new FilmScheduleResponse();
         response.setId(entity.getId());
         response.setTitle(entity.getTitle());
+        response.setPoster(entity.getPoster());
         response.setReleaseDate(entity.getReleaseDate());
         response.setDuration(entity.getDuration());
         return response;
