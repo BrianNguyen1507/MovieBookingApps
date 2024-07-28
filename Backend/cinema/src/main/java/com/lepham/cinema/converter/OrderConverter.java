@@ -2,6 +2,7 @@ package com.lepham.cinema.converter;
 
 import com.lepham.cinema.dto.request.OrderFilmRequest;
 import com.lepham.cinema.dto.response.DetailOrderResponse;
+import com.lepham.cinema.dto.response.OrderCheckResponse;
 import com.lepham.cinema.dto.response.OrderResponse;
 import com.lepham.cinema.entity.OrderEntity;
 import org.mapstruct.Mapper;
@@ -40,4 +41,5 @@ public interface OrderConverter {
 
         return "ORD" + dateStr + uniqueId;
     }
+    OrderCheckResponse toOrderCheckResponse(OrderEntity entity);
 }

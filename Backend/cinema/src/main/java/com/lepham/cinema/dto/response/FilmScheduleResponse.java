@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FilmScheduleResponse {
     long id;
+    byte[] poster;
     String title;
     LocalDate releaseDate;
     int duration;

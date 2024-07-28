@@ -65,8 +65,8 @@ public class OrderController {
                 .build();
     }
     @GetMapping("/detailOrderByOrderCode")
-    APIResponse<OrderResponse> detailOrderByOrderCode(@RequestParam("orderCode") String orderCode){
-        return APIResponse.<OrderResponse>builder()
+    APIResponse<OrderCheckResponse> detailOrderByOrderCode(@RequestParam("orderCode") String orderCode){
+        return APIResponse.<OrderCheckResponse>builder()
                 .result(orderService.detailOrderByOrderCode(orderCode))
                 .build();
     }

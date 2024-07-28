@@ -2,10 +2,7 @@ package com.lepham.cinema.service.imp;
 
 import com.google.zxing.WriterException;
 import com.lepham.cinema.constant.ConstantVariable;
-import com.lepham.cinema.converter.FilmConverter;
-import com.lepham.cinema.converter.FoodConverter;
-import com.lepham.cinema.converter.OrderConverter;
-import com.lepham.cinema.converter.VoucherConverter;
+import com.lepham.cinema.converter.*;
 import com.lepham.cinema.dto.request.FoodOrderRequest;
 import com.lepham.cinema.dto.request.OrderFilmRequest;
 import com.lepham.cinema.dto.request.SumTotalRequest;
@@ -51,6 +48,7 @@ public class OrderService implements IOrderService {
     FoodOrderRepository foodOrderRepository;
     QRCodeService qrCodeService;
     FoodConverter foodConverter;
+    MovieScheduleConverter movieScheduleConverter;
 
     @Override
     @PreAuthorize("hasRole('USER')")
@@ -272,7 +270,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderResponse detailOrderByOrderCode(String orderCode) {
+    public OrderCheckResponse detailOrderByOrderCode(String orderCode) {
         OrderEntity order = orderRepository.findByOrderCode(orderCode)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
         if(order.getStatus()!=ConstantVariable.ORDER_UNUSED)
@@ -281,9 +279,10 @@ public class OrderService implements IOrderService {
         LocalDateTime timeStart = movieSchedule.getTimeStart().minusMinutes(15);
         LocalDateTime timeEnd = movieSchedule.getTimeStart().plusMinutes(movieSchedule.getFilm().getDuration());
         LocalDateTime now = LocalDateTime.now();
-        OrderResponse response = orderConverter.toOrderFilmResponse(order);
-        response.setFilm(filmConverter.toFilmResponse(movieSchedule.getFilm()));
-
+        OrderCheckResponse response = orderConverter.toOrderCheckResponse(order);
+        MovieScheduleResponse movieScheduleResponse = movieScheduleConverter
+                .toResponse(movieSchedule,filmConverter.toFilmScheduleResponse(movieSchedule.getFilm()));
+        response.setMovieSchedule(movieScheduleResponse);
         //Check 15 minutes before start until finish
         response.setAllowUse(now.isAfter(timeStart) && now.isBefore(timeEnd));
         return response;
@@ -305,7 +304,9 @@ public class OrderService implements IOrderService {
         if(now.isAfter(timeStart) && now.isBefore(timeEnd)){
             order.setStatus(ConstantVariable.ORDER_USED);
             orderRepository.save(order);
+            return;
         }
+        throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
     }
 
     String getStatus(int statusInt) {

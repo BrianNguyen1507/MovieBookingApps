@@ -2,10 +2,7 @@ package com.lepham.cinema.service;
 
 import com.lepham.cinema.dto.request.OrderFilmRequest;
 import com.lepham.cinema.dto.request.SumTotalRequest;
-import com.lepham.cinema.dto.response.DetailOrderResponse;
-import com.lepham.cinema.dto.response.OrderResponse;
-import com.lepham.cinema.dto.response.SumTotalResponse;
-import com.lepham.cinema.dto.response.VoucherResponse;
+import com.lepham.cinema.dto.response.*;
 
 import java.util.List;
 
@@ -21,6 +18,6 @@ public interface IOrderService {
 
     DetailOrderResponse detailOrder(long id);
 
-    OrderResponse detailOrderByOrderCode(String orderCode);
+    OrderCheckResponse detailOrderByOrderCode(String orderCode);
     void changeOrderStatus(long id);
 }
