@@ -332,6 +332,7 @@ Widget buildFoodInfo(
                   final fdata = snapshot.data!;
 
                   return Card(
+                    color: AppColors.containerColor,
                     child: SizedBox(
                       height: 80,
                       child: ListTile(
