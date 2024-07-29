@@ -1,6 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
-const apiUrl = "http://103.200.20.167:8083/cinema/addRoom";
+const apiUrl = "http://localhost:8083/cinema/addRoom";
 
 export async function addRoom(room) {
   try {

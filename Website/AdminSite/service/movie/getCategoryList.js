@@ -1,6 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
-const urlcategory = "http://103.200.20.167:8083/cinema/getAllCategory";
+const urlcategory = "http://localhost:8083/cinema/getAllCategory";
 
 export async function fetchCategories(filmCategory) {
   try {

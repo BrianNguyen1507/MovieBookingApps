@@ -4,7 +4,7 @@ import { symbolType } from "../../util/voucherUtil/typeDiscount.js";
 import { Voucher } from "../../models/voucher.js";
 import { deleteVoucher } from "./deleteVoucher.js";
 import { DateConverter } from "../../util/converter.js";
-const url = "http://103.200.20.167:8083/cinema/getAllVoucher";
+const url = "http://localhost:8083/cinema/getAllVoucher";
 
 const token = await getUserToken();
 
