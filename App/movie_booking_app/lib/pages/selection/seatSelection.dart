@@ -366,7 +366,8 @@ Widget renderBooking(
                                         ),
                                         padding: const EdgeInsets.all(1.5),
                                         child: Text(
-                                          movieData.classify,
+                                          ClassifyClass.convertNamed(
+                                              movieData.classify),
                                           style: AppStyle.classifyText,
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,

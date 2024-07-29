@@ -68,7 +68,7 @@ class ListMovie {
                       borderRadius: ContainerRadius.radius5,
                     ),
                     child: Text(
-                      movie.classify,
+                      ClassifyClass.convertNamed(movie.classify),
                       style: AppStyle.classifyText,
                     ),
                   ),
