@@ -111,7 +111,9 @@ class MovieListingByMonth extends StatelessWidget {
                                                 borderRadius:
                                                     ContainerRadius.radius2,
                                               ),
-                                              child: Text(movie.classify,
+                                              child: Text(
+                                                  ClassifyClass.convertNamed(
+                                                      movie.classify),
                                                   style: AppStyle.classifyText),
                                             ),
                                           ],

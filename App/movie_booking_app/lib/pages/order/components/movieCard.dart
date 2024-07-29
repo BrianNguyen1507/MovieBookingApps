@@ -56,7 +56,7 @@ Widget movieCard(context, MovieDetail getMovie) {
                               ),
                               padding: const EdgeInsets.all(1.5),
                               child: Text(
-                                getMovie.classify,
+                                ClassifyClass.convertNamed(getMovie.classify),
                                 style: AppStyle.classifyText,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
