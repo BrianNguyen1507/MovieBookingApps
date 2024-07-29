@@ -128,6 +128,25 @@ class ClassifyClass {
     }
   }
 
+  static String convertNamed(String name) {
+    switch (name.toLowerCase()) {
+      case 'k':
+        return 'K';
+      case 'p':
+        return 'P';
+      case 't13':
+        return '13+';
+      case 't16':
+        return '16+';
+      case 't18':
+        return '18+';
+      case 'c':
+        return 'C';
+      default:
+        return 'K';
+    }
+  }
+
   static String contentClassify(context, String type) {
     switch (type.toLowerCase()) {
       case 'k':

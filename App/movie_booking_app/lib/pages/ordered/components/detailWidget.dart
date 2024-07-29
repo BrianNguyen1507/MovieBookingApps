@@ -98,7 +98,8 @@ Widget detailOrderFilm(context, DetailOrder order) {
                                             borderRadius:
                                                 ContainerRadius.radius2),
                                         child: Text(
-                                          order.order.classify,
+                                          ClassifyClass.convertNamed(
+                                              order.order.classify),
                                           style: const TextStyle(
                                             fontFamily: 'Roboto',
                                             fontWeight: FontWeight.bold,

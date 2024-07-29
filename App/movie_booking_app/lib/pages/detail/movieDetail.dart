@@ -192,7 +192,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                       borderRadius: ContainerRadius.radius2),
                                   padding: const EdgeInsets.all(1.5),
                                   child: Text(
-                                    detail.classify,
+                                    ClassifyClass.convertNamed(detail.classify),
                                     style: AppStyle.classifyText,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,

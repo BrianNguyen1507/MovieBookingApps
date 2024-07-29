@@ -183,7 +183,8 @@ class SearchState extends State<Search> {
                                                     ContainerRadius.radius2,
                                               ),
                                               child: Text(
-                                                movieList[index].classify,
+                                                ClassifyClass.convertNamed(
+                                                    movieList[index].classify),
                                                 style: const TextStyle(
                                                   fontFamily: 'Roboto',
                                                   fontWeight: FontWeight.bold,
