@@ -15,7 +15,7 @@ export const updateCategory = (id, name) => {
     showLoaderOnConfirm: true,
     preConfirm: () => {
       const name = document.getElementById("editcategory").value;
-      return fetch("http://103.200.20.167:8083/cinema/updateCategory", {
+      return fetch("http://localhost:8083/cinema/updateCategory", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

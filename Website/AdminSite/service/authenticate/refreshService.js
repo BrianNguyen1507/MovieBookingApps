@@ -1,5 +1,5 @@
 function refreshToken() {
-  fetch("http://103.200.20.167:8083/cinema/refresh", {
+  fetch("http://localhost:8083/cinema/refresh", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

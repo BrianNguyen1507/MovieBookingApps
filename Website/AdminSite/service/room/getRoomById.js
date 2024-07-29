@@ -1,6 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
-const url = "http://103.200.20.167:8083/cinema/getRoomById?id=";
+const url = "http://localhost:8083/cinema/getRoomById?id=";
 export async function getRoomById(id) {
   try {
     const token = await getUserToken();

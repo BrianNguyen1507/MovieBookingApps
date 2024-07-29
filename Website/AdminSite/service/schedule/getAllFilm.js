@@ -1,7 +1,7 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
 export async function getAllFilm() {
-  const url = "http://103.200.20.167:8083/cinema/getAllFilm";
+  const url = "http://localhost:8083/cinema/getAllFilm";
   try {
     const token = await getUserToken();
     const response = await fetch(url, {
