@@ -389,7 +389,7 @@
   background-color: #fff;
 }
 
-.checkbox-wrapper input[type="checkbox"]:checked+label:before {
+.checkbox-wrapper input[type="checkbox"]:checked + label:before {
   background-color: #007bff;
 }
 
@@ -404,7 +404,7 @@
   display: none;
 }
 
-.checkbox-wrapper input[type="checkbox"]:checked+label:after {
+.checkbox-wrapper input[type="checkbox"]:checked + label:after {
   display: block;
 }
 
@@ -433,6 +433,24 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 200px;
-  /* Adjust this width based on your layout */
+}
+.exportButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  position: relative;
 }
 
+.exportButton img {
+  height: 24px;
+  margin-right: 10px;
+}

@@ -30,6 +30,7 @@
 
     <!-- Libraries Stylesheet -->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
     <link
       href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css"
       rel="stylesheet"
@@ -91,29 +92,20 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-3">
-              <div
-                class="bg-light rounded d-flex align-items-center justify-content-between p-4"
-              >
-                <i class="fa fa-chart-area fa-3x text-primary"></i>
-                <div class="ms-3">
-                  <p class="mb-2">Today Revenue</p>
-                  <h6 class="mb-0">$1234</h6>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-xl-3">
-              <div
-                class="bg-light rounded d-flex align-items-center justify-content-between p-4"
-              >
-                <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                <div class="ms-3">
-                  <p class="mb-2">Total Revenue</p>
-                  <h6 class="mb-0">$1234</h6>
-                </div>
-              </div>
-            </div>
           </div>
+        </div>
+        <!-- Excel -->
+        <div class="col-sm-6">
+          <section>
+            <select id="chartType" class="form-select">
+              <option value="yearven">Thống kê theo năm</option>
+              <option value="monthven">Thống kê theo tháng</option>
+            </select>
+          </section>
+          <button id="exportButton" class="exportButton">
+            <img src="img/excel_logo.svg.png" alt="Export to excel img" />
+            Xuất Excel
+          </button>
         </div>
         <!-- Sale & Revenue End -->
 
@@ -125,8 +117,7 @@
                 <div
                   class="d-flex align-items-center justify-content-between mb-4"
                 >
-                  <h6 class="mb-0">Worldwide Sales</h6>
-                  <a href="">Show All</a>
+                  <h6 class="mb-0">Thống kê theo năm</h6>
                 </div>
                 <canvas id="worldwide-sales"></canvas>
               </div>
@@ -136,8 +127,7 @@
                 <div
                   class="d-flex align-items-center justify-content-between mb-4"
                 >
-                  <h6 class="mb-0">Salse & Revenue</h6>
-                  <a href="">Show All</a>
+                  <h6 class="mb-0">Thống kê theo tháng</h6>
                 </div>
                 <canvas id="salse-revenue"></canvas>
               </div>
@@ -146,6 +136,7 @@
         </div>
         <!-- Sales Chart End -->
         <!-- Footer Start -->
+
         <div class="footer-bar"></div>
         <!-- Footer End -->
       </div>
@@ -172,7 +163,9 @@
     <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
   </body>
 </html>
