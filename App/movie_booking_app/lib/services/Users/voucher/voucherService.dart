@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
@@ -30,29 +31,17 @@ class VoucherService {
       }
       final Map<String, dynamic> result =
           jsonDecode(utf8.decode(response.body.codeUnits));
-
-      if (result['code'] != 1000) {
+      final apiResponse = Response<List<Voucher>>.fromJson(result, (data) {
+        final List<dynamic> voucherData = data as List<dynamic>;
+        return voucherData.map((item) => Voucher.fromJson(item)).toList();
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result!;
+      } else {
         debugPrint(
-            'Error get all voucher service message: ${result['message']}');
+            'Error get all voucher service message: ${apiResponse.message}');
+        return [];
       }
-
-      final List<dynamic> voucherList = result['result'];
-
-      List<Voucher> vouchers = voucherList.map((data) {
-        return Voucher(
-          id: data['id'],
-          title: data['title'],
-          content: data['content'],
-          typeDiscount: data['typeDiscount'],
-          discount: data['discount'],
-          minLimit: data['minLimit'],
-          quantity: data['quantity'],
-          expired: data['expired'],
-          allowed: data['allow'] == true || data['allow'] == 'true',
-        );
-      }).toList();
-
-      return vouchers;
     } catch (err) {
       ShowMessage.unExpectedError(context);
       return [];
@@ -77,12 +66,16 @@ class VoucherService {
         debugPrint(
             'Error getVoucherByEmail service code: ${response.statusCode}');
       }
-      if (result['code'] != 1000) {
+      final apiResponse = Response<List<Voucher>>.fromJson(result, (data) {
+        final List<dynamic> getVoucher = data as List<dynamic>;
+        return getVoucher.map((item) => Voucher.fromJson(item)).toList();
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result;
+      } else {
         debugPrint(
-            'Error getVoucherByEmail service message: ${result['message']}');
+            'Error getVoucherByEmail service message: ${apiResponse.message}');
       }
-      final List accountVouchers = result['result'];
-      return accountVouchers.map((av) => Voucher.fromJson(av)).toList();
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {

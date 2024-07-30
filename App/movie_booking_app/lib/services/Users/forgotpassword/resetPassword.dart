@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/modules/valid/validException.dart';
 
 class ResetPasswordService {
-  static Future<String> resetPassword(
+  static Future<String?> resetPassword(
       String email, String password, context) async {
     final getUrl = dotenv.env['RESET_PASSWORD']!;
     final url = getUrl;
@@ -24,6 +24,6 @@ class ResetPasswordService {
     } catch (err) {
       ShowMessage.unExpectedError(context);
     }
-    return "";
+    return null;
   }
 }

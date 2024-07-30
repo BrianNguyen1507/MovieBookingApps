@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/models/schedule/schedule.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 
@@ -31,20 +32,17 @@ class ScheduleService {
             'Error get all schedule service code: ${response.statusCode}');
         return null;
       }
-
-      if (result['code'] != 1000) {
+      final apiResponse = Response<Schedule>.fromJson(result, (data) {
+        final dynamic getData = data as dynamic;
+        return Schedule.fromJson(getData);
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result;
+      } else {
         ShowMessage.unExpectedError(context);
         debugPrint(
-            'Error get all schedule service message: ${result['message']}');
+            'Error get all schedule service message: ${apiResponse.message}');
       }
-      dynamic scheduleData;
-      if (result['result'] != null) {
-        scheduleData = result['result'];
-      } else {
-        return null;
-      }
-
-      return Schedule.fromJson(scheduleData);
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {

@@ -4,10 +4,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:movie_booking_app/models/order/Total.dart';
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
 class GetTotalService {
-  static Future<GetTotal> sumTotalOrder(
+  static Future<GetTotal?> sumTotalOrder(
       int movieId, int quantity, List? food) async {
     Preferences pref = Preferences();
     String? token = await pref.getTokenUsers();
@@ -32,15 +33,17 @@ class GetTotalService {
       debugPrint('Error sumtotal Service code: ${response.statusCode}');
     }
     final result = jsonDecode(response.body);
-    final getData = result['result'];
-    if (result['code'] != 1000) {
-      debugPrint('Error sumtotal Service message: ${result['message']}');
-    }
 
-    return GetTotal(
-      priceMovie: getData['priceTicket'],
-      priceFood: getData['priceFood'],
-      total: getData['total'],
-    );
+    final apiResponse = Response<GetTotal>.fromJson(result, (json) {
+      final dynamic data = json as dynamic;
+      return GetTotal.fromJson(data);
+    });
+
+    if (apiResponse.isSuccess) {
+      return apiResponse.result!;
+    } else {
+      debugPrint('Error sumtotal Service message: ${apiResponse.message}');
+      return null;
+    }
   }
 }

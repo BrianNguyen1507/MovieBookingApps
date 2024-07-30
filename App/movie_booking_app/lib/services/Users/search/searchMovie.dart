@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movie_booking_app/models/category/categories.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 
 class SearchMovieService {
@@ -22,31 +21,17 @@ class SearchMovieService {
       if (response.statusCode != 200) {
         debugPrint('Error cant search service code:${response.statusCode}');
       }
-      if (result["code"] != 1000) {
+
+      final apiResponse = Response<List<Movie>>.fromJson(result, (data) {
+        final List<dynamic> getMovie = data as List<dynamic>;
+        return getMovie.map(((item) => Movie.fromJson(item))).toList();
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result;
+      } else {
         ShowMessage.unExpectedError(context);
-        debugPrint('Error cant search service message:${result["message"]}');
+        debugPrint('Error cant search service message:${apiResponse.message}');
       }
-
-      final List<Movie> movies =
-          List<Movie>.from(result['result'].map((movieData) {
-        List<dynamic> categories = movieData['categories'];
-        List<Categories> listCategory =
-            List<Categories>.from(categories.map((category) => Categories(
-                  id: category['id'],
-                  name: category['name'],
-                )));
-
-        return Movie(
-          id: movieData['id'],
-          title: movieData['title'],
-          classify: movieData['classify'],
-          categories: listCategory,
-          poster: movieData['poster'],
-          isRelease: movieData['release'],
-          trailer: movieData['trailer'],
-        );
-      }));
-      return movies;
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {

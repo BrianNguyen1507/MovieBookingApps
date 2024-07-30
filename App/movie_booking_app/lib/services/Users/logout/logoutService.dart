@@ -27,6 +27,7 @@ class LogOutServices {
         debugPrint('Log out Service Code: ${response.statusCode}');
       }
       final responseData = json.decode(response.body);
+
       if (responseData['code'] != 1000) {
         await pref.clear();
         return;

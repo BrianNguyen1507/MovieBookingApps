@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:movie_booking_app/constant/AppConfig.dart';
 import 'package:movie_booking_app/constant/AppStyle.dart';
 import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 
 Widget detailTitle(String title, String value) {
   return Padding(
@@ -15,12 +16,8 @@ Widget detailTitle(String title, String value) {
               title,
               style: (AppStyle.detailTitle),
             ),
-            Text(
-              value,
-              style: (AppStyle.detailText),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
+            TranslateConsumer()
+                .translateProvider(value, 1, AppStyle.detailText),
           ],
         ),
       ],

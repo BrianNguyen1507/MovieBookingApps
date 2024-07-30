@@ -35,11 +35,15 @@ class MovieDetail {
     required this.isRelease,
   });
   factory MovieDetail.fromJson(Map<dynamic, dynamic> json) {
+    final List<dynamic> categories = json['categories'];
+    final List<Categories> listCategories = categories.map((cate) {
+      return Categories(id: cate['id'], name: cate['name']);
+    }).toList();
     return MovieDetail(
         id: json['id'],
         title: json['title'],
         classify: json['classify'],
-        categories: json['categories'],
+        categories: listCategories,
         poster: json['poster'],
         actor: json['actor'],
         director: json['director'],
@@ -48,7 +52,7 @@ class MovieDetail {
         price: json['basePrice'],
         description: json['description'],
         language: json['language'],
-        releaseDate: json['releaseDate'],
+        releaseDate: DateTime.parse(json['releaseDate']),
         trailer: json['trailer'],
         isRelease: json['release']);
   }

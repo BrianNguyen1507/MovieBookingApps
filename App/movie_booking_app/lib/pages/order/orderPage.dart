@@ -37,7 +37,7 @@ class OrderPage extends StatefulWidget {
     required this.selectedFoods,
   });
   final bool visible;
-  final GetTotal total;
+  final GetTotal? total;
   final int movieId;
   final String selectedDate;
   final String selectedTheater;
@@ -61,8 +61,8 @@ class _OrderPageState extends State<OrderPage> {
         ? movieData =
             MovieDetailService.deatailMovieService(context, widget.movieId)
         : null;
-    newTotal = widget.total.total;
-    discount = widget.total.total - newTotal;
+    newTotal = widget.total!.total;
+    discount = widget.total!.total - newTotal;
     super.initState();
   }
 
@@ -145,7 +145,7 @@ class _OrderPageState extends State<OrderPage> {
                                   isScrollControlled: true,
                                   builder: (BuildContext context) {
                                     return VoucherOrder(
-                                      total: widget.total.total,
+                                      total: widget.total!.total,
                                     );
                                   },
                                 ),
@@ -154,7 +154,7 @@ class _OrderPageState extends State<OrderPage> {
                                 if (responseTotal != null) {
                                   newTotal = responseTotal['newTotal'];
                                   voucherId = responseTotal['voucherId'];
-                                  discount = widget.total.total - newTotal;
+                                  discount = widget.total!.total - newTotal;
                                 }
                               });
                             },
@@ -199,7 +199,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             renderBooking(
               context,
-              widget.total,
+              widget.total!,
               widget.selectedSeat,
               widget.selectedFoods,
               widget.visible,

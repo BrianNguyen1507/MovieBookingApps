@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:http/http.dart' as http;
@@ -23,13 +24,16 @@ class DetailOrderService {
       }
       final responseData =
           jsonDecode(utf8.decode(response.body.runes.toList()));
-      if (responseData['code'] != 1000) {
+
+      final apiResponse = Response<DetailOrder>.fromJson(responseData, (data) {
+        final dynamic getData = data as dynamic;
+        return DetailOrder.fromJson(getData);
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result;
+      } else {
         debugPrint('Error detail order${responseData['message']}');
       }
-      final result = responseData['result'];
-      DetailOrder order = DetailOrder.fromJson(result);
-
-      return order;
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {

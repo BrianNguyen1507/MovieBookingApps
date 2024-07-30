@@ -56,14 +56,18 @@ class Result {
   final String date;
   final bool allowUse;
   final MovieSchedule movieSchedule;
-
-  Result({
-    required this.id,
-    required this.seat,
-    required this.date,
-    required this.allowUse,
-    required this.movieSchedule,
-  });
+  final String theaterName;
+  final int roomNumber;
+  final String address;
+  Result(
+      {required this.id,
+      required this.seat,
+      required this.date,
+      required this.allowUse,
+      required this.movieSchedule,
+      required this.theaterName,
+      required this.roomNumber,
+      required this.address});
 
   factory Result.fromJson(Map<String, dynamic> json) {
     return Result(
@@ -72,6 +76,9 @@ class Result {
       date: json['date'],
       allowUse: json['allowUse'],
       movieSchedule: MovieSchedule.fromJson(json['movieSchedule']),
+      theaterName: json['theaterName'],
+      roomNumber: json['roomNumber'],
+      address: json['address'],
     );
   }
 }

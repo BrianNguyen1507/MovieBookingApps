@@ -13,7 +13,7 @@ class Seat {
     return Seat(
       id: jsonData['id'],
       timeStart: jsonData['timeStart'],
-      seats: dynamicToSeatStatus(jsonData['seats']),
+      seats: dynamicToSeatStatus(jsonData['seat']),
     );
   }
 }
