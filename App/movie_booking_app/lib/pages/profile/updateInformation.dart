@@ -333,7 +333,7 @@ class UpdateInformationState extends State<UpdateInformation> {
         }
       }
     } catch (e) {
-      print('Error picking or cropping image: $e');
+      debugPrint('Error picking or cropping image: $e');
     } finally {
       setState(() {
         _isImagePickerActive = false;

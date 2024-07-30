@@ -7,6 +7,7 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/vouchers/components/voucherInvalid.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucherApply.dart';
@@ -113,32 +114,35 @@ class _VoucherOrderState extends State<VoucherOrder> {
                                                     height: 50,
                                                     width: 50,
                                                   ),
-                                                  title: Text(
-                                                    vouchers[index].title,
-                                                    style: AppStyle.detailText,
-                                                  ),
+                                                  title: TranslateConsumer()
+                                                      .translateProvider(
+                                                          vouchers[index].title,
+                                                          1,
+                                                          AppStyle.detailText),
                                                   subtitle: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
+                                                      TranslateConsumer()
+                                                          .translateProvider(
+                                                              vouchers[index]
+                                                                  .content,
+                                                              1,
+                                                              AppStyle
+                                                                  .smallText),
                                                       Text(
-                                                        vouchers[index].content,
+                                                        '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(vouchers[index].minLimit)} ₫',
                                                         style:
                                                             AppStyle.smallText,
                                                       ),
                                                       Text(
-                                                        '${AppLocalizations.of(context)!.condition}: ${ConverterUnit.formatPrice(vouchers[index].minLimit)}₫',
+                                                        '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}${vouchers[index].typeDiscount == 0 ? '₫' : '%'}',
                                                         style:
                                                             AppStyle.smallText,
                                                       ),
                                                       Text(
-                                                        '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}',
-                                                        style:
-                                                            AppStyle.smallText,
-                                                      ),
-                                                      Text(
-                                                        '${AppLocalizations.of(context)!.date_expired}: ${vouchers[index].expired}',
+                                                        '${AppLocalizations.of(context)!.date_expired}: ${ConverterUnit.formatToDmY(vouchers[index].expired)}',
                                                         style:
                                                             AppStyle.smallText,
                                                       ),

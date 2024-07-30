@@ -93,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return SliverAppBar(
       automaticallyImplyLeading: false,
       backgroundColor: AppColors.containerColor,
-      expandedHeight: 270.0,
+      expandedHeight: 250.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           children: [
@@ -103,10 +103,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Container(
                     decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.backgroundColor,
-                    ),
-                    padding: const EdgeInsets.all(5.0),
+                        shape: BoxShape.circle,
+                        color: AppColors.containerColor),
                     child: (avatar ?? "") == ""
                         ? ClipOval(
                             child: Image.asset(
@@ -125,7 +123,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                   ),
-                  const SizedBox(height: 10),
                   Text(
                     userEmail,
                     style: const TextStyle(
@@ -156,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     color: AppColors.iconThemeColor,
                                   ),
                                   child: SvgPicture.asset(
-                                    'assets/svg/tv.svg',
+                                    'assets/svg/ticket.svg',
                                     width: 30,
                                     height: 30,
                                   ),

@@ -61,12 +61,12 @@ class Builditem {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
-          child: Container(
-            color: Colors.white,
-            height: 50,
-            width: double.infinity,
-            child: GestureDetector(
-              onTap: onPressed,
+          child: GestureDetector(
+            onTap: onPressed,
+            child: Container(
+              color: Colors.white,
+              height: 50,
+              width: double.infinity,
               child: Row(
                 children: [
                   Text(text, style: AppStyle.bodyText1),

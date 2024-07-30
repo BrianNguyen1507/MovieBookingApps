@@ -124,5 +124,7 @@
   "vid_trailer": "Video trailer",
   "month": "Month",
   "no_voucher": "Oops! You don't have any vouchers. Please come back later",
-  "cancel":"Cancel"
+  "cancel":"Cancel",
+   "no_food":"No food ordered",
+   "date_showtime": "Movie show date"
   }

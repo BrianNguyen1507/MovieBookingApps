@@ -1,7 +1,7 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
 export async function getRevenueTotalByYear() {
-const apiUrl = "http://localhost:8083/cinema/getRevenueTotalByYear";
+  const apiUrl = "http://localhost:8083/cinema/getRevenueTotalByYear";
 
   try {
     const tokenUser = await getUserToken();
@@ -16,7 +16,7 @@ const apiUrl = "http://localhost:8083/cinema/getRevenueTotalByYear";
     if (response.code !== 1000) {
       return response.message;
     }
-    return  response.result;
+    return response.result;
   } catch (error) {
     console.error("Exception:", error);
     return error.responseJSON ? error.responseJSON.message : error.message;

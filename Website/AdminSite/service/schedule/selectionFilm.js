@@ -28,7 +28,7 @@ async function loadMovies() {
     poster.setAttribute("filmId", film.id);
 
     const title = document.createElement("p");
-    title.textContent = film.title;
+    title.textContent = truncateText(film.title, 20);
 
     title.style.textAlign = "center";
     title.setAttribute("filmId", film.id);
@@ -42,7 +42,6 @@ async function loadMovies() {
     releaseDate.textContent = `${film.releaseDate}`;
     releaseDate.style.textAlign = "center";
     releaseDate.setAttribute("filmId", film.id);
-
 
     div.appendChild(poster);
     div.appendChild(title);
