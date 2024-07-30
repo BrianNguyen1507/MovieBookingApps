@@ -8,6 +8,7 @@ import 'package:movie_booking_app/models/ordered/DetailOrder.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/pages/ordered/QrcodePage.dart';
 import 'package:movie_booking_app/pages/ratingfeedback/ratingfeedback.dart';
+import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
 import 'package:movie_booking_app/utils/widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -128,10 +129,19 @@ Widget detailOrderFilm(context, DetailOrder order) {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(3.0),
-                                    child: Text(
-                                      "${AppLocalizations.of(context)!.language}: ${order.order.language}",
-                                      style: const TextStyle(
-                                          fontSize: AppFontSize.small),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${AppLocalizations.of(context)!.language}: ",
+                                          style: const TextStyle(
+                                              fontSize: AppFontSize.small),
+                                        ),
+                                        TranslateConsumer().translateProvider(
+                                            order.order.language,
+                                            1,
+                                            const TextStyle(
+                                                fontSize: AppFontSize.small)),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -161,6 +171,26 @@ Widget detailOrderFilm(context, DetailOrder order) {
                                     Text(
                                       order.order.paymentCode,
                                       style: AppStyle.priceText,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(3.0),
+                                      child: Text(
+                                          AppLocalizations.of(context)!
+                                              .date_showtime,
+                                          style: AppStyle.graySmallText),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          ConverterUnit.formatDMY(order.movieTimeStart!),
+                                          style: AppStyle.showTimeText,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -295,8 +325,8 @@ Widget detailOrderFilm(context, DetailOrder order) {
                                   ? 40
                                   : (45 * order.food.length).toDouble(),
                               child: order.food.isEmpty
-                                  ? const Text(
-                                      "No food ordered",
+                                  ? Text(
+                                      AppLocalizations.of(context)!.no_food,
                                       style: AppStyle.smallText,
                                     )
                                   : ListView.builder(

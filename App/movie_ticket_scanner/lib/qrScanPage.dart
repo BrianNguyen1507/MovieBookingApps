@@ -289,6 +289,10 @@ class _QRScannPageState extends State<QRScannPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                    WidgetForm.buildTicketInfoRow(
+                      'RẠP:', order.movieSchedule.date),
+                  WidgetForm.buildTicketInfoRow(
+                      'PHÒNG CHIẾU:', order.movieSchedule.date),
                   WidgetForm.buildTicketInfoRow('LỊCH CHIẾU:',
                       ConverterData.formatToDmY(order.movieSchedule.date)),
                   WidgetForm.buildTicketInfoRow('GIỜ CHIẾU:',

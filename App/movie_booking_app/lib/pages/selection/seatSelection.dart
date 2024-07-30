@@ -153,7 +153,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                       ),
                       SvgPicture.asset(
                         'assets/svg/logout.svg',
-                        height: 30.0,
+                        height: 20.0,
                       ),
                     ],
                   ),
@@ -179,7 +179,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                       ),
                       SvgPicture.asset(
                         'assets/svg/logout-revert.svg',
-                        height: 30.0,
+                        height: 20.0,
                       ),
                     ],
                   ),
@@ -243,7 +243,6 @@ class _SeatSelectionState extends State<SeatSelection> {
                         selectedSeats.add(seatIdentifier);
                       }
                     }
-                    print(selectedSeats);
                     getTotal = _fetchTotal();
                   });
                 },

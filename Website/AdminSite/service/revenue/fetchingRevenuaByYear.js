@@ -1,4 +1,4 @@
-import { getRevenueTotalByYear } from "./getRevenueTotalByYear";
+import { getRevenueTotalByYear } from "./getRevenueTotalByYear.js";
 
 export async function fetchingRevenueByYear() {
   const data = await getRevenueTotalByYear();
