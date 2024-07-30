@@ -25,10 +25,12 @@ class ReturnSeatService {
       });
       if (response.statusCode != 200) {
         debugPrint('Error return seat code: ${response.statusCode}');
+        return false;
       }
       final result = jsonDecode(response.body);
       if (result['code'] != 1000) {
         debugPrint('Invalid: ${result['message']}');
+        return false;
       }
       debugPrint('tra ghe  thanh cong');
       return true;

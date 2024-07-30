@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io'; // Import for SocketException
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

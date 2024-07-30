@@ -21,7 +21,7 @@ class ResetPasswordState extends State<ResetPassword> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordRefController = TextEditingController();
   ValidInput valid = ValidInput();
-  String email = "";
+  String? email = "";
   String passwordWarning = "";
   String passwordMatch = "Password match";
   @override

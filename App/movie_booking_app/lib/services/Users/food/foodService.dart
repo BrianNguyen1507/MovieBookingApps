@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
 
@@ -25,14 +26,16 @@ class FoodService {
         debugPrint('Food status code: ${response.statusCode}');
       }
       final result = jsonDecode(utf8.decode(response.body.codeUnits));
-      if (result['code'] != 1000) {
+      final apiResponse = Response<List<Food>>.fromJson(result, (json) {
+        final List<dynamic> getData = json as List<dynamic>;
+        return getData.map((item) => Food.fromJson(item)).toList();
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result;
+      } else {
         debugPrint('Error Code: ${result['message']}');
+        return null;
       }
-
-      final List<dynamic> data = result['result'];
-      List<Food> foods = data.map((item) => Food.fromJson(item)).toList();
-
-      return foods;
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {

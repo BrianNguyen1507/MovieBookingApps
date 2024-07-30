@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/models/category/categories.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 
@@ -30,28 +29,11 @@ class GetListByMonth {
         if (result['code'] != 1000) {
           debugPrint('List Movie By month message: ${result['message']}');
         }
-        final List<Movie> movies = List<Movie>.from(
-          result['result'].map(
-            (movieData) {
-              List<dynamic> categories = movieData['categories'];
-              List<Categories> listCategory =
-                  List<Categories>.from(categories.map((category) => Categories(
-                        id: category['id'],
-                        name: category['name'],
-                      )));
 
-              return Movie(
-                id: movieData['id'],
-                title: movieData['title'],
-                classify: movieData['classify'],
-                categories: listCategory,
-                poster: movieData['poster'],
-                isRelease: movieData['release'],
-                trailer: movieData['trailer'],
-              );
-            },
-          ),
-        );
+        final List<dynamic> getmovie = result['result'];
+        final List<Movie> movies = getmovie.map((movm) {
+          return Movie.fromJson(movm);
+        }).toList();
         moviesByMonth[month] = movies;
       }
       return moviesByMonth;

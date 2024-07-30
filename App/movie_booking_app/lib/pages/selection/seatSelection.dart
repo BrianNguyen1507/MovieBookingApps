@@ -44,7 +44,7 @@ class SeatSelection extends StatefulWidget {
 class _SeatSelectionState extends State<SeatSelection> {
   late Future<Seat?> seats;
   late Future<MovieDetail?> getMovie;
-  late Future<GetTotal> getTotal;
+  late Future<GetTotal?> getTotal;
   Set<String> selectedSeats = {};
 
   @override
@@ -55,7 +55,7 @@ class _SeatSelectionState extends State<SeatSelection> {
     getTotal = _fetchTotal();
   }
 
-  Future<GetTotal> _fetchTotal() {
+  Future<GetTotal?> _fetchTotal() {
     return GetTotalService.sumTotalOrder(
       widget.movieId,
       selectedSeats.length,
@@ -289,7 +289,7 @@ Widget renderBooking(
     int scheduleId,
     int movieId,
     Future<MovieDetail?> movieInfo,
-    Future<GetTotal> totalInfo,
+    Future<GetTotal?> totalInfo,
     Set<String> selectedSeats) {
   return Container(
     decoration: const BoxDecoration(
@@ -416,7 +416,7 @@ Widget renderBooking(
             }
           },
         ),
-        FutureBuilder<GetTotal>(
+        FutureBuilder<GetTotal?>(
           future: totalInfo,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

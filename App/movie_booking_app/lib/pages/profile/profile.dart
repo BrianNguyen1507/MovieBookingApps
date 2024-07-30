@@ -23,8 +23,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   ValidInput valid = ValidInput();
   Preferences pref = Preferences();
-  int numMovies = 0;
-  int numReviews = 0;
+  int? numMovies = 0;
+  int? numReviews = 0;
   String? avatar;
   String? userName = 'Guest';
   dynamic token;
@@ -48,8 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
     String? getuserName = await pref.getUserName();
     String? getavatar = await pref.getAvatar();
-    int numberMovie = await GetOrderInfo.accountNumberMovieInfo();
-    int numberReview = await GetOrderInfo.accountNumberReviewInfo();
+    int? numberMovie = await GetOrderInfo.accountNumberMovieInfo();
+    int? numberReview = await GetOrderInfo.accountNumberReviewInfo();
 
     if (mounted) {
       setState(() {

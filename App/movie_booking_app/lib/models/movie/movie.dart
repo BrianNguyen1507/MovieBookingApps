@@ -18,12 +18,20 @@ class Movie {
       required this.poster,
       required this.trailer,
       this.releaseDate});
+
   factory Movie.fromJson(Map<String, dynamic> json) {
+    List<dynamic> categories = json['categories'];
+    List<Categories> listCategory = categories.map((category) {
+      return Categories(
+        id: category['id'],
+        name: category['name'],
+      );
+    }).toList();
     return Movie(
       id: json['id'],
       title: json['title'],
       classify: json['classify'],
-      categories: json['categories'],
+      categories: listCategory,
       poster: json['poster'],
       trailer: json['trailer'],
       isRelease: json['release'],

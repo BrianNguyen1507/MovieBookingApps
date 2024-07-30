@@ -64,7 +64,7 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                 );
 
                 if (result == '1000') {
-                  Navigator.pop(context,result);
+                  Navigator.pop(context, result);
                 } else {
                   ValidInput().showAlertCustom(
                     context,

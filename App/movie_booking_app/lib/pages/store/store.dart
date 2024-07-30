@@ -373,7 +373,7 @@ Widget renderBooking(
             String? data = await pref.getHoldSeats();
             //
             debugPrint('Pref hold Seat:  $data');
-            GetTotal getTotal = await GetTotalService.sumTotalOrder(
+            GetTotal? getTotal = await GetTotalService.sumTotalOrder(
                 movieId, seats.length, listOrdered);
             //
             debugPrint('Store list:  $listOrdered');

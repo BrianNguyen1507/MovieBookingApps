@@ -30,9 +30,11 @@ class HoldSeatService {
       final result = jsonDecode(response.body);
       if (response.statusCode != 200) {
         debugPrint('Error Hold seat Code: ${response.statusCode}');
+        return false;
       }
       if (result['code'] != 1000) {
         debugPrint('Invalid: ${result['message']}');
+        return false;
       }
 
       return true;

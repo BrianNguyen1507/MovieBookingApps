@@ -254,6 +254,7 @@ class ChangePasswordState extends State<ChangePassword> {
   void _onPressLogout(BuildContext context) {
     Preferences pref = Preferences();
     Provider.of<UserProvider>(context, listen: false).logout(context);
+    pref.clear();
     pref.removeSinginInfo();
     Navigator.pushReplacementNamed(context, '/login');
   }

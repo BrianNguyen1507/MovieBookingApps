@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/ordered/OrderFilmRespone.dart';
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 import 'package:http/http.dart' as http;
@@ -23,15 +23,16 @@ class FilmOrder {
       }
       final responseData =
           jsonDecode(utf8.decode(response.body.runes.toList()));
-      if (responseData['code'] != 1000) {
-        debugPrint(
-            'Error get all movie order message: ${responseData['message']}');
+      final apiResponse =
+          Response<List<OrderResponse>>.fromJson(responseData, (data) {
+        final List<dynamic> listData = data as List<dynamic>;
+        return listData.map((item) => OrderResponse.fromJson(item)).toList();
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result;
+      } else {
+        debugPrint('Error get all movie order message: ${apiResponse.message}');
       }
-      final result = responseData['result'];
-
-      List<OrderResponse> filmOrders = List<OrderResponse>.from(
-          result.map((filmOrder) => OrderResponse.fromJson(filmOrder)));
-      return filmOrders;
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {

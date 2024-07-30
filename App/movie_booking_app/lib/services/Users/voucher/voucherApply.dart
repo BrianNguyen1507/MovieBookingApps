@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/models/response/response.dart';
 import 'package:movie_booking_app/modules/valid/validException.dart';
 import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
 
@@ -30,13 +31,16 @@ class VoucherApply {
         return null;
       }
       final result = jsonDecode(response.body);
-      if (result['code'] != 1000) {
+      final apiResponse = Response<double>.fromJson(result, (data) {
+        return data as double;
+      });
+      if (apiResponse.isSuccess) {
+        return apiResponse.result;
+      } else {
         ShowMessage.unExpectedError(context);
-        debugPrint('Error voucher apply service Code: ${result['message']}');
+        debugPrint('Error voucher apply service Code: ${apiResponse.message}');
         return null;
       }
-      double newTotal = result['result'];
-      return newTotal;
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
     } catch (err) {
