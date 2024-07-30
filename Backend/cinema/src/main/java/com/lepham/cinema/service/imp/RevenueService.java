@@ -40,6 +40,8 @@ public class RevenueService implements IRevenueService {
             responseTotal.setType("Total");
             responseVn.setType("VNPAY");
             responseZl.setType("ZALOPAY");
+            revenueVn.put(year + "", 0.0);
+            revenueZl.put(year + "", 0.0);
             List<String> paymentMethods = orderRepository.getALLPaymentMethod();
             for (String paymentMethod : paymentMethods) {
                 Optional<Double> sumOptional = orderRepository.sumAllByDateAndPaymentMethod(year, paymentMethod);
