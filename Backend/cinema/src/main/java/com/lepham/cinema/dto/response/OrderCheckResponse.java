@@ -20,4 +20,7 @@ public class OrderCheckResponse {
     LocalDateTime date;
     boolean allowUse;
     MovieScheduleResponse movieSchedule;
+    String theaterName;
+    String address;
+    int roomNumber;
 }

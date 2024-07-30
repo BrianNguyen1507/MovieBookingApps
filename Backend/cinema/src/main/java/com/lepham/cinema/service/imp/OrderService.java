@@ -276,6 +276,7 @@ public class OrderService implements IOrderService {
         if(order.getStatus()!=ConstantVariable.ORDER_UNUSED)
             throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
         MovieScheduleEntity movieSchedule = order.getMovieSchedule();
+        MovieTheaterEntity movieTheater = movieSchedule.getRoom().getMovieTheater();
         LocalDateTime timeStart = movieSchedule.getTimeStart().minusMinutes(15);
         LocalDateTime timeEnd = movieSchedule.getTimeStart().plusMinutes(movieSchedule.getFilm().getDuration());
         LocalDateTime now = LocalDateTime.now();
@@ -285,6 +286,10 @@ public class OrderService implements IOrderService {
         response.setMovieSchedule(movieScheduleResponse);
         //Check 15 minutes before start until finish
         response.setAllowUse(now.isAfter(timeStart) && now.isBefore(timeEnd));
+
+        response.setRoomNumber(movieSchedule.getRoom().getNumber());
+        response.setAddress(movieTheater.getAddress());
+        response.setTheaterName(movieTheater.getName());
         return response;
     }
 
