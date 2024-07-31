@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/AppStyle.dart';
-import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
+import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/pages/detail/movieDetail.dart';
-import 'package:movie_booking_app/provider/consumer/TranslateText.dart';
-import 'package:movie_booking_app/services/Users/search/searchMovie.dart';
+import 'package:movie_booking_app/pages/movie-detail/movie_detail.dart';
+import 'package:movie_booking_app/provider/consumer/translator.dart';
+import 'package:movie_booking_app/services/Users/search/search_service.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/AppStyle.dart';
-import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
+import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/models/movie/movieDetail.dart';
+import 'package:movie_booking_app/models/movie/movie_detail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
-import 'package:movie_booking_app/pages/order/components/movieCard.dart';
-import 'package:movie_booking_app/pages/order/orderPage.dart';
-import 'package:movie_booking_app/pages/payments/components/paymentsWidget.dart';
-import 'package:movie_booking_app/pages/payments/handlePayments/handlePayments.dart';
+import 'package:movie_booking_app/pages/order/components/movie_card.dart';
+import 'package:movie_booking_app/pages/order/order_page.dart';
+import 'package:movie_booking_app/pages/payments/components/payment_view.dart';
+import 'package:movie_booking_app/pages/payments/handle-payments/handle_pay.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movie_booking_app/services/Users/movieDetail/movieDetailService.dart';
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
-import 'package:movie_booking_app/services/payments/VnPay/vnPayResponse.dart';
-import 'package:movie_booking_app/services/payments/VnPay/vnPayService.dart';
-import 'package:movie_booking_app/services/payments/ZaloPay/ZaloPayService.dart';
+import 'package:movie_booking_app/services/Users/movie-detail/movie_detail_service.dart';
+import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/services/payments/vnpay/vnpay_response.dart';
+import 'package:movie_booking_app/services/payments/vnpay/vnpay_service.dart';
+import 'package:movie_booking_app/services/payments/zalopay/zalo_service.dart';
 
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
@@ -220,6 +220,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         widget.seats,
                         widget.foods,
                         () => vnPayFunction(
+                              context,
                               widget.visible,
                               'VNPAY',
                               widget.seats,
@@ -264,7 +265,7 @@ class _PaymentPageState extends State<PaymentPage> {
             } else {
               if (mounted) {
                 setState(() {
-                  print('SUMTOTAL $sumtotal');
+                  debugPrint('TONG TIEN LA: $sumtotal');
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => SizedBox(
@@ -327,6 +328,7 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   Future<void> vnPayFunction(
+      context,
       bool visible,
       String payMethod,
       String seats,
@@ -357,9 +359,9 @@ class _PaymentPageState extends State<PaymentPage> {
         }
       }
     } on PlatformException catch (e) {
-      print("PlatformException: ${e.message}");
+      debugPrint("PlatformException: ${e.message}");
     } catch (e) {
-      print("Exception: $e");
+      debugPrint("Exception: $e");
     }
   }
 
@@ -398,7 +400,7 @@ class _PaymentPageState extends State<PaymentPage> {
         }
       } on PlatformException catch (e) {
         response = 'Payment failed';
-        print("PlatformException: ${e.message}");
+        debugPrint("PlatformException: ${e.message}");
       }
     }
   }

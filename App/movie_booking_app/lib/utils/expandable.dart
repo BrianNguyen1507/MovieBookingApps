@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppStyle.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,10 +15,10 @@ class ExpandableText extends StatefulWidget {
   });
 
   @override
-  _ExpandableTextState createState() => _ExpandableTextState();
+  ExpandableTextState createState() => ExpandableTextState();
 }
 
-class _ExpandableTextState extends State<ExpandableText> {
+class ExpandableTextState extends State<ExpandableText> {
   bool isExpanded = false;
 
   @override

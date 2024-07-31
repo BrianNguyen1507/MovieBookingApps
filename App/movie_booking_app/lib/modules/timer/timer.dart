@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 
 class TimerController {
   static Timer? _periodicTimer;
@@ -18,7 +18,7 @@ class TimerController {
       if (remainingSeconds > 0) {
         remainingSeconds--;
 
-        print('Remaining time: $remainingSeconds seconds');
+        debugPrint('Remaining time: $remainingSeconds seconds');
       } else {
         t.cancel();
         ValidInput val = ValidInput();

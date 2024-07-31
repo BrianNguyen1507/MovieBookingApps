@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/services/Users/signup/handleSignup.dart';
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/services/Users/signup/handle_sign_up.dart';
+import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({super.key, required this.email, required this.method});
   final dynamic email;
   final dynamic method;
   @override
-  _OTPPageState createState() => _OTPPageState();
+  OTPPageState createState() => OTPPageState();
 }
 
-class _OTPPageState extends State<OTPPage> {
+class OTPPageState extends State<OTPPage> {
   final TextEditingController _otpController = TextEditingController();
 
   ValidInput valid = ValidInput();

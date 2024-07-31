@@ -1,0 +1,52 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+
+class MapTheater extends StatefulWidget {
+  final String theaterName;
+  const MapTheater({super.key, required this.theaterName});
+
+  @override
+  State<MapTheater> createState() => MapTheaterState();
+}
+
+class MapTheaterState extends State<MapTheater> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+  final LatLng _theaterLocation =
+      const LatLng(10.738023187285005, 106.67783119566148);
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(10.738023187285005, 106.67783119566148),
+    zoom: 18,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: AppColors.containerColor),
+        backgroundColor: Colors.black.withOpacity(0.3),
+      ),
+      body: GoogleMap(
+        mapType: MapType.hybrid,
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+        markers: {
+          Marker(
+            markerId: const MarkerId('theater'),
+            position: _theaterLocation,
+            infoWindow: InfoWindow(
+              title: widget.theaterName,
+            ),
+          ),
+        },
+      ),
+    );
+  }
+}

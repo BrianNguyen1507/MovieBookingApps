@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/models/user/user.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
-import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
-import 'package:movie_booking_app/services/Users/signIn/handleSignin.dart';
+import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
+import 'package:movie_booking_app/services/Users/logout/logout_service.dart';
+import 'package:movie_booking_app/services/Users/signIn/handle_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:translator/translator.dart';
 
@@ -110,7 +110,7 @@ class UserProvider extends ChangeNotifier {
     try {
       loginInfo = await preferences.getSignInInfo();
     } catch (error) {
-      print('Error getting sign-in info: $error');
+      debugPrint('Error getting sign-in info: $error');
       loginInfo = null;
     }
 
@@ -124,7 +124,7 @@ class UserProvider extends ChangeNotifier {
         try {
           success = await signinState.validSignIn(context, email, password);
         } catch (error) {
-          print('Error during sign-in: $error');
+          debugPrint('Error during sign-in: $error');
           success = false;
         }
 
