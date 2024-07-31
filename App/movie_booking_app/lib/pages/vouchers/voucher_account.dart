@@ -54,6 +54,15 @@ class _VoucherAccountListState extends State<VoucherAccountList> {
                         itemCount: listVoucher.length,
                         itemBuilder: (context, index) {
                           return Container(
+                            decoration: const BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 6.0,
+                                  color: AppColors.shadowColor,
+                                  offset: Offset(1, 1),
+                                ),
+                              ],
+                            ),
                             margin: const EdgeInsets.all(2.0),
                             child: GestureDetector(
                               onTap: () {},

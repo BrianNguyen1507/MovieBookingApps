@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ordered/order_movie_response.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
@@ -92,7 +93,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                                 child: Icon(
                                   Icons.fastfood,
                                   color: AppColors.textblackColor,
-                                  size: 30,
+                                  size: 50,
                                 ),
                               ),
                             ],
@@ -120,25 +121,41 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                                       fontSize: AppFontSize.small),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    const SizedBox.shrink(),
-                                    Text(
-                                      foodOder.status,
-                                      style: TextStyle(
-                                          fontSize: AppFontSize.small,
-                                          fontWeight: FontWeight.bold,
-                                          color: foodOder.status == "Unused"
-                                              ? AppColors.correctColor
-                                              : AppColors.errorColor),
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(3.0),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.backgroundColor
+                                          .withOpacity(0.4),
+                                      borderRadius: ContainerRadius.radius2,
                                     ),
-                                  ],
-                                ),
+                                    child: Center(
+                                      child: Text(
+                                        foodOder.status == "Unused"
+                                            ? ''
+                                            : AppLocalizations.of(context)!
+                                                .expired,
+                                        style: AppStyle.classifyText,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.all(3.0),
+                                    padding: const EdgeInsets.all(3.0),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryColor,
+                                      borderRadius: ContainerRadius.radius2,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .pay_success,
+                                        style: AppStyle.classifyText,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),

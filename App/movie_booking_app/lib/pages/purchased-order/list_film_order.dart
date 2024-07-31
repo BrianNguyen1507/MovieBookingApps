@@ -49,7 +49,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
         } else {
           List<OrderResponse> filmOrders = snapshot.data!;
           return SizedBox(
-            height: filmOrders.length * 110,
+            height: filmOrders.length * 140,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: filmOrders.length,
@@ -70,7 +70,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                   child: Container(
                     margin: const EdgeInsets.all(5.0),
                     width: AppSize.width(context),
-                    height: 100,
+                    height: 120,
                     decoration: BoxDecoration(
                         boxShadow: const [
                           BoxShadow(
@@ -97,27 +97,6 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                       child: Image.memory(
                                           ConverterUnit.base64ToUnit8(
                                               filmOrder.poster)),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 60,
-                                    color: filmOrder.status == "Unused"
-                                        ? AppColors.backgroundColor
-                                            .withOpacity(0.1)
-                                        : AppColors.backgroundColor
-                                            .withOpacity(0.5),
-                                    child: Center(
-                                      child: Text(
-                                        filmOrder.status == "Unused"
-                                            ? ''
-                                            : filmOrder.status,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: AppFontSize.small,
-                                            color: filmOrder.status == "Unused"
-                                                ? AppColors.correctColor
-                                                : AppColors.commonLightColor),
-                                      ),
                                     ),
                                   ),
                                 ],
@@ -148,6 +127,42 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                       style: const TextStyle(
                                           fontSize: AppFontSize.small),
                                     ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(3.0),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.backgroundColor
+                                              .withOpacity(0.4),
+                                          borderRadius: ContainerRadius.radius2,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            filmOrder.status == "Unused"
+                                                ? ''
+                                                : AppLocalizations.of(context)!
+                                                    .expired,
+                                            style: AppStyle.classifyText,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.all(3.0),
+                                        padding: const EdgeInsets.all(3.0),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryColor,
+                                          borderRadius: ContainerRadius.radius2,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .pay_success,
+                                            style: AppStyle.classifyText,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

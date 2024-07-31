@@ -187,7 +187,8 @@ Widget detailOrderFilm(context, DetailOrder order) {
                                     Row(
                                       children: [
                                         Text(
-                                          ConverterUnit.formatDMY(order.movieTimeStart!),
+                                          ConverterUnit.formatDMY(
+                                              order.movieTimeStart!),
                                           style: AppStyle.showTimeText,
                                         ),
                                       ],
@@ -454,14 +455,6 @@ Widget detailOrderFood(context, DetailOrder order) {
           width: AppSize.width(context),
           child: Column(
             children: [
-              Center(
-                child: order.allowedComment
-                    ? const SizedBox.shrink()
-                    : Text(
-                        order.order.status,
-                        style: AppStyle.bigText,
-                      ),
-              ),
               Column(
                 children: [
                   Row(
@@ -519,8 +512,8 @@ Widget detailOrderFood(context, DetailOrder order) {
                               ? 45
                               : (45 * order.food.length).toDouble(),
                           child: order.food.isEmpty
-                              ? const Text(
-                                  "No food ordered",
+                              ? Text(
+                                  AppLocalizations.of(context)!.no_food,
                                   style: AppStyle.smallText,
                                 )
                               : ListView.builder(
@@ -534,11 +527,8 @@ Widget detailOrderFood(context, DetailOrder order) {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            food.name,
-                                            style: const TextStyle(
-                                                fontSize: AppFontSize.small),
-                                          ),
+                                          TranslateConsumer().translateProvider(
+                                              food.name, 1, AppStyle.smallText),
                                           Row(
                                             children: [
                                               Text(

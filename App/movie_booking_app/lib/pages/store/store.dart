@@ -220,7 +220,8 @@ class _StorePageState extends State<StorePage> {
                                                       maxLines: 3,
                                                       nameTrans ??
                                                           foodData[index].name,
-                                                      style: AppStyle.bodyText1,
+                                                      style:
+                                                          AppStyle.titleOrder,
                                                     );
                                                   },
                                                 );
@@ -238,7 +239,7 @@ class _StorePageState extends State<StorePage> {
                                               Text(
                                                 maxLines: 1,
                                                 '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
-                                                style: AppStyle.priceText,
+                                                style: AppStyle.primaryText,
                                               ),
                                             ],
                                           ),
