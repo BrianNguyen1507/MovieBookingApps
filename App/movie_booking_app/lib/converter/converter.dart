@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:intl/intl.dart';
-import 'package:movie_booking_app/models/ratingfeedback/RatingFeedback.dart';
+import 'package:movie_booking_app/models/ratingfeedback/rating_feedback.dart';
 
 class ConverterUnit {
   static Uint8List base64ToUnit8(String base64String) {
@@ -99,7 +99,7 @@ class ConverterUnit {
 
 //payments
 String formatNumber(double value) {
-  final f = new NumberFormat("#,###", "vi_VN");
+  final f = NumberFormat("#,###", "vi_VN");
   return f.format(value);
 }
 

@@ -126,5 +126,6 @@
   "no_voucher": "Oops! You don't have any vouchers. Please come back later",
   "cancel":"Cancel",
    "no_food":"No food ordered",
-   "date_showtime": "Movie show date"
+   "date_showtime": "Movie show date",
+    "pay_success":"Payment success"
   }

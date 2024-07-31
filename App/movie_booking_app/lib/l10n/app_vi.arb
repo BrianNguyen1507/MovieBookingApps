@@ -125,5 +125,6 @@
   "no_voucher": "Ơ!, Bạn chưa có ưu đãi nào. Vui lòng quay lại sau",
   "cancel":"Đóng",
   "no_food":"Không có thức ăn và nước uống",
-   "date_showtime": "Ngày chiếu"
+  "date_showtime": "Ngày chiếu",
+  "pay_success":"Thanh toán thành công"
 }

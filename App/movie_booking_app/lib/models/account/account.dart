@@ -6,21 +6,20 @@ class Account {
   final String gender;
   final String dayOfBirth;
 
-  Account({
-    required this.email,
-    required this.avatar,
-    required this.fullName,
-    required this.phoneNumber,
-    required this.gender,
-    required this.dayOfBirth
-  });
+  Account(
+      {required this.email,
+      required this.avatar,
+      required this.fullName,
+      required this.phoneNumber,
+      required this.gender,
+      required this.dayOfBirth});
 
-  factory Account.fromJson(Map<String, dynamic> json){
+  factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
         email: json['email'],
         avatar: json['avatar'] ?? "",
         fullName: json['fullName'],
-        phoneNumber:json['phoneNumber'] ,
+        phoneNumber: json['phoneNumber'],
         gender: json['gender'],
         dayOfBirth: json['dayOfBirth']);
   }

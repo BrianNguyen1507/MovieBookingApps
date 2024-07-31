@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/AppStyle.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
 
 typedef OnPress = void Function();
 

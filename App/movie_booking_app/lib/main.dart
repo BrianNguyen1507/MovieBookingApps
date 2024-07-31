@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/l10n/l10n.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+// ignore: depend_on_referenced_packages, library_prefixes
+import 'package:flutter_localizations/flutter_localizations.dart' as AL;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/provider/provider.dart';
-import 'package:movie_booking_app/routes/AppRoutes.dart';
+import 'package:movie_booking_app/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -37,9 +38,9 @@ class MyApp extends StatelessWidget {
             locale: themeProvider.locale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
+              AL.GlobalMaterialLocalizations.delegate,
+              AL.GlobalWidgetsLocalizations.delegate,
+              AL.GlobalCupertinoLocalizations.delegate,
             ],
           ),
         );

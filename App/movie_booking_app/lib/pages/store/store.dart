@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/AppStyle.dart';
-import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
+import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
-import 'package:movie_booking_app/models/order/Total.dart';
+import 'package:movie_booking_app/models/order/get_total.dart';
 import 'package:movie_booking_app/modules/timer/timer.dart';
-import 'package:movie_booking_app/pages/order/orderPage.dart';
+import 'package:movie_booking_app/pages/order/order_page.dart';
 import 'package:movie_booking_app/provider/provider.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
-import 'package:movie_booking_app/services/Users/food/foodService.dart';
+import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
+import 'package:movie_booking_app/services/Users/food/food_service.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
-import 'package:movie_booking_app/services/Users/order/holdSeat/holdSeat.dart';
-import 'package:movie_booking_app/services/Users/order/total/sumTotalOrder.dart';
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:movie_booking_app/services/Users/order/hold-seat/hold_seat_service.dart';
+import 'package:movie_booking_app/services/Users/order/get-total/get_total_service.dart';
+import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _StorePageState extends State<StorePage> {
     if (mounted) {
       setState(() {
         seats = fetchedSeats;
-        print(' seat in store ${seats}');
+        debugPrint(' seat in store $seats');
       });
     }
   }
@@ -220,7 +220,8 @@ class _StorePageState extends State<StorePage> {
                                                       maxLines: 3,
                                                       nameTrans ??
                                                           foodData[index].name,
-                                                      style: AppStyle.bodyText1,
+                                                      style:
+                                                          AppStyle.titleOrder,
                                                     );
                                                   },
                                                 );
@@ -238,7 +239,7 @@ class _StorePageState extends State<StorePage> {
                                               Text(
                                                 maxLines: 1,
                                                 '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
-                                                style: AppStyle.priceText,
+                                                style: AppStyle.primaryText,
                                               ),
                                             ],
                                           ),

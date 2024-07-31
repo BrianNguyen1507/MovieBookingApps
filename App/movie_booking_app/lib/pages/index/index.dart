@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/modules/connection/networkControl.dart';
-import 'package:movie_booking_app/modules/valid/validException.dart';
-import 'package:movie_booking_app/pages/index/components/bottomnav.dart';
-import 'package:movie_booking_app/pages/index/components/drawer.dart';
-import 'package:movie_booking_app/pages/order/orderPage.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
-import 'package:movie_booking_app/routes/AppRoutes.dart';
-import 'package:movie_booking_app/services/Users/logout/logoutService.dart';
-import 'package:movie_booking_app/services/Users/order/returnSeat/returnSeat.dart';
-import 'package:movie_booking_app/services/Users/refresh/tokenManager.dart';
+import 'package:movie_booking_app/modules/connection/network_control.dart';
+import 'package:movie_booking_app/modules/valid/show_message.dart';
+import 'package:movie_booking_app/pages/index/components/bottom_navigator.dart';
+import 'package:movie_booking_app/pages/index/drawer/drawer.dart';
+import 'package:movie_booking_app/pages/order/order_page.dart';
+import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
+import 'package:movie_booking_app/routes/app_routes.dart';
+import 'package:movie_booking_app/services/Users/logout/logout_service.dart';
+import 'package:movie_booking_app/services/Users/order/return-seat/return_seat_service.dart';
+import 'package:movie_booking_app/services/Users/refresh/token_manager.dart';
 import 'package:movie_booking_app/pages/search/search.dart';
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
@@ -87,9 +87,9 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
       ReturnSeatService.returnSeat(context, scheduleIdpref, heldSeats);
       pref.clearHoldSeats();
       pref.clearSchedule();
-      print("Hold seats returned successfully");
+      debugPrint("Hold seats returned successfully");
     } else {
-      print("No seats were held");
+      debugPrint("No seats were held");
     }
   }
 

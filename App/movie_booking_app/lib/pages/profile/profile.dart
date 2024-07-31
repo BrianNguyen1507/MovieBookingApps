@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
-import 'package:movie_booking_app/pages/profile/guest.dart';
+import 'package:movie_booking_app/pages/profile/guest_view.dart';
 import 'package:movie_booking_app/provider/provider.dart';
-import 'package:movie_booking_app/provider/sharedPreferences/prefs.dart';
+import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
-import 'package:movie_booking_app/services/Users/ordered/getOrderInfo.dart';
-import 'package:movie_booking_app/services/Users/signup/validHandle.dart';
+import 'package:movie_booking_app/services/Users/puchased/get_order_info.dart';
+import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {

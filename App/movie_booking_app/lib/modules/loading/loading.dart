@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/Appdata.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_data.dart';
 
 final loadingContent = SpinKitSquareCircle(
   size: 60.0,

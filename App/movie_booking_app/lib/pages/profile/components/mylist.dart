@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_app/constant/AppConfig.dart';
-import 'package:movie_booking_app/constant/AppStyle.dart';
-import 'package:movie_booking_app/constant/Appdata.dart';
-import 'package:movie_booking_app/pages/ordered/listOrdered.dart';
-import 'package:movie_booking_app/pages/profile/informationChoice.dart';
-import 'package:movie_booking_app/pages/vouchers/voucherAccountList.dart';
+import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
+import 'package:movie_booking_app/constant/app_data.dart';
+import 'package:movie_booking_app/pages/purchased-order/purchased_page.dart';
+import 'package:movie_booking_app/pages/profile/personal_choices.dart';
+import 'package:movie_booking_app/pages/vouchers/voucher_account.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Builditem {
