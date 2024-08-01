@@ -17,7 +17,7 @@ class SearchMovieService {
         Uri.parse(url),
         headers: {"Content-Type": "application/json"},
       );
-      dynamic result = json.decode(response.body);
+      dynamic result = json.decode(utf8.decode(response.body.codeUnits));
       if (response.statusCode != 200) {
         debugPrint('Error cant search service code:${response.statusCode}');
       }

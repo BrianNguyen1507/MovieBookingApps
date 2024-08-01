@@ -291,12 +291,11 @@ class ComingSoonSection extends StatelessWidget {
                                 SizedBox(
                                   width: AppSize.width(context) / 2,
                                   child: Center(
-                                    child: TranslateConsumer()
-                                        .translateProvider(
-                                            filmsFuture[index].title,
-                                            1,
-                                            AppStyle.titleMovie),
-                                  ),
+                                      child: Text(
+                                    filmsFuture[index].title,
+                                    maxLines: 1,
+                                    style: AppStyle.titleMovie,
+                                  )),
                                 ),
                                 SizedBox(
                                   width: AppSize.width(context) / 2,

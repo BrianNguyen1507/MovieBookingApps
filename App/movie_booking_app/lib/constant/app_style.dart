@@ -143,6 +143,13 @@ class AppStyle {
     color: AppColors.primaryColor,
     overflow: TextOverflow.ellipsis,
   );
+  static const TextStyle smalldark = TextStyle(
+    fontFamily: 'Roboto',
+    fontSize: AppFontSize.verySmall,
+    fontWeight: FontWeight.bold,
+    color: AppColors.backgroundColor,
+    overflow: TextOverflow.ellipsis,
+  );
   static const TextStyle bodyText1 = TextStyle(
       fontFamily: 'Roboto',
       fontSize: AppFontSize.lowMedium,

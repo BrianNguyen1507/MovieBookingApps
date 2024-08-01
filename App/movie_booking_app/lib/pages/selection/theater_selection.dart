@@ -5,7 +5,6 @@ import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/models/theater/theater.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/theater_widget/theater_widget.dart';
-import 'package:movie_booking_app/provider/consumer/translator.dart';
 import 'package:movie_booking_app/services/Users/theater/theater_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -33,14 +32,16 @@ class _TheaterSelectionState extends State<TheaterSelection> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: AppColors.backgroundColor,
-        iconTheme: const IconThemeData(
-          color: AppColors.containerColor,
-        ),
-        title: TranslateConsumer()
-            .translateProvider(widget.name, 1, AppStyle.bannerText),
-      ),
+          centerTitle: true,
+          backgroundColor: AppColors.backgroundColor,
+          iconTheme: const IconThemeData(
+            color: AppColors.containerColor,
+          ),
+          title: Text(
+            widget.name,
+            maxLines: 1,
+            style: AppStyle.bannerText,
+          )),
       body: Container(
         decoration: const BoxDecoration(
           color: AppColors.commonLightColor,
@@ -65,22 +66,6 @@ class _TheaterSelectionState extends State<TheaterSelection> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  // Expanded(
-                  //   child: DropdownButton<String>(
-                  //     borderRadius: ContainerRadius.radius5,
-                  //     isExpanded: true,
-                  //     items: const [
-                  //       DropdownMenuItem<String>(
-                  //           value: 'option1', child: Text('Option 1')),
-                  //       DropdownMenuItem<String>(
-                  //           value: 'option2', child: Text('Option 2')),
-                  //     ],
-                  //     onChanged: (value) {
-                  //       setState(() {});
-                  //     },
-                  //     value: null,
-                  //   ),
-                  // ),
                 ],
               ),
             ),

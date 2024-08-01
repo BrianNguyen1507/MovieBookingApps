@@ -82,11 +82,9 @@ class MovieListings extends StatelessWidget {
                                     children: [
                                       SizedBox(
                                         width: AppSize.width(context) / 2,
-                                        child: TranslateConsumer()
-                                            .translateProvider(
-                                                movieList[index].title,
-                                                2,
-                                                AppStyle.titleMovie),
+                                        child: Text(movieList[index].title,
+                                            maxLines: 2,
+                                            style: AppStyle.titleMovie),
                                       ),
                                       SizedBox(
                                         width: AppSize.width(context) / 2,

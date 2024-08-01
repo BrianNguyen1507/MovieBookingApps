@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_ticket_scanner/Components/widget.dart';
@@ -141,7 +139,7 @@ class _QRScannPageState extends State<QRScannPage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const AlertDialog(
                 backgroundColor: Colors.white,
-                content: CircularProgressIndicator(),
+                content: Center(child: CircularProgressIndicator()),
               );
             } else if (snapshot.hasError) {
               return _buildErrorDialog(snapshot.error.toString());
@@ -175,8 +173,6 @@ class _QRScannPageState extends State<QRScannPage> {
       contentPadding: const EdgeInsets.all(16.0),
       content: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RichText(
               text: TextSpan(
@@ -186,7 +182,7 @@ class _QRScannPageState extends State<QRScannPage> {
                     style: TextStyle(color: Colors.black, fontSize: 14),
                   ),
                   TextSpan(
-                    text: result!.code,
+                    text: result!.code.toString(),
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -197,111 +193,32 @@ class _QRScannPageState extends State<QRScannPage> {
               ),
             ),
             const Divider(height: 24),
-            const Text(
-              'THÔNG TIN PHIM',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                color: Colors.black.withOpacity(0.3),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FutureBuilder<Uint8List>(
-                    future: ConverterData.bytesToImage(
-                        order.movieSchedule.film.poster),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.hasData) {
-                        return ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          child: Image.memory(
-                            snapshot.data!,
-                            height: 120,
-                            width: 80,
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      } else {
-                        return const Text('No image available');
-                      }
-                    },
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        order.movieSchedule.film.title,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        '${order.movieSchedule.film.duration} Phút',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        ConverterData.formatToDmY(
-                            order.movieSchedule.film.releaseDate),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            WidgetForm.buildMovieInfo(context, order),
             const Divider(height: 24),
-            const Text(
-              'THÔNG TIN VÉ',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                color: Colors.blue.withOpacity(0.3),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Tooltip(
-                      message: order.address,
-                      child: WidgetForm.buildTicketInfoRow(
-                          'RẠP:', order.theaterName)),
-                  WidgetForm.buildTicketInfoRow(
-                      'PHÒNG CHIẾU:', 'Room ${order.roomNumber}'),
-                  WidgetForm.buildTicketInfoRow('LỊCH CHIẾU:',
-                      ConverterData.formatToDmY(order.movieSchedule.date)),
-                  WidgetForm.buildTicketInfoRow('GIỜ CHIẾU:',
-                      '${order.movieSchedule.timeStart} - ${order.movieSchedule.timeEnd}'),
-                  WidgetForm.buildTicketInfoRow('VỊ TRÍ:', order.seat),
-                ],
-              ),
+            WidgetForm.buildTicketInfo(order),
+            const Divider(height: 24),
+            WidgetForm.buildFoodInfo(order),
+            const Divider(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'TỔNG TIỀN',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  '${order.sumtotal.toString()}đ',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -316,7 +233,7 @@ class _QRScannPageState extends State<QRScannPage> {
   Widget _buildNoDataDialog() {
     return AlertDialog(
       backgroundColor: Colors.white,
-      content: const Text('MESSAGE: KHÔNG CÓ DỮ LIỆU'),
+      content: const Center(child: Text('MESSAGE: KHÔNG CÓ DỮ LIỆU')),
       actions: [_buildCloseButton()],
     );
   }

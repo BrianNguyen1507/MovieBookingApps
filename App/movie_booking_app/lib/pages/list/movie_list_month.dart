@@ -122,9 +122,9 @@ class MovieListingByMonth extends StatelessWidget {
                                         const SizedBox(height: 8),
                                         SizedBox(
                                           width: 150,
-                                          child: TranslateConsumer()
-                                              .translateProvider(movie.title, 1,
-                                                  AppStyle.titleMovie),
+                                          child: Text(movie.title,
+                                              maxLines: 2,
+                                              style: AppStyle.titleMovie),
                                         ),
                                         const SizedBox(height: 4),
                                         SizedBox(

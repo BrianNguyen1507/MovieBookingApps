@@ -373,11 +373,12 @@ Widget renderBooking(
                                         ),
                                       ),
                                       SizedBox(
-                                        width: AppSize.width(context) / 3,
-                                        child: TranslateConsumer()
-                                            .translateProvider(movieData.title,
-                                                1, AppStyle.titleMovie),
-                                      ),
+                                          width: AppSize.width(context) / 3,
+                                          child: Text(
+                                            movieData.title,
+                                            maxLines: 1,
+                                            style: AppStyle.titleOrder,
+                                          )),
                                     ],
                                   ),
                                   TranslateConsumer().translateProvider(

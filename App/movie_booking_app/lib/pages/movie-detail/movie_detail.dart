@@ -96,21 +96,11 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                           children: [
                             SizedBox(
                               width: AppSize.width(context) / 1.6,
-                              child: Consumer<ThemeProvider>(
-                                builder: (context, provider, child) {
-                                  return FutureBuilder<String>(
-                                    future:
-                                        provider.translateText(detail.title),
-                                    builder: (context, snapshot) {
-                                      return Text(
-                                        snapshot.data ?? detail.title,
-                                        style: AppStyle.nameMovie,
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                      );
-                                    },
-                                  );
-                                },
+                              child: Text(
+                                detail.title,
+                                style: AppStyle.nameMovie,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             SizedBox(

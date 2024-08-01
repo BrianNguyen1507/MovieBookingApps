@@ -62,8 +62,15 @@ Widget movieCard(context, MovieDetail getMovie) {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            TranslateConsumer().translateProvider(
-                                getMovie.title, 1, AppStyle.titleOrder),
+                            SizedBox(
+                              width: AppSize.width(context) - 150,
+                              child: Text(
+                                getMovie.title,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppStyle.titleOrder,
+                              ),
+                            )
                           ],
                         ),
                         TranslateConsumer().translateProvider(
