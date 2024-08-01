@@ -74,11 +74,11 @@ export function translateDateFormat(inputDate) {
   return yyyyMMdd;
 }
 export function extractYouTubeVideoId(url) {
-  const regExp = /[?&]v=([^&]+)/;
+  const regExp = /https:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})/;
 
   const match = url.match(regExp);
 
-  return match && match[1];
+  return match ? match[1] : null;
 }
 
 export function DateConverter(dateTime) {
