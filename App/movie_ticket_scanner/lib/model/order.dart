@@ -29,7 +29,7 @@ class MovieSchedule {
   final String date;
   final String timeStart;
   final String timeEnd;
-  final Film film;
+  final Film? film;
 
   MovieSchedule({
     required this.id,
@@ -45,40 +45,80 @@ class MovieSchedule {
       date: json['date'],
       timeStart: json['timeStart'],
       timeEnd: json['timeEnd'],
-      film: Film.fromJson(json['film']),
+      film: json['film'] != null ? Film.fromJson(json['film']) : null,
+    );
+  }
+}
+
+class Food {
+  final int id;
+  final String name;
+  final double price;
+  final String image;
+  final int quantity;
+
+  Food({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.image,
+    required this.quantity,
+  });
+
+  factory Food.fromJson(Map<String, dynamic> json) {
+    return Food(
+      id: json['id'],
+      name: json['name'],
+      price: (json['price'] as num).toDouble(),
+      image: json['image'],
+      quantity: json['quantity'],
     );
   }
 }
 
 class Result {
   final int id;
-  final String seat;
+  final String? seat;
+  final double sumtotal;
   final String date;
   final bool allowUse;
-  final MovieSchedule movieSchedule;
-  final String theaterName;
+  final MovieSchedule? movieSchedule;
+  final String? theaterName;
   final int roomNumber;
-  final String address;
-  Result(
-      {required this.id,
-      required this.seat,
-      required this.date,
-      required this.allowUse,
-      required this.movieSchedule,
-      required this.theaterName,
-      required this.roomNumber,
-      required this.address});
+  final String? address;
+  final List<Food>? foods;
+
+  Result({
+    required this.id,
+    required this.seat,
+    required this.sumtotal,
+    required this.date,
+    required this.allowUse,
+    required this.movieSchedule,
+    required this.theaterName,
+    required this.roomNumber,
+    required this.address,
+    required this.foods,
+  });
 
   factory Result.fromJson(Map<String, dynamic> json) {
     return Result(
       id: json['id'],
       seat: json['seat'],
+      sumtotal: (json['sumTotal'] as num).toDouble(),
       date: json['date'],
       allowUse: json['allowUse'],
-      movieSchedule: MovieSchedule.fromJson(json['movieSchedule']),
+      movieSchedule: json['movieSchedule'] != null
+          ? MovieSchedule.fromJson(json['movieSchedule'])
+          : null,
       theaterName: json['theaterName'],
-      roomNumber: json['roomNumber'],
+      roomNumber: json['roomNumber'] ?? 0,
       address: json['address'],
+      foods: json['foods'] != null
+          ? (json['foods'] as List<dynamic>)
+              .map((foodJson) => Food.fromJson(foodJson))
+              .toList()
+          : null,
     );
   }
 }

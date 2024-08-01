@@ -112,11 +112,11 @@ class _VoucherOrderState extends State<VoucherOrder> {
                                                     height: 50,
                                                     width: 50,
                                                   ),
-                                                  title: TranslateConsumer()
-                                                      .translateProvider(
-                                                          vouchers[index].title,
-                                                          1,
-                                                          AppStyle.detailText),
+                                                  title: Text(
+                                                    vouchers[index].title,
+                                                    maxLines: 1,
+                                                    style: AppStyle.titleOrder,
+                                                  ),
                                                   subtitle: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment

@@ -6,7 +6,6 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ordered/order_movie_response.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/purchased-order/detail_order_page.dart';
-import 'package:movie_booking_app/provider/consumer/translator.dart';
 import 'package:movie_booking_app/services/Users/puchased/get_all_movies.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -48,7 +47,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
         } else {
           List<OrderResponse> filmOrders = snapshot.data!;
           return SizedBox(
-            height: AppSize.height(context) - 100,
+            height: AppSize.height(context) - 150,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: filmOrders.length,
@@ -69,7 +68,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                   child: Container(
                     margin: const EdgeInsets.all(2.0),
                     width: AppSize.width(context),
-                    height: 120,
+                    height: 140,
                     decoration: BoxDecoration(
                         boxShadow: const [
                           BoxShadow(
@@ -90,7 +89,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                               child: Stack(
                                 children: [
                                   SizedBox(
-                                    width: 60,
+                                    width: 90,
                                     child: ClipRRect(
                                       borderRadius: ContainerRadius.radius5,
                                       child: Image.memory(
@@ -104,18 +103,15 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                             Padding(
                               padding: const EdgeInsets.only(left: 5.0),
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
                                     width: AppSize.width(context) / 2,
                                     child: Padding(
                                       padding: const EdgeInsets.all(3.0),
-                                      child: TranslateConsumer()
-                                          .translateProvider(
-                                              filmOrder.title,
-                                              1,
-                                              AppStyle.bodyText1),
+                                      child: Text(filmOrder.title,
+                                          maxLines: 2,
+                                          style: AppStyle.bodyText1),
                                     ),
                                   ),
                                   Padding(
@@ -139,19 +135,16 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                       Container(
                                         padding: const EdgeInsets.all(3.0),
                                         decoration: BoxDecoration(
-                                          color:
-                                              filmOrder.status == "Unused"
-                                                  ? AppColors.correctColor
-                                                  : AppColors.errorColor,
-                                          borderRadius:
-                                              ContainerRadius.radius2,
+                                          color: filmOrder.status == "Unused"
+                                              ? AppColors.correctColor
+                                              : AppColors.errorColor,
+                                          borderRadius: ContainerRadius.radius2,
                                         ),
                                         child: Center(
                                           child: Text(
                                             filmOrder.status == "Unused"
                                                 ? ''
-                                                : AppLocalizations.of(
-                                                        context)!
+                                                : AppLocalizations.of(context)!
                                                     .expired,
                                             style: AppStyle.classifyText,
                                           ),
@@ -162,8 +155,7 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                         padding: const EdgeInsets.all(3.0),
                                         decoration: BoxDecoration(
                                           color: AppColors.primaryColor,
-                                          borderRadius:
-                                              ContainerRadius.radius2,
+                                          borderRadius: ContainerRadius.radius2,
                                         ),
                                         child: Center(
                                           child: Text(
