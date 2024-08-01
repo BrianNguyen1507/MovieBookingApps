@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -46,6 +45,6 @@ public class AccountEntity {
 
 
     @OneToMany(mappedBy = "account")
-    List<AccountVoucher> vouchers;
+    List<AccountVoucherEntity> vouchers;
 
 }

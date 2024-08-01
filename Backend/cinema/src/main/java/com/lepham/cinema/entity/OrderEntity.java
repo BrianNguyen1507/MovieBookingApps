@@ -48,5 +48,5 @@ public class OrderEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_voucher_id", nullable = false)
-    AccountVoucher accountVoucher;
+    AccountVoucherEntity accountVoucher;
 }
