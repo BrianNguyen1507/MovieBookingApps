@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/ordered/order_movie_response.dart';
@@ -38,9 +39,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
       future: futureFoodOrder,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: loadingData(context),
-          );
+          return Center(child: progressLoading);
         } else if (snapshot.data == null ||
             snapshot.hasError ||
             !snapshot.hasData) {
@@ -48,7 +47,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
         } else {
           List<OrderResponse> foodOrders = snapshot.data!;
           return SizedBox(
-            height: foodOrders.length * 120,
+            height: AppSize.height(context) - 100,
             child: ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: foodOrders.length,
@@ -79,7 +78,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                         ],
                         borderRadius: ContainerRadius.radius12),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(5.0),
@@ -103,7 +102,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                           padding: const EdgeInsets.only(left: 5.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(3.0),
@@ -126,8 +125,9 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                                   Container(
                                     padding: const EdgeInsets.all(3.0),
                                     decoration: BoxDecoration(
-                                      color: AppColors.backgroundColor
-                                          .withOpacity(0.4),
+                                      color: foodOder.status == "Unused"
+                                          ? AppColors.correctColor
+                                          : AppColors.errorColor,
                                       borderRadius: ContainerRadius.radius2,
                                     ),
                                     child: Center(

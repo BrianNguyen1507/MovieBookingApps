@@ -37,8 +37,6 @@ class _VoucherOrderState extends State<VoucherOrder> {
   void loadVoucherData() async {
     voucherData = VoucherService.getAllVoucherByAccount(context, widget.total);
     final voucherId = await pref.getVoucher();
-    debugPrint(voucherId.toString());
-
     setState(() {
       selectedVoucherIndex = voucherId;
     });
