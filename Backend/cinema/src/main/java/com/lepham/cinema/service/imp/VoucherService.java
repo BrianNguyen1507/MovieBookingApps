@@ -4,10 +4,12 @@ import com.lepham.cinema.converter.VoucherConverter;
 import com.lepham.cinema.dto.request.VoucherRequest;
 import com.lepham.cinema.dto.response.VoucherResponse;
 import com.lepham.cinema.entity.AccountEntity;
+import com.lepham.cinema.entity.AccountVoucherEntity;
 import com.lepham.cinema.entity.VoucherEntity;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
 import com.lepham.cinema.repository.AccountRepository;
+import com.lepham.cinema.repository.AccountVoucherRepository;
 import com.lepham.cinema.repository.VoucherRepository;
 import com.lepham.cinema.service.IVoucherService;
 import lombok.AccessLevel;
@@ -33,7 +35,7 @@ public class VoucherService implements IVoucherService {
     VoucherRepository voucherRepository;
     AccountRepository accountRepository;
     VoucherConverter voucherConverter;
-            
+    AccountVoucherRepository accountVoucherRepository;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
@@ -87,7 +89,9 @@ public class VoucherService implements IVoucherService {
         if (!vouchers.isEmpty()) {
             vouchers.forEach(entity -> {
                 VoucherResponse response = voucherConverter.toResponse(entity);
+                AccountVoucherEntity accountVoucher = accountVoucherRepository.findByAccountAndVoucher(account,entity);
                 response.setAllow(true);
+                response.setQuantity(accountVoucher.getQuantity());
                 responses.add(response);
             });
         }

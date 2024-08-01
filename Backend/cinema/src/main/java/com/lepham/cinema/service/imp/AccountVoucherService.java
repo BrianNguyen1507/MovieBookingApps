@@ -4,7 +4,7 @@ import com.lepham.cinema.converter.VoucherConverter;
 import com.lepham.cinema.dto.request.AccountVoucherRequest;
 import com.lepham.cinema.dto.response.VoucherResponse;
 import com.lepham.cinema.entity.AccountEntity;
-import com.lepham.cinema.entity.AccountVoucher;
+import com.lepham.cinema.entity.AccountVoucherEntity;
 import com.lepham.cinema.entity.VoucherEntity;
 import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
@@ -40,12 +40,12 @@ public class AccountVoucherService implements IAccountVoucherService {
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
 
         for (AccountEntity account : activeUserIds) {
-            AccountVoucher accountVoucherEntity = accountVoucherRepository.findByAccountAndVoucher(account,voucher);
+            AccountVoucherEntity accountVoucherEntity = accountVoucherRepository.findByAccountAndVoucher(account,voucher);
             if(accountVoucherEntity!=null){
                 accountVoucherEntity.setQuantity(accountVoucherEntity.getQuantity()+request.getQuantity());
             }
             else{
-                accountVoucherEntity = new AccountVoucher();
+                accountVoucherEntity = new AccountVoucherEntity();
                 accountVoucherEntity.setQuantity(request.getQuantity());
                 accountVoucherEntity.setAccount(account);
                 accountVoucherEntity.setVoucher(voucher);
@@ -57,7 +57,7 @@ public class AccountVoucherService implements IAccountVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteVoucher(long id) {
-        AccountVoucher entity = accountVoucherRepository.findById(id)
+        AccountVoucherEntity entity = accountVoucherRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
         entity.setHide(true);
         accountVoucherRepository.save(entity);

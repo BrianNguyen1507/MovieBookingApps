@@ -22,11 +22,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.callback.LanguageCallback;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -115,7 +113,7 @@ public class OrderService implements IOrderService {
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-        AccountVoucher accountVoucher = new AccountVoucher();
+        AccountVoucherEntity accountVoucher = new AccountVoucherEntity();
         if (request.getVoucherId() != -1) {
             VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
                     .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));

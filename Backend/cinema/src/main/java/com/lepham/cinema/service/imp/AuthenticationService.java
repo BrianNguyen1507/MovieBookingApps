@@ -50,13 +50,11 @@ public class AuthenticationService {
     AccountRepository accountRepository;
     public boolean introspect(String token) throws JOSEException, ParseException {
         boolean isValid = true;
-
         try {
             verifyToken(token, false);
         } catch (AppException e) {
             isValid = false;
         }
-
         return isValid;
     }
     public AuthenticationResponse authenticate(LoginRequest request){
