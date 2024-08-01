@@ -45,8 +45,12 @@ class ListOrderedState extends State<ListOrdered> {
                       });
                     },
                     child: Container(
+                        height: 40,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
+                          color: isTabSelected
+                              ? AppColors.primaryColor.withOpacity(0.3)
+                              : AppColors.transpanrent,
                           border: Border(
                             bottom: BorderSide(
                               color: AppColors.primaryColor,
@@ -55,13 +59,9 @@ class ListOrderedState extends State<ListOrdered> {
                           ),
                         ),
                         width: AppSize.width(context) / 2,
-                        child: Text(
-                          AppLocalizations.of(context)!.movie_tickets,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: AppFontSize.medium,
-                              fontWeight: FontWeight.bold),
-                        )),
+                        child: Text(AppLocalizations.of(context)!.movie_tickets,
+                            textAlign: TextAlign.center,
+                            style: AppStyle.bodyText1)),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -70,8 +70,12 @@ class ListOrderedState extends State<ListOrdered> {
                       });
                     },
                     child: Container(
+                      height: 40,
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        color: isTabSelected
+                            ? AppColors.transpanrent
+                            : AppColors.primaryColor.withOpacity(0.3),
                         border: Border(
                           bottom: BorderSide(
                             color: AppColors.primaryColor,
@@ -80,14 +84,9 @@ class ListOrderedState extends State<ListOrdered> {
                         ),
                       ),
                       width: AppSize.width(context) / 2,
-                      child: Text(
-                        AppLocalizations.of(context)!.food_tickets,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: AppFontSize.medium,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: Text(AppLocalizations.of(context)!.food_tickets,
+                          textAlign: TextAlign.center,
+                          style: AppStyle.bodyText1),
                     ),
                   ),
                 ],

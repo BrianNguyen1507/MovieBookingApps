@@ -27,48 +27,25 @@ class Handlepayments {
       List<Map<String, dynamic>> foods,
       double total) async {
     debugPrint('THANH TOAN THANH CONG');
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/svg/success.svg',
-              height: 100,
-              width: 100,
-            ),
-            const Text(
-              'Payment success',
-              style: AppStyle.bodyText1,
-            )
-          ],
-        ),
-      ),
-    );
 
     dynamic scheduleId = visible ? await Preferences().getSchedule() : -1;
     Set<String> seatFormat = ConverterUnit.convertStringToSet(seat);
     bool isReturn = false;
+
     if (seat.isNotEmpty) {
       isReturn =
           await ReturnSeatService.returnSeat(context, scheduleId, seatFormat);
     }
-    if ((seat.isNotEmpty && isReturn) || seat.isEmpty) {
-      CreateOrderService.createOrderTicket(context, scheduleId!, voucherId,
-          methodName, appTranId, seat, foods, total);
-      Preferences().clearHoldSeats();
 
-      Future.delayed(
-        const Duration(seconds: 3),
-        () {
-          return Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/listOrder',
-            ModalRoute.withName('/'),
-          );
-        },
+    if ((seat.isNotEmpty && isReturn) || seat.isEmpty) {
+      await CreateOrderService.createOrderTicket(context, scheduleId!,
+          voucherId, methodName, appTranId, seat, foods, total);
+      await Preferences().clearHoldSeats();
+
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/listOrder',
+        ModalRoute.withName('/'),
       );
     }
   }

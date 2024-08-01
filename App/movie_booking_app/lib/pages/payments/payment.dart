@@ -276,7 +276,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           await handlePayment();
                         },
                         child: Container(
-                          height: AppSize.height(context) * 0.1,
+                          height: 50,
                           width: AppSize.width(context),
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
@@ -350,7 +350,7 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         );
 
-        if (returnData != null) {
+        if (returnData != null && mounted) {
           String tranCode = returnData['transaction'];
           Handlepayments.handlePaymentSuccess(context, visible, seats,
               voucherId, methodName, tranCode, foods, sumTotal);

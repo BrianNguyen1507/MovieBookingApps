@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
@@ -154,21 +155,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   child: SvgPicture.asset(
                                     'assets/svg/ticket.svg',
-                                    width: 30,
-                                    height: 30,
+                                    width: 20,
+                                    height: 20,
                                   ),
                                 ),
                                 Text(
                                   numberMovie.toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppFontSize.medium),
+                                  style: AppStyle.titleMovie,
                                 ),
                                 Text(
                                   AppLocalizations.of(context)!.watched,
-                                  style: const TextStyle(
-                                      fontSize: AppFontSize.small,
-                                      fontWeight: FontWeight.bold),
+                                  style: AppStyle.smallText,
                                 ),
                               ],
                             ),
@@ -186,20 +183,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     child: SvgPicture.asset(
                                       'assets/svg/feedback.svg',
-                                      width: 30,
-                                      height: 30,
+                                      width: 20,
+                                      height: 20,
                                     )),
                                 Text(
                                   numberReview.toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppFontSize.medium),
+                                  style: AppStyle.titleMovie,
                                 ),
                                 Text(
                                   AppLocalizations.of(context)!.revw,
-                                  style: const TextStyle(
-                                      fontSize: AppFontSize.small,
-                                      fontWeight: FontWeight.bold),
+                                  style: AppStyle.smallText,
                                 ),
                               ],
                             ),

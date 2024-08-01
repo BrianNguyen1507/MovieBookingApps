@@ -152,11 +152,13 @@ class NowShowingSectionState extends State<NowShowingSection> {
                                         child: ValueListenableBuilder<int>(
                                           valueListenable: _currentPageNotifier,
                                           builder: (context, value, child) {
-                                            return TranslateConsumer()
-                                                .translateProvider(
-                                                    _films[value].title,
-                                                    1,
-                                                    AppStyle.headline1);
+                                            return Center(
+                                              child: Text(_films[value].title,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: AppStyle.titleMovie),
+                                            );
                                           },
                                         ),
                                       ),

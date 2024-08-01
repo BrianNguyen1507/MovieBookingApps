@@ -49,7 +49,7 @@ class _VoucherAccountListState extends State<VoucherAccountList> {
               final listVoucher = snapshot.data!;
               return listVoucher.isNotEmpty
                   ? SizedBox(
-                      height: listVoucher.length * 150,
+                      height: listVoucher.length * 200,
                       child: ListView.builder(
                         itemCount: listVoucher.length,
                         itemBuilder: (context, index) {
@@ -57,9 +57,9 @@ class _VoucherAccountListState extends State<VoucherAccountList> {
                             decoration: const BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                  blurRadius: 6.0,
+                                  blurRadius: 10.0,
                                   color: AppColors.shadowColor,
-                                  offset: Offset(1, 1),
+                                  offset: Offset(0.1, 0.2),
                                 ),
                               ],
                             ),

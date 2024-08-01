@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -33,7 +34,7 @@ class Appdata {
   static IconData? getIconForIndex(int index) {
     switch (index) {
       case 0:
-        return Icons.storefront_rounded;
+        return FontAwesomeIcons.store;
       case 1:
         return Icons.movie_creation_rounded;
       case 2:

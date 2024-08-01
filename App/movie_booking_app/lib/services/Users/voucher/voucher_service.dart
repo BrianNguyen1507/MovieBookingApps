@@ -50,12 +50,11 @@ class VoucherService {
 
   static Future<List<Voucher>?> getVoucherByEmail(context) async {
     try {
-      final getUri = dotenv.env['GET_ALL_VOUCHER_BY_ACCOUNT_EMAIL']!;
+      final getUri = dotenv.env['GET_ALL_VOUCHER']!;
       dynamic token = await Preferences().getTokenUsers();
-      dynamic email = await Preferences().getEmail();
 
       final response = await http.get(
-        Uri.parse(getUri + email),
+        Uri.parse(getUri),
         headers: {
           'Content-type': 'application/json',
           'Authorization': 'Bearer $token',
