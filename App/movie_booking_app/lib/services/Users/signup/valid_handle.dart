@@ -59,36 +59,4 @@ class ValidInput {
       }
     });
   }
-
-  void showAlertCustom(
-    context,
-    String content,
-    String? buttonText,
-    bool? cancelButton,
-    VoidCallback? onPress,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Alert'),
-          content: Text(content),
-          actions: <Widget>[
-            cancelButton!
-                ? TextButton(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                : const SizedBox.shrink(),
-            TextButton(
-              onPressed: onPress,
-              child: Text(buttonText!),
-            ),
-          ],
-        );
-      },
-    );
-  }
 }

@@ -9,7 +9,7 @@ import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/pages/purchased-order/components/qr_code_view.dart';
 import 'package:movie_booking_app/pages/rating-feedback/rating_feedback.dart';
 import 'package:movie_booking_app/provider/consumer/translator.dart';
-import 'package:movie_booking_app/utils/widgets.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget detailOrderFilm(context, DetailOrder order) {
@@ -112,7 +112,7 @@ Widget detailOrderFilm(context, DetailOrder order) {
                                       Padding(
                                         padding: const EdgeInsets.all(3.0),
                                         child: Text(
-                                          CommonUtil.truncateText(
+                                          Common.truncateText(
                                               order.order.title, 12),
                                           style: AppStyle.titleMovie,
                                         ),
@@ -227,7 +227,7 @@ Widget detailOrderFilm(context, DetailOrder order) {
                               child: Center(
                                 child: Image.memory(
                                   ConverterUnit.base64ToUnit8(order.orderCode),
-                                  width: 100,
+                                  cacheWidth: 100,
                                 ),
                               ),
                             ),

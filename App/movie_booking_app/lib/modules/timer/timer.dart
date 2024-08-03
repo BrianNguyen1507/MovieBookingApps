@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TimerController {
   static Timer? _periodicTimer;
@@ -17,18 +19,16 @@ class TimerController {
     _periodicTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       if (remainingSeconds > 0) {
         remainingSeconds--;
-
-        debugPrint('Remaining time: $remainingSeconds seconds');
       } else {
         t.cancel();
-        ValidInput val = ValidInput();
-        val.showAlertCustom(
-          context,
-          'Time order is ended. Please try again!',
-          '',
-          false,
-          null,
-        );
+
+        ShowDialog.showAlertCustom(
+            context,
+            AppLocalizations.of(context)!.time_end_noti,
+            '',
+            false,
+            null,
+            DialogType.warning);
         Future.delayed(const Duration(seconds: 3), () {
           Navigator.pushAndRemoveUntil(
             context,

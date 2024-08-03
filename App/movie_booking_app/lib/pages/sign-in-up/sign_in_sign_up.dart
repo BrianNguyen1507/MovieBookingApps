@@ -58,7 +58,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               );
             },
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back_ios),
           ),
         ),
         extendBodyBehindAppBar: true,

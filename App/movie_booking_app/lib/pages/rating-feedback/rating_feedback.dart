@@ -1,10 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/models/ordered/order_movie_response.dart';
 import 'package:movie_booking_app/services/Users/rating-feedback/rating_feedback_service.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 int rating = 0;
 
@@ -36,7 +37,7 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'What do you think about the movie?',
               style: AppStyle.headline1,
             ),
@@ -66,13 +67,8 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                 if (result == '1000') {
                   Navigator.pop(result);
                 } else {
-                  ValidInput().showAlertCustom(
-                    context,
-                    result,
-                    '',
-                    true,
-                    () {},
-                  );
+                  ShowDialog.showAlertCustom(
+                      context, result, '', true, () {}, DialogType.error);
                 }
               },
               child: Container(

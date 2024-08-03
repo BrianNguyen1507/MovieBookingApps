@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
@@ -9,10 +10,10 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/vouchers/components/voucher_invalid.dart';
 import 'package:movie_booking_app/provider/consumer/translator.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:movie_booking_app/services/Users/voucher/apply_voucher.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucher_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 // ignore: must_be_immutable
 class VoucherOrder extends StatefulWidget {
@@ -219,8 +220,14 @@ class _VoucherOrderState extends State<VoucherOrder> {
             ),
             onPressed: () async {
               if (selectedVocher == null) {
-                ValidInput().showAlertCustom(context,
-                    'Please select voucher to continue', '', true, null);
+                ShowDialog.showAlertCustom(
+                  context,
+                  AppLocalizations.of(context)!.voucher_noti,
+                  '',
+                  true,
+                  null,
+                  DialogType.info,
+                );
                 return;
               }
               pref.saveSVoucher(selectedVoucherIndex = selectedVocher);

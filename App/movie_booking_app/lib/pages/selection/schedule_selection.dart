@@ -9,6 +9,7 @@ import 'package:movie_booking_app/pages/selection/components/schedule-widget/sch
 import 'package:movie_booking_app/pages/selection/components/schedule-widget/schedule_widgets.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/schedule/schedule_service.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ScheduleSelection extends StatefulWidget {
@@ -44,18 +45,8 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.commonLightColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
-        iconTheme: const IconThemeData(
-          color: AppColors.containerColor,
-        ),
-        title: Text(
-          widget.theaterName,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        titleTextStyle: AppStyle.bannerText,
-      ),
+      appBar: Common.customAppbar(context, AppStyle.headline2,
+          widget.theaterName, AppColors.iconThemeColor, AppColors.appbarColor),
       body: Column(
         children: [
           SizedBox(child: Consumer<ThemeProvider>(

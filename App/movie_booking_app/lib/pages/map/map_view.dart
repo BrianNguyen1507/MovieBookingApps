@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class MapTheater extends StatefulWidget {
   final String theaterName;
@@ -27,10 +28,8 @@ class MapTheaterState extends State<MapTheater> {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: AppColors.containerColor),
-        backgroundColor: Colors.black.withOpacity(0.3),
-      ),
+      appBar: Common.customAppbar(context,null, '', AppColors.iconThemeColor,
+          AppColors.appbarColor.withOpacity(0.1)),
       body: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,

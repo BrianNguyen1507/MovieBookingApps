@@ -17,6 +17,7 @@ import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:movie_booking_app/services/payments/vnpay/vnpay_response.dart';
 import 'package:movie_booking_app/services/payments/vnpay/vnpay_service.dart';
 import 'package:movie_booking_app/services/payments/zalopay/zalo_service.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
@@ -67,15 +68,12 @@ class _PaymentPageState extends State<PaymentPage> {
     final numberSeats = ConverterUnit.convertStringToSet(widget.seats).length;
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
+      appBar: Common.customAppbar(
+          context,
+          AppStyle.headline2,
           AppLocalizations.of(context)!.pay_inf,
-          style: AppStyle.headline2,
-        ),
-        iconTheme: const IconThemeData(color: AppColors.containerColor),
-        backgroundColor: AppColors.backgroundColor,
-      ),
+          AppColors.iconThemeColor,
+          AppColors.appbarColor),
       body: SingleChildScrollView(
         child: Container(
           height: AppSize.height(context),
@@ -106,7 +104,6 @@ class _PaymentPageState extends State<PaymentPage> {
                   : const SizedBox.shrink(),
               Container(
                 margin: const EdgeInsets.all(5.0),
-                padding: const EdgeInsets.all(5.0),
                 child: Text(
                   AppLocalizations.of(context)!.pay_inf,
                   style: AppStyle.bodyText1,
@@ -185,7 +182,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             style: AppStyle.bodyText1),
                         Text(
                           '${ConverterUnit.formatPrice(widget.sumtotal)}₫',
-                          style: AppStyle.headline1,
+                          style: AppStyle.headline3,
                         ),
                       ],
                     ),

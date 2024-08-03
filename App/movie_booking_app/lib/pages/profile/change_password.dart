@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
@@ -7,6 +8,8 @@ import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/change_password.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -32,23 +35,17 @@ class ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.containerColor,
-      ),
+      appBar: Common.customAppbar(
+          context,
+          AppStyle.headline2,
+          AppLocalizations.of(context)!.change_pass,
+          AppColors.iconThemeColor,
+          AppColors.appbarColor),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
-              child: Text(
-                AppLocalizations.of(context)!.change_pass,
-                style: const TextStyle(
-                    fontSize: AppFontSize.large,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor),
-              ),
-            ),
             Container(
-              margin: const EdgeInsets.all(30),
+              margin: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   Padding(
@@ -223,12 +220,13 @@ class ChangePasswordState extends State<ChangePassword> {
                               context,
                               "Change password successfully",
                               AppColors.correctColor);
-                          valid.showAlertCustom(
+                          ShowDialog.showAlertCustom(
                             context,
-                            "Login version has expired",
+                            AppLocalizations.of(context)!.login_expired,
                             "OK",
                             false,
                             () => _onPressLogout(context),
+                            DialogType.error,
                           );
                         }
                       }

@@ -47,7 +47,7 @@ class ListFoodOrderState extends State<ListFoodOrder> {
         } else {
           List<OrderResponse> foodOrders = snapshot.data!;
           return SizedBox(
-            height: AppSize.height(context) - 100,
+            height: AppSize.height(context) - 50,
             child: ListView.builder(
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: foodOrders.length,
@@ -127,15 +127,20 @@ class ListFoodOrderState extends State<ListFoodOrder> {
                                     decoration: BoxDecoration(
                                       color: foodOder.status == "Unused"
                                           ? AppColors.correctColor
-                                          : AppColors.errorColor,
+                                          : foodOder.status == "Expired"
+                                              ? AppColors.errorColor
+                                              : AppColors.grayTextColor,
                                       borderRadius: ContainerRadius.radius2,
                                     ),
                                     child: Center(
                                       child: Text(
                                         foodOder.status == "Unused"
                                             ? ''
-                                            : AppLocalizations.of(context)!
-                                                .expired,
+                                            : foodOder.status == "Expired"
+                                                ? AppLocalizations.of(context)!
+                                                    .expired
+                                                : AppLocalizations.of(context)!
+                                                    .used,
                                         style: AppStyle.classifyText,
                                       ),
                                     ),

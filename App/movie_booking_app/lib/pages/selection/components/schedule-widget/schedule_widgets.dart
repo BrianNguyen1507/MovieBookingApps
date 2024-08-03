@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
@@ -7,7 +8,8 @@ import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/schedule/schedule.dart';
 import 'package:movie_booking_app/pages/selection/seat_selection.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget buildScheduleList(
   Schedule schedule,
@@ -163,16 +165,16 @@ class _ScheduleButtonState extends State<ScheduleButton> {
         debugPrint('Selected schedule: ${widget.schedule.times}');
         debugPrint('Selected schedule: ${widget.schedule.roomNumber}');
         if (token == null) {
-          ValidInput valid = ValidInput();
-          valid.showAlertCustom(
-              context, 'You need to sign in to continue', 'Go to Sign in', true,
-              () {
+          ShowDialog.showAlertCustom(
+              context,
+              AppLocalizations.of(context)!.sigin_noti,
+              AppLocalizations.of(context)!.go_signin,
+              true, () {
             Navigator.pushNamed(context, '/login');
-          });
+          }, DialogType.question);
 
           return;
         }
-
         Navigator.push(
           context,
           MaterialPageRoute(

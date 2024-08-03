@@ -8,6 +8,7 @@ import 'package:movie_booking_app/pages/movie-detail/components/detail_widgets.d
 import 'package:movie_booking_app/pages/movie-detail/movie_detail.dart';
 
 import 'package:movie_booking_app/provider/consumer/translator.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class MovieListings extends StatelessWidget {
   const MovieListings(
@@ -18,14 +19,7 @@ class MovieListings extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: AppColors.iconThemeColor),
-          backgroundColor: AppColors.backgroundColor,
-          title: Text(
-            listTitle,
-            style: AppStyle.bannerText,
-          ),
-        ),
+        appBar: Common.customAppbar(context,null, listTitle, AppColors.appbarColor,null),
         body: FutureBuilder(
           future: movies,
           builder: (context, snapshot) {

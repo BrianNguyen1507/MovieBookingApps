@@ -25,22 +25,6 @@ final progressLoading = SpinKitThreeBounce(
     );
   },
 );
-void showLoadingDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: AppColors.backgroundColor.withOpacity(0.5),
-        content: SizedBox(
-          height: AppSize.height(context) / 3,
-          width: AppSize.height(context) / 2,
-          child: loadingContent,
-        ),
-      );
-    },
-  );
-}
 
 Widget loadingData(BuildContext context) {
   return AlertDialog(

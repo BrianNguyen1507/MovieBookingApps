@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,6 +13,7 @@ import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
 import 'package:movie_booking_app/services/Users/puchased/get_order_info.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -81,8 +83,13 @@ class _ProfilePageState extends State<ProfilePage> {
             BuildButton.commonbutton(
                 context,
                 AppLocalizations.of(context)!.logout,
-                () => valid.showAlertCustom(context, 'Are you sure to logout?',
-                    'Yes, logout', true, () => _onPressLogout(context))),
+                () => ShowDialog.showAlertCustom(
+                    context,
+                    AppLocalizations.of(context)!.cofirm_logout_q,
+                    AppLocalizations.of(context)!.confirm_logout,
+                    true,
+                    () => _onPressLogout(context),
+                    DialogType.info)),
           ],
         ),
       );

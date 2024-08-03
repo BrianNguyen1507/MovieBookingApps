@@ -9,6 +9,7 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/pages/movie-detail/movie_detail.dart';
 import 'package:movie_booking_app/provider/consumer/translator.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class MovieListingByMonth extends StatelessWidget {
   const MovieListingByMonth({
@@ -24,12 +25,8 @@ class MovieListingByMonth extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            listTitle,
-            style: AppStyle.headline1,
-          ),
-        ),
+        appBar: Common.customAppbar(
+            context, null, listTitle, AppColors.appbarColor, null),
         body: FutureBuilder<Map<int, List<Movie>>?>(
           future: movies,
           builder: (context, snapshot) {

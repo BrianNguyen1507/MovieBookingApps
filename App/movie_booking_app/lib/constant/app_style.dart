@@ -1,210 +1,181 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 
 class AppStyle {
-  static const TextStyle smallblackBold = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle smallblackBold = GoogleFonts.roboto(
     fontSize: AppFontSize.superSmall,
     fontWeight: FontWeight.bold,
-    color: Color.fromARGB(255, 0, 0, 0),
+    color: const Color.fromARGB(255, 0, 0, 0),
   );
-  static const TextStyle blackBold = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle blackBold = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
-    color: Color.fromARGB(255, 0, 0, 0),
+    color: const Color.fromARGB(255, 0, 0, 0),
   );
-  static const TextStyle primaryText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle primaryText = GoogleFonts.roboto(
     fontSize: AppFontSize.lowMedium,
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
   //payments
-  static const TextStyle paymentInfoText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle paymentInfoText = GoogleFonts.roboto(
     fontWeight: FontWeight.bold,
     fontSize: AppFontSize.small,
-    color: AppColors.primaryColor,
+    color: AppColors.darktextColor,
   );
   //order
-  static const TextStyle graySmallText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle graySmallText = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     color: AppColors.grayTextColor,
   );
-  static const TextStyle titleOrder = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle titleOrder = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
   //store
-  static const TextStyle priceText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle priceText = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
   //seat
-  static const TextStyle seatText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle seatText = GoogleFonts.roboto(
     fontSize: AppFontSize.superSmall,
     color: AppColors.textSeat,
   );
   //seat
-  static const TextStyle screenText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle screenText = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     color: AppColors.textSeat,
   );
   //theater
-  static const TextStyle titleTheater = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle titleTheater = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
-  static const TextStyle timerText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle timerText = GoogleFonts.roboto(
     fontSize: AppFontSize.verySmall,
     fontWeight: FontWeight.bold,
     color: AppColors.lightTextColor,
   );
 //home
-  static const TextStyle titleMovie = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle titleMovie = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
 
-  static const TextStyle commonText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle commonText = GoogleFonts.roboto(
     fontSize: AppFontSize.midMedium,
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
-  static const TextStyle commonblueText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle commonblueText = GoogleFonts.roboto(
     fontSize: AppFontSize.medium,
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
-  static const TextStyle bannerText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle bannerText = GoogleFonts.roboto(
     fontSize: AppFontSize.medium,
     fontWeight: FontWeight.bold,
     color: AppColors.lightTextColor,
-    overflow: TextOverflow.ellipsis,
   );
 //detail
-  static const TextStyle headline1 = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle headline3 = GoogleFonts.roboto(
+    fontSize: AppFontSize.medium,
+    fontWeight: FontWeight.bold,
+    color: AppColors.primaryColor,
+  );
+  static final TextStyle headline1 = GoogleFonts.roboto(
     fontSize: AppFontSize.medium,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
-  static const TextStyle headline2 = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle headline2 = GoogleFonts.roboto(
     fontSize: AppFontSize.medium,
     fontWeight: FontWeight.bold,
     color: AppColors.lightTextColor,
   );
-  static const TextStyle nameMovie = TextStyle(
-      fontFamily: 'Roboto',
+  static final TextStyle nameMovie = GoogleFonts.roboto(
       fontSize: AppFontSize.medium,
       fontWeight: FontWeight.bold,
       color: AppColors.darktextColor);
 
-  static const TextStyle smallText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle smallText = GoogleFonts.roboto(
     fontSize: AppFontSize.verySmall,
     color: AppColors.grayTextColor,
   );
-
-  static const TextStyle detailTitle = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle smallText2123 = GoogleFonts.roboto(
     fontSize: AppFontSize.verySmall,
     color: AppColors.grayTextColor,
-    overflow: TextOverflow.ellipsis,
   );
-  static const TextStyle detailText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle detailTitle = GoogleFonts.roboto(
+    fontSize: AppFontSize.verySmall,
+    color: AppColors.grayTextColor,
+  );
+  static final TextStyle detailText = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.grayTextColor,
-    overflow: TextOverflow.ellipsis,
   );
-  static const TextStyle buttonText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle buttonText = GoogleFonts.roboto(
     fontSize: AppFontSize.verySmall,
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
-    overflow: TextOverflow.ellipsis,
   );
-  static const TextStyle smalldark = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle smalldark = GoogleFonts.roboto(
     fontSize: AppFontSize.verySmall,
     fontWeight: FontWeight.bold,
     color: AppColors.backgroundColor,
-    overflow: TextOverflow.ellipsis,
   );
-  static const TextStyle bodyText1 = TextStyle(
-      fontFamily: 'Roboto',
+  static final TextStyle bodyText1 = GoogleFonts.roboto(
       fontSize: AppFontSize.lowMedium,
       fontWeight: FontWeight.bold,
       color: AppColors.grayTextColor);
 
-  static const TextStyle classifyText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle classifyText = GoogleFonts.roboto(
     fontSize: AppFontSize.verySmall,
     fontWeight: FontWeight.bold,
     color: AppColors.lightTextColor,
   );
 
-  static const TextStyle buttonNavigator = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle buttonNavigator = GoogleFonts.roboto(
     fontSize: AppFontSize.medium,
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
-  static const TextStyle buttonText2 = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle buttonText2 = GoogleFonts.roboto(
     fontSize: AppFontSize.small,
     fontWeight: FontWeight.bold,
     color: AppColors.lightTextColor,
   );
-  static const TextStyle thinText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle thinText = GoogleFonts.roboto(
     fontSize: AppFontSize.lowMedium,
     fontWeight: FontWeight.normal,
     color: AppColors.grayTextColor,
   );
-  static const TextStyle showTimeText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle showTimeText = GoogleFonts.roboto(
     fontSize: AppFontSize.lowMedium,
     fontWeight: FontWeight.bold,
-    color: Color.fromARGB(255, 1, 121, 219),
+    color: const Color.fromARGB(255, 1, 121, 219),
   );
-  static const TextStyle mediumBlackText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle mediumBlackText = GoogleFonts.roboto(
     fontSize: AppFontSize.medium,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
-  static const TextStyle bigText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle bigText = GoogleFonts.roboto(
     fontSize: AppFontSize.midlarge,
     fontWeight: FontWeight.bold,
     color: AppColors.darktextColor,
   );
-  static const TextStyle primaryBigText = TextStyle(
-    fontFamily: 'Roboto',
+  static final TextStyle primaryBigText = GoogleFonts.roboto(
     fontSize: AppFontSize.midlarge,
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
-    overflow: TextOverflow.ellipsis,
   );
 }
