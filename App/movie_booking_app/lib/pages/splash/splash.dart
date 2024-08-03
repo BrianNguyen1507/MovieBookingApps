@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen>
                   height: 350,
                 ),
                 progressLoading,
-                const Text(
+                Text(
                   'Please wait for the app to load...',
                   style: AppStyle.titleOrder,
                 )

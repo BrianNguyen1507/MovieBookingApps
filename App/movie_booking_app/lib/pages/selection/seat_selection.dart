@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
@@ -13,12 +15,12 @@ import 'package:movie_booking_app/models/seat/seat.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/seat-widget/seat_widgets.dart';
 import 'package:movie_booking_app/pages/store/store.dart';
-import 'package:movie_booking_app/provider/consumer/translator.dart';
 import 'package:movie_booking_app/services/Users/movie-detail/movie_detail_service.dart';
 import 'package:movie_booking_app/services/Users/order/get-total/get_total_service.dart';
 import 'package:movie_booking_app/services/Users/seat/seat_service.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 class SeatSelection extends StatefulWidget {
   final int scheduleId;
@@ -68,10 +70,11 @@ class _SeatSelectionState extends State<SeatSelection> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: Common.leadingArrowPop(context, AppColors.iconThemeColor),
           backgroundColor: AppColors.opacityBlackColor,
           centerTitle: true,
           title: seatStateList(context),
-          iconTheme: const IconThemeData(color: AppColors.containerColor),
         ),
         backgroundColor: AppColors.backgroundColor,
         body: CustomScrollView(
@@ -147,9 +150,9 @@ class _SeatSelectionState extends State<SeatSelection> {
                 children: [
                   Column(
                     children: [
-                      const Text(
+                      Text(
                         'Exit',
-                        style: AppStyle.screenText,
+                        style: AppStyle.smallText,
                       ),
                       SvgPicture.asset(
                         'assets/svg/logout.svg',
@@ -173,9 +176,9 @@ class _SeatSelectionState extends State<SeatSelection> {
                   const SizedBox(width: 20),
                   Column(
                     children: [
-                      const Text(
+                      Text(
                         'Exit',
-                        style: AppStyle.screenText,
+                        style: AppStyle.smallText,
                       ),
                       SvgPicture.asset(
                         'assets/svg/logout-revert.svg',
@@ -191,13 +194,17 @@ class _SeatSelectionState extends State<SeatSelection> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
-                    children: List.generate(
-                      seatData.seats.length,
-                      (index) {
-                        return buildSeatRow(
-                            seatData.seats[index], index + 1, rowLabels);
-                      },
-                    ),
+                    children: [
+                      Column(
+                        children: List.generate(
+                          seatData.seats.length,
+                          (index) {
+                            return buildSeatRow(
+                                seatData.seats[index], index + 1, rowLabels);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -321,6 +328,7 @@ Widget renderBooking(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
+                        flex: 2,
                         child: Row(
                           children: [
                             ClipRRect(
@@ -337,8 +345,8 @@ Widget renderBooking(
                                     return const SizedBox();
                                   } else {
                                     return Image.memory(
-                                      height: 70,
-                                      width: 50,
+                                      cacheHeight: 70,
+                                      cacheWidth: 50,
                                       snapshot.data!,
                                       fit: BoxFit.cover,
                                     );
@@ -346,59 +354,53 @@ Widget renderBooking(
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: ClassifyClass.toFlutterColor(
-                                            ClassifyClass.classifyType(
-                                                movieData.classify),
-                                          ),
-                                          borderRadius: ContainerRadius.radius2,
-                                        ),
-                                        padding: const EdgeInsets.all(1.5),
-                                        child: Text(
-                                          ClassifyClass.convertNamed(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.all(2.0),
+                                      padding: const EdgeInsets.all(1.5),
+                                      decoration: BoxDecoration(
+                                        color: ClassifyClass.toFlutterColor(
+                                          ClassifyClass.classifyType(
                                               movieData.classify),
-                                          style: AppStyle.classifyText,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
                                         ),
+                                        borderRadius: ContainerRadius.radius2,
                                       ),
-                                      SizedBox(
-                                          width: AppSize.width(context) / 3,
-                                          child: Text(
-                                            movieData.title,
-                                            maxLines: 1,
-                                            style: AppStyle.titleOrder,
-                                          )),
-                                    ],
-                                  ),
-                                  TranslateConsumer().translateProvider(
-                                      '${movieData.duration} ${AppLocalizations.of(context)!.minutes}',
-                                      1,
-                                      AppStyle.smallText),
-                                ],
-                              ),
+                                      child: Text(
+                                        ClassifyClass.convertNamed(
+                                            movieData.classify),
+                                        style: AppStyle.classifyText,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 150,
+                                      child: Text(
+                                        ' ${movieData.title}',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: AppStyle.smallText,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                    '${movieData.duration} ${AppLocalizations.of(context)!.minutes}',
+                                    maxLines: 1,
+                                    style: AppStyle.smallText),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        width: AppSize.width(context) / 3,
+                      Expanded(
+                        flex: 1,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                                '${AppLocalizations.of(context)!.theater}: $theaterName',
-                                style: AppStyle.smallText),
+                            Text(theaterName, style: AppStyle.smallText),
                             Text(
                                 '${AppLocalizations.of(context)!.room}: $roomNumber',
                                 style: AppStyle.smallText),
@@ -455,7 +457,7 @@ Widget renderBooking(
                           text: ConverterUnit.formatPrice(data.priceMovie),
                           style: AppStyle.bodyText1,
                         ),
-                        const TextSpan(
+                        TextSpan(
                           text: '₫',
                           style: AppStyle.bodyText1,
                         ),
@@ -478,14 +480,14 @@ Widget renderBooking(
               backgroundColor: AppColors.primaryColor,
             ),
             onPressed: () async {
-              ValidInput val = ValidInput();
               if (selectedSeats.isEmpty) {
-                val.showAlertCustom(
+                ShowDialog.showAlertCustom(
                     context,
-                    'Please select at least one seat before booking',
+                    AppLocalizations.of(context)!.seat_noti,
                     '',
                     true,
-                    null);
+                    null,
+                    DialogType.info);
                 return;
               }
 

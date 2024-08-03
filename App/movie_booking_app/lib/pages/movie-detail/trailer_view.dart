@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -39,10 +40,8 @@ class _TrailerScreenState extends State<TrailerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
-        iconTheme: const IconThemeData(color: AppColors.iconThemeColor),
-      ),
+      appBar: Common.customAppbar(
+          context, null, '', AppColors.iconThemeColor, AppColors.appbarColor),
       body: Center(
         child: !isVideoLoaded
             ? const CircularProgressIndicator(

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
@@ -14,7 +15,7 @@ import 'package:movie_booking_app/services/Users/food/food_service.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/services/Users/order/hold-seat/hold_seat_service.dart';
 import 'package:movie_booking_app/services/Users/order/get-total/get_total_service.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 import 'package:provider/provider.dart';
 
 class StorePage extends StatefulWidget {
@@ -165,7 +166,6 @@ class _StorePageState extends State<StorePage> {
                       itemCount: foodData.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: const EdgeInsets.all(10.0),
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                               boxShadow: [
@@ -238,7 +238,7 @@ class _StorePageState extends State<StorePage> {
                                               Text(
                                                 maxLines: 1,
                                                 '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
-                                                style: AppStyle.primaryText,
+                                                style: AppStyle.blackBold,
                                               ),
                                             ],
                                           ),
@@ -340,11 +340,13 @@ Widget renderBooking(
           Preferences pref = Preferences();
           String? token = await pref.getTokenUsers();
           if (token == null) {
-            ValidInput valid = ValidInput();
-            valid.showAlertCustom(context, 'You need to sign in to continue',
-                'Go to Sign in', true, () {
+            ShowDialog.showAlertCustom(
+                context,
+                AppLocalizations.of(context)!.sigin_noti,
+                AppLocalizations.of(context)!.go_signin,
+                true, () {
               Navigator.pushNamed(context, '/login');
-            });
+            }, DialogType.question);
             return;
           }
 
@@ -356,11 +358,13 @@ Widget renderBooking(
           }
 
           if (!selection && listOrdered.isEmpty) {
-            ValidInput val = ValidInput();
-            val.showMessage(
+            ShowDialog.showAlertCustom(
                 context,
-                'Please choose at least one type of food and drink',
-                Colors.red);
+                AppLocalizations.of(context)!.food_noti,
+                null,
+                false,
+                () {},
+                DialogType.info);
           } else {
             //set tg hold
             bool isSeatHold = visible

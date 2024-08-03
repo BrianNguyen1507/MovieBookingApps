@@ -43,11 +43,11 @@ class ListFilmOrderState extends State<ListFilmOrder> {
         } else if (snapshot.data == null ||
             !snapshot.hasData ||
             snapshot.hasError) {
-          return progressLoading;
+          return Center(child: progressLoading);
         } else {
           List<OrderResponse> filmOrders = snapshot.data!;
           return SizedBox(
-            height: AppSize.height(context) - 150,
+            height: AppSize.height(context) - 100,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: filmOrders.length,
@@ -66,19 +66,13 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                     );
                   },
                   child: Container(
-                    margin: const EdgeInsets.all(2.0),
+                    margin: const EdgeInsets.all(5.0),
                     width: AppSize.width(context),
                     height: 140,
                     decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 6.0,
-                            color: AppColors.shadowColor,
-                            offset: Offset(2, 1),
-                          ),
-                        ],
-                        color: AppColors.containerColor,
-                        borderRadius: ContainerRadius.radius12),
+                      color: AppColors.containerColor,
+                      borderRadius: ContainerRadius.radius12,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -89,12 +83,14 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                               child: Stack(
                                 children: [
                                   SizedBox(
-                                    width: 90,
                                     child: ClipRRect(
                                       borderRadius: ContainerRadius.radius5,
                                       child: Image.memory(
-                                          ConverterUnit.base64ToUnit8(
-                                              filmOrder.poster)),
+                                        ConverterUnit.base64ToUnit8(
+                                            filmOrder.poster),
+                                        cacheWidth: 90,
+                                        cacheHeight: 140,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -109,9 +105,11 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                     width: AppSize.width(context) / 2,
                                     child: Padding(
                                       padding: const EdgeInsets.all(3.0),
-                                      child: Text(filmOrder.title,
-                                          maxLines: 2,
-                                          style: AppStyle.bodyText1),
+                                      child: Text(
+                                        filmOrder.title,
+                                        maxLines: 2,
+                                        style: AppStyle.bodyText1,
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -137,15 +135,22 @@ class ListFilmOrderState extends State<ListFilmOrder> {
                                         decoration: BoxDecoration(
                                           color: filmOrder.status == "Unused"
                                               ? AppColors.correctColor
-                                              : AppColors.errorColor,
+                                              : filmOrder.status == "Expired"
+                                                  ? AppColors.errorColor
+                                                  : AppColors.grayTextColor,
                                           borderRadius: ContainerRadius.radius2,
                                         ),
                                         child: Center(
                                           child: Text(
                                             filmOrder.status == "Unused"
                                                 ? ''
-                                                : AppLocalizations.of(context)!
-                                                    .expired,
+                                                : filmOrder.status == "Expired"
+                                                    ? AppLocalizations.of(
+                                                            context)!
+                                                        .expired
+                                                    : AppLocalizations.of(
+                                                            context)!
+                                                        .used,
                                             style: AppStyle.classifyText,
                                           ),
                                         ),

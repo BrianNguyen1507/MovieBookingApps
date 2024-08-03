@@ -4,6 +4,7 @@ import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class QrcodePage extends StatefulWidget {
   const QrcodePage({super.key, required this.qr});
@@ -31,15 +32,8 @@ class _QrcodePageState extends State<QrcodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("QR CODE"),
-        backgroundColor: AppColors.backgroundColor.withOpacity(0.2),
-        titleTextStyle: AppStyle.headline1,
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: AppColors.backgroundColor,
-        ),
-      ),
+      appBar: Common.customAppbar(context, AppStyle.headline2, 'QR CODE',
+          AppColors.iconThemeColor, AppColors.appbarColor.withOpacity(0.3)),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -1,11 +1,12 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/order/create-order/create_order_service.dart';
 import 'package:movie_booking_app/services/Users/order/return-seat/return_seat_service.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Handlepayments {
   static Future<Map<dynamic, dynamic>> handleZaloPay(
@@ -50,26 +51,8 @@ class Handlepayments {
     }
   }
 
-  static handlePaymentFail(BuildContext context) {
-    showDialog(
-      barrierDismissible: true,
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/svg/fail.svg',
-              height: 70,
-              width: 70,
-            ),
-            const Text(
-              'Payment Fail',
-              style: AppStyle.bodyText1,
-            )
-          ],
-        ),
-      ),
-    );
+  static handlePaymentFail(context) {
+    ShowDialog.showAlertCustom(context, AppLocalizations.of(context)!.payfail_noti,
+        'Cancel', false, () {}, DialogType.error);
   }
 }

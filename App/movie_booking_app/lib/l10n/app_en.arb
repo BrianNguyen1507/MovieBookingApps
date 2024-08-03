@@ -124,8 +124,20 @@
   "vid_trailer": "Video trailer",
   "month": "Month",
   "no_voucher": "Oops! You don't have any vouchers. Please come back later",
-  "cancel":"Cancel",
-   "no_food":"No food ordered",
-   "date_showtime": "Movie show date",
-    "pay_success":"Payment success"
-  }
+  "cancel": "Cancel",
+  "no_food": "No food ordered",
+  "date_showtime": "Movie show date",
+  "pay_success": "Payment success",
+  "dialog_alert": "Notification",
+  "time_end_noti": "The time order is ended. Please try again!",
+  "voucher_noti": "Please select voucher to continue",
+  "payfail_noti": "Payment Fail",
+  "login_expired": "Your session has timed out, please sign in again!",
+  "cofirm_logout_q": "Are you sure to log out?",
+  "confirm_logout": "Yes, log out",
+  "seat_noti": "Please select at least one seat before continuing to booking",
+  "sigin_noti": "You need to sign in to continue",
+  "go_signin": "Go to Sign in",
+  "find_cinema": "Do you want to find your way to the cinema?",
+  "food_noti": "Please choose at least one type of food and drink"
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebview extends StatefulWidget {
@@ -80,9 +81,8 @@ class _PaymentWebviewState extends State<PaymentWebview> {
           )
         : Scaffold(
             extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: AppColors.backgroundColor.withOpacity(0.1),
-            ),
+            appBar: Common.customAppbar(context, null, '',
+                AppColors.appbarColor, AppColors.appbarColor.withOpacity(0.1)),
             body: Center(
               child: WebViewWidget(
                 controller: controller,

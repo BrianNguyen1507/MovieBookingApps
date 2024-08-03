@@ -7,18 +7,13 @@ import 'package:movie_booking_app/provider/consumer/translator.dart';
 Widget detailTitle(String title, String value) {
   return Padding(
     padding: const EdgeInsets.only(left: 10, right: 10),
-    child: Row(
+    child: Column(
       children: [
-        Column(
-          children: [
-            Text(
-              title,
-              style: (AppStyle.detailTitle),
-            ),
-            TranslateConsumer()
-                .translateProvider(value, 1, AppStyle.detailText),
-          ],
+        Text(
+          title,
+          style: (AppStyle.detailTitle),
         ),
+        TranslateConsumer().translateProvider(value, 1, AppStyle.detailText),
       ],
     ),
   );

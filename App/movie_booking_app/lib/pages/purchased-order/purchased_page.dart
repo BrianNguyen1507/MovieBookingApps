@@ -5,6 +5,7 @@ import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/pages/purchased-order/list_film_order.dart';
 import 'package:movie_booking_app/pages/purchased-order/list_food_order.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class ListOrdered extends StatefulWidget {
   const ListOrdered({super.key});
@@ -22,18 +23,15 @@ class ListOrderedState extends State<ListOrdered> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.containerColor,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.my_orders),
-        backgroundColor: AppColors.appbarColor,
-        titleTextStyle: AppStyle.bannerText,
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: AppColors.containerColor,
-        ),
-      ),
+      appBar: Common.customAppbar(
+          context,
+          AppStyle.headline2,
+          AppLocalizations.of(context)!.my_orders,
+          AppColors.iconThemeColor,
+          AppColors.appbarColor),
       body: SingleChildScrollView(
         child: Container(
-          color: AppColors.containerColor,
+          color: AppColors.commonLightColor,
           child: Column(
             children: [
               Row(

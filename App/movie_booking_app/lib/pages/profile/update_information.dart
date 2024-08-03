@@ -15,6 +15,7 @@ import 'package:movie_booking_app/services/Users/infomation/get_myinfo_service.d
 import 'package:movie_booking_app/services/Users/infomation/update_account.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class UpdateInformation extends StatefulWidget {
   const UpdateInformation({super.key});
@@ -82,15 +83,12 @@ class UpdateInformationState extends State<UpdateInformation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.update_info),
-          backgroundColor: AppColors.appbarColor,
-          titleTextStyle: AppStyle.headline2,
-          centerTitle: true,
-          iconTheme: const IconThemeData(
-            color: AppColors.containerColor,
-          ),
-        ),
+        appBar: Common.customAppbar(
+            context,
+            AppStyle.headline2,
+            AppLocalizations.of(context)!.update_info,
+            AppColors.iconThemeColor,
+            AppColors.appbarColor),
         body: FutureBuilder<bool>(
             future: checker,
             builder: (context, snapshot) {

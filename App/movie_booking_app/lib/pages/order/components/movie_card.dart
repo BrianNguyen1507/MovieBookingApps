@@ -13,7 +13,7 @@ Widget movieCard(context, MovieDetail getMovie) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(15.0),
           child: Text(AppLocalizations.of(context)!.movieDetail,
               style: AppStyle.bodyText1),
         ),

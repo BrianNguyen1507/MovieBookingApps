@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/models/user/user.dart';
-import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
 import 'package:movie_booking_app/pages/sign-in-up/reset_password.dart';
 import 'package:movie_booking_app/services/Users/signup/sign_up_service.dart';
 
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 class HandleSignupState {
   ValidInput valid = ValidInput();
@@ -21,7 +21,7 @@ class HandleSignupState {
         phoneNumber: phone,
         dayOfBirth: dob);
 
-    showLoadingDialog(context);
+    ShowDialog.showLoadingDialog(context);
     final signup = await SignUpService.signup(context, user);
     Navigator.of(context).pop();
     if (signup) {
@@ -39,7 +39,7 @@ class HandleSignupState {
 
   Future<void> validOTP(
       context, String email, String otp, String method) async {
-    showLoadingDialog(context);
+    ShowDialog.showLoadingDialog(context);
     final result = await OTPService.otpService(email, otp);
     if (result != true) {
       valid.showMessage(context, "Invalid OTP", AppColors.errorColor);

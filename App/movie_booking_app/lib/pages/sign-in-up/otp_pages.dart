@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
+import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/services/Users/signup/handle_sign_up.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({super.key, required this.email, required this.method});
@@ -20,13 +22,8 @@ class OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'OTP Verification',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
+      appBar: Common.customAppbar(context, AppStyle.headline2,
+          'OTP Verification', AppColors.appbarColor, AppColors.containerColor),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(

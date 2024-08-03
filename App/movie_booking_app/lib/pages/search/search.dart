@@ -10,6 +10,7 @@ import 'package:movie_booking_app/provider/consumer/translator.dart';
 import 'package:movie_booking_app/services/Users/search/search_service.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -40,15 +41,9 @@ class SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: AppColors.containerColor,
-          ),
-          title: Text(AppLocalizations.of(context)!.search,
-              style: AppStyle.bannerText),
-          backgroundColor: AppColors.backgroundColor,
-        ),
-        backgroundColor: AppColors.commonLightColor,
+        appBar: Common.customAppbar(context,null,
+            AppLocalizations.of(context)!.search, AppColors.appbarColor, null),
+        backgroundColor: AppColors.containerColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

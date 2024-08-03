@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
-import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/modules/connection/network_control.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/pages/index/components/bottom_navigator.dart';
 import 'package:movie_booking_app/pages/index/drawer/drawer.dart';
 import 'package:movie_booking_app/pages/order/order_page.dart';
-import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/routes/app_routes.dart';
-import 'package:movie_booking_app/services/Users/logout/logout_service.dart';
-import 'package:movie_booking_app/services/Users/order/return-seat/return_seat_service.dart';
-import 'package:movie_booking_app/services/Users/refresh/token_manager.dart';
 import 'package:movie_booking_app/pages/search/search.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 
@@ -72,36 +67,34 @@ class _IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.detached) {
-      handleAppDetached(context);
+      // handleAppDetached(context);
     }
   }
 
-  Future<void> handleAppDetached(context) async {
-    Preferences pref = Preferences();
-    await LogOutServices.logout(context);
-    TokenManager.cancelTokenRefreshTimer();
-    String? seatpref = await pref.getHoldSeats();
-    int? scheduleIdpref = await pref.getSchedule();
-    if (seatpref != null && seatpref.isNotEmpty && scheduleIdpref != null) {
-      Set<String> heldSeats = ConverterUnit.convertStringToSet(seatpref);
-      ReturnSeatService.returnSeat(context, scheduleIdpref, heldSeats);
-      pref.clearHoldSeats();
-      pref.clearSchedule();
-      debugPrint("Hold seats returned successfully");
-    } else {
-      debugPrint("No seats were held");
-    }
-  }
+  // Future<void> handleAppDetached(context) async {
+  //   Preferences pref = Preferences();
+  //   await LogOutServices.logout(context);
+  //   TokenManager.cancelTokenRefreshTimer();
+  //   String? seatpref = await pref.getHoldSeats();
+  //   int? scheduleIdpref = await pref.getSchedule();
+  //   if (seatpref != null && seatpref.isNotEmpty && scheduleIdpref != null) {
+  //     Set<String> heldSeats = ConverterUnit.convertStringToSet(seatpref);
+  //     ReturnSeatService.returnSeat(context, scheduleIdpref, heldSeats);
+  //     pref.clearHoldSeats();
+  //     pref.clearSchedule();
+  //     debugPrint("Hold seats returned successfully");
+  //   } else {
+  //     debugPrint("No seats were held");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: false,
       drawer: BuildDrawer(context),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            floating: false,
             pinned: true,
             backgroundColor: AppColors.backgroundColor,
             iconTheme: const IconThemeData(color: AppColors.iconThemeColor),

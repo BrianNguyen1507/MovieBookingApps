@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
-import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
 import 'package:movie_booking_app/services/Users/forgotpassword/forgot_password.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 class ForgotPassWord extends StatefulWidget {
   const ForgotPassWord({super.key});
@@ -21,9 +22,8 @@ class ForgotPassWordState extends State<ForgotPassWord> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
+      appBar:
+          Common.customAppbar(context, null, '', AppColors.appbarColor, null),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -67,7 +67,7 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                         email = emailController.text;
                       });
                       try {
-                        showLoadingDialog(context);
+                        ShowDialog.showLoadingDialog(context);
                         bool result =
                             await ForgotPasswordService.forgotPassword(
                                 email, context);

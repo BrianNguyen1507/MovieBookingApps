@@ -7,6 +7,7 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/selection/components/theater_widget/theater_widget.dart';
 import 'package:movie_booking_app/services/Users/theater/theater_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class TheaterSelection extends StatefulWidget {
   final int movieId;
@@ -31,17 +32,8 @@ class _TheaterSelectionState extends State<TheaterSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: AppColors.backgroundColor,
-          iconTheme: const IconThemeData(
-            color: AppColors.containerColor,
-          ),
-          title: Text(
-            widget.name,
-            maxLines: 1,
-            style: AppStyle.bannerText,
-          )),
+      appBar: Common.customAppbar(context, AppStyle.headline2, widget.name,
+          AppColors.iconThemeColor, AppColors.appbarColor),
       body: Container(
         decoration: const BoxDecoration(
           color: AppColors.commonLightColor,

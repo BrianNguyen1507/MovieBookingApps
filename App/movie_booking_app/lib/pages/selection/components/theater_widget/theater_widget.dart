@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
@@ -8,7 +9,8 @@ import 'package:movie_booking_app/models/theater/theater.dart';
 import 'package:movie_booking_app/pages/map/map_view.dart';
 import 'package:movie_booking_app/pages/selection/schedule_selection.dart';
 import 'package:movie_booking_app/provider/consumer/translator.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TheaterItems {
   static Widget theaterTag(
@@ -80,11 +82,10 @@ class TheaterItems {
                 ),
                 GestureDetector(
                   onTap: () {
-                    ValidInput val = ValidInput();
-                    val.showAlertCustom(
+                    ShowDialog.showAlertCustom(
                       context,
-                      'Do you want to find your way to the cinema?',
-                      'Yes, continue',
+                      AppLocalizations.of(context)!.find_cinema,
+                      'Yes',
                       true,
                       () {
                         Navigator.pop(context);
@@ -99,6 +100,7 @@ class TheaterItems {
                           },
                         );
                       },
+                      DialogType.infoReverse,
                     );
                   },
                   child: ClipRRect(

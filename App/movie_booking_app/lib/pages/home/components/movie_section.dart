@@ -82,14 +82,6 @@ class NowShowingSectionState extends State<NowShowingSection> {
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: TextButton.icon(
-                    style: ButtonStyle(
-                      side: WidgetStateProperty.all<BorderSide>(
-                        BorderSide(
-                          color: AppColors.backgroundColor.withOpacity(0.4),
-                          width: 1,
-                        ),
-                      ),
-                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -230,14 +222,6 @@ class ComingSoonSection extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: TextButton.icon(
-                  style: ButtonStyle(
-                    side: WidgetStateProperty.all<BorderSide>(
-                      BorderSide(
-                        color: AppColors.backgroundColor.withOpacity(0.4),
-                        width: 1,
-                      ),
-                    ),
-                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -282,6 +266,7 @@ class ComingSoonSection extends StatelessWidget {
                           itemCount: filmsFuture.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(5.0),
@@ -294,6 +279,7 @@ class ComingSoonSection extends StatelessWidget {
                                       child: Text(
                                     filmsFuture[index].title,
                                     maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: AppStyle.titleMovie,
                                   )),
                                 ),

@@ -7,6 +7,7 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/purchased-order/components/purchased_detail.dart';
 import 'package:movie_booking_app/services/Users/puchased/detail_order.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class DetailOrderPage extends StatefulWidget {
   const DetailOrderPage({super.key, required this.id});
@@ -30,15 +31,12 @@ class DetailOrderPageState extends State<DetailOrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.detail_order),
-        backgroundColor: AppColors.appbarColor,
-        titleTextStyle: AppStyle.bannerText,
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: AppColors.iconThemeColor,
-        ),
-      ),
+      appBar: Common.customAppbar(
+          context,
+          AppStyle.headline2,
+          AppLocalizations.of(context)!.detail_order,
+          AppColors.iconThemeColor,
+          AppColors.appbarColor),
       body: FutureBuilder<DetailOrder?>(
         future: orderFuture,
         builder: (context, snapshot) {

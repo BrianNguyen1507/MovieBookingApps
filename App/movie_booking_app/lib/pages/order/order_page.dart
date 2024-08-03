@@ -19,6 +19,7 @@ import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/food/get_food_id.dart';
 import 'package:movie_booking_app/services/Users/movie-detail/movie_detail_service.dart';
 import 'package:movie_booking_app/services/Users/order/return-seat/return_seat_service.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 double newTotal = 0;
 double discount = 0;
@@ -90,15 +91,12 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
-        iconTheme: const IconThemeData(color: AppColors.containerColor),
-        title: Text(
+      appBar: Common.customAppbar(
+          context,
+          AppStyle.headline2,
           AppLocalizations.of(context)!.order_inf,
-          style: AppStyle.headline2,
-        ),
-        centerTitle: true,
-      ),
+          AppColors.iconThemeColor,
+          AppColors.appbarColor),
       backgroundColor: AppColors.backgroundColor,
       body: Container(
         padding: const EdgeInsets.only(top: 20.0),

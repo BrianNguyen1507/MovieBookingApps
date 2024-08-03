@@ -5,6 +5,7 @@ import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/pages/profile/change_password.dart';
 import 'package:movie_booking_app/pages/profile/update_information.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 
 class InformationChoice extends StatelessWidget {
   const InformationChoice({super.key});
@@ -12,13 +13,12 @@ class InformationChoice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.personal_inf),
-        backgroundColor: AppColors.appbarColor,
-        titleTextStyle: AppStyle.headline2,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
+      appBar: Common.customAppbar(
+          context,
+          AppStyle.headline2,
+          AppLocalizations.of(context)!.personal_inf,
+          AppColors.iconThemeColor,
+          AppColors.appbarColor),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

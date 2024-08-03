@@ -16,7 +16,8 @@ import 'package:movie_booking_app/pages/selection/theater_selection.dart';
 import 'package:movie_booking_app/provider/provider.dart';
 import 'package:movie_booking_app/services/Users/movie-detail/movie_detail_service.dart';
 import 'package:movie_booking_app/services/Users/rating-feedback/rating_feedback_service.dart';
-import 'package:movie_booking_app/utils/expandable.dart';
+import 'package:movie_booking_app/utils/common/expandable.dart';
+import 'package:movie_booking_app/utils/common/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetailPage extends StatefulWidget {
@@ -234,7 +235,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                         ),
                                       );
                                     },
-                                    label: const Text(
+                                    label: Text(
                                       'Trailer',
                                       style: AppStyle.buttonText,
                                     ),
@@ -384,14 +385,24 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: Common.customAppbar(
+                context,
+                null,
+                AppLocalizations.of(context)!.movieDetail,
+                AppColors.appbarColor,
+                null),
             body: Center(
               child: loadingData(context),
             ),
           );
         } else if (snapshot.hasError || snapshot.data == null) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: Common.customAppbar(
+                context,
+                null,
+                AppLocalizations.of(context)!.movieDetail,
+                AppColors.appbarColor,
+                null),
             body: Center(
               child: loadingData(context),
             ),
@@ -403,16 +414,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return SafeArea(
             child: Scaffold(
               backgroundColor: AppColors.containerColor,
-              appBar: AppBar(
-                title: Text(
+              appBar: Common.customAppbar(
+                  context,
+                  null,
                   AppLocalizations.of(context)!.movieDetail,
-                  style: AppStyle.headline1,
-                ),
-                iconTheme: const IconThemeData(
-                  color: AppColors.backgroundColor,
-                ),
-                backgroundColor: Colors.transparent,
-              ),
+                  AppColors.appbarColor,
+                  null),
               body: Container(
                 constraints: const BoxConstraints.expand(),
                 child: Column(
@@ -441,7 +448,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
-  _onBookingPress(BuildContext context) {
+  _onBookingPress(context) {
     Navigator.push(
         context,
         MaterialPageRoute(
