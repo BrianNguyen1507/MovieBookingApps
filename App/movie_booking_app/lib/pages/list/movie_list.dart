@@ -19,7 +19,9 @@ class MovieListings extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: Common.customAppbar(context,null, listTitle, AppColors.appbarColor,null),
+        backgroundColor: AppColors.containerColor,
+        appBar: Common.customAppbar(
+            context, null, listTitle, AppColors.appbarColor, null),
         body: FutureBuilder(
           future: movies,
           builder: (context, snapshot) {

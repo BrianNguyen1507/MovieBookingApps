@@ -444,8 +444,7 @@ Widget detailOrderFilm(context, DetailOrder order) {
 Widget detailOrderFood(context, DetailOrder order) {
   return Stack(
     children: [
-      SizedBox(
-        height: AppSize.height(context),
+      Expanded(
         child: Container(
           margin: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(

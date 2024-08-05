@@ -30,7 +30,7 @@ class DetailOrderPageState extends State<DetailOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.commonLightColor,
       appBar: Common.customAppbar(
           context,
           AppStyle.headline2,

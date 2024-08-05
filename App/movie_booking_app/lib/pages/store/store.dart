@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
-import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/order/get_total.dart';
@@ -139,11 +138,9 @@ class _StorePageState extends State<StorePage> {
                 future: foods,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: loadingContent);
+                    return Center(child: progressLoading);
                   } else if (snapshot.hasError || !snapshot.hasData) {
-                    return Center(
-                      child: loadingContent,
-                    );
+                    return Center(child: loadingContent);
                   } else {
                     final foodData = snapshot.data!;
 
@@ -168,119 +165,98 @@ class _StorePageState extends State<StorePage> {
                         return Container(
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                              color: AppColors.containerColor,
-                              borderRadius: ContainerRadius.radius5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                            color: AppColors.containerColor,
+                            borderRadius: ContainerRadius.radius5,
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: ContainerRadius.radius12,
-                                      ),
-                                      margin: const EdgeInsets.only(right: 5.0),
-                                      height: 60,
-                                      width: 60,
-                                      child: Image.memory(
-                                        ConverterUnit.base64ToUnit8(
-                                            foodData[index].image),
-                                        height: 150,
-                                        width: 100,
-                                        fit: BoxFit.fitHeight,
-                                      ),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                            width: AppSize.width(context) * 0.4,
-                                            child: Consumer<ThemeProvider>(
-                                              builder: (context, value, child) {
-                                                return FutureBuilder(
-                                                  future: value.translateText(
-                                                      foodData[index].name),
-                                                  builder: (context, snapshot) {
-                                                    final nameTrans =
-                                                        snapshot.data;
-                                                    return Text(
-                                                      maxLines: 3,
-                                                      nameTrans ??
-                                                          foodData[index].name,
-                                                      style: AppStyle.smalldark,
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                            )),
-                                        SizedBox(
-                                          width: AppSize.width(context) * 0.4,
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                maxLines: 1,
-                                                '${AppLocalizations.of(context)!.price}: ',
-                                                style: AppStyle.smallText,
-                                              ),
-                                              Text(
-                                                maxLines: 1,
-                                                '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
-                                                style: AppStyle.blackBold,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                Container(
+                                  margin: const EdgeInsets.only(right: 5.0),
+                                  height: 60,
+                                  width: 60,
+                                  child: Image.memory(
+                                    ConverterUnit.base64ToUnit8(
+                                        foodData[index].image),
+                                    height: 60,
+                                    width: 60,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 40,
-                                      child: TextField(
-                                        controller: _controllers[index],
-                                        keyboardType: TextInputType.number,
-                                        textAlign: TextAlign.center,
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          isDense: true,
-                                        ),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _values[index] = int.parse(value);
-                                            foodOrder[index]['quantity'] =
-                                                _values[index];
-                                          });
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      FutureBuilder<String?>(
+                                        future: Provider.of<ThemeProvider>(
+                                                context,
+                                                listen: false)
+                                            .translateText(
+                                                foodData[index].name),
+                                        builder: (context, snapshot) {
+                                          final nameTrans = snapshot.data;
+                                          return Text(
+                                            nameTrans ?? foodData[index].name,
+                                            maxLines: 3,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: AppStyle.smalldark,
+                                          );
                                         },
                                       ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '${AppLocalizations.of(context)!.price}: ',
+                                            style: AppStyle.smallText,
+                                          ),
+                                          Text(
+                                            '${ConverterUnit.formatPrice(foodData[index].price)} ₫',
+                                            style: AppStyle.blackBold,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: TextFormField(
+                                    controller: _controllers[index],
+                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      isDense: true,
                                     ),
-                                    Column(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.add),
-                                          onPressed: () =>
-                                              _incrementValue(index),
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.remove),
-                                          onPressed: () =>
-                                              _decrementValue(index),
-                                        ),
-                                      ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _values[index] = int.parse(value);
+                                        foodOrder[index]['quantity'] =
+                                            _values[index];
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () => _incrementValue(index),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.remove),
+                                      onPressed: () => _decrementValue(index),
                                     ),
                                   ],
                                 ),
@@ -356,14 +332,13 @@ Widget renderBooking(
               listOrdered.add(item);
             }
           }
-
           if (!selection && listOrdered.isEmpty) {
             ShowDialog.showAlertCustom(
                 context,
                 AppLocalizations.of(context)!.food_noti,
                 null,
-                false,
-                () {},
+                true,
+                null,
                 DialogType.info);
           } else {
             //set tg hold
@@ -371,9 +346,7 @@ Widget renderBooking(
                 ? await HoldSeatService.holdSeat(context, scheduleId, seats!)
                 : false;
             pref.saveHoldSeats(seats!);
-
             isSeatHold ? TimerController.timerHoldSeatStart(context) : null;
-
             String? data = await pref.getHoldSeats();
             //
             debugPrint('Pref hold Seat:  $data');
@@ -381,7 +354,6 @@ Widget renderBooking(
                 movieId, seats.length, listOrdered);
             //
             debugPrint('Store list:  $listOrdered');
-
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return OrderPage(

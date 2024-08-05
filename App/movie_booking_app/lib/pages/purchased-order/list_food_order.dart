@@ -20,11 +20,12 @@ class ListFoodOrder extends StatefulWidget {
 
 class ListFoodOrderState extends State<ListFoodOrder> {
   late Future<List<OrderResponse>?> futureFoodOrder;
+  List<OrderResponse>? foodOrders;
 
   @override
   void initState() {
-    futureFoodOrder = FoodOrderService.getAllFoodOrder(context);
     super.initState();
+    futureFoodOrder = FoodOrderService.getAllFoodOrder(context);
   }
 
   @override
@@ -43,137 +44,119 @@ class ListFoodOrderState extends State<ListFoodOrder> {
         } else if (snapshot.data == null ||
             snapshot.hasError ||
             !snapshot.hasData) {
-          return progressLoading;
+          return Center(child: progressLoading);
         } else {
-          List<OrderResponse> foodOrders = snapshot.data!;
+          foodOrders = snapshot.data!;
           return SizedBox(
-            height: AppSize.height(context) - 50,
+            height: AppSize.height(context) - 96,
             child: ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: foodOrders.length,
-              itemBuilder: (context, index) {
-                OrderResponse foodOder = foodOrders[index];
-                return GestureDetector(
-                  onTap: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailOrderPage(
-                            key: widget.key,
-                            id: foodOder.id.toInt(),
-                          ),
-                        ));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5.0),
-                    margin: const EdgeInsets.all(5.0),
+                itemCount: foodOrders!.length,
+                itemBuilder: (context, index) {
+                  final fooditem = foodOrders![index];
+
+                  return Container(
+                    padding: const EdgeInsets.all(8.0),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 10.0),
                     decoration: BoxDecoration(
-                        color: AppColors.containerColor,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 6.0,
-                            color: AppColors.shadowColor,
-                            offset: Offset(2, 1),
-                          ),
-                        ],
-                        borderRadius: ContainerRadius.radius12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(5.0),
-                          decoration: BoxDecoration(
-                              color: AppColors.primaryColor.withOpacity(0.4),
-                              borderRadius: ContainerRadius.radius12),
-                          margin: const EdgeInsets.all(5.0),
-                          child: const Column(
-                            children: [
-                              ClipRRect(
-                                child: Icon(
-                                  Icons.fastfood,
-                                  color: AppColors.textblackColor,
-                                  size: 50,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: Text(
-                                  "${AppLocalizations.of(context)!.date_order}: ${ConverterUnit.formatDMYhm(foodOder.date!)}",
-                                  style: const TextStyle(
-                                      fontSize: AppFontSize.small),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: Text(
-                                  "${AppLocalizations.of(context)!.payment_med}:  ${foodOder.paymentMethod}",
-                                  style: const TextStyle(
-                                      fontSize: AppFontSize.small),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(3.0),
-                                    decoration: BoxDecoration(
-                                      color: foodOder.status == "Unused"
-                                          ? AppColors.correctColor
-                                          : foodOder.status == "Expired"
-                                              ? AppColors.errorColor
-                                              : AppColors.grayTextColor,
-                                      borderRadius: ContainerRadius.radius2,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        foodOder.status == "Unused"
-                                            ? ''
-                                            : foodOder.status == "Expired"
-                                                ? AppLocalizations.of(context)!
-                                                    .expired
-                                                : AppLocalizations.of(context)!
-                                                    .used,
-                                        style: AppStyle.classifyText,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.all(3.0),
-                                    padding: const EdgeInsets.all(3.0),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
-                                      borderRadius: ContainerRadius.radius2,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .pay_success,
-                                        style: AppStyle.classifyText,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      color: AppColors.containerColor,
+                      boxShadow: const [
+                        BoxShadow(
+                          blurRadius: 6.0,
+                          color: AppColors.shadowColor,
+                          offset: Offset(2, 2),
                         ),
                       ],
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                  ),
-                );
-              },
-            ),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      onTap: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailOrderPage(
+                              key: widget.key,
+                              id: fooditem.id.toInt(),
+                            ),
+                          ),
+                        );
+                      },
+                      leading: Container(
+                        padding: const EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        margin: const EdgeInsets.only(right: 10.0),
+                        child: const Icon(
+                          Icons.fastfood,
+                          color: AppColors.textblackColor,
+                          size: 50,
+                        ),
+                      ),
+                      title: Text(
+                        "${AppLocalizations.of(context)!.date_order}: ${ConverterUnit.formatDMYhm(fooditem.date!)}",
+                        style: const TextStyle(fontSize: AppFontSize.small),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${AppLocalizations.of(context)!.payment_med}: ${fooditem.paymentMethod}",
+                            style: const TextStyle(fontSize: AppFontSize.small),
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(3.0),
+                                decoration: BoxDecoration(
+                                  color: fooditem.status == "Unused"
+                                      ? AppColors.correctColor
+                                      : fooditem.status == "Expired"
+                                          ? AppColors.errorColor
+                                          : AppColors.grayTextColor,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    fooditem.status == "Unused"
+                                        ? ''
+                                        : fooditem.status == "Expired"
+                                            ? AppLocalizations.of(context)!
+                                                .expired
+                                            : AppLocalizations.of(context)!
+                                                .used,
+                                    style: AppStyle.classifyText,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              Container(
+                                padding: const EdgeInsets.all(3.0),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)!.pay_success,
+                                    style: AppStyle.classifyText,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
           );
         }
       },
     );
   }
+
+  bool get wantKeepAlive => true;
 }
