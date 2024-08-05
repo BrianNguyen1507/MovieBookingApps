@@ -4,6 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:movie_booking_app/models/ratingfeedback/rating_feedback.dart';
 
 class ConverterUnit {
+  static Uint8List getImageFromCache(String base64String) {
+    final Map<String, Uint8List> imageCache = {};
+    if (!imageCache.containsKey(base64String)) {
+      imageCache[base64String] = base64Decode(base64String);
+    }
+    return imageCache[base64String]!;
+  }
+
   static Uint8List base64ToUnit8(String base64String) {
     List<int> bytes = base64Decode(base64String);
     return Uint8List.fromList(bytes);

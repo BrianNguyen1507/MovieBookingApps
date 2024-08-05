@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/converter/converter.dart';
-import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
 import 'package:movie_booking_app/pages/profile/guest_view.dart';
 import 'package:movie_booking_app/provider/provider.dart';
@@ -29,9 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
   int? numMovies = 0;
   int? numReviews = 0;
   String? avatar;
-  String? userName = 'Guest';
+  String? userName = '';
   dynamic token;
-  bool _dataFetched = false;
 
   @override
   void initState() {
@@ -43,7 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
     token = await pref.getTokenUsers();
     if (token == null) {
       setState(() {
-        _dataFetched = true;
         userName = null;
       });
       return;
@@ -60,16 +57,12 @@ class _ProfilePageState extends State<ProfilePage> {
         numMovies = numberMovie;
         userName = getuserName;
         avatar = getavatar;
-        _dataFetched = true;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_dataFetched) {
-      return progressLoading;
-    }
     if (token == null && userName == null) {
       return const GuestPage();
     } else {

@@ -21,76 +21,79 @@ class ListOrderedState extends State<ListOrdered> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.containerColor,
-      appBar: Common.customAppbar(
-          context,
-          AppStyle.headline2,
-          AppLocalizations.of(context)!.my_orders,
-          AppColors.iconThemeColor,
-          AppColors.appbarColor),
-      body: SingleChildScrollView(
-        child: Container(
-          color: AppColors.commonLightColor,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isTabSelected = true;
-                      });
-                    },
-                    child: Container(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.commonLightColor,
+        appBar: Common.customAppbar(
+            context,
+            AppStyle.headline2,
+            AppLocalizations.of(context)!.my_orders,
+            AppColors.iconThemeColor,
+            AppColors.appbarColor),
+        body: SingleChildScrollView(
+          child: Container(
+            color: AppColors.commonLightColor,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isTabSelected = true;
+                        });
+                      },
+                      child: Container(
+                          height: 40,
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: isTabSelected
+                                ? AppColors.primaryColor.withOpacity(0.3)
+                                : AppColors.transpanrent,
+                            border: Border(
+                              bottom: BorderSide(
+                                color: AppColors.primaryColor,
+                                width: isTabSelected ? 2.0 : 0,
+                              ),
+                            ),
+                          ),
+                          width: AppSize.width(context) / 2,
+                          child: Text(
+                              AppLocalizations.of(context)!.movie_tickets,
+                              textAlign: TextAlign.center,
+                              style: AppStyle.bodyText1)),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isTabSelected = false;
+                        });
+                      },
+                      child: Container(
                         height: 40,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: isTabSelected
-                              ? AppColors.primaryColor.withOpacity(0.3)
-                              : AppColors.transpanrent,
+                              ? AppColors.transpanrent
+                              : AppColors.primaryColor.withOpacity(0.3),
                           border: Border(
                             bottom: BorderSide(
                               color: AppColors.primaryColor,
-                              width: isTabSelected ? 2.0 : 0,
+                              width: isTabSelected ? 0 : 2,
                             ),
                           ),
                         ),
                         width: AppSize.width(context) / 2,
-                        child: Text(AppLocalizations.of(context)!.movie_tickets,
+                        child: Text(AppLocalizations.of(context)!.food_tickets,
                             textAlign: TextAlign.center,
-                            style: AppStyle.bodyText1)),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isTabSelected = false;
-                      });
-                    },
-                    child: Container(
-                      height: 40,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: isTabSelected
-                            ? AppColors.transpanrent
-                            : AppColors.primaryColor.withOpacity(0.3),
-                        border: Border(
-                          bottom: BorderSide(
-                            color: AppColors.primaryColor,
-                            width: isTabSelected ? 0 : 2,
-                          ),
-                        ),
+                            style: AppStyle.bodyText1),
                       ),
-                      width: AppSize.width(context) / 2,
-                      child: Text(AppLocalizations.of(context)!.food_tickets,
-                          textAlign: TextAlign.center,
-                          style: AppStyle.bodyText1),
                     ),
-                  ),
-                ],
-              ),
-              isTabSelected ? const ListFilmOrder() : const ListFoodOrder()
-            ],
+                  ],
+                ),
+                isTabSelected ? const ListFilmOrder() : const ListFoodOrder()
+              ],
+            ),
           ),
         ),
       ),

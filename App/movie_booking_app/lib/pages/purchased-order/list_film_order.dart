@@ -18,174 +18,152 @@ class ListFilmOrder extends StatefulWidget {
   }
 }
 
-class ListFilmOrderState extends State<ListFilmOrder> {
+class ListFilmOrderState extends State<ListFilmOrder>
+    with AutomaticKeepAliveClientMixin {
   late Future<List<OrderResponse>?> futureFilmOrder;
+  List<OrderResponse>? filmOrders;
+  List<OrderResponse>? filmOrderCache;
 
   @override
   void initState() {
-    futureFilmOrder = FilmOrder.getAllFilmOrder(context);
     super.initState();
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    futureFilmOrder = FilmOrder.getAllFilmOrder(context);
-    super.setState(fn);
+    if (filmOrderCache == null) {
+      futureFilmOrder = FilmOrder.getAllFilmOrder(context);
+    } else {
+      futureFilmOrder = Future.value(filmOrderCache);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<OrderResponse>?>(
-      future: futureFilmOrder,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: progressLoading);
-        } else if (snapshot.data == null ||
-            !snapshot.hasData ||
-            snapshot.hasError) {
-          return Center(child: progressLoading);
-        } else {
-          List<OrderResponse> filmOrders = snapshot.data!;
-          return SizedBox(
-            height: AppSize.height(context) - 100,
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: filmOrders.length,
-              itemBuilder: (context, index) {
-                OrderResponse filmOrder = filmOrders[index];
-                return GestureDetector(
-                  onTap: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailOrderPage(
-                          key: widget.key,
-                          id: filmOrder.id.toInt(),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(5.0),
-                    width: AppSize.width(context),
-                    height: 140,
+    super.build(context);
+    return SafeArea(
+      child: FutureBuilder<List<OrderResponse>?>(
+        future: futureFilmOrder,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: progressLoading);
+          } else if (snapshot.data == null ||
+              !snapshot.hasData ||
+              snapshot.hasError) {
+            return Center(child: progressLoading);
+          } else {
+            filmOrders = snapshot.data!;
+            filmOrderCache = filmOrders;
+            return SizedBox(
+              height: AppSize.height(context) - 106,
+              child: ListView.builder(
+                itemCount: filmOrderCache!.length,
+                itemBuilder: (context, index) {
+                  final filmOrder = filmOrderCache![index];
+                  return Container(
+                    key: ValueKey(filmOrder.id),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 10.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       color: AppColors.containerColor,
-                      borderRadius: ContainerRadius.radius12,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    child: ClipRRect(
-                                      borderRadius: ContainerRadius.radius5,
-                                      child: Image.memory(
-                                        ConverterUnit.base64ToUnit8(
-                                            filmOrder.poster),
-                                        cacheWidth: 90,
-                                        cacheHeight: 140,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: AppSize.width(context) / 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(3.0),
-                                      child: Text(
-                                        filmOrder.title,
-                                        maxLines: 2,
-                                        style: AppStyle.bodyText1,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(3.0),
-                                    child: Text(
-                                      "${AppLocalizations.of(context)!.date_order}: ${ConverterUnit.formatDMYhm(filmOrder.date!)}",
-                                      style: const TextStyle(
-                                          fontSize: AppFontSize.small),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(3.0),
-                                    child: Text(
-                                      "${AppLocalizations.of(context)!.payment_med}: ${filmOrder.paymentMethod}",
-                                      style: const TextStyle(
-                                          fontSize: AppFontSize.small),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(3.0),
-                                        decoration: BoxDecoration(
-                                          color: filmOrder.status == "Unused"
-                                              ? AppColors.correctColor
-                                              : filmOrder.status == "Expired"
-                                                  ? AppColors.errorColor
-                                                  : AppColors.grayTextColor,
-                                          borderRadius: ContainerRadius.radius2,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            filmOrder.status == "Unused"
-                                                ? ''
-                                                : filmOrder.status == "Expired"
-                                                    ? AppLocalizations.of(
-                                                            context)!
-                                                        .expired
-                                                    : AppLocalizations.of(
-                                                            context)!
-                                                        .used,
-                                            style: AppStyle.classifyText,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.all(3.0),
-                                        padding: const EdgeInsets.all(3.0),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primaryColor,
-                                          borderRadius: ContainerRadius.radius2,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .pay_success,
-                                            style: AppStyle.classifyText,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
-            ),
-          );
-        }
-      },
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      onTap: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailOrderPage(
+                              key: widget.key,
+                              id: filmOrder.id.toInt(),
+                            ),
+                          ),
+                        );
+                      },
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.memory(
+                          width: 50,
+                          ConverterUnit.getImageFromCache(filmOrder.poster),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      title: Text(
+                        filmOrder.title,
+                        maxLines: 2,
+                        style: AppStyle.bodyText1,
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${AppLocalizations.of(context)!.date_order}: ${ConverterUnit.formatDMYhm(filmOrder.date!)}",
+                            style: const TextStyle(fontSize: AppFontSize.small),
+                          ),
+                          Text(
+                            "${AppLocalizations.of(context)!.payment_med}: ${filmOrder.paymentMethod}",
+                            style: const TextStyle(fontSize: AppFontSize.small),
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(3.0),
+                                decoration: BoxDecoration(
+                                  color: filmOrder.status == "Unused"
+                                      ? AppColors.correctColor
+                                      : filmOrder.status == "Expired"
+                                          ? AppColors.errorColor
+                                          : AppColors.grayTextColor,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    filmOrder.status == "Unused"
+                                        ? ''
+                                        : filmOrder.status == "Expired"
+                                            ? AppLocalizations.of(context)!
+                                                .expired
+                                            : AppLocalizations.of(context)!
+                                                .used,
+                                    style: AppStyle.classifyText,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(3.0),
+                                padding: const EdgeInsets.all(3.0),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)!.pay_success,
+                                    style: AppStyle.classifyText,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          }
+        },
+      ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

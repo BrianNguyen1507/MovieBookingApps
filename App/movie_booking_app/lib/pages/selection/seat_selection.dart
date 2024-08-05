@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
@@ -321,101 +319,86 @@ Widget renderBooking(
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
               final movieData = snapshot.data!;
-              return Column(
+              return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: ContainerRadius.radius5,
-                              child: FutureBuilder<Uint8List>(
-                                future: ConverterUnit.bytesToImage(
-                                    movieData.poster),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<Uint8List> snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const SizedBox();
-                                  } else if (snapshot.hasError) {
-                                    return const SizedBox();
-                                  } else {
-                                    return Image.memory(
-                                      cacheHeight: 70,
-                                      cacheWidth: 50,
-                                      snapshot.data!,
-                                      fit: BoxFit.cover,
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.all(2.0),
-                                      padding: const EdgeInsets.all(1.5),
-                                      decoration: BoxDecoration(
-                                        color: ClassifyClass.toFlutterColor(
-                                          ClassifyClass.classifyType(
-                                              movieData.classify),
-                                        ),
-                                        borderRadius: ContainerRadius.radius2,
-                                      ),
-                                      child: Text(
-                                        ClassifyClass.convertNamed(
+                  Flexible(
+                    flex: 2,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: ContainerRadius.radius5,
+                          child: Image.memory(
+                            cacheHeight: 70,
+                            cacheWidth: 50,
+                            ConverterUnit.base64ToUnit8(movieData.poster),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(2.0),
+                                    decoration: BoxDecoration(
+                                      color: ClassifyClass.toFlutterColor(
+                                        ClassifyClass.classifyType(
                                             movieData.classify),
-                                        style: AppStyle.classifyText,
                                       ),
+                                      borderRadius: ContainerRadius.radius2,
                                     ),
-                                    SizedBox(
-                                      width: 150,
-                                      child: Text(
-                                        ' ${movieData.title}',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: AppStyle.smallText,
-                                      ),
+                                    child: Text(
+                                      ClassifyClass.convertNamed(
+                                          movieData.classify),
+                                      style: AppStyle.classifyText,
                                     ),
-                                  ],
-                                ),
-                                Text(
-                                    '${movieData.duration} ${AppLocalizations.of(context)!.minutes}',
-                                    maxLines: 1,
-                                    style: AppStyle.smallText),
-                              ],
-                            ),
-                          ],
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      movieData.title,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: AppStyle.smallText,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                '${movieData.duration} ${AppLocalizations.of(context)!.minutes}',
+                                maxLines: 1,
+                                style: AppStyle.smallText,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(theaterName, style: AppStyle.smallText),
-                            Text(
-                                '${AppLocalizations.of(context)!.room}: $roomNumber',
-                                style: AppStyle.smallText),
-                            Text(
-                                '${AppLocalizations.of(context)!.show_time}: $times',
-                                style: AppStyle.smallText),
-                          ],
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(theaterName, style: AppStyle.smallText),
+                        Text(
+                          '${AppLocalizations.of(context)!.room}: $roomNumber',
+                          style: AppStyle.smallText,
                         ),
-                      )
-                    ],
+                        Text(
+                          '${AppLocalizations.of(context)!.show_time}: $times',
+                          style: AppStyle.smallText,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );
             } else {
-              return const SizedBox();
+              return const SizedBox.shrink();
             }
           },
         ),
