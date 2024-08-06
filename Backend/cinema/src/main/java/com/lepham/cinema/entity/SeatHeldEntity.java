@@ -31,4 +31,8 @@ public class SeatHeldEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_schedule_id",nullable = false)
     MovieScheduleEntity schedule;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    AccountEntity account;
 }
