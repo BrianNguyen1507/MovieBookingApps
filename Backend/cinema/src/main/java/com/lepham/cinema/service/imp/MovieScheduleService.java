@@ -315,30 +315,7 @@ public class MovieScheduleService implements IMovieScheduleService {
         return schedule;
     }
 
-    @Override
-    @PreAuthorize("hasRole('USER')")
-    public void holeSeat(long id, String seat) {
-        MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        if (!schedule.holdSeat(seat)) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
-        SeatHeldEntity seatHeld = seatHeldRepository.findByScheduleAndSeat(schedule, seat);
-        seatHeld = seatHeld != null ? seatHeld : new SeatHeldEntity();
-        seatHeld.setHeldDateTime(LocalDateTime.now());
-        seatHeld.setSchedule(schedule);
-        seatHeld.setSeat(seat);
-        seatHeld.setStatus(ConstantVariable.SEAT_HOLD);
-        seatHeldRepository.save(seatHeld);
-        movieScheduleRepository.save(schedule);
-    }
 
-    @Override
-    @PreAuthorize("hasRole('USER')")
-    public void returnSeat(long id, String seat) {
-        MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        if (!schedule.returnSeat(seat)) throw new AppException(ErrorCode.SEAT_NOT_ORDERED);
-        movieScheduleRepository.save(schedule);
-    }
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")

@@ -47,4 +47,6 @@ public class AccountEntity {
     @OneToMany(mappedBy = "account")
     List<AccountVoucherEntity> vouchers;
 
+    @OneToOne(mappedBy = "account")
+    SeatHeldEntity seatHeld;
 }

@@ -22,9 +22,7 @@ public interface IMovieScheduleService {
     ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId, LocalDate date);
 
     DetailScheduleResponse getMovieScheduleById(long id);
-    void holeSeat(long id,String seat);
 
-    void returnSeat(long id,String seat);
 
     List<MovieScheduleDateResponse> getAllScheduleByRoomAndDate(long roomId, LocalDate dateStart);
 
