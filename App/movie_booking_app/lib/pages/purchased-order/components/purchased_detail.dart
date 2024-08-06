@@ -444,171 +444,165 @@ Widget detailOrderFilm(context, DetailOrder order) {
 Widget detailOrderFood(context, DetailOrder order) {
   return Stack(
     children: [
-      Expanded(
-        child: Container(
-          margin: const EdgeInsets.all(15.0),
-          decoration: BoxDecoration(
-            borderRadius: ContainerRadius.radius20,
-            color: AppColors.containerColor,
-          ),
-          width: AppSize.width(context),
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Text(
-                                AppLocalizations.of(context)!.payment_code,
-                                style: AppStyle.graySmallText),
-                          ),
-                          Text(
-                            order.order.paymentCode,
-                            style: AppStyle.priceText,
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  QrcodePage(qr: order.orderCode),
-                            )),
-                        child: Center(
-                          child: Image.memory(
-                            ConverterUnit.base64ToUnit8(order.orderCode),
-                            width: 100,
-                          ),
+      Container(
+        margin: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          borderRadius: ContainerRadius.radius20,
+          color: AppColors.containerColor,
+        ),
+        width: AppSize.width(context),
+        child: Column(
+          children: [
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Text(
+                              AppLocalizations.of(context)!.payment_code,
+                              style: AppStyle.graySmallText),
                         ),
+                        Text(
+                          order.order.paymentCode,
+                          style: AppStyle.priceText,
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                QrcodePage(qr: order.orderCode),
+                          )),
+                      child: Center(
+                        child: Image.memory(
+                          ConverterUnit.base64ToUnit8(order.orderCode),
+                          width: 100,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withOpacity(0.2),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 15.0),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(AppLocalizations.of(context)!.fnd,
+                              style: AppStyle.bodyText1),
+                        ),
+                      ),
+                      const Divider(),
+                      Container(
+                        margin: const EdgeInsets.only(left: 20, right: 20),
+                        height: order.food.isEmpty
+                            ? 45
+                            : (45 * order.food.length).toDouble(),
+                        child: order.food.isEmpty
+                            ? Text(
+                                AppLocalizations.of(context)!.no_food,
+                                style: AppStyle.smallText,
+                              )
+                            : ListView.builder(
+                                itemCount: order.food.length,
+                                itemBuilder: (context, index) {
+                                  Food food = order.food[index];
+                                  return Container(
+                                    margin: const EdgeInsets.all(8),
+                                    width: AppSize.width(context),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TranslateConsumer().translateProvider(
+                                            food.name, 1, AppStyle.smallText),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "${ConverterUnit.formatPrice(food.price)} x ",
+                                              style: const TextStyle(
+                                                  fontSize: AppFontSize.small),
+                                            ),
+                                            Text(
+                                              "${food.quantity}",
+                                              style: const TextStyle(
+                                                  fontSize: AppFontSize.small),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                     ],
                   ),
+                ),
+              ],
+            ),
+            SizedBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
                   Container(
+                    padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.2),
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20)),
+                      color: AppColors.grayTextColor.withOpacity(0.2),
                     ),
                     child: Column(
                       children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 15.0),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(AppLocalizations.of(context)!.fnd,
-                                style: AppStyle.bodyText1),
-                          ),
-                        ),
-                        const Divider(),
-                        Container(
-                          margin: const EdgeInsets.only(left: 20, right: 20),
-                          height: order.food.isEmpty
-                              ? 45
-                              : (45 * order.food.length).toDouble(),
-                          child: order.food.isEmpty
-                              ? Text(
-                                  AppLocalizations.of(context)!.no_food,
-                                  style: AppStyle.smallText,
-                                )
-                              : ListView.builder(
-                                  itemCount: order.food.length,
-                                  itemBuilder: (context, index) {
-                                    Food food = order.food[index];
-                                    return Container(
-                                      margin: const EdgeInsets.all(8),
-                                      width: AppSize.width(context),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          TranslateConsumer().translateProvider(
-                                              food.name, 1, AppStyle.smallText),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "${ConverterUnit.formatPrice(food.price)} x ",
-                                                style: const TextStyle(
-                                                    fontSize:
-                                                        AppFontSize.small),
-                                              ),
-                                              Text(
-                                                "${food.quantity}",
-                                                style: const TextStyle(
-                                                    fontSize:
-                                                        AppFontSize.small),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
+                        Text(AppLocalizations.of(context)!.payment_med,
+                            style: AppStyle.bodyText1),
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.payment_med,
+                                  style: AppStyle.thinText,
                                 ),
+                                Text(order.order.paymentMethod,
+                                    style: AppStyle.blackBold),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.total,
+                                  style: AppStyle.thinText,
+                                ),
+                                Text(
+                                    "${ConverterUnit.formatPrice(order.order.sumTotal)}₫",
+                                    style: AppStyle.headline1),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20)),
-                        color: AppColors.grayTextColor.withOpacity(0.2),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(AppLocalizations.of(context)!.payment_med,
-                              style: AppStyle.bodyText1),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.payment_med,
-                                    style: AppStyle.thinText,
-                                  ),
-                                  Text(order.order.paymentMethod,
-                                      style: AppStyle.blackBold),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.total,
-                                    style: AppStyle.thinText,
-                                  ),
-                                  Text(
-                                      "${ConverterUnit.formatPrice(order.order.sumTotal)}₫",
-                                      style: AppStyle.headline1),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       Center(

@@ -84,6 +84,7 @@ class TheaterItems {
                   onTap: () {
                     ShowDialog.showAlertCustom(
                       context,
+                      true,
                       AppLocalizations.of(context)!.find_cinema,
                       'Yes',
                       true,

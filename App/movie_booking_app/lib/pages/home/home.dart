@@ -54,11 +54,11 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   slivers: [
-                    _buildNowShowingSliver(context),
-                    _buildComingSoonSliver(context),
-                    _buildMovieListByMonthSliver(context),
-                    _buildItemsList(context, foodList!),
-                    _buildvideosList(context, movieList!)
+                    _buildNowShowingSliver(),
+                    _buildComingSoonSliver(),
+                    _buildMovieListByMonthSliver(),
+                    _buildItemsList(foodList!),
+                    _buildvideosList(movieList!)
                   ],
                 ),
               ],
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  SliverToBoxAdapter _buildNowShowingSliver(BuildContext context) {
+  SliverToBoxAdapter _buildNowShowingSliver() {
     return SliverToBoxAdapter(
       child: NowShowingSection(
         movieRelease: movieRelease!,
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  SliverToBoxAdapter _buildComingSoonSliver(BuildContext context) {
+  SliverToBoxAdapter _buildComingSoonSliver() {
     return SliverToBoxAdapter(
       child: ComingSoonSection(
         movieFuture: movieFuture!,
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  SliverToBoxAdapter _buildMovieListByMonthSliver(BuildContext context) {
+  SliverToBoxAdapter _buildMovieListByMonthSliver() {
     return SliverToBoxAdapter(
       child: MovieFutureByMonth(
         movieByMonth: movieByMonth!,
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildItemsList(BuildContext context, Future<List<Food>?> foods) {
+  Widget _buildItemsList(Future<List<Food>?> foods) {
     return SliverToBoxAdapter(
       child: Container(
         color: AppColors.containerColor,
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildvideosList(BuildContext context, Future<List<Movie>?> movies) {
+  Widget _buildvideosList(Future<List<Movie>?> movies) {
     return SliverToBoxAdapter(
       child: Container(
         color: AppColors.containerColor,

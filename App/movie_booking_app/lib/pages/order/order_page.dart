@@ -99,7 +99,7 @@ class _OrderPageState extends State<OrderPage> {
           AppColors.appbarColor),
       backgroundColor: AppColors.backgroundColor,
       body: Container(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.only(top: 15.0),
         decoration: BoxDecoration(
             color: AppColors.commonLightColor,
             borderRadius: ContainerRadius.radius20),
@@ -111,7 +111,6 @@ class _OrderPageState extends State<OrderPage> {
                   decoration:
                       const BoxDecoration(color: AppColors.commonLightColor),
                   width: double.infinity,
-                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

@@ -466,6 +466,7 @@ Widget renderBooking(
               if (selectedSeats.isEmpty) {
                 ShowDialog.showAlertCustom(
                     context,
+                    true,
                     AppLocalizations.of(context)!.seat_noti,
                     '',
                     true,

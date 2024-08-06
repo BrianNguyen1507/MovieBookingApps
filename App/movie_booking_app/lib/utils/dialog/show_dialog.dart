@@ -23,9 +23,16 @@ class ShowDialog {
     );
   }
 
-  static void showAlertCustom(context, String content, String? buttonText,
-      bool? cancelButton, VoidCallback? onPress, DialogType type) {
+  static void showAlertCustom(
+      context,
+      bool dismiss,
+      String content,
+      String? buttonText,
+      bool? cancelButton,
+      VoidCallback? onPress,
+      DialogType type) {
     AwesomeDialog(
+      dismissOnTouchOutside: dismiss,
       context: context,
       dialogType: type,
       animType: AnimType.scale,

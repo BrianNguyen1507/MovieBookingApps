@@ -51,8 +51,10 @@ class ListFilmOrderState extends State<ListFilmOrder>
             filmOrders = snapshot.data!;
             filmOrderCache = filmOrders;
             return SizedBox(
-              height: AppSize.height(context) - 106,
+              height:
+                  AppSize.height(context) - (AppSize.appbarSize(context) + 40),
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: filmOrderCache!.length,
                 itemBuilder: (context, index) {
                   final filmOrder = filmOrderCache![index];

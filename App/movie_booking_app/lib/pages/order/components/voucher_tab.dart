@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
@@ -13,7 +12,6 @@ import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/voucher/apply_voucher.dart';
 import 'package:movie_booking_app/services/Users/voucher/voucher_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 // ignore: must_be_immutable
 class VoucherOrder extends StatefulWidget {
@@ -136,7 +134,7 @@ class _VoucherOrderState extends State<VoucherOrder> {
                                                             AppStyle.smallText,
                                                       ),
                                                       Text(
-                                                        '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}${vouchers[index].typeDiscount == 0 ? '₫' : '%'}',
+                                                        '${AppLocalizations.of(context)!.discount}: ${vouchers[index].discount}${VoucherData.unitPrice(vouchers[index].typeDiscount)}',
                                                         style:
                                                             AppStyle.smallText,
                                                       ),
@@ -220,20 +218,13 @@ class _VoucherOrderState extends State<VoucherOrder> {
             ),
             onPressed: () async {
               if (selectedVocher == null) {
-                ShowDialog.showAlertCustom(
-                  context,
-                  AppLocalizations.of(context)!.voucher_noti,
-                  '',
-                  true,
-                  null,
-                  DialogType.info,
-                );
+                pref.clearVoucher();
+                Navigator.pop(context, {'newTotal': total, 'voucherId': -1});
                 return;
               }
               pref.saveSVoucher(selectedVoucherIndex = selectedVocher);
               double? totalApplyed = await VoucherApply.applyVoucher(
                   context, selectedVocher, total);
-              //update total vua apply voucher
               Navigator.pop(context,
                   {'newTotal': totalApplyed, 'voucherId': selectedVocher});
             },

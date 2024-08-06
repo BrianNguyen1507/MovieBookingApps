@@ -78,6 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 AppLocalizations.of(context)!.logout,
                 () => ShowDialog.showAlertCustom(
                     context,
+                    true,
                     AppLocalizations.of(context)!.cofirm_logout_q,
                     AppLocalizations.of(context)!.confirm_logout,
                     true,

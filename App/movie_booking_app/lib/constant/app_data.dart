@@ -25,6 +25,10 @@ class AppSize {
     return MediaQuery.of(context).size.width;
   }
 
+  static double appbarSize(context) {
+    return Scaffold.of(context).appBarMaxHeight ?? kToolbarHeight;
+  }
+
   static double height(context) {
     return MediaQuery.of(context).size.height;
   }
@@ -184,5 +188,11 @@ class RatingContent {
       default:
         return AppLocalizations.of(context)!.rating_0;
     }
+  }
+}
+
+class VoucherData {
+  static String unitPrice(int type) {
+    return type == 1 ? '%' : "₫";
   }
 }

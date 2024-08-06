@@ -52,7 +52,13 @@ class Handlepayments {
   }
 
   static handlePaymentFail(context) {
-    ShowDialog.showAlertCustom(context, AppLocalizations.of(context)!.payfail_noti,
-        'Cancel', false, () {}, DialogType.error);
+    ShowDialog.showAlertCustom(
+        context,
+        true,
+        AppLocalizations.of(context)!.payfail_noti,
+        null,
+        true,
+        null,
+        DialogType.error);
   }
 }

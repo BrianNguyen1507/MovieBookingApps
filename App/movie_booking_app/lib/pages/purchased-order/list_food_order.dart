@@ -48,7 +48,8 @@ class ListFoodOrderState extends State<ListFoodOrder> {
         } else {
           foodOrders = snapshot.data!;
           return SizedBox(
-            height: AppSize.height(context) - 96,
+            height:
+                AppSize.height(context) - (AppSize.appbarSize(context) + 45),
             child: ListView.builder(
                 itemCount: foodOrders!.length,
                 itemBuilder: (context, index) {

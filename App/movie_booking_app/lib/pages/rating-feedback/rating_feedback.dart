@@ -68,7 +68,7 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                   Navigator.pop(result);
                 } else {
                   ShowDialog.showAlertCustom(
-                      context, result, '', true, () {}, DialogType.error);
+                      context, true, result, '', true, () {}, DialogType.error);
                 }
               },
               child: Container(

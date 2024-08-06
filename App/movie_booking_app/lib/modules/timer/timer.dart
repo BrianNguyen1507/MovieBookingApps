@@ -19,11 +19,13 @@ class TimerController {
     _periodicTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       if (remainingSeconds > 0) {
         remainingSeconds--;
+        print(remainingSeconds);
       } else {
         t.cancel();
 
         ShowDialog.showAlertCustom(
             context,
+            false,
             AppLocalizations.of(context)!.time_end_noti,
             '',
             false,

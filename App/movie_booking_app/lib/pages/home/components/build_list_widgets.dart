@@ -81,7 +81,7 @@ class ListMovie {
     );
   }
 
-  static Widget buildItem(BuildContext context, Food food) {
+  static Widget buildItem(context, Food food) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/foods');
@@ -109,21 +109,13 @@ class ListMovie {
                 width: 100,
               ),
             ),
-            SizedBox(
-              width: 100,
-              child: Text(
-                food.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  static Widget buildVideo(BuildContext context, Movie movie) {
+  static Widget buildVideo(context, Movie movie) {
     return GestureDetector(
       onTap: () {
         if (movie.trailer != null) {

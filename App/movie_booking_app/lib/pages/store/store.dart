@@ -318,6 +318,7 @@ Widget renderBooking(
           if (token == null) {
             ShowDialog.showAlertCustom(
                 context,
+                true,
                 AppLocalizations.of(context)!.sigin_noti,
                 AppLocalizations.of(context)!.go_signin,
                 true, () {
@@ -335,6 +336,7 @@ Widget renderBooking(
           if (!selection && listOrdered.isEmpty) {
             ShowDialog.showAlertCustom(
                 context,
+                true,
                 AppLocalizations.of(context)!.food_noti,
                 null,
                 true,
