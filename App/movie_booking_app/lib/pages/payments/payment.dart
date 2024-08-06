@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -13,11 +14,13 @@ import 'package:movie_booking_app/pages/payments/components/payment_view.dart';
 import 'package:movie_booking_app/pages/payments/handle-payments/handle_pay.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/services/Users/movie-detail/movie_detail_service.dart';
+import 'package:movie_booking_app/services/Users/order/hold-seat/hold_seat_service.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:movie_booking_app/services/payments/vnpay/vnpay_response.dart';
 import 'package:movie_booking_app/services/payments/vnpay/vnpay_service.dart';
 import 'package:movie_booking_app/services/payments/zalopay/zalo_service.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
@@ -270,7 +273,19 @@ class _PaymentPageState extends State<PaymentPage> {
                       height: AppSize.height(context) * 0.2,
                       child: MaterialButton(
                         onPressed: () async {
-                          await handlePayment();
+                          final int? ScheduleId = await pref.getSchedule();
+                          bool isValid = await HoldSeatService.checkHoldSeat(
+                              context, ScheduleId, seats);
+                          isValid
+                              ? await handlePayment()
+                              : ShowDialog.showAlertCustom(
+                                  context,
+                                  true,
+                                  'Some seats have been selected, please choose another seat',
+                                  null,
+                                  true,
+                                  null,
+                                  DialogType.error);
                         },
                         child: Container(
                           height: 50,
