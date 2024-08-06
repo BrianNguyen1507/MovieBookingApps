@@ -67,7 +67,20 @@ public class SeatHeldService implements ISeatHeldService {
                 .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-        return seatHeldRepository.findByScheduleAndSeatAndAccountAndStatus(schedule,seat,account,ConstantVariable.SEAT_HOLD).isPresent();
+        boolean flag = true;
+        String[] seatArray = seat.split(",");
+
+        for (String seatComponent : seatArray){
+            if(seatHeldRepository.findByScheduleAndSeat(schedule,seatComponent)!=null){
+                if(seatHeldRepository.findByScheduleAndSeatAndAccountAndStatus(
+                                schedule,
+                                seatComponent,
+                                account,
+                                ConstantVariable.SEAT_HOLD)
+                        .isEmpty())return false;
+            }
+        }
+        return flag;
     }
 
     @Override
@@ -102,8 +115,7 @@ public class SeatHeldService implements ISeatHeldService {
                    .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));;
            schedule.returnSeat(seat.getSeat());
            movieScheduleRepository.save(schedule);
-           seat.setStatus(ConstantVariable.SEAT_EMPTY);
-           seatHeldRepository.save(seat);
+           seatHeldRepository.delete(seat);
         });
     }
 }
