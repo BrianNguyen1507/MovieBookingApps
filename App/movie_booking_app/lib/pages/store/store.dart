@@ -347,7 +347,7 @@ Widget renderBooking(
             String seatString = ConverterUnit.convertSetToString(seats!);
             bool checkValid = await HoldSeatService.checkHoldSeat(
                 context, scheduleId, seatString);
-            if (!checkValid) {
+            if (visible && !checkValid) {
               ShowDialog.showAlertCustom(
                   context,
                   true,
