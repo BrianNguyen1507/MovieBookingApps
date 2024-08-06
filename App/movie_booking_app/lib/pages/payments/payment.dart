@@ -273,19 +273,27 @@ class _PaymentPageState extends State<PaymentPage> {
                       height: AppSize.height(context) * 0.2,
                       child: MaterialButton(
                         onPressed: () async {
-                          final int? ScheduleId = await pref.getSchedule();
+                          final int? scheduleId = await pref.getSchedule();
                           bool isValid = await HoldSeatService.checkHoldSeat(
-                              context, ScheduleId, seats);
-                          isValid
-                              ? await handlePayment()
-                              : ShowDialog.showAlertCustom(
-                                  context,
-                                  true,
-                                  'Some seats have been selected, please choose another seat',
-                                  null,
-                                  true,
-                                  null,
-                                  DialogType.error);
+                              context, scheduleId, seats);
+                          if (visible) {
+                            if (!isValid) {
+                              ShowDialog.showAlertCustom(
+                                context,
+                                true,
+                                'Some seats have been selected, please choose another seat',
+                                null,
+                                true,
+                                null,
+                                DialogType.error,
+                              );
+                              return;
+                            } else {
+                              await handlePayment();
+                            }
+                          } else {
+                            await handlePayment();
+                          }
                         },
                         child: Container(
                           height: 50,
