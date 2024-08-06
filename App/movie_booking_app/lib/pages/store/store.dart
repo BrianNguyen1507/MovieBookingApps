@@ -344,10 +344,24 @@ Widget renderBooking(
                 DialogType.info);
           } else {
             //set tg hold
+            String seatString = ConverterUnit.convertSetToString(seats!);
+            bool checkValid = await HoldSeatService.checkHoldSeat(
+                context, scheduleId, seatString);
+            if (!checkValid) {
+              ShowDialog.showAlertCustom(
+                  context,
+                  true,
+                  'Some seats have been selected, please choose another seat',
+                  null,
+                  true,
+                  null,
+                  DialogType.error);
+              return;
+            }
             bool isSeatHold = visible
-                ? await HoldSeatService.holdSeat(context, scheduleId, seats!)
+                ? await HoldSeatService.holdSeat(context, scheduleId, seats)
                 : false;
-            pref.saveHoldSeats(seats!);
+            pref.saveHoldSeats(seats);
             isSeatHold ? TimerController.timerHoldSeatStart(context) : null;
             String? data = await pref.getHoldSeats();
             //
