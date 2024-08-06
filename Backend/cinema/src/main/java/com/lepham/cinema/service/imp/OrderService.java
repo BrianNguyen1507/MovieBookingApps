@@ -58,8 +58,6 @@ public class OrderService implements IOrderService {
                     .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
             priceTicket = (filmEntity.getBasePrice() * request.getQuantitySeat());
         }
-
-
         total += priceTicket;
         double priceFoodTotal = 0;
         if (!request.getFood().isEmpty()) {

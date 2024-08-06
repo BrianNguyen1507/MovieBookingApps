@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,6 +34,7 @@ public class SeatHeldService implements ISeatHeldService {
 
     @Override
     @PreAuthorize("hasRole('USER')")
+    @Transactional
     public void holeSeat(long id, String seat) {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
@@ -40,15 +42,19 @@ public class SeatHeldService implements ISeatHeldService {
                 .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+
+        String[] seatArray = seat.split(",");
+        for (String seatComponent : seatArray){
+            SeatHeldEntity seatHeld = seatHeldRepository.findByScheduleAndSeat(schedule, seat);
+            seatHeld = seatHeld != null ? seatHeld : new SeatHeldEntity();
+            seatHeld.setHeldDateTime(LocalDateTime.now());
+            seatHeld.setSchedule(schedule);
+            seatHeld.setSeat(seatComponent);
+            seatHeld.setAccount(account);
+            seatHeld.setStatus(ConstantVariable.SEAT_HOLD);
+            seatHeldRepository.save(seatHeld);
+        }
         if (!schedule.holdSeat(seat)) throw new AppException(ErrorCode.SEAT_WAS_ORDERED);
-        SeatHeldEntity seatHeld = seatHeldRepository.findByScheduleAndSeat(schedule, seat);
-        seatHeld = seatHeld != null ? seatHeld : new SeatHeldEntity();
-        seatHeld.setHeldDateTime(LocalDateTime.now());
-        seatHeld.setSchedule(schedule);
-        seatHeld.setSeat(seat);
-        seatHeld.setAccount(account);
-        seatHeld.setStatus(ConstantVariable.SEAT_HOLD);
-        seatHeldRepository.save(seatHeld);
         movieScheduleRepository.save(schedule);
     }
 
@@ -67,9 +73,23 @@ public class SeatHeldService implements ISeatHeldService {
     @Override
     @PreAuthorize("hasRole('USER')")
     public void returnSeat(long id, String seat) {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
         MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-        if (!schedule.returnSeat(seat)) throw new AppException(ErrorCode.SEAT_NOT_ORDERED);
+                 .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
+        AccountEntity account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
+        String[] seatArray = seat.split(",");
+        for (String seatComponent : seatArray){
+            SeatHeldEntity seatHeld = seatHeldRepository.findByScheduleAndSeatAndAccountAndStatus(
+                            schedule,
+                            seatComponent,
+                            account,
+                            ConstantVariable.SEAT_HOLD)
+                    .orElseThrow(() ->  new AppException(ErrorCode.SEAT_NOT_ORDERED));
+            seatHeldRepository.delete(seatHeld);
+            if (!schedule.returnSeat(seatComponent)) throw new AppException(ErrorCode.SEAT_NOT_ORDERED);
+        }
         movieScheduleRepository.save(schedule);
     }
     @Override
