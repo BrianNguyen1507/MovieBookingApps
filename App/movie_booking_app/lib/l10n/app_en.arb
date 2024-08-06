@@ -139,5 +139,6 @@
   "sigin_noti": "You need to sign in to continue",
   "go_signin": "Go to Sign in",
   "find_cinema": "Do you want to find your way to the cinema?",
-  "food_noti": "Please choose at least one type of food and drink"
+  "food_noti": "Please choose at least one type of food and drink",
+  "logout_noti": "Continue Sign in or Sign up"
 }

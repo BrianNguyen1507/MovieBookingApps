@@ -222,6 +222,7 @@ class ChangePasswordState extends State<ChangePassword> {
                               AppColors.correctColor);
                           ShowDialog.showAlertCustom(
                             context,
+                            false,
                             AppLocalizations.of(context)!.login_expired,
                             "OK",
                             false,

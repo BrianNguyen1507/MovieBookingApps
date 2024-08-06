@@ -15,7 +15,7 @@ class Common {
       Color color, Color? bgcolor) {
     return AppBar(
       backgroundColor: bgcolor ?? AppColors.containerColor,
-      centerTitle: true,
+      centerTitle: false,
       title: Text(title, style: appbarStyle ?? AppStyle.headline1),
       automaticallyImplyLeading: false,
       leading: leadingArrowPop(context, color),

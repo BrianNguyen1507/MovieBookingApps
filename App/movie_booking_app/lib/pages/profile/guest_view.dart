@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/pages/profile/components/button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GuestPage extends StatelessWidget {
   const GuestPage({super.key});
@@ -15,7 +16,7 @@ class GuestPage extends StatelessWidget {
           SliverAppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
-            expandedHeight: 180.0,
+            expandedHeight: 100.0,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 children: [
@@ -50,26 +51,6 @@ class GuestPage extends StatelessWidget {
                             fit: BoxFit.cover,
                           )),
                         ),
-                        const SizedBox(height: 10),
-                        const Text(
-                          'Hi! Guest',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: AppFontSize.medium,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.commonLightColor,
-                                borderRadius: ContainerRadius.radius20,
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -77,7 +58,9 @@ class GuestPage extends StatelessWidget {
               ),
             ),
           ),
-          BuildButton.commonbutton(context, 'Continue Sign in or Sign up',
+          BuildButton.commonbutton(
+              context,
+              AppLocalizations.of(context)!.logout_noti,
               () => _onPressSignIn(context)),
         ],
       ),

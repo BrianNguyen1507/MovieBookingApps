@@ -138,5 +138,6 @@
   "sigin_noti": "Bạn cần đăng nhập để tiếp tục",
   "go_signin": "Đi đến Đăng nhập",
   "find_cinema": "Bạn có muốn tìm đường đến rạp chiếu phim không?",
-  "food_noti": "Vui lòng chọn ít nhất một loại đồ ăn và đồ uống trước khi tiếp tục"
+  "food_noti": "Vui lòng chọn ít nhất một loại đồ ăn và đồ uống trước khi tiếp tục",
+  "logout_noti": "Tiếp tục đăng nhập hoặc đăng ký"
 }

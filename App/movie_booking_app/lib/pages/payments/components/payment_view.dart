@@ -35,11 +35,7 @@ class _PaymentWebviewState extends State<PaymentWebview> {
               _isLoading = false;
             });
           },
-          onWebResourceError: (error) {
-            setState(() {
-              _isLoading = false;
-            });
-          },
+          onWebResourceError: (error) {},
           onNavigationRequest: (NavigationRequest request) {
             _handleUrlParameters(request.url);
             return NavigationDecision.navigate;
@@ -73,7 +69,7 @@ class _PaymentWebviewState extends State<PaymentWebview> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
+    return _isLoading && mounted
         ? Scaffold(
             body: Center(
               child: loadingContent,

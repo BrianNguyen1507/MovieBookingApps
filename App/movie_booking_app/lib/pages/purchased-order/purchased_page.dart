@@ -45,7 +45,7 @@ class ListOrderedState extends State<ListOrdered> {
                       },
                       child: Container(
                           height: 40,
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: isTabSelected
                                 ? AppColors.primaryColor.withOpacity(0.3)
@@ -71,7 +71,7 @@ class ListOrderedState extends State<ListOrdered> {
                       },
                       child: Container(
                         height: 40,
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: isTabSelected
                               ? AppColors.transpanrent

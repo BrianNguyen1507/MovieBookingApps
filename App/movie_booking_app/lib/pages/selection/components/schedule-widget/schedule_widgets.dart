@@ -167,6 +167,7 @@ class _ScheduleButtonState extends State<ScheduleButton> {
         if (token == null) {
           ShowDialog.showAlertCustom(
               context,
+              true,
               AppLocalizations.of(context)!.sigin_noti,
               AppLocalizations.of(context)!.go_signin,
               true, () {
