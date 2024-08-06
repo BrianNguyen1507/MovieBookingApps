@@ -32,7 +32,7 @@ public class SeatHeldEntity {
     @JoinColumn(name = "movie_schedule_id",nullable = false)
     MovieScheduleEntity schedule;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name="account_id")
     AccountEntity account;
 }
