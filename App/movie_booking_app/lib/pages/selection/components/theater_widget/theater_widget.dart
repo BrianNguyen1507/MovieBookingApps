@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/constant/app_data.dart';
-import 'package:movie_booking_app/constant/svg_string.dart';
 import 'package:movie_booking_app/models/theater/theater.dart';
 import 'package:movie_booking_app/pages/map/map_view.dart';
 import 'package:movie_booking_app/pages/selection/schedule_selection.dart';
@@ -57,7 +56,10 @@ class TheaterItems {
                       ),
                       padding: const EdgeInsets.all(5.0),
                       margin: const EdgeInsets.all(5.0),
-                      child: SvgPicture.string(svgTheater),
+                      child: Image.asset(
+                        'assets/icons/ic_logo.png',
+                        height: 30,
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

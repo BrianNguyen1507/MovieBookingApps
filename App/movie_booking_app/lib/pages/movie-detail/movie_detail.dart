@@ -56,7 +56,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           movieName = detail.title;
           return Expanded(
               child: Container(
-            color: Colors.white,
+            color: AppColors.containerColor,
             width: double.infinity,
             height: double.infinity,
             child: SingleChildScrollView(
@@ -257,7 +257,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            detailTitle(
+                            detailContent(
                                 AppLocalizations.of(context)!.releaseDate,
                                 ConverterUnit.formatToDmY(
                                     detail.releaseDate.toString())),
@@ -268,7 +268,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                               color: Colors.grey,
                             ),
                             const SizedBox(width: 10),
-                            detailTitle(AppLocalizations.of(context)!.duration,
+                            detailContent(
+                                AppLocalizations.of(context)!.duration,
                                 '${detail.duration} ${AppLocalizations.of(context)!.minutes}'),
                             const SizedBox(width: 10),
                             Container(
@@ -385,6 +386,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
+            backgroundColor: AppColors.containerColor,
             appBar: Common.customAppbar(
                 context,
                 null,
