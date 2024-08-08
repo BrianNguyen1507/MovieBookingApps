@@ -19,6 +19,7 @@ public class OrderCheckResponse {
     String seat;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     LocalDateTime date;
+    double sumTotal;
     boolean allowUse;
     MovieScheduleResponse movieSchedule;
     String theaterName;

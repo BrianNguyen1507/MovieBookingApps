@@ -271,6 +271,7 @@ public class OrderService implements IOrderService {
 
         LocalDateTime now = LocalDateTime.now();
         OrderCheckResponse response = orderConverter.toOrderCheckResponse(order);
+        response.setSumTotal(order.getSumTotal());
         if (movieSchedule != null) {
             MovieTheaterEntity movieTheater = movieSchedule.getRoom().getMovieTheater();
 
@@ -292,7 +293,11 @@ public class OrderService implements IOrderService {
             if (!order.getFoodOrders().isEmpty()) {
                 response.setFoods(order.getFoodOrders()
                         .stream()
-                        .map(foodOrderEntity -> foodConverter.toFoodResponse(foodOrderEntity.getFood()))
+                        .map(foodOrderEntity -> {
+                            FoodResponse foodResponse =foodConverter.toFoodResponse(foodOrderEntity.getFood());
+                            foodResponse.setQuantity(foodOrderEntity.getQuantity());
+                            return  foodResponse;
+                        })
                         .toList());
             }
         }
@@ -309,15 +314,23 @@ public class OrderService implements IOrderService {
         MovieScheduleEntity movieSchedule = order.getMovieSchedule();
         if (order.getStatus() != ConstantVariable.ORDER_UNUSED)
             throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
-        LocalDateTime timeStart = movieSchedule.getTimeStart().minusMinutes(15);
-        LocalDateTime timeEnd = movieSchedule.getTimeStart().plusMinutes(movieSchedule.getFilm().getDuration());
-        LocalDateTime now = LocalDateTime.now();
 
-        //Check 15 minutes before start until finish
-        if (now.isAfter(timeStart) && now.isBefore(timeEnd)) {
-            order.setStatus(ConstantVariable.ORDER_USED);
-            orderRepository.save(order);
-            return;
+        if(movieSchedule!=null){
+            LocalDateTime timeStart = movieSchedule.getTimeStart().minusMinutes(15);
+            LocalDateTime timeEnd = movieSchedule.getTimeStart().plusMinutes(movieSchedule.getFilm().getDuration());
+            LocalDateTime now = LocalDateTime.now();
+            //Check 15 minutes before start until finish
+            if (now.isAfter(timeStart) && now.isBefore(timeEnd)) {
+                order.setStatus(ConstantVariable.ORDER_USED);
+                orderRepository.save(order);
+                return;
+            }
+        }else{
+            if(order.getDate().toLocalDate().equals(LocalDate.now())){
+                order.setStatus(ConstantVariable.ORDER_USED);
+                orderRepository.save(order);
+                return;
+            }
         }
         throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
     }
