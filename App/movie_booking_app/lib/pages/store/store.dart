@@ -343,7 +343,6 @@ Widget renderBooking(
                 null,
                 DialogType.info);
           } else {
-            //set tg hold
             String seatString = ConverterUnit.convertSetToString(seats!);
             bool checkValid = await HoldSeatService.checkHoldSeat(
                 context, scheduleId, seatString);
@@ -351,10 +350,10 @@ Widget renderBooking(
               ShowDialog.showAlertCustom(
                   context,
                   true,
-                  'Some seats have been selected, please choose another seat',
-                  null,
-                  true,
-                  null,
+                  AppLocalizations.of(context)!.invalid_seat,
+                  'OK',
+                  false,
+                  () {},
                   DialogType.error);
               return;
             }

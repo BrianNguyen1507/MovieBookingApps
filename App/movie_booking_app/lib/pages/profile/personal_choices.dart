@@ -14,7 +14,7 @@ class InformationChoice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Common.customAppbar(
-          context,
+          context,null,
           AppStyle.headline2,
           AppLocalizations.of(context)!.personal_inf,
           AppColors.iconThemeColor,

@@ -342,7 +342,8 @@ Widget detailOrderFilm(context, DetailOrder order) {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                food.name,
+                                                Common.truncateText(
+                                                    food.name, 15),
                                                 style: const TextStyle(
                                                     fontSize:
                                                         AppFontSize.small),

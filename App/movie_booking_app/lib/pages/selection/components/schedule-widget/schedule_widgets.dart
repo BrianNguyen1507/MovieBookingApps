@@ -172,7 +172,7 @@ class _ScheduleButtonState extends State<ScheduleButton> {
               AppLocalizations.of(context)!.go_signin,
               true, () {
             Navigator.pushNamed(context, '/login');
-          }, DialogType.question);
+          }, DialogType.info);
 
           return;
         }

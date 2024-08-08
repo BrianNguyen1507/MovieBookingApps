@@ -32,7 +32,7 @@ class DetailOrderPageState extends State<DetailOrderPage> {
     return Scaffold(
       backgroundColor: AppColors.commonLightColor,
       appBar: Common.customAppbar(
-          context,
+          context,null,
           AppStyle.headline2,
           AppLocalizations.of(context)!.detail_order,
           AppColors.iconThemeColor,

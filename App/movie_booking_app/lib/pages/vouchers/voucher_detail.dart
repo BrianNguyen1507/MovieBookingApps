@@ -21,7 +21,7 @@ class _VoucherDetailState extends State<VoucherDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Common.customAppbar(
-          context,
+          context,null,
           null,
           AppLocalizations.of(context)!.voucher_detail,
           AppColors.appbarColor,

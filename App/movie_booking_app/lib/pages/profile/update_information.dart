@@ -85,6 +85,7 @@ class UpdateInformationState extends State<UpdateInformation> {
     return Scaffold(
         appBar: Common.customAppbar(
             context,
+            null,
             AppStyle.headline2,
             AppLocalizations.of(context)!.update_info,
             AppColors.iconThemeColor,

@@ -8,6 +8,7 @@ import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/movie/movie_detail.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/modules/timer/timer_display.dart';
 import 'package:movie_booking_app/pages/order/components/movie_card.dart';
 import 'package:movie_booking_app/pages/order/order_page.dart';
 import 'package:movie_booking_app/pages/payments/components/payment_view.dart';
@@ -73,13 +74,13 @@ class _PaymentPageState extends State<PaymentPage> {
       backgroundColor: AppColors.backgroundColor,
       appBar: Common.customAppbar(
           context,
+          TimmerWidget.timerDocked(context),
           AppStyle.headline2,
           AppLocalizations.of(context)!.pay_inf,
           AppColors.iconThemeColor,
           AppColors.appbarColor),
       body: SingleChildScrollView(
         child: Container(
-          height: AppSize.height(context),
           decoration: const BoxDecoration(
             color: AppColors.commonLightColor,
             borderRadius: BorderRadius.only(
@@ -358,9 +359,9 @@ class _PaymentPageState extends State<PaymentPage> {
     String urlpath;
 
     try {
-      final VnPayResponse result =
+      final VnPayResponse? result =
           await Vnpayservice.vnPayCreateOrder(sumTotal.toInt());
-      urlpath = result.url;
+      urlpath = result!.url;
 
       if (mounted) {
         final returnData = await Navigator.push(

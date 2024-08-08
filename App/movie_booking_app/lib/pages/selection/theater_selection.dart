@@ -32,8 +32,8 @@ class _TheaterSelectionState extends State<TheaterSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: Common.customAppbar(context, AppStyle.headline2, widget.name,
-          AppColors.iconThemeColor, AppColors.appbarColor),
+      appBar: Common.customAppbar(context, null, AppStyle.headline2,
+          widget.name, AppColors.iconThemeColor, AppColors.appbarColor),
       body: Container(
         decoration: const BoxDecoration(
           color: AppColors.commonLightColor,

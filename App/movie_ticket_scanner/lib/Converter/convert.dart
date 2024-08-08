@@ -14,6 +14,12 @@ class ConverterData {
     return dateformat.format(date);
   }
 
+  static String formatPrice(double price) {
+    final formatter = NumberFormat('#,###', 'en_US');
+    String formatted = formatter.format(price);
+    return formatted.replaceAll(',', '.');
+  }
+
   static void confirmSuccess(BuildContext context) {
     showDialog(
       context: context,

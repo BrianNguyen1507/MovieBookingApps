@@ -32,7 +32,7 @@ class _QrcodePageState extends State<QrcodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Common.customAppbar(context, AppStyle.headline2, 'QR CODE',
+      appBar: Common.customAppbar(context, null, AppStyle.headline2, 'QR CODE',
           AppColors.iconThemeColor, AppColors.appbarColor.withOpacity(0.3)),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

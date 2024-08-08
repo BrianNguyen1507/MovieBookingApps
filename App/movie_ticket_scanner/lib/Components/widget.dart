@@ -202,7 +202,7 @@ class WidgetForm {
                               ),
                             ),
                             Text(
-                              'Đơn giá: ${food.price}',
+                              'Đơn giá: ${ConverterData.formatPrice(food.price)}đ',
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,

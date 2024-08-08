@@ -41,7 +41,7 @@ class SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: Common.customAppbar(context,null,
+        appBar: Common.customAppbar(context, null, null,
             AppLocalizations.of(context)!.search, AppColors.appbarColor, null),
         backgroundColor: AppColors.containerColor,
         body: SingleChildScrollView(
