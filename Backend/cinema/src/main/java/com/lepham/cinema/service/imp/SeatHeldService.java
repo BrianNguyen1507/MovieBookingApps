@@ -115,7 +115,7 @@ public class SeatHeldService implements ISeatHeldService {
                    .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));;
            schedule.returnSeat(seat.getSeat());
            movieScheduleRepository.save(schedule);
-          seatHeldRepository.delete(seat);
+           seatHeldRepository.delete(seat);
         });
     }
 }

@@ -19,6 +19,24 @@ Widget detailTitle(String title, String value) {
   );
 }
 
+Widget detailContent(String title, String value) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 10, right: 10),
+    child: Column(
+      children: [
+        Text(
+          title,
+          style: (AppStyle.detailTitle),
+        ),
+        Text(
+          value,
+          style: (AppStyle.detailText),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget infMovie(String title, String value) {
   return Padding(
     padding: const EdgeInsets.all(10.0),
