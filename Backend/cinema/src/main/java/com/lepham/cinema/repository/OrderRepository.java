@@ -3,9 +3,11 @@ package com.lepham.cinema.repository;
 import com.lepham.cinema.entity.AccountEntity;
 import com.lepham.cinema.entity.OrderEntity;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,4 +24,11 @@ public interface OrderRepository extends JpaRepository<OrderEntity,Long> {
 
     @Query(value = "select o.paymentMethod from OrderEntity o group by o.paymentMethod")
     List<String> getALLPaymentMethod();
+
+    @Query(value = "select o from OrderEntity o where Date(o.date) = ?1 and o.movieSchedule is null")
+    List<OrderEntity> MovieScheduleIsNullByDate_Date(LocalDate date);
+
+    @Query(value = "select o from OrderEntity o where Date(o.movieSchedule.timeStart) = ?1 and o.movieSchedule is not null")
+    @EntityGraph(attributePaths = {"movieSchedule", "movieSchedule.film"})
+    List<OrderEntity> findAllByMovieSchedule_TimeStart_Date(LocalDate date);
 }

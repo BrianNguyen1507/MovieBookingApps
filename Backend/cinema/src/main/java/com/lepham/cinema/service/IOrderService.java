@@ -20,4 +20,7 @@ public interface IOrderService {
 
     OrderCheckResponse detailOrderByOrderCode(String orderCode);
     void changeOrderStatus(long id);
+
+    void autoChangeStatusFoodOrder();
+    void autoChangeStatusFilmOrder();
 }
