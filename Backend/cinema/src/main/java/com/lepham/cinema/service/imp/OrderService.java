@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -96,9 +100,10 @@ public class OrderService implements IOrderService {
     public OrderResponse order(OrderFilmRequest request) {
         OrderEntity order = orderConverter.toEntity(request);
         order.setSeat(null);
-        if (request.getMovieScheduleId()!=-1){
+        if (request.getMovieScheduleId() != -1) {
             MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(request.getMovieScheduleId()).orElseThrow();
-            if(movieSchedule.getFilm().getActive()==ConstantVariable.FILM_STOP_RELEASE) throw new AppException(ErrorCode.FILM_NOT_FOUND);
+            if (movieSchedule.getFilm().getActive() == ConstantVariable.FILM_STOP_RELEASE)
+                throw new AppException(ErrorCode.FILM_NOT_FOUND);
             order.setMovieSchedule(movieSchedule);
             if (LocalDateTime.now().plusMinutes(30).isAfter(movieSchedule.getTimeStart()))
                 throw new AppException(ErrorCode.SHOWTIME_IS_COMING_SOON);
@@ -114,7 +119,7 @@ public class OrderService implements IOrderService {
         AccountVoucherEntity accountVoucher = new AccountVoucherEntity();
         if (request.getVoucherId() != -1) {
             VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
-                    .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                    .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
             accountVoucher = accountVoucherRepository.findByAccountAndVoucher(account, voucher);
 
             if (accountVoucher.getQuantity() <= 0) throw new AppException(ErrorCode.VOUCHER_NOT_ENOUGH);
@@ -126,7 +131,7 @@ public class OrderService implements IOrderService {
             } else {
                 accountVoucher.setVoucher(null);
                 accountVoucher.setAccount(account);
-                accountVoucher= accountVoucherRepository.save(accountVoucher);
+                accountVoucher = accountVoucherRepository.save(accountVoucher);
             }
         }
         order.setAccountVoucher(accountVoucher);
@@ -136,7 +141,7 @@ public class OrderService implements IOrderService {
         if (!request.getFood().isEmpty()) {
             for (FoodOrderRequest foodOrderRequest : request.getFood()) {
                 FoodEntity food = foodRepository.findById(foodOrderRequest.getId())
-                        .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                        .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
                 FoodOrderEntity foodOrder = new FoodOrderEntity();
                 foodOrder.setOrder(order);
                 foodOrder.setFood(food);
@@ -160,7 +165,6 @@ public class OrderService implements IOrderService {
     }
 
 
-
     @Override
     @PreAuthorize("hasRole('USER')")
     public List<OrderResponse> listFilmOrder() {
@@ -168,15 +172,10 @@ public class OrderService implements IOrderService {
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNotNull(account, Sort.by(Sort.Direction.DESC,"date"));
+        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNotNull(account, Sort.by(Sort.Direction.DESC, "date"));
         List<OrderResponse> orderResponses = new ArrayList<>();
         orderEntities.forEach(entity -> {
             FilmEntity film = entity.getMovieSchedule().getFilm();
-            if (entity.getMovieSchedule().getTimeStart().plusMinutes(film.getDuration()).isBefore(LocalDateTime.now())
-                    && entity.getStatus() == ConstantVariable.ORDER_UNUSED) {
-                entity.setStatus(ConstantVariable.ORDER_EXPIRED_USED);
-                entity = orderRepository.save(entity);
-            }
             OrderResponse response = orderConverter.toOrderFilmResponse(entity);
             response.setStatus(getStatus(entity.getStatus()));
             response.setFilm(filmConverter.toFilmResponse(film));
@@ -193,14 +192,10 @@ public class OrderService implements IOrderService {
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNull(account, Sort.by(Sort.Direction.DESC,"date"));
+        List<OrderEntity> orderEntities = orderRepository.findByAccountVoucher_AccountAndMovieScheduleNull(account, Sort.by(Sort.Direction.DESC, "date"));
         List<OrderResponse> orderResponses = new ArrayList<>();
         orderEntities.forEach(entity -> {
-            if (LocalDate.now().isAfter(entity.getDate().toLocalDate())
-                    && entity.getStatus() == ConstantVariable.ORDER_UNUSED) {
-                entity.setStatus(ConstantVariable.ORDER_EXPIRED_USED);
-                entity = orderRepository.save(entity);
-            }
+
             OrderResponse response = orderConverter.toOrderFilmResponse(entity);
 
             response.setStatus(getStatus(entity.getStatus()));
@@ -269,23 +264,40 @@ public class OrderService implements IOrderService {
     public OrderCheckResponse detailOrderByOrderCode(String orderCode) {
         OrderEntity order = orderRepository.findByOrderCode(orderCode)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
-        if(order.getStatus()!=ConstantVariable.ORDER_UNUSED)
+        if (order.getStatus() != ConstantVariable.ORDER_UNUSED)
             throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
         MovieScheduleEntity movieSchedule = order.getMovieSchedule();
-        MovieTheaterEntity movieTheater = movieSchedule.getRoom().getMovieTheater();
-        LocalDateTime timeStart = movieSchedule.getTimeStart().minusMinutes(15);
-        LocalDateTime timeEnd = movieSchedule.getTimeStart().plusMinutes(movieSchedule.getFilm().getDuration());
+
+
         LocalDateTime now = LocalDateTime.now();
         OrderCheckResponse response = orderConverter.toOrderCheckResponse(order);
-        MovieScheduleResponse movieScheduleResponse = movieScheduleConverter
-                .toResponse(movieSchedule,filmConverter.toFilmScheduleResponse(movieSchedule.getFilm()));
-        response.setMovieSchedule(movieScheduleResponse);
-        //Check 15 minutes before start until finish
-        response.setAllowUse(now.isAfter(timeStart) && now.isBefore(timeEnd));
+        if (movieSchedule != null) {
+            MovieTheaterEntity movieTheater = movieSchedule.getRoom().getMovieTheater();
 
-        response.setRoomNumber(movieSchedule.getRoom().getNumber());
-        response.setAddress(movieTheater.getAddress());
-        response.setTheaterName(movieTheater.getName());
+            LocalDateTime timeStart = movieSchedule.getTimeStart().minusMinutes(15);
+            LocalDateTime timeEnd = movieSchedule.getTimeStart().plusMinutes(movieSchedule.getFilm().getDuration());
+
+            //Check 15 minutes before start until finish
+            response.setAllowUse(now.isAfter(timeStart) && now.isBefore(timeEnd));
+            MovieScheduleResponse movieScheduleResponse = movieScheduleConverter
+                    .toResponse(movieSchedule, filmConverter.toFilmScheduleResponse(movieSchedule.getFilm()));
+            response.setMovieSchedule(movieScheduleResponse);
+            response.setAddress(movieTheater.getAddress());
+            response.setTheaterName(movieTheater.getName());
+
+            response.setRoomNumber(movieSchedule.getRoom().getNumber());
+        } else {
+            //Check date order is today
+            response.setAllowUse(order.getDate().toLocalDate().equals(LocalDate.now()));
+            if (!order.getFoodOrders().isEmpty()) {
+                response.setFoods(order.getFoodOrders()
+                        .stream()
+                        .map(foodOrderEntity -> foodConverter.toFoodResponse(foodOrderEntity.getFood()))
+                        .toList());
+            }
+        }
+
+
         return response;
     }
 
@@ -295,19 +307,59 @@ public class OrderService implements IOrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
 
         MovieScheduleEntity movieSchedule = order.getMovieSchedule();
-        if(order.getStatus()!=ConstantVariable.ORDER_UNUSED)
+        if (order.getStatus() != ConstantVariable.ORDER_UNUSED)
             throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
         LocalDateTime timeStart = movieSchedule.getTimeStart().minusMinutes(15);
         LocalDateTime timeEnd = movieSchedule.getTimeStart().plusMinutes(movieSchedule.getFilm().getDuration());
         LocalDateTime now = LocalDateTime.now();
 
         //Check 15 minutes before start until finish
-        if(now.isAfter(timeStart) && now.isBefore(timeEnd)){
+        if (now.isAfter(timeStart) && now.isBefore(timeEnd)) {
             order.setStatus(ConstantVariable.ORDER_USED);
             orderRepository.save(order);
             return;
         }
         throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
+    }
+
+    @Override
+    @Scheduled(cron = "0 0 1 * * ?")
+    public void autoChangeStatusFoodOrder() {
+        List<OrderEntity> orders = orderRepository.MovieScheduleIsNullByDate_Date(LocalDate.now());
+        if (!orders.isEmpty()) {
+            orders.forEach(order -> {
+                //Schedule not null
+                if (LocalDate.now().isAfter(order.getDate().toLocalDate())
+                        && order.getStatus() == ConstantVariable.ORDER_UNUSED) {
+                    order.setStatus(ConstantVariable.ORDER_EXPIRED_USED);
+                    orderRepository.save(order);
+                }
+
+            });
+        }
+    }
+
+    @Override
+    @Transactional
+    @Scheduled(fixedRate = 60000)
+    public void autoChangeStatusFilmOrder() {
+        List<OrderEntity> orders = orderRepository.findAllByMovieSchedule_TimeStart_Date(LocalDate.now());
+
+
+        if (!orders.isEmpty()) {
+            orders.forEach(order -> {
+                MovieScheduleEntity movieSchedule = order.getMovieSchedule();
+                if (order.getMovieSchedule()
+                        .getTimeStart()
+                        .plusMinutes(order.getMovieSchedule().getFilm().getDuration())
+                        .isBefore(LocalDateTime.now())
+                        && order.getStatus() == ConstantVariable.ORDER_UNUSED) {
+
+                    order.setStatus(ConstantVariable.ORDER_EXPIRED_USED);
+                    orderRepository.save(order);
+                }
+            });
+        }
     }
 
     String getStatus(int statusInt) {

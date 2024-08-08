@@ -52,6 +52,9 @@ public enum ErrorCode {
     FILM_NOT_RELEASE(1039,"The movie has not been released yet",HttpStatus.BAD_REQUEST),
     DATE_AFTER_NOW(1040,"Date's schedule must after now 7 days",HttpStatus.BAD_REQUEST),
     ORDER_CAN_NOT_USED(1041,"Order was used or expired",HttpStatus.BAD_REQUEST),
+    HOLD_SEAT_ABOVE_LIMIT(1042,"You can only book a maximum of 10 seats",HttpStatus.BAD_REQUEST),
+    VOUCHER_NOT_FOUND(1043,"Voucher not found",HttpStatus.BAD_REQUEST),
+    STRING_SEAT_INCORRECT(1044,"String seat format is incorrect",HttpStatus.BAD_REQUEST),
     ;
 
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,4 +24,5 @@ public class OrderCheckResponse {
     String theaterName;
     String address;
     int roomNumber;
+    List<FoodResponse> foods;
 }
