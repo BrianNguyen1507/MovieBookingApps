@@ -390,6 +390,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             appBar: Common.customAppbar(
                 context,
                 null,
+                null,
                 AppLocalizations.of(context)!.movieDetail,
                 AppColors.appbarColor,
                 null),
@@ -401,6 +402,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           return Scaffold(
             appBar: Common.customAppbar(
                 context,
+                null,
                 null,
                 AppLocalizations.of(context)!.movieDetail,
                 AppColors.appbarColor,
@@ -418,6 +420,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               backgroundColor: AppColors.containerColor,
               appBar: Common.customAppbar(
                   context,
+                  null,
                   null,
                   AppLocalizations.of(context)!.movieDetail,
                   AppColors.appbarColor,

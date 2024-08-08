@@ -45,7 +45,7 @@ class _ScheduleSelectionState extends State<ScheduleSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.commonLightColor,
-      appBar: Common.customAppbar(context, AppStyle.headline2,
+      appBar: Common.customAppbar(context, null, AppStyle.headline2,
           widget.theaterName, AppColors.iconThemeColor, AppColors.appbarColor),
       body: Column(
         children: [

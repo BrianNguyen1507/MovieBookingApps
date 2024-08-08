@@ -77,7 +77,7 @@ class _PaymentWebviewState extends State<PaymentWebview> {
           )
         : Scaffold(
             extendBodyBehindAppBar: true,
-            appBar: Common.customAppbar(context, null, '',
+            appBar: Common.customAppbar(context, null, null, '',
                 AppColors.appbarColor, AppColors.appbarColor.withOpacity(0.1)),
             body: Center(
               child: WebViewWidget(

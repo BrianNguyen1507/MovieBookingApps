@@ -10,6 +10,7 @@ import 'package:movie_booking_app/models/movie/movie_detail.dart';
 import 'package:movie_booking_app/models/order/get_total.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/modules/timer/timer.dart';
+import 'package:movie_booking_app/modules/timer/timer_display.dart';
 import 'package:movie_booking_app/pages/order/components/movie_card.dart';
 import 'package:movie_booking_app/pages/order/components/order_widgets.dart';
 import 'package:movie_booking_app/pages/order/components/voucher_tab.dart';
@@ -93,6 +94,7 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       appBar: Common.customAppbar(
           context,
+          TimmerWidget.timerDocked(context),
           AppStyle.headline2,
           AppLocalizations.of(context)!.order_inf,
           AppColors.iconThemeColor,

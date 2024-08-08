@@ -11,9 +11,10 @@ class Common {
     }
   }
 
-  static customAppbar(context, TextStyle? appbarStyle, String title,
-      Color color, Color? bgcolor) {
+  static customAppbar(context, Widget? action, TextStyle? appbarStyle,
+      String title, Color color, Color? bgcolor) {
     return AppBar(
+      actions: action != null ? [action] : [],
       backgroundColor: bgcolor ?? AppColors.containerColor,
       centerTitle: false,
       title: Text(title, style: appbarStyle ?? AppStyle.headline1),

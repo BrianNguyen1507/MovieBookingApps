@@ -36,7 +36,7 @@ class ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Common.customAppbar(
-          context,
+          context,null,
           AppStyle.headline2,
           AppLocalizations.of(context)!.change_pass,
           AppColors.iconThemeColor,

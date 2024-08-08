@@ -41,7 +41,7 @@ class _TrailerScreenState extends State<TrailerScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: Common.customAppbar(
-          context, null, '', AppColors.iconThemeColor, AppColors.appbarColor),
+          context,null, null, '', AppColors.iconThemeColor, AppColors.appbarColor),
       body: Center(
         child: !isVideoLoaded
             ? const CircularProgressIndicator(

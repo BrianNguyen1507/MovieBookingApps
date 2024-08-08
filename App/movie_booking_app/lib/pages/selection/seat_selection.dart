@@ -41,7 +41,8 @@ class SeatSelection extends StatefulWidget {
   State<SeatSelection> createState() => _SeatSelectionState();
 }
 
-class _SeatSelectionState extends State<SeatSelection> {
+class _SeatSelectionState extends State<SeatSelection>
+    with WidgetsBindingObserver {
   late Future<Seat?> seats;
   late Future<MovieDetail?> getMovie;
   late Future<GetTotal?> getTotal;
@@ -50,6 +51,11 @@ class _SeatSelectionState extends State<SeatSelection> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    fetchingData();
+  }
+
+  void fetchingData() {
     seats = Seatservice.getMovieScheduleById(context, widget.scheduleId);
     getMovie = MovieDetailService.deatailMovieService(context, widget.movieId);
     getTotal = _fetchTotal();
@@ -61,6 +67,12 @@ class _SeatSelectionState extends State<SeatSelection> {
       selectedSeats.length,
       [],
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -117,7 +129,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                       widget.movieId,
                       getMovie,
                       getTotal,
-                      selectedSeats,
+                      ConverterUnit.sortSeats(selectedSeats),
                     ),
                   ),
                 ],
@@ -159,17 +171,20 @@ class _SeatSelectionState extends State<SeatSelection> {
                     ],
                   ),
                   const SizedBox(width: 20),
-                  Column(
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.screen,
-                        style: AppStyle.screenText,
-                      ),
-                      SvgPicture.string(
-                        svgScreen,
-                        height: 50.0,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.screen,
+                          style: AppStyle.screenText,
+                        ),
+                        SvgPicture.string(
+                          svgScreen,
+                          height: 50.0,
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(width: 20),
                   Column(
@@ -186,9 +201,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                   ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.only(top: 30.0),
-                height: AppSize.height(context) / 2,
+              Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
@@ -241,13 +254,25 @@ class _SeatSelectionState extends State<SeatSelection> {
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    if (isSelectable) {
-                      if (isSelected) {
-                        selectedSeats.remove(seatIdentifier);
-                      } else {
-                        selectedSeats.add(seatIdentifier);
+                    if (!isSelectable) return;
+                    if (isSelected) {
+                      selectedSeats.remove(seatIdentifier);
+                    } else {
+                      if ((selectedSeats.length + 1) > 10) {
+                        ShowDialog.showAlertCustom(
+                          context,
+                          true,
+                          AppLocalizations.of(context)!.warning_seat,
+                          null,
+                          true,
+                          null,
+                          DialogType.info,
+                        );
+                        return;
                       }
+                      selectedSeats.add(seatIdentifier);
                     }
+
                     getTotal = _fetchTotal();
                   });
                 },

@@ -24,12 +24,8 @@ class ConverterUnit {
   }
 
   static Future<Uint8List> bytesToImage(String base64String) async {
-    try {
-      Uint8List imgBytes = base64Decode(base64String);
-      return imgBytes;
-    } catch (e) {
-      rethrow;
-    }
+    Uint8List imgBytes = base64Decode(base64String);
+    return imgBytes;
   }
 
   static String convertToDate(String dateTimeString) {
@@ -102,6 +98,22 @@ class ConverterUnit {
       totalRating += item.rating;
     }
     return totalRating / feedback.length;
+  }
+
+  static Set<String> sortSeats(Set<String> seats) {
+    List<String> sortedList = seats.toList();
+    sortedList.sort((a, b) {
+      String letterA = a[0];
+      String numberA = a.substring(1);
+      String letterB = b[0];
+      String numberB = b.substring(1);
+      int letterComparison = letterA.compareTo(letterB);
+      if (letterComparison != 0) {
+        return letterComparison;
+      }
+      return int.parse(numberA).compareTo(int.parse(numberB));
+    });
+    return sortedList.toSet();
   }
 }
 

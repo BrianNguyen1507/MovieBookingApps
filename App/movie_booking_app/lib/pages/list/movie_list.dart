@@ -21,7 +21,7 @@ class MovieListings extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.containerColor,
         appBar: Common.customAppbar(
-            context, null, listTitle, AppColors.appbarColor, null),
+            context, null, null, listTitle, AppColors.appbarColor, null),
         body: FutureBuilder(
           future: movies,
           builder: (context, snapshot) {

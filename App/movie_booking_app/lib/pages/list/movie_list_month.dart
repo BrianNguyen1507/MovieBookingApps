@@ -27,7 +27,7 @@ class MovieListingByMonth extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.containerColor,
         appBar: Common.customAppbar(
-            context, null, listTitle, AppColors.appbarColor, null),
+            context, null, null, listTitle, AppColors.appbarColor, null),
         body: FutureBuilder<Map<int, List<Movie>>?>(
           future: movies,
           builder: (context, snapshot) {

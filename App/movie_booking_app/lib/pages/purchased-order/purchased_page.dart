@@ -26,6 +26,7 @@ class ListOrderedState extends State<ListOrdered> {
         backgroundColor: AppColors.commonLightColor,
         appBar: Common.customAppbar(
             context,
+            null,
             AppStyle.headline2,
             AppLocalizations.of(context)!.my_orders,
             AppColors.iconThemeColor,

@@ -141,5 +141,9 @@
   "find_cinema": "Do you want to find your way to the cinema?",
   "food_noti": "Please choose at least one type of food and drink",
   "logout_noti": "Continue Sign in or Sign up",
-  "voucher_detail": "Voucher Detail"
+  "voucher_detail": "Voucher Detail",
+  "hold_message": "We are holding your seats",
+  "warning_seat": "You can only book 10 seats at a time. \n If you want to book more, please visit the cinema for assistance.",
+  "invalid_seat": "Some seats have been selected by others, please choose another seat",
+  "time": "Time"
 }

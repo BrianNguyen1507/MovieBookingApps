@@ -193,6 +193,25 @@ class _QRScannPageState extends State<QRScannPage> {
               ),
             ),
             const Divider(height: 24),
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: 'Ngày: ',
+                    style: TextStyle(color: Colors.black, fontSize: 14),
+                  ),
+                  TextSpan(
+                    text: order.date,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 24),
             WidgetForm.buildMovieInfo(context, order),
             const Divider(height: 24),
             WidgetForm.buildTicketInfo(order),
@@ -211,7 +230,7 @@ class _QRScannPageState extends State<QRScannPage> {
                   ),
                 ),
                 Text(
-                  '${order.sumtotal.toString()}đ',
+                  '${ConverterData.formatPrice(order.sumtotal)}đ',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

@@ -22,7 +22,7 @@ class OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Common.customAppbar(context, AppStyle.headline2,
+      appBar: Common.customAppbar(context,null, AppStyle.headline2,
           'OTP Verification', AppColors.appbarColor, AppColors.containerColor),
       body: SingleChildScrollView(
         child: Center(

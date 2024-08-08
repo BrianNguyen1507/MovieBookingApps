@@ -28,8 +28,8 @@ class MapTheaterState extends State<MapTheater> {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      appBar: Common.customAppbar(context,null, '', AppColors.iconThemeColor,
-          AppColors.appbarColor.withOpacity(0.1)),
+      appBar: Common.customAppbar(context, null, null, '',
+          AppColors.iconThemeColor, AppColors.appbarColor.withOpacity(0.1)),
       body: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
