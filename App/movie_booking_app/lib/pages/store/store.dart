@@ -210,7 +210,7 @@ class _StorePageState extends State<StorePage> {
                                             nameTrans ?? foodData[index].name,
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
-                                            style: AppStyle.smalldark,
+                                            style: AppStyle.detailText,
                                           );
                                         },
                                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
+import 'package:movie_booking_app/modules/timer/timer_display.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -77,8 +78,13 @@ class _PaymentWebviewState extends State<PaymentWebview> {
           )
         : Scaffold(
             extendBodyBehindAppBar: true,
-            appBar: Common.customAppbar(context, null, null, '',
-                AppColors.appbarColor, AppColors.appbarColor.withOpacity(0.1)),
+            appBar: Common.customAppbar(
+                context,
+                TimmerWidget.timerDocked(context),
+                null,
+                '',
+                AppColors.appbarColor,
+                AppColors.appbarColor.withOpacity(0.3)),
             body: Center(
               child: WebViewWidget(
                 controller: controller,
