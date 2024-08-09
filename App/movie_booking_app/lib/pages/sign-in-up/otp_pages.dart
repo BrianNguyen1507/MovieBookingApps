@@ -4,6 +4,7 @@ import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/services/Users/signup/handle_sign_up.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({super.key, required this.email, required this.method});
@@ -22,7 +23,7 @@ class OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Common.customAppbar(context,null, AppStyle.headline2,
+      appBar: Common.customAppbar(context, null, AppStyle.headline2,
           'OTP Verification', AppColors.appbarColor, AppColors.containerColor),
       body: SingleChildScrollView(
         child: Center(
@@ -70,7 +71,7 @@ class OTPPageState extends State<OTPPage> {
                   onPressed: () async {
                     String otp = _otpController.text.toString();
                     if (otp.length != 6) {
-                      String message = 'Please enter a 6-digit OTP';
+                      String message = AppLocalizations.of(context)!.otp_digit;
                       valid.showMessage(context, message, AppColors.errorColor);
                     }
                     _otpSend.validOTP(

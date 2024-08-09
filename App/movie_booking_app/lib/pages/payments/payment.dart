@@ -1,7 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/services.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/constant/app_data.dart';
@@ -11,17 +8,11 @@ import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/modules/timer/timer_display.dart';
 import 'package:movie_booking_app/pages/order/components/movie_card.dart';
 import 'package:movie_booking_app/pages/order/order_page.dart';
-import 'package:movie_booking_app/pages/payments/components/payment_view.dart';
-import 'package:movie_booking_app/pages/payments/handle-payments/handle_pay.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/pages/payments/components/payment_card.dart';
+import 'package:movie_booking_app/pages/payments/handle-payments/handle_pay.dart';
 import 'package:movie_booking_app/services/Users/movie-detail/movie_detail_service.dart';
-import 'package:movie_booking_app/services/Users/order/hold-seat/hold_seat_service.dart';
-import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
-import 'package:movie_booking_app/services/payments/vnpay/vnpay_response.dart';
-import 'package:movie_booking_app/services/payments/vnpay/vnpay_service.dart';
-import 'package:movie_booking_app/services/payments/zalopay/zalo_service.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
-import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
@@ -52,7 +43,6 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   late Future<MovieDetail?> movieData;
 
-  String zpTransToken = "";
   String payResult = "";
   int payAmount = 0;
 
@@ -71,7 +61,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     final numberSeats = ConverterUnit.convertStringToSet(widget.seats).length;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.commonLightColor,
       appBar: Common.customAppbar(
           context,
           TimmerWidget.timerDocked(context),
@@ -206,31 +196,43 @@ class _PaymentPageState extends State<PaymentPage> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   children: [
-                    paymentCardWidget(
+                    PaymentCard(
+                      visible: widget.visible,
+                      sumtotal: payAmount,
+                      seats: widget.seats,
+                      foods: widget.foods,
+                      handlePayment: () => HandlePayment.zaloPayFuction(
+                        context,
+                        mounted,
                         widget.visible,
-                        payAmount,
+                        voucherId,
                         widget.seats,
                         widget.foods,
-                        () => zaloPayFuction(widget.visible, widget.seats,
-                            widget.foods, payAmount.toDouble(), 'ZALOPAY'),
+                        payAmount.toDouble(),
                         'ZALOPAY',
-                        'assets/images/ZaloPay-vuong.png'),
-                    paymentCardWidget(
+                      ),
+                      methodName: 'ZALOPAY',
+                      methodIcon: 'assets/images/ZaloPay-vuong.png',
+                    ),
+                    PaymentCard(
+                      visible: widget.visible,
+                      sumtotal: payAmount,
+                      seats: widget.seats,
+                      foods: widget.foods,
+                      handlePayment: () => HandlePayment.vnPayFunction(
+                        context,
+                        mounted,
                         widget.visible,
-                        payAmount,
+                        voucherId,
+                        'VNPAY',
                         widget.seats,
                         widget.foods,
-                        () => vnPayFunction(
-                              context,
-                              widget.visible,
-                              'VNPAY',
-                              widget.seats,
-                              widget.foods,
-                              payAmount.toDouble(),
-                              'VNPAY',
-                            ),
+                        payAmount.toDouble(),
                         'VNPAY',
-                        'assets/images/VNPAY-logo.png'),
+                      ),
+                      methodName: 'VNPAY',
+                      methodIcon: 'assets/images/VNPAY-logo.png',
+                    ),
                   ],
                 ),
               ),
@@ -239,190 +241,5 @@ class _PaymentPageState extends State<PaymentPage> {
         ),
       ),
     );
-  }
-
-  Widget paymentCardWidget(
-    bool visible,
-    int sumtotal,
-    String? seats,
-    List<Map<String, dynamic>> foods,
-    Function handlePayment,
-    String methodName,
-    String methodIcon,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(5.0),
-      child: Tooltip(
-        message: 'Payment via $methodName',
-        child: GestureDetector(
-          onTap: () async {
-            int amount = sumtotal;
-            if (amount < 1000 || amount > 1000000) {
-              setState(() {
-                zpTransToken = "Invalid Amount";
-                ValidInput()
-                    .showMessage(context, zpTransToken, AppColors.errorColor);
-              });
-            } else {
-              if (mounted) {
-                setState(() {
-                  debugPrint('TONG TIEN LA: $sumtotal');
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => SizedBox(
-                      width: AppSize.width(context),
-                      height: AppSize.height(context) * 0.2,
-                      child: MaterialButton(
-                        onPressed: () async {
-                          final int? scheduleId = await pref.getSchedule();
-                          bool isValid = await HoldSeatService.checkHoldSeat(
-                              context, scheduleId, seats);
-                          if (visible) {
-                            if (!isValid) {
-                              ShowDialog.showAlertCustom(
-                                context,
-                                true,
-                                'Some seats have been selected, please choose another seat',
-                                null,
-                                true,
-                                null,
-                                DialogType.error,
-                              );
-                              return;
-                            } else {
-                              await handlePayment();
-                            }
-                          } else {
-                            await handlePayment();
-                          }
-                        },
-                        child: Container(
-                          height: 50,
-                          width: AppSize.width(context),
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: ContainerRadius.radius12,
-                            color: AppColors.primaryColor,
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '${AppLocalizations.of(context)!.open} $methodName',
-                              style: AppStyle.buttonText2,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                });
-              }
-            }
-          },
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.containerColor,
-                  borderRadius: ContainerRadius.radius12,
-                ),
-                margin: const EdgeInsets.all(10.0),
-                child: ClipRRect(
-                  borderRadius: ContainerRadius.radius10,
-                  child: Image.asset(
-                    methodIcon,
-                    height: 70,
-                    width: 70,
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-              ),
-              Text(
-                methodName,
-                style: AppStyle.titleMovie,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> vnPayFunction(
-      context,
-      bool visible,
-      String payMethod,
-      String seats,
-      List<Map<String, dynamic>> foods,
-      double sumTotal,
-      String methodName) async {
-    String urlpath;
-
-    try {
-      final VnPayResponse? result =
-          await Vnpayservice.vnPayCreateOrder(sumTotal.toInt());
-      urlpath = result!.url;
-
-      if (mounted) {
-        final returnData = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PaymentWebview(url: urlpath),
-          ),
-        );
-
-        if (returnData != null && mounted) {
-          String tranCode = returnData['transaction'];
-          Handlepayments.handlePaymentSuccess(context, visible, seats,
-              voucherId, methodName, tranCode, foods, sumTotal);
-        } else {
-          Handlepayments.handlePaymentFail(context);
-        }
-      }
-    } on PlatformException catch (e) {
-      debugPrint("PlatformException: ${e.message}");
-    } catch (e) {
-      debugPrint("Exception: $e");
-    }
-  }
-
-  Future<void> zaloPayFuction(
-      bool visible,
-      String seats,
-      List<Map<String, dynamic>> foods,
-      double sumTotal,
-      String methodName) async {
-    String response;
-    String appTranId;
-
-//create order zalopay
-    var createOrderResult = await createOrder(sumTotal.toInt());
-
-    if (createOrderResult != null) {
-      zpTransToken = createOrderResult.zptranstoken;
-
-      try {
-//call invoke apptoapp
-        final Map<dynamic, dynamic> paymentResult =
-            await Handlepayments.handleZaloPay(zpTransToken);
-
-        response = paymentResult['result'].toString();
-        appTranId = paymentResult['appTransID'] ?? '';
-
-        if (mounted) {
-          if (response == 'Payment failed' || response == 'User Canceled') {
-            Handlepayments.handlePaymentFail(context);
-            return;
-          }
-          if (response == 'Payment Success') {
-            return Handlepayments.handlePaymentSuccess(context, visible, seats,
-                voucherId, methodName, appTranId, foods, sumTotal);
-          }
-        }
-      } on PlatformException catch (e) {
-        response = 'Payment failed';
-        debugPrint("PlatformException: ${e.message}");
-      }
-    }
   }
 }

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/models/voucher/voucher.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
@@ -31,10 +31,11 @@ class VoucherService {
       }
       final Map<String, dynamic> result =
           jsonDecode(utf8.decode(response.body.codeUnits));
-      final apiResponse = Response<List<Voucher>>.fromJson(result, (data) {
+      final apiResponse =
+          ResponseFunction<List<Voucher>>.fromJson(result, (data) {
         final List<dynamic> voucherData = data as List<dynamic>;
         return voucherData.map((item) => Voucher.fromJson(item)).toList();
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result!;
       } else {
@@ -65,10 +66,11 @@ class VoucherService {
         debugPrint(
             'Error getVoucherByEmail service code: ${response.statusCode}');
       }
-      final apiResponse = Response<List<Voucher>>.fromJson(result, (data) {
+      final apiResponse =
+          ResponseFunction<List<Voucher>>.fromJson(result, (data) {
         final List<dynamic> getVoucher = data as List<dynamic>;
         return getVoucher.map((item) => Voucher.fromJson(item)).toList();
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

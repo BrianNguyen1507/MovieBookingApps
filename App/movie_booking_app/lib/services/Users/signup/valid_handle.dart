@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_data.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ValidInput {
   bool isValidEmail(String email, context) {
     RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    showMessage(context, 'Please enter a valid email', AppColors.errorColor);
+    showMessage(context, AppLocalizations.of(context)!.valid_email,
+        AppColors.errorColor);
     return emailRegex.hasMatch(email);
   }
 
   bool isValidPassword(String password, context) {
     RegExp passwordRegex = RegExp(r'^.{6,50}$');
-    showMessage(context, 'Please enter a valid password', AppColors.errorColor);
+    showMessage(context, AppLocalizations.of(context)!.valid_password,
+        AppColors.errorColor);
     return passwordRegex.hasMatch(password);
   }
 

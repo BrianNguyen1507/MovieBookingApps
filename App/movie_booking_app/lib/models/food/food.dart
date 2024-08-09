@@ -15,11 +15,11 @@ class Food {
 
   factory Food.fromJson(Map<String, dynamic> json) {
     return Food(
-        id: json['id'],
-        name: json['name'],
-        price: json['price'],
-        image: json['image'],
-        quantity: json['image']==null?0:( json['quantity'] as num).toInt(),
+      id: json['id'],
+      name: json['name'],
+      price: json['price'],
+      image: json['image'],
+      quantity: json['quantity'].toInt(),
     );
   }
 }

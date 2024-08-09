@@ -4,7 +4,7 @@ import 'package:movie_booking_app/models/user/user.dart';
 import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
 import 'package:movie_booking_app/pages/sign-in-up/reset_password.dart';
 import 'package:movie_booking_app/services/Users/signup/sign_up_service.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
@@ -13,6 +13,17 @@ class HandleSignupState {
 
   Future<void> validSignUp(context, String email, String password, String name,
       String gender, String phone, String dob) async {
+    if (email.isEmpty ||
+        password.isEmpty ||
+        name.isEmpty ||
+        gender.isEmpty ||
+        phone.isEmpty ||
+        dob.isEmpty) {
+      valid.showMessage(context, AppLocalizations.of(context)!.code_1016,
+          AppColors.errorColor);
+      return;
+    }
+
     final user = User(
         email: email,
         password: password,
@@ -25,7 +36,8 @@ class HandleSignupState {
     final signup = await SignUpService.signup(context, user);
     Navigator.of(context).pop();
     if (signup) {
-      valid.showMessage(context, 'Sign up successful!', AppColors.correctColor);
+      valid.showMessage(context, AppLocalizations.of(context)!.sign_up_success,
+          AppColors.correctColor);
       Future.delayed(const Duration(seconds: 1)).then((_) {});
       Navigator.push(
         context,
@@ -42,13 +54,14 @@ class HandleSignupState {
     ShowDialog.showLoadingDialog(context);
     final result = await OTPService.otpService(email, otp);
     if (result != true) {
-      valid.showMessage(context, "Invalid OTP", AppColors.errorColor);
+      valid.showMessage(context, AppLocalizations.of(context)!.code_1010,
+          AppColors.errorColor);
       Navigator.of(context).pop();
       return;
     }
     Navigator.of(context).pop();
-    valid.showMessage(
-        context, 'Activation successful!', AppColors.correctColor);
+    valid.showMessage(context, AppLocalizations.of(context)!.active_success,
+        AppColors.correctColor);
     if (method == AppStringMethod.register) {
       Navigator.pushReplacementNamed(context, '/login');
     } else {

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/ordered/order_movie_response.dart';
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:http/http.dart' as http;
@@ -24,10 +24,10 @@ class FilmOrder {
       final responseData =
           jsonDecode(utf8.decode(response.body.runes.toList()));
       final apiResponse =
-          Response<List<OrderResponse>>.fromJson(responseData, (data) {
+          ResponseFunction<List<OrderResponse>>.fromJson(responseData, (data) {
         final List<dynamic> listData = data as List<dynamic>;
         return listData.map((item) => OrderResponse.fromJson(item)).toList();
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

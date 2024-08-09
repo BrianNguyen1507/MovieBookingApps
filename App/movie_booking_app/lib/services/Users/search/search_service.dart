@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/movie/movie.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 
 class SearchMovieService {
@@ -22,10 +22,10 @@ class SearchMovieService {
         debugPrint('Error cant search service code:${response.statusCode}');
       }
 
-      final apiResponse = Response<List<Movie>>.fromJson(result, (data) {
+      final apiResponse = ResponseFunction<List<Movie>>.fromJson(result, (data) {
         final List<dynamic> getMovie = data as List<dynamic>;
         return getMovie.map(((item) => Movie.fromJson(item))).toList();
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

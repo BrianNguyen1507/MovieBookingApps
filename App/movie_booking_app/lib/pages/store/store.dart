@@ -210,7 +210,7 @@ class _StorePageState extends State<StorePage> {
                                             nameTrans ?? foodData[index].name,
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
-                                            style: AppStyle.smalldark,
+                                            style: AppStyle.detailText,
                                           );
                                         },
                                       ),
@@ -366,7 +366,7 @@ Widget renderBooking(
             //
             debugPrint('Pref hold Seat:  $data');
             GetTotal? getTotal = await GetTotalService.sumTotalOrder(
-                movieId, seats.length, listOrdered);
+                context, movieId, seats.length, listOrdered);
             //
             debugPrint('Store list:  $listOrdered');
             Navigator.push(context, MaterialPageRoute(

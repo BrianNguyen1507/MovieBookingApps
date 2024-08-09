@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 
@@ -31,9 +31,9 @@ class VoucherApply {
         return null;
       }
       final result = jsonDecode(response.body);
-      final apiResponse = Response<double>.fromJson(result, (data) {
+      final apiResponse = ResponseFunction<double>.fromJson(result, (data) {
         return data as double;
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

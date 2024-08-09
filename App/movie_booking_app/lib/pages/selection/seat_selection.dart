@@ -63,6 +63,7 @@ class _SeatSelectionState extends State<SeatSelection>
 
   Future<GetTotal?> _fetchTotal() {
     return GetTotalService.sumTotalOrder(
+      context,
       widget.movieId,
       selectedSeats.length,
       [],
