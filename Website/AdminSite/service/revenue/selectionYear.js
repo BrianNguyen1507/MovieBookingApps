@@ -1,6 +1,7 @@
 import { getRevenueByMonth } from "./getRevenueByMoth.js";
 import { getFoodSaleTotalByMonth } from "./getFoodSalesTotalByMonth.js";
-import { myChart2 } from "./fetchingRevenueByMoth.js";
+
+import { myChart1 } from "./fetchingRevenuaByYear.js";
 
 // JavaScript to dynamically populate the combobox with years
 const currentYear = new Date().getFullYear();
@@ -16,9 +17,13 @@ for (let year = currentYear; year >= startYear; year--) {
 yearSelect.addEventListener("change", async function (event) {
   const data = await getRevenueByMonth(yearSelect.value);
   const dataFood = await getFoodSaleTotalByMonth(yearSelect.value);
+  
   const revenueTotal = Object.values(data.revenue);
   const saleTotal = Object.values(dataFood.revenue);
-  myChart2.data.datasets[0].data = saleTotal;
-  myChart2.data.datasets[1].data = revenueTotal;
-  myChart2.update();
+  const saleFilm = revenueTotal.map((value, index) => value - saleTotal[index]);
+  myChart1.data.datasets[0].data = revenueTotal;
+  myChart1.data.datasets[1].data = saleFilm;
+  myChart1.data.datasets[2].data = saleTotal;
+
+  myChart1.update();
 });

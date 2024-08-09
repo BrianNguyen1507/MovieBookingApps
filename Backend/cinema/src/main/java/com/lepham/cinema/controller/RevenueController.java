@@ -1,6 +1,7 @@
 package com.lepham.cinema.controller;
 
 import com.lepham.cinema.dto.response.APIResponse;
+import com.lepham.cinema.dto.response.RevenueDayResponse;
 import com.lepham.cinema.dto.response.RevenueResponse;
 import com.lepham.cinema.service.imp.RevenueService;
 import lombok.AccessLevel;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -34,10 +36,10 @@ public class RevenueController {
                 .result(revenueService.getFoodSaleTotalByMonth(year))
                 .build();
     }
-    @GetMapping(value = "/getRevenueTotalByYear")
-    APIResponse<List<RevenueResponse>> getRevenueTotalByYear(){
-        return APIResponse.<List<RevenueResponse>>builder()
-                .result(revenueService.getRevenueTotalByYear())
+    @GetMapping(value = "/getRevenueByDay")
+    APIResponse<RevenueDayResponse> getRevenueByDay(){
+        return APIResponse.<RevenueDayResponse> builder()
+                .result(revenueService.getRevenueByDay())
                 .build();
     }
 }

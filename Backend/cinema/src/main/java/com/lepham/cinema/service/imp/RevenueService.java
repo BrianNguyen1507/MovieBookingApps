@@ -1,6 +1,7 @@
 package com.lepham.cinema.service.imp;
 
 import com.lepham.cinema.constant.ConstantVariable;
+import com.lepham.cinema.dto.response.RevenueDayResponse;
 import com.lepham.cinema.dto.response.RevenueResponse;
 import com.lepham.cinema.entity.OrderEntity;
 import com.lepham.cinema.repository.OrderRepository;
@@ -26,44 +27,49 @@ public class RevenueService implements IRevenueService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public List<RevenueResponse> getRevenueTotalByYear() {
-        List<RevenueResponse> responseList = new ArrayList<>();
-        RevenueResponse responseTotal = new RevenueResponse();
-        RevenueResponse responseVn = new RevenueResponse();
-        RevenueResponse responseZl = new RevenueResponse();
-        int currentYear = LocalDate.now().getYear();
+    public RevenueDayResponse getRevenueByDay() {
 
-        Map<String, Double> revenue = new HashMap<>();
-        Map<String, Double> revenueVn = new HashMap<>();
-        Map<String, Double> revenueZl = new HashMap<>();
-        for (int year = currentYear - ConstantVariable.step; year <= currentYear; year++) {
-            responseTotal.setType("Total");
-            responseVn.setType("VNPAY");
-            responseZl.setType("ZALOPAY");
-            revenueVn.put(year + "", 0.0);
-            revenueZl.put(year + "", 0.0);
-            List<String> paymentMethods = orderRepository.getALLPaymentMethod();
-            for (String paymentMethod : paymentMethods) {
-                Optional<Double> sumOptional = orderRepository.sumAllByDateAndPaymentMethod(year, paymentMethod);
-                double sum = 0;
-                if(sumOptional.isPresent()) sum = sumOptional.get();;
-
-                if (paymentMethod.equals(responseVn.getType())) {
-                    revenueVn.put(year + "", sum);
-                } else {
-                    revenueZl.put(year + "", sum);
-                }
-
+        List<Integer> day = new ArrayList<>();
+        List<Double> total = new ArrayList<>();
+        List<Double> food = new ArrayList<>();
+        List<Double> film = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+        int dayOfMonth = now.lengthOfMonth();
+        for(int i=1;i<=dayOfMonth;i++){
+            day.add(i);
+            now = now.withDayOfMonth(i);
+            List<OrderEntity> orders = orderRepository.findAllOrderByDay(now);
+            RevenueDayResponse revenueResponse;
+            if(orders==null){
+                total.add(0.0);
+                food.add(0.0);
+                film.add(0.0);
+                continue;
             }
-            revenue.put(year+"",revenueVn.get(year+"")+revenueZl.get(year+""));
+            double foodRevenue =0;
+            double filmRevenue = 0;
+            DoubleAdder doubleAdder = new DoubleAdder();
+            for(OrderEntity order : orders){
+                order.getFoodOrders().forEach(
+                        foodOrderEntity -> {
+                            doubleAdder.add(foodOrderEntity.getQuantity()*foodOrderEntity.getFood().getPrice());
+                        }
+                );
+            }
+            foodRevenue = doubleAdder.sum();
+            double totalRevenue = orderRepository.sumRevenueTotalByDay(now)==null?0:orderRepository.sumRevenueTotalByDay(now);
+            filmRevenue = totalRevenue-foodRevenue;
+            total.add(totalRevenue);
+            food.add(foodRevenue);
+            film.add(filmRevenue);
         }
-        responseTotal.setRevenue(revenue);
-        responseVn.setRevenue(revenueVn);
-        responseZl.setRevenue(revenueZl);
-        responseList.add(responseTotal);
-        responseList.add(responseVn);
-        responseList.add(responseZl);
-        return responseList;
+        return RevenueDayResponse
+                .builder()
+                .day(day)
+                .film(film)
+                .total(total)
+                .food(food)
+                .build();
     }
 
     @Override
