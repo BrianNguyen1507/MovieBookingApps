@@ -144,5 +144,6 @@
   "hold_message": "Chúng tôi đang giữ ghế cho bạn",
   "warning_seat": "Bạn chỉ được đặt tối đa 10 ghế trong 1 lần \n Nếu muốn đặt nhiều hơn xin vui lòng đến rạp để được hỗ trợ!",
   "invalid_seat": "Một số chỗ ngồi đã có người khác chọn, vui lòng chọn chỗ ngồi khác",
-  "time":"Thời gian"
+  "time": "Thời gian",
+  "pay_notfound": "Thanh toán thất bại\nVui lòng cài đặt ứng dụng ZALOPAY để hoàn tất thanh toán"
 }
