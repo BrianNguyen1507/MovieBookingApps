@@ -19,16 +19,15 @@ public interface OrderRepository extends JpaRepository<OrderEntity,Long> {
     @Query(value = "SELECT o from OrderEntity o where function('MONTH',o.date)= :month and  function('YEAR',o.date)= :year")
     List<OrderEntity> findByMonthAndYear(int month, int year);
 
-    @Query(value = "select sum(o.sumTotal) from OrderEntity o where YEAR(o.date)=?1 and o.paymentMethod=?2")
-    Optional<Double> sumAllByDateAndPaymentMethod(int year,String paymentMethod);
-
-    @Query(value = "select o.paymentMethod from OrderEntity o group by o.paymentMethod")
-    List<String> getALLPaymentMethod();
-
     @Query(value = "select o from OrderEntity o where Date(o.date) = ?1 and o.movieSchedule is null")
     List<OrderEntity> MovieScheduleIsNullByDate_Date(LocalDate date);
 
     @Query(value = "select o from OrderEntity o where Date(o.movieSchedule.timeStart) = ?1 and o.movieSchedule is not null")
     @EntityGraph(attributePaths = {"movieSchedule", "movieSchedule.film"})
     List<OrderEntity> findAllByMovieSchedule_TimeStart_Date(LocalDate date);
+    @Query(value = "select sum(o.sumTotal) from OrderEntity o where Date(o.date) = ?1")
+    Double sumRevenueTotalByDay(LocalDate date);
+
+    @Query(value = "select o from OrderEntity o where Date(o.date) = ?1")
+    List<OrderEntity> findAllOrderByDay(LocalDate date);
 }

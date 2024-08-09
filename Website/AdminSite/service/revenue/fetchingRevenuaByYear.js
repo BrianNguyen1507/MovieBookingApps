@@ -1,43 +1,54 @@
-import { getRevenueTotalByYear } from "./getRevenueTotalByYear.js";
+import { getFoodSaleTotalByMonth } from "./getFoodSalesTotalByMonth.js";
+import { getRevenueByMonth } from "./getRevenueByMoth.js";
 
-export async function fetchingRevenueByYear() {
-  const data = await getRevenueTotalByYear();
-  console.log(data);
-  const revenue = data[0].revenue;
-  const revenueYear = Object.keys(revenue);
+
+export async function fetchingRevenueByYear(data,dataFood) {
+  const revenue = data.revenue;
   const revenueTotal = Object.values(revenue);
 
-  const revenueVn = data[1].revenue;
-  const revenueVnTotal = Object.values(revenueVn);
-  const revenueZl = data[2].revenue;
-  const revenueZlTotal = Object.values(revenueZl);
+  const foodSale = dataFood.revenue;
+  const saleMoth = Object.keys(foodSale);
+  const saleTotal = Object.values(foodSale);
+  const saleFilm = revenueTotal.map((value, index) => value - saleTotal[index]);
   var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
   myChart1 = new Chart(ctx1, {
-    type: "bar",
+    type: "line",
     data: {
-      labels: revenueYear,
+      labels: saleMoth,
       datasets: [
         {
-          label: data[0].type,
-          data: revenueTotal,
-          backgroundColor: "rgba(0, 156, 255, .7)",
-        },
-        {
-          label: data[1].type,
-          data: revenueVnTotal,
-          backgroundColor: "rgba(0, 156, 255, .5)",
-        },
-        {
-          label: data[2].type,
-          data: revenueZlTotal,
+          label: "Total",
+          data: revenueTotal ,
           backgroundColor: "rgba(0, 156, 255, .3)",
+          fill: true,
         },
+        {
+          label: "Film",
+          data: saleFilm,
+          backgroundColor: "rgba(0, 156, 255, .5)",
+          fill: true,
+        },
+        {
+          label: "Food",
+          data: saleTotal,
+          backgroundColor: "rgba(0, 156, 255, .7)",
+          fill: true,
+        },
+        
       ],
     },
     options: {
       responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
     },
   });
 }
 export let myChart1;
-fetchingRevenueByYear();
+const currentYear = new Date().getFullYear();
+const data = await getRevenueByMonth(currentYear);
+const dataFood = await getFoodSaleTotalByMonth(currentYear);
+fetchingRevenueByYear(data, dataFood);
