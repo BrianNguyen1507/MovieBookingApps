@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 
 class FindFoodService {
@@ -20,10 +20,10 @@ class FindFoodService {
         debugPrint('food service err: ${response.statusCode}');
       }
       final result = jsonDecode(utf8.decode(response.body.codeUnits));
-      final apiResponse = Response<Food>.fromJson(result, (json) {
+      final apiResponse = ResponseFunction<Food>.fromJson(result, (json) {
         final dynamic getdata = json as dynamic;
         return Food.fromJson(getdata);
-      });
+      }, context);
 
       if (apiResponse.isSuccess) {
         return apiResponse.result;

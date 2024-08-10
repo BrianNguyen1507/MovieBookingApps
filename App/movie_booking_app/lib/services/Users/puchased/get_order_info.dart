@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/models/ordered/order_movie_response.dart';
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 
 class GetOrderInfo {
-  static Future<int?> accountNumberMovieInfo() async {
+  static Future<int?> accountNumberMovieInfo(context) async {
     try {
       final getUri = dotenv.env['GET_ALL_FILM_ORDER']!;
       dynamic token = await Preferences().getTokenUsers();
@@ -24,10 +24,10 @@ class GetOrderInfo {
       }
 
       final apiResponse =
-          Response<List<OrderResponse>>.fromJson(result, (data) {
+          ResponseFunction<List<OrderResponse>>.fromJson(result, (data) {
         final List<dynamic> listOrder = data as List<dynamic>;
         return (listOrder.map((item) => OrderResponse.fromJson(item)).toList());
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result!.length;
       } else {
@@ -40,7 +40,7 @@ class GetOrderInfo {
     }
   }
 
-  static Future<int?> accountNumberReviewInfo() async {
+  static Future<int?> accountNumberReviewInfo(context) async {
     try {
       final getUri = dotenv.env['GET_RATING_FEEDBACK_ACCOUNT_NUMBER']!;
       dynamic token = await Preferences().getTokenUsers();
@@ -58,9 +58,9 @@ class GetOrderInfo {
       if (result['code'] != 1000) {
         return Future.error('Error: ${result['message']}');
       }
-      final apiResponse = Response<int?>.fromJson(result, (data) {
+      final apiResponse = ResponseFunction<int?>.fromJson(result, (data) {
         return data as int;
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

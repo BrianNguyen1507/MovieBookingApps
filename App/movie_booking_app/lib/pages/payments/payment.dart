@@ -14,7 +14,6 @@ import 'package:movie_booking_app/pages/payments/handle-payments/handle_pay.dart
 import 'package:movie_booking_app/services/Users/movie-detail/movie_detail_service.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
 
-
 class PaymentPage extends StatefulWidget {
   final double sumtotal;
   final bool visible;
@@ -62,7 +61,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     final numberSeats = ConverterUnit.convertStringToSet(widget.seats).length;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.commonLightColor,
       appBar: Common.customAppbar(
           context,
           TimmerWidget.timerDocked(context),

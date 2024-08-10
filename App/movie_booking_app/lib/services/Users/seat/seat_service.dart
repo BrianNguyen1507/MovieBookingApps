@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/models/seat/seat.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 
@@ -24,10 +24,10 @@ class Seatservice {
             'Error getMovieSchedule Service code: ${response.statusCode}');
       }
       final result = jsonDecode(response.body);
-      final apiResponse = Response.fromJson(result, (data) {
+      final apiResponse = ResponseFunction.fromJson(result, (data) {
         final dynamic seatData = data as dynamic;
         return Seat.fromJson(seatData);
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

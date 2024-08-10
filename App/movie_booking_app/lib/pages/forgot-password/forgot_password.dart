@@ -5,6 +5,7 @@ import 'package:movie_booking_app/services/Users/forgotpassword/forgot_password.
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
 import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgotPassWord extends StatefulWidget {
   const ForgotPassWord({super.key});
@@ -77,7 +78,7 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                         }
                         valid.showMessage(
                             context,
-                            'An OTP was send in your email.',
+                            AppLocalizations.of(context)!.otp_send,
                             AppColors.correctColor);
                         Navigator.pop(context);
                         Navigator.pushReplacement(
@@ -90,18 +91,17 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                           ),
                         );
                       } catch (error) {
-                        valid.showMessage(
-                            context, 'An error occurred', AppColors.errorColor);
+                        debugPrint('invalid send otp: $error');
                       }
                     },
-                    child: const SizedBox(
+                    child: SizedBox(
                       width: 300,
                       child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Center(
                           child: Text(
-                            "Continue",
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.tieptuc,
+                            style: const TextStyle(
                               fontSize: AppFontSize.medium,
                               color: Colors.white,
                             ),

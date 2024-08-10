@@ -2,14 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:movie_booking_app/models/order/get_total.dart';
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 
 class GetTotalService {
   static Future<GetTotal?> sumTotalOrder(
-      int movieId, int quantity, List? food) async {
+      context, int movieId, int quantity, List? food) async {
     Preferences pref = Preferences();
     String? token = await pref.getTokenUsers();
 
@@ -34,10 +33,14 @@ class GetTotalService {
     }
     final result = jsonDecode(response.body);
 
-    final apiResponse = Response<GetTotal>.fromJson(result, (json) {
-      final dynamic data = json as dynamic;
-      return GetTotal.fromJson(data);
-    });
+    final apiResponse = ResponseFunction<GetTotal>.fromJson(
+      result,
+      (json) {
+        final dynamic data = json as dynamic;
+        return GetTotal.fromJson(data);
+      },
+      context,
+    );
 
     if (apiResponse.isSuccess) {
       return apiResponse.result!;

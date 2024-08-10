@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/models/account/account.dart';
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 
@@ -25,10 +25,10 @@ class MyInformation {
       if (response.statusCode != 200) {
         debugPrint('error get infomation with code ${response.statusCode}');
 
-        final apiResponse = Response<Account>.fromJson(responseData, (data) {
+        final apiResponse = ResponseFunction<Account>.fromJson(responseData, (data) {
           final dynamic getaccount = data as dynamic;
           return Account.fromJson(getaccount);
-        });
+        }, context);
         if (apiResponse.isSuccess) {
           return apiResponse.result!;
         } else {

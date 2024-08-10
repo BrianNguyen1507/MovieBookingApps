@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/ordered/order_detail.dart';
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:http/http.dart' as http;
@@ -25,10 +25,10 @@ class DetailOrderService {
       final responseData =
           jsonDecode(utf8.decode(response.body.runes.toList()));
 
-      final apiResponse = Response<DetailOrder>.fromJson(responseData, (data) {
+      final apiResponse = ResponseFunction<DetailOrder>.fromJson(responseData, (data) {
         final dynamic getData = data as dynamic;
         return DetailOrder.fromJson(getData);
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

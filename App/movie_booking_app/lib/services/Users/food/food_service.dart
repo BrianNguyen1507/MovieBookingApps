@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 
@@ -26,10 +26,10 @@ class FoodService {
         debugPrint('Food status code: ${response.statusCode}');
       }
       final result = jsonDecode(utf8.decode(response.body.codeUnits));
-      final apiResponse = Response<List<Food>>.fromJson(result, (json) {
+      final apiResponse = ResponseFunction<List<Food>>.fromJson(result, (json) {
         final List<dynamic> getData = json as List<dynamic>;
         return getData.map((item) => Food.fromJson(item)).toList();
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

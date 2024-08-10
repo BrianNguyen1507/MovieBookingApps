@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:movie_booking_app/models/movie/movie_detail.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 
 class MovieDetailService {
@@ -22,10 +22,10 @@ class MovieDetailService {
       }
       final data = json.decode(utf8.decode(response.body.codeUnits));
 
-      final apiResponse = Response<MovieDetail>.fromJson(data, (json) {
+      final apiResponse = ResponseFunction<MovieDetail>.fromJson(data, (json) {
         final dynamic getResult = json;
         return MovieDetail.fromJson(getResult);
-      });
+      }, context);
       if (apiResponse.isSuccess) {
         return apiResponse.result;
       } else {

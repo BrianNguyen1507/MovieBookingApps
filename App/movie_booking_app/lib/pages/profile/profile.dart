@@ -48,8 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
     String? getuserName = await pref.getUserName();
     String? getavatar = await pref.getAvatar();
-    int? numberMovie = await GetOrderInfo.accountNumberMovieInfo();
-    int? numberReview = await GetOrderInfo.accountNumberReviewInfo();
+    int? numberMovie = await GetOrderInfo.accountNumberMovieInfo(context);
+    int? numberReview = await GetOrderInfo.accountNumberReviewInfo(context);
 
     if (mounted) {
       setState(() {

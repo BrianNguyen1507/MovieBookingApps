@@ -36,7 +36,8 @@ class ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Common.customAppbar(
-          context,null,
+          context,
+          null,
           AppStyle.headline2,
           AppLocalizations.of(context)!.change_pass,
           AppColors.iconThemeColor,
@@ -218,7 +219,7 @@ class ChangePasswordState extends State<ChangePassword> {
                         if (account.email == email) {
                           valid.showMessage(
                               context,
-                              "Change password successfully",
+                              AppLocalizations.of(context)!.update_success,
                               AppColors.correctColor);
                           ShowDialog.showAlertCustom(
                             context,

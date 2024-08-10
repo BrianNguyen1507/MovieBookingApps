@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/models/movie/movie.dart';
-import 'package:movie_booking_app/models/response/response.dart';
+import 'package:movie_booking_app/response/response.dart';
 
 class MovieList {
   static Future<List<Movie>?> getListReleased(BuildContext context) async {
@@ -22,12 +22,13 @@ class MovieList {
         return null;
       }
       final responseData = json.decode(utf8.decode(response.body.codeUnits));
-      final apiResponse = Response<List<Movie>>.fromJson(
+      final apiResponse = ResponseFunction<List<Movie>>.fromJson(
         responseData,
         (json) {
           final List<dynamic> movieList = json as List<dynamic>;
           return movieList.map((item) => Movie.fromJson(item)).toList();
         },
+        context,
       );
       if (apiResponse.isSuccess) {
         return apiResponse.result;
@@ -54,10 +55,10 @@ class MovieList {
     }
 
     final responsefetch = json.decode(utf8.decode(response.body.codeUnits));
-    final apiResponse = Response<List<Movie>>.fromJson(responsefetch, (json) {
+    final apiResponse = ResponseFunction<List<Movie>>.fromJson(responsefetch, (json) {
       final List<dynamic> result = json as List<dynamic>;
       return result.map((item) => Movie.fromJson(item)).toList();
-    });
+    }, context);
     if (apiResponse.isSuccess) {
       return apiResponse.result;
     } else {
@@ -79,10 +80,10 @@ class MovieList {
       debugPrint('Error get all movies with code: ${response.statusCode}');
     }
     final data = jsonDecode(utf8.decode(response.body.codeUnits));
-    final apiResponse = Response<List<Movie>>.fromJson(data, (json) {
+    final apiResponse = ResponseFunction<List<Movie>>.fromJson(data, (json) {
       final List<dynamic> result = json as List<dynamic>;
       return result.map((item) => Movie.fromJson(item)).toList();
-    });
+    }, context);
     if (apiResponse.isSuccess) {
       return apiResponse.result;
     } else {

@@ -4,6 +4,7 @@ import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
 import 'package:movie_booking_app/services/Users/forgotpassword/forgot_password.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgotPassWord extends StatefulWidget {
   const ForgotPassWord({super.key});
@@ -77,7 +78,7 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                         }
                         valid.showMessage(
                             context,
-                            'An OTP was send in your email.',
+                            AppLocalizations.of(context)!.otp_send,
                             AppColors.correctColor);
                         Navigator.pop(context);
                         Navigator.pushReplacement(
@@ -90,8 +91,9 @@ class ForgotPassWordState extends State<ForgotPassWord> {
                           ),
                         );
                       } catch (error) {
-                        valid.showMessage(
-                            context, 'An error occurred', AppColors.errorColor);
+                        debugPrint(
+                          'An error occurred $error',
+                        );
                       }
                     },
                     child: const SizedBox(

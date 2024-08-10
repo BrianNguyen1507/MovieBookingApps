@@ -9,6 +9,7 @@ import 'package:movie_booking_app/models/account/account.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateAccount {
   static ValidInput valid = ValidInput();
@@ -38,7 +39,8 @@ class UpdateAccount {
       final result = responseData['result'];
       Preferences().setAvatar(result['avatar']);
       Preferences().setUserName(result['fullName']);
-      valid.showMessage(context, "Update successfully", AppColors.correctColor);
+      valid.showMessage(context, AppLocalizations.of(context)!.update_success,
+          AppColors.correctColor);
 
       return Account.fromJson(result);
     } on SocketException {

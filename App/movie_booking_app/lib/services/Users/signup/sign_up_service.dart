@@ -8,6 +8,8 @@ import 'dart:convert';
 
 import 'package:movie_booking_app/models/user/user.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
+import 'package:movie_booking_app/response/error_code.dart';
+import 'package:movie_booking_app/response/response.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 
 class SignUpService {
@@ -23,24 +25,24 @@ class SignUpService {
         body: json.encode(user.toJson()),
       );
       final responseData = json.decode(response.body);
-      if (response.statusCode != 200) {
-        debugPrint('Error signup code: ${response.statusCode}');
-        ValidInput().showMessage(
-            context, responseData['message'], AppColors.errorColor);
-        return false;
-      }
-      if (responseData['code'] != 1000) {
+
+      final apiresponse =
+          ResponseFunction<dynamic>.fromJson(responseData, (data) {
+        final dynamic getResult = data as dynamic;
+        return getResult;
+      }, context);
+      if (!apiresponse.isSuccess) {
         debugPrint('Error signup message: ${responseData['message']}');
         ValidInput().showMessage(
-            context, responseData['message'], AppColors.errorColor);
+            context,
+            ResponseCode.getMessage(apiresponse.code, context)!.message,
+            AppColors.errorColor);
         return false;
       }
 
       return true;
     } on SocketException {
       ShowMessage.noNetworkConnection(context);
-    } catch (err) {
-      ShowMessage.unExpectedError(context);
     }
     return false;
   }

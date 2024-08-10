@@ -11,6 +11,7 @@ import 'package:movie_booking_app/models/account/account.dart';
 import 'package:movie_booking_app/modules/connection/network_control.dart';
 import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/index/index.dart';
+import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 import 'package:movie_booking_app/services/Users/infomation/get_myinfo_service.dart';
 import 'package:movie_booking_app/services/Users/infomation/update_account.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
@@ -234,7 +235,7 @@ class UpdateInformationState extends State<UpdateInformation> {
                             ),
                             onPressed: () async {
                               Account? accountRequest = Account(
-                                  email: "",
+                                  email: Preferences().getEmail().toString(),
                                   avatar: base64Avatar,
                                   fullName: fullNameCtl.text,
                                   phoneNumber: phoneCrl.text,
@@ -242,6 +243,22 @@ class UpdateInformationState extends State<UpdateInformation> {
                                       selectedGender == "Male" ? "Nam" : "Nữ",
                                   dayOfBirth:
                                       ConverterUnit.convertToDate(dobCtl.text));
+
+                              if (email.isEmpty ||
+                                  fullNameCtl.text.isEmpty ||
+                                  phoneCrl.text.isEmpty ||
+                                  selectedGender == null) {
+                                ValidInput().showMessage(
+                                  context,
+                                  AppLocalizations.of(context)!.code_1016,
+                                  AppColors.errorColor,
+                                );
+                                setState(() {
+                                  _fetchMyInformation();
+                                });
+                                return;
+                              }
+
                               accountRequest =
                                   await UpdateAccount.updateAccount(
                                       accountRequest, context);

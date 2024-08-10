@@ -34,6 +34,14 @@ class ConverterUnit {
     return dateFormat.format(dateTime);
   }
 
+  static String convertDmyToYmd(String date) {
+    final inputFormat = DateFormat('dd-MM-yyyy');
+    final outputFormat = DateFormat('yyyy-MM-dd');
+    final dateTime = inputFormat.parse(date);
+    final formattedDate = outputFormat.format(dateTime);
+    return formattedDate;
+  }
+
   static String formatToDmY(String dateTimeString) {
     DateTime date = DateTime.parse(dateTimeString);
     DateFormat dateformat = DateFormat('dd-MM-yyyy');

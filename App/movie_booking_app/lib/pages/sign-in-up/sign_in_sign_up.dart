@@ -339,7 +339,7 @@ class _SignInPageState extends State<SignInPage> {
       setState(() {
         _selectedDate = picked;
         _dobController.text =
-            ConverterUnit.convertToDate(_selectedDate.toString());
+            ConverterUnit.formatToDmY(_selectedDate.toString());
       });
     }
   }
@@ -460,6 +460,7 @@ class _SignInPageState extends State<SignInPage> {
   void _onSignUpPressed() async {
     if (_valid.checkRepassword(
         _passwordController.text, _confirmPasswordController.text, context)) {
+      final date = ConverterUnit.convertDmyToYmd(_dobController.text);
       await _signupState.validSignUp(
         context,
         _emailController.text,
@@ -469,11 +470,11 @@ class _SignInPageState extends State<SignInPage> {
           _selectedGender.toString(),
         ),
         _phoneNumberController.text,
-        _dobController.text,
+        date,
       );
     } else {
-      _valid.showMessage(
-          context, 'Passwords do not match', AppColors.errorColor);
+      _valid.showMessage(context, AppLocalizations.of(context)!.code_nomatch,
+          AppColors.errorColor);
     }
   }
 
