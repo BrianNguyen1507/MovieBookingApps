@@ -208,14 +208,43 @@ class ChangePasswordState extends State<ChangePassword> {
                           : AppColors.shimmerColor,
                     ),
                     onPressed: () async {
+                      if (passwordController.text.isEmpty ||
+                          passwordRefController.text.isEmpty ||
+                          newPasswordController.text.isEmpty) {
+                        ShowDialog.showAlertCustom(
+                          context,
+                          true,
+                          AppLocalizations.of(context)!.code_1016,
+                          null,
+                          true,
+                          null,
+                          DialogType.error,
+                        );
+                        return;
+                      }
                       if (passwordWarning == passwordMatch) {
+                        dynamic currentPass = await Preferences().getPassword();
+
+                        if (currentPass == newPasswordController.text) {
+                          ShowDialog.showAlertCustom(
+                            context,
+                            true,
+                            AppLocalizations.of(context)!.nothing_changes,
+                            null,
+                            true,
+                            null,
+                            DialogType.error,
+                          );
+                          return;
+                        }
+
                         Account account =
                             await ChangePasswordService.changePassword(
                                 passwordController.text,
                                 newPasswordController.text,
                                 context);
-                        Preferences pre = Preferences();
-                        String? email = await pre.getEmail();
+
+                        String? email = await Preferences().getEmail();
                         if (account.email == email) {
                           valid.showMessage(
                               context,

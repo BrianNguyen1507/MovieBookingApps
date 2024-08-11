@@ -16,7 +16,7 @@ class PaymentWebview extends StatefulWidget {
 class _PaymentWebviewState extends State<PaymentWebview> {
   bool _isLoading = false;
   late WebViewController controller;
-  late Map<String, dynamic> returnData;
+  late Map<String, dynamic>? returnData;
   @override
   void initState() {
     super.initState();
@@ -60,6 +60,10 @@ class _PaymentWebviewState extends State<PaymentWebview> {
           'transaction': transaction,
           'amount': amount,
         };
+      });
+    } else {
+      setState(() {
+        returnData = null;
       });
     }
     if (parameters.containsKey('vnp_ResponseCode') &&

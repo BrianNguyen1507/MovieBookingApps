@@ -204,5 +204,8 @@
   "sign_up_success": "Sign up successful",
   "active_success": "Activation successful",
   "valid_email": "Please enter a valid email",
-  "valid_password": "Please enter a valid password"
+  "valid_password": "Please enter a valid password",
+  "nothing_changes": "Nothing has changed",
+  "review_movie": "What do you think about the movie?",
+  "comment_movie": "Comment"
 }

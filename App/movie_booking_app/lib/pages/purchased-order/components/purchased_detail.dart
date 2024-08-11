@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
@@ -5,12 +6,12 @@ import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/models/food/food.dart';
 import 'package:movie_booking_app/models/ordered/order_detail.dart';
-import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/pages/purchased-order/components/qr_code_view.dart';
 import 'package:movie_booking_app/pages/rating-feedback/rating_feedback.dart';
 import 'package:movie_booking_app/provider/consumer/translator.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 Widget detailOrderFilm(context, DetailOrder order) {
   return Column(
@@ -25,7 +26,7 @@ Widget detailOrderFilm(context, DetailOrder order) {
               alignment: Alignment.center,
               child: GestureDetector(
                 onTap: () async {
-                  String? result = await showDialog(
+                  bool? result = await showDialog(
                     context: context,
                     builder: (context) {
                       return Dialog(
@@ -33,8 +34,15 @@ Widget detailOrderFilm(context, DetailOrder order) {
                       );
                     },
                   );
-                  if (result != null && int.tryParse(result) == 1000) {
-                    ShowMessage.ratingSuccess(context);
+                  if (result != null && result) {
+                    ShowDialog.showAlertCustom(
+                        context,
+                        true,
+                        AppLocalizations.of(context)!.rating_success,
+                        null,
+                        true,
+                        null,
+                        DialogType.success);
                   }
                 },
                 child: Text(

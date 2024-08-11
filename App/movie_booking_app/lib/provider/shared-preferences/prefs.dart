@@ -66,7 +66,6 @@ class Preferences {
   Future<Map<String, String?>?> getSignInInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString('email');
-
     String? password = prefs.getString('password');
     if (email != null && password != null) {
       return {
@@ -75,6 +74,12 @@ class Preferences {
       };
     }
     return null;
+  }
+
+  Future<String?> getPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? password = prefs.getString('password');
+    return password;
   }
 
   Future<void> clear() async {

@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
+import 'package:movie_booking_app/response/response.dart';
 
 class RefreshToken {
   static Future<dynamic> refreshToken(context) async {
@@ -26,12 +27,17 @@ class RefreshToken {
       if (response.statusCode != 200) {
         debugPrint('Error refresh token service code: ${response.statusCode}');
       }
-      if (responseData['code'] != 1000) {
+      final apiResponse = ResponseFunction.fromJson(responseData, (data) {
+        return data as dynamic;
+      }, context);
+
+      if (!apiResponse.isSuccess) {
         debugPrint(
-            'Error refresh token service message: ${responseData['message']}');
+            'Error refresh token service message: ${apiResponse.message}');
         return;
       }
-      dynamic newToken = responseData['result']['token'];
+
+      dynamic newToken = apiResponse.result['token'];
       pref.saveTokenKey(newToken);
       debugPrint('new token refreshed: $newToken');
     } on SocketException {

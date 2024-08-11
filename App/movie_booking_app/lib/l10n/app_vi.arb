@@ -203,5 +203,8 @@
   "sign_up_success": "Đăng ký thành công",
   "active_success": "Kích hoạt thành công",
   "valid_email": "Vui lòng nhập email hợp lệ",
-  "valid_password": "Vui lòng nhập mật khẩu hợp lệ"
+  "valid_password": "Vui lòng nhập mật khẩu hợp lệ",
+  "nothing_changes": "Thông tin không có gì thay đổi",
+  "review_movie": "Hãy cho chúng tôi biết bạn nghĩ gì về bộ phim này?",
+  "comment_movie": "Ý kiến của bạn"
 }
