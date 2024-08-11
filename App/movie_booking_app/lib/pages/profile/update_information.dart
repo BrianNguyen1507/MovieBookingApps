@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -17,6 +18,7 @@ import 'package:movie_booking_app/services/Users/infomation/update_account.dart'
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/utils/common/widgets.dart';
+import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
 
 class UpdateInformation extends StatefulWidget {
   const UpdateInformation({super.key});
@@ -31,6 +33,7 @@ class UpdateInformationState extends State<UpdateInformation> {
   final TextEditingController dobCtl = TextEditingController();
   String? selectedGender;
   late Account account;
+  Account? accountExist;
   String base64Avatar = "";
   String email = "";
   String avatar = "";
@@ -63,6 +66,7 @@ class UpdateInformationState extends State<UpdateInformation> {
   Future<void> _fetchMyInformation() async {
     try {
       Account account = await MyInformation.getMyInformation(context);
+      accountExist = account;
       setState(() {
         account = account;
         phoneCrl.text = account.phoneNumber;
@@ -248,17 +252,32 @@ class UpdateInformationState extends State<UpdateInformation> {
                                   fullNameCtl.text.isEmpty ||
                                   phoneCrl.text.isEmpty ||
                                   selectedGender == null) {
-                                ValidInput().showMessage(
-                                  context,
-                                  AppLocalizations.of(context)!.code_1016,
-                                  AppColors.errorColor,
-                                );
+                                ShowDialog.showAlertCustom(
+                                    context,
+                                    true,
+                                    AppLocalizations.of(context)!.code_1016,
+                                    null,
+                                    true,
+                                    null,
+                                    DialogType.info);
+
                                 setState(() {
                                   _fetchMyInformation();
                                 });
                                 return;
                               }
-
+                              if (!hasChanges(accountExist, accountRequest)) {
+                                ShowDialog.showAlertCustom(
+                                    context,
+                                    true,
+                                    AppLocalizations.of(context)!
+                                        .nothing_changes,
+                                    null,
+                                    true,
+                                    null,
+                                    DialogType.info);
+                                return;
+                              }
                               accountRequest =
                                   await UpdateAccount.updateAccount(
                                       accountRequest, context);
@@ -356,4 +375,15 @@ class UpdateInformationState extends State<UpdateInformation> {
       });
     }
   }
+}
+
+bool hasChanges(Account? existingAccount, Account newAccount) {
+  if (existingAccount == null) {
+    return true;
+  }
+  return existingAccount.avatar != newAccount.avatar ||
+      existingAccount.fullName != newAccount.fullName ||
+      existingAccount.phoneNumber != newAccount.phoneNumber ||
+      existingAccount.gender != newAccount.gender ||
+      existingAccount.dayOfBirth != newAccount.dayOfBirth;
 }

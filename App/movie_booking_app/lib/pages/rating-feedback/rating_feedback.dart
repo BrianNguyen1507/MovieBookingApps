@@ -1,11 +1,10 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/models/ordered/order_movie_response.dart';
 import 'package:movie_booking_app/services/Users/rating-feedback/rating_feedback_service.dart';
-import 'package:movie_booking_app/utils/dialog/show_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 int rating = 0;
 
@@ -26,6 +25,13 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    rating = 0;
+    commentCtl.clear();
+    super.dispose();
   }
 
   @override
@@ -64,11 +70,8 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                   context,
                 );
 
-                if (result == '1000') {
-                  Navigator.pop(result);
-                } else {
-                  ShowDialog.showAlertCustom(
-                      context, true, result, '', true, () {}, DialogType.error);
+                if (result) {
+                  Navigator.pop(context, result);
                 }
               },
               child: Container(
@@ -77,12 +80,12 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Center(
                     child: Text(
-                      "Submit",
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.rating_feedback,
+                      style: const TextStyle(
                         fontSize: AppFontSize.medium,
                         color: AppColors.lightTextColor,
                       ),
