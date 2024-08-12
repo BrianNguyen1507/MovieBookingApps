@@ -3,6 +3,9 @@ import { addCategory } from "../addCategory.js";
 import { getAndDisplayCategories } from "../getCategory.js";
 
 $(document).on("click", "#btn-add-category", async function (event) {
+  addCategoryForm();
+});
+async function addCategoryForm(){
   try {
     const showForm = async () => {
       await getAndDisplayCategories();
@@ -28,7 +31,7 @@ $(document).on("click", "#btn-add-category", async function (event) {
 
           if (!nameCategory) {
             Swal.showValidationMessage(
-              "All fields are required and must be valid."
+              "Vui lòng nhập đầy đủ thông tin."
             );
             return false;
           }
@@ -47,8 +50,8 @@ $(document).on("click", "#btn-add-category", async function (event) {
 
       if (result === true) {
         Swal.fire({
-          title: "Success!",
-          text: "New category has been added.",
+          title: "Thành công!",
+          text: "Thể loại đã được thêm.",
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
@@ -56,16 +59,16 @@ $(document).on("click", "#btn-add-category", async function (event) {
         });
       } else {
         Swal.fire({
-          title: "Error!",
+          title: "Thất bại!",
           text: result,
           icon: "error",
           confirmButtonText: "OK",
         }).then(async () => {
-          await showForm();
+          addCategoryForm();
         });
       }
     }
   } catch (error) {
     console.error(error);
   }
-});
+}

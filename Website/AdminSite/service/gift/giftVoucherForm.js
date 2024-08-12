@@ -24,7 +24,7 @@ $(document).on("click", "#btn-gift-voucher", async function (event) {
                     const quantity = $("#quantity-gift").val().trim();
                     if (!quantity) {
                         Swal.showValidationMessage(
-                            "All fields are required and must be valid."
+                           "Vui lòng nhập đầy đủ thông tin."
                         );
                         return false;
                     }
@@ -41,8 +41,8 @@ $(document).on("click", "#btn-gift-voucher", async function (event) {
             let result = await giftVoucher(value.quantity,value.id);
             if (result === true) {
                 Swal.fire({
-                    title: "Success!",
-                    text: "Voucher has been added for all account.",
+                    title: "Thành công!",
+                    text: "Ưu đái đã đưuọc tặng cho tất cả tài khoản.",
                     icon: "success",
                     confirmButtonText: "OK",
                 }).then(() => {
@@ -50,7 +50,7 @@ $(document).on("click", "#btn-gift-voucher", async function (event) {
                 });
             } else {
                 Swal.fire({
-                    title: "Error!",
+                    title: "Thất bại!",
                     text: result,
                     icon: "error",
                     confirmButtonText: "OK",
@@ -63,8 +63,8 @@ $(document).on("click", "#btn-gift-voucher", async function (event) {
     } catch (error) {
         console.error(error);
         Swal.fire({
-            title: "Error!",
-            text: "An unexpected error occurred.",
+            title: "Lỗi!",
+            text: "Đã xảy ra lỗi không mong muốn.",
             icon: "error",
             confirmButtonText: "OK",
         });

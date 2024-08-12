@@ -129,8 +129,6 @@ public class AuthenticationService {
 
             AccountEntity account = accountRepository.findByEmail(singJWT.getJWTClaimsSet().getSubject())
                     .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
-            if (account == null) throw new AppException(ErrorCode.NULL_EXCEPTION);
-
             InvalidatedToken invalidatedToken = InvalidatedToken.builder().id(jit).expired(expiredTime).build();
 
             inValidatedTokenRepository.save(invalidatedToken);

@@ -44,8 +44,8 @@ export async function getAndDisplayTheater() {
 
       const actionCell = document.createElement("td");
       actionCell.innerHTML = `
-        <button class="btn btn-primary btn-theater-update" data-id="${theater.id}">Edit</button>
-        <button class="btn btn-danger btn-theater-delete" data-id="${theater.id}">Delete</button>
+        <button class="btn btn-primary btn-theater-update" data-id="${theater.id}"><i class="fa fa-regular fa-arrow-up"></i></button>
+        <button class="btn btn-danger btn-theater-delete" data-id="${theater.id}"><i class="fa fa-solid fa-trash"></i></button>
       `;
 
       const deleteButton = actionCell.querySelector(".btn-theater-delete");
@@ -54,12 +54,12 @@ export async function getAndDisplayTheater() {
       deleteButton.addEventListener("click", async () => {
         try {
           const confirmation = await Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to delete this Theater?",
+            title: "Xác nhận",
+            text: "Bạn có chắc muốn xóa rạp chiếu "+theater.name,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel",
+            confirmButtonText: "Có",
+            cancelButtonText: "Hủy",
           });
 
           if (confirmation.isConfirmed) {
@@ -68,30 +68,23 @@ export async function getAndDisplayTheater() {
               tbody.removeChild(row);
               getAndDisplayTheater();
               Swal.fire({
-                title: "Deleted!",
-                text: `Theater ${theater.name} has been deleted.`,
+                title: "Thành công!",
+                text: `Rạp chiếu ${theater.name} đã được xóa.`,
                 icon: "success",
                 confirmButtonText: "OK",
               });
             } else {
               Swal.fire({
-                title: "Error!",
-                text: "Failed to delete the Theater.",
+                title: "Thất bại!",
+                text: "Xóa rạp chiếu thất bại.",
                 icon: "error",
                 confirmButtonText: "OK",
               });
             }
-          } else {
-            Swal.fire({
-              title: "Cancelled",
-              text: "Theater deletion was cancelled.",
-              icon: "info",
-              confirmButtonText: "OK",
-            });
-          }
+          } 
         } catch (error) {
           Swal.fire({
-            title: "Error!",
+            title: "Thất bại!",
             text: error.message,
             icon: "error",
             confirmButtonText: "OK",

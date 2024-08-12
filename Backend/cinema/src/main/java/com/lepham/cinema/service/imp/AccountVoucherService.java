@@ -37,7 +37,7 @@ public class AccountVoucherService implements IAccountVoucherService {
     public void gift(AccountVoucherRequest request) {
         List<AccountEntity> activeUserIds = accountRepository.findAllByActiveAndRole(1, "USER");
         VoucherEntity voucher = voucherRepository.findById(request.getVoucherId())
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
 
         for (AccountEntity account : activeUserIds) {
             AccountVoucherEntity accountVoucherEntity = accountVoucherRepository.findByAccountAndVoucher(account,voucher);
@@ -58,7 +58,7 @@ public class AccountVoucherService implements IAccountVoucherService {
     @Override
     public void deleteVoucher(long id) {
         AccountVoucherEntity entity = accountVoucherRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_ENOUGH));
         entity.setHide(true);
         accountVoucherRepository.save(entity);
     }

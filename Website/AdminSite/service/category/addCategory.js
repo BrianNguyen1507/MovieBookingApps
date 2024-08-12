@@ -1,3 +1,4 @@
+import { getMessageWithCode } from "../../util/exception/exception.js";
 import { getUserToken } from "../authenticate/authenticate.js";
 const apiUrl = "http://localhost:8083/cinema/addCategory";
 
@@ -15,7 +16,7 @@ export async function addCategory(categoryName) {
     });
 
     if (response.code !== 1000) {
-      return response.message;
+      return getMessageWithCode(response.code);
     }
 
     return true;

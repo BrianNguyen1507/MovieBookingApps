@@ -1,3 +1,4 @@
+import { getMessageWithCode } from "../../util/exception/exception.js";
 import { getUserToken } from "../authenticate/authenticate.js";
 
 export async function deleteSchedule(id) {
@@ -18,6 +19,6 @@ export async function deleteSchedule(id) {
       return responseData.code;
     }
   } else if (response.status == 400) {
-    return responseData.message;
+    return getMessageWithCode(responseData.code);
   }
 }

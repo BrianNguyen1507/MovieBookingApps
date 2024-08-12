@@ -1,5 +1,6 @@
 const apiurl = "http://localhost:8083/cinema/login";
 import { displayErrorMessage } from "../../util/common.js";
+import { getMessageWithCode } from "../../util/exception/exception.js";
 async function signin(email, password) {
   try {
     const signInData = JSON.stringify({ email, password });
@@ -12,7 +13,7 @@ async function signin(email, password) {
       console.error("Error:", error);
       Swal.fire({
         title: "Error",
-        text: xhr.responseJSON.message || "An unexpected error occurred",
+        text: getMessageWithCode(xhr.responseJSON.code) || "An unexpected error occurred",
         icon: "error",
         confirmButtonText: "OK",
       });
@@ -20,7 +21,7 @@ async function signin(email, password) {
     });
 
     if (response.code !== 1000 && response.code !== 1001) {
-      return response.message;
+      return getMessageWithCode(response.code);
     }
 
     const { token, authenticated, role, name } = response.result;
@@ -44,7 +45,7 @@ $("#signInForm").submit(async function (event) {
     const role = sessionStorage.getItem("role");
     if (role === "ADMIN") {
       Swal.fire({
-        title: "Sign in Success!",
+        title: "Đăng nhập thành công!",
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {

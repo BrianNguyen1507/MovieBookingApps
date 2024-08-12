@@ -112,7 +112,7 @@ public class SeatHeldService implements ISeatHeldService {
         List<SeatHeldEntity> seats = seatHeldRepository.findByHeldDateTimeBeforeAndStatus(localDateTime, ConstantVariable.SEAT_HOLD);
         seats.forEach(seat -> {
            MovieScheduleEntity schedule = movieScheduleRepository.findById(seat.getSchedule().getId())
-                   .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));;
+                   .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));;
            schedule.returnSeat(seat.getSeat());
            movieScheduleRepository.save(schedule);
            seatHeldRepository.delete(seat);

@@ -31,9 +31,7 @@ public class FilmRequest {
     String actor;
     byte[] poster;
     String trailer;
-    @StringConstraint
     String country;
-    @StringConstraint
     String language;
 
     @PriceConstraint

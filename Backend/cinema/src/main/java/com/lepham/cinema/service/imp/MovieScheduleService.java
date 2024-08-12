@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +72,7 @@ public class MovieScheduleService implements IMovieScheduleService {
         List<FilmEntity> entities = new ArrayList<>();
         for (ShowTimeRequest request : requests.getShowTimes()) {
             FilmEntity entity = filmRepository.findById(request.getIdFilm())
-                    .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                    .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
             minuteRemaining -= (entity.getDuration() * request.getQuantity()) / 7;
             entities.add(entity);
         }
@@ -270,32 +271,16 @@ public class MovieScheduleService implements IMovieScheduleService {
         }
     }
 
-//    @Override
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public MovieScheduleResponse updateSchedule(long id, long filmId) {
-//        MovieScheduleEntity schedule = movieScheduleRepository.findById(id)
-//                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-//        List<MovieScheduleEntity> listSchedule = movieScheduleRepository.getAllByTimeStartAfter(schedule.getTimeStart());
-//        FilmEntity film = filmRepository.findById(filmId)
-//                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
-//
-//        listSchedule = checkSwap(listSchedule, film);
-//        if (listSchedule == null) throw new AppException(ErrorCode.NULL_EXCEPTION);
-//        listSchedule = movieScheduleRepository.saveAll(listSchedule);
-//        return movieScheduleConverter.toResponse(listSchedule.getFirst(), filmConverter.toFilmScheduleResponse(film));
-//    }
-
-
     public ScheduleMobileResponse getAllScheduleByTheaterAndFilm(long theaterId, long filmId, LocalDate date) {
         List<MovieScheduleEntity> scheduleEntities = movieScheduleRepository.findAllByFilmAndMovieTheater(filmId, theaterId, date);
-        if (scheduleEntities.isEmpty()) throw new AppException(ErrorCode.NULL_EXCEPTION);
+        if (scheduleEntities.isEmpty()) throw new AppException(ErrorCode.SCHEDULE_NOT_FOUND);
         return movieScheduleConverter.toScheduleMobileResponse(scheduleEntities, filmConverter.toFilmScheduleResponse(scheduleEntities.getFirst().getFilm()));
     }
 
     @Override
     public DetailScheduleResponse getMovieScheduleById(long id) {
         MovieScheduleEntity movieSchedule = movieScheduleRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.SCHEDULE_NOT_FOUND));
         return movieScheduleConverter.toDetailScheduleResponse(movieSchedule);
     }
 
@@ -306,9 +291,9 @@ public class MovieScheduleService implements IMovieScheduleService {
     MovieScheduleEntity saveSchedule(long idFilm, long idRoom) {
         MovieScheduleEntity schedule = new MovieScheduleEntity();
         FilmEntity film = filmRepository.findByIdAndHideAndActive(idFilm, false, 0)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
         RoomEntity room = roomRepository.findByIdAndHide(idRoom, false)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
         schedule.setFilm(film);
         schedule.setRoom(room);
         schedule.setSeat(schedule.generateSeat(room.getRow(), room.getColumn()));

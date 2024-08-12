@@ -59,7 +59,7 @@ public class OrderService implements IOrderService {
         double priceTicket = 0;
         if (request.getIdFilm() != -1) {
             FilmEntity filmEntity = filmRepository.findById(request.getIdFilm())
-                    .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                    .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
             priceTicket = (filmEntity.getBasePrice() * request.getQuantitySeat());
         }
         total += priceTicket;
@@ -67,7 +67,7 @@ public class OrderService implements IOrderService {
         if (!request.getFood().isEmpty()) {
             for (FoodOrderRequest foodRequest : request.getFood()) {
                 FoodEntity foodEntity = foodRepository.findById(foodRequest.getId())
-                        .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                        .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
                 double priceFood = (foodEntity.getPrice() * foodRequest.getQuantity());
                 priceFoodTotal += priceFood;
                 total += priceFood;
@@ -85,7 +85,7 @@ public class OrderService implements IOrderService {
     @PreAuthorize("hasRole('USER')")
     public double applyVoucher(double price, long voucherId) {
         VoucherEntity voucher = voucherRepository.findById(voucherId)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
         if (voucher.getTypeDiscount() == ConstantVariable.direct) {
             return price - voucher.getDiscount();
         } else if (voucher.getTypeDiscount() == ConstantVariable.percent) {
@@ -338,16 +338,14 @@ public class OrderService implements IOrderService {
     @Override
     @Scheduled(cron = "0 0 1 * * ?")
     public void autoChangeStatusFoodOrder() {
-        List<OrderEntity> orders = orderRepository.MovieScheduleIsNullByDate_Date(LocalDate.now());
+        List<OrderEntity> orders = orderRepository.MovieScheduleIsNullByDate_Date(LocalDate.now(),ConstantVariable.ORDER_UNUSED);
         if (!orders.isEmpty()) {
             orders.forEach(order -> {
                 //Schedule not null
-                if (LocalDate.now().isAfter(order.getDate().toLocalDate())
-                        && order.getStatus() == ConstantVariable.ORDER_UNUSED) {
+                if (LocalDate.now().isAfter(order.getDate().toLocalDate())) {
                     order.setStatus(ConstantVariable.ORDER_EXPIRED_USED);
                     orderRepository.save(order);
                 }
-
             });
         }
     }
@@ -357,8 +355,6 @@ public class OrderService implements IOrderService {
     @Scheduled(fixedRate = 60000)
     public void autoChangeStatusFilmOrder() {
         List<OrderEntity> orders = orderRepository.findAllByMovieSchedule_TimeStart_Date(LocalDate.now());
-
-
         if (!orders.isEmpty()) {
             orders.forEach(order -> {
                 MovieScheduleEntity movieSchedule = order.getMovieSchedule();

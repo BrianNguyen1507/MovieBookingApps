@@ -16,11 +16,11 @@ export async function giftVoucher(quantity,voucherId) {
     });
 
     if (response.code !== 1000) {
-      return response.message;
+      return getMessageWithCode(response.code) ;
     }
     return true;
   } catch (error) {
     console.error("Exception:", error);
-    return error.responseJSON ? error.responseJSON.message : error.message;
+    return error.responseJSON ? getMessageWithCode(error.responseJSON.code) : error.message;
   }
 }

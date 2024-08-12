@@ -4,16 +4,18 @@ import { screenSizeWith } from "../../constant/screenSize.js";
 import { getAndDisplayvoucher } from "./getAllVoucher.js";
 
 $(document).on("click", "#btn-edit", async function (event) {
+  const voucherId = $(this).data("id");
+  const voucherTitle = $(this).data("title");
+  const voucherContent = $(this).data("content");
+  const voucherDiscount = $(this).data("discount");
+  const voucherQuantity = $(this).data("quantity");
+  const voucherExpired = $(this).data("expired");
+  const voucherMinLimit = $(this).data("minlimit");
+  const voucherTypeDiscount = $(this).data("type");
+  updateVoucherForm(voucherId,voucherTitle,voucherContent,voucherDiscount,voucherQuantity,voucherExpired,voucherMinLimit,voucherTypeDiscount);
+});
+async function updateVoucherForm(voucherId,voucherTitle,voucherContent,voucherDiscount,voucherQuantity,voucherExpired,voucherMinLimit,voucherTypeDiscount) {
   try {
-    const voucherId = $(this).data("id");
-    const voucherTitle = $(this).data("title");
-    const voucherContent = $(this).data("content");
-    const voucherDiscount = $(this).data("discount");
-    const voucherQuantity = $(this).data("quantity");
-    const voucherExpired = $(this).data("expired");
-    const voucherMinLimit = $(this).data("minlimit");
-    const voucherTypeDiscount = $(this).data("type");
-
     const showForm = async () => {
       return await Swal.fire({
         width: screenSizeWith(),
@@ -100,7 +102,7 @@ $(document).on("click", "#btn-edit", async function (event) {
             !expiryDateInput
           ) {
             Swal.showValidationMessage(
-              "All fields are required and must be valid."
+             "Vui lòng nhập đầy đủ thông tin."
             );
             return false;
           }
@@ -111,7 +113,7 @@ $(document).on("click", "#btn-edit", async function (event) {
 
           if (expiryDate <= oneDayFromNow) {
             Swal.showValidationMessage(
-              "Expiry date must be at least one day in the future."
+              "Ngày hết hạn phải cách ít nhất một ngày trong tương lai."
             );
             return false;
           }
@@ -146,8 +148,8 @@ $(document).on("click", "#btn-edit", async function (event) {
 
       if (result === true) {
         Swal.fire({
-          title: "Success!",
-          text: "New voucher has been updated.",
+          title: "Thành công!",
+          text: "Ưu đãi đã được sửa.",
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
@@ -155,16 +157,16 @@ $(document).on("click", "#btn-edit", async function (event) {
         });
       } else {
         Swal.fire({
-          title: "Error!",
+          title: "Thất bại!",
           text: result,
           icon: "error",
           confirmButtonText: "OK",
         }).then(async () => {
-          await showForm();
+          await updateVoucherForm(voucherId,voucherTitle,voucherContent,voucherDiscount,voucherQuantity,voucherExpired,voucherMinLimit,voucherTypeDiscount);
         });
       }
     }
   } catch (error) {
     console.error(error);
   }
-});
+}

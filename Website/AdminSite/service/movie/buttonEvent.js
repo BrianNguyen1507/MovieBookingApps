@@ -49,31 +49,35 @@ document.getElementById("btn-edit").addEventListener("click", function () {
   const movie = getMovieFromForm();
 
   Swal.fire({
-    title: "Are you sure?",
-    text: "Do you want to update this movie?",
+    title: "Xác nhận?",
+    text: "Bạn có chắc muốn sửa thông tin phim",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Yes, update it!",
-    cancelButtonText: "No, cancel!",
+    confirmButtonText: "Có",
+    cancelButtonText: "Hủy",
     reverseButtons: true,
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      updateMovie(id, movie)
-        .then(() => {
+      const response = await updateMovie(id, movie);
+      console.log(response);
+      if (response == true) {
+        Swal.fire({
+          title: "Thành công!",
+          text: "Sửa phim thành công",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(async () => {
           getMovieById(id);
-        })
-        .catch((error) => {
-          Swal.fire({
-            title: "Error",
-            text: "Opps!, There was an error updating the movie.",
-            icon: "error",
-          });
+          return;
         });
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      }
       Swal.fire({
-        title: "Cancelled",
-        text: "Update operation has been cancelled.",
-        icon: "info",
+        title: "Thất bại!",
+        text: response,
+        icon: "error",
+        confirmButtonText: "OK",
+      }).then(async () => {
+        getMovieFromForm();
       });
     }
   });
@@ -81,33 +85,37 @@ document.getElementById("btn-edit").addEventListener("click", function () {
 //soft delete movie button
 document.getElementById("btn-del").addEventListener("click", function () {
   const id = this.getAttribute("data-id");
+  const movie = getMovieFromForm();
 
   Swal.fire({
-    title: "Are you sure?",
-    text: "Do you want to hide this movie?",
+    title: "Xác nhận?",
+    text: "Bạn có muốn xóa phim " + movie.title,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Yes, hide it!",
-    cancelButtonText: "No, cancel!",
+    confirmButtonText: "Có",
+    cancelButtonText: "Hủy",
     reverseButtons: true,
-  }).then((result) => {
+  }).then(async (result) => {
     if (result.isConfirmed) {
-      deleteMovie(id)
-        .then(() => {
-          window.location.href = "./movieManagement.html";
-        })
-        .catch((error) => {
-          Swal.fire({
-            title: "Error",
-            text: "Opps!, There was an error hide movie.",
+      const response = await deleteMovie(id);
+      if (response == true) {
+        await Swal.fire(
+          {
+            title: "Thành công!",
+            text: "Xóa phim thành công",
             icon: "error",
-          });
+            confirmButtonText: "OK",
+          }
+        ).then(() => {
+          window.location.href = "./movieManagement.html";
+          return;
         });
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      }
       Swal.fire({
-        title: "Cancelled",
-        text: "Hide operation has been cancelled.",
-        icon: "info",
+        title: "Thất bại!",
+        text: response,
+        icon: "error",
+        confirmButtonText: "OK",
       });
     }
   });
