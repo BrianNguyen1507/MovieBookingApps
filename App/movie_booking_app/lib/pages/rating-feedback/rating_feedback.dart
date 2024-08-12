@@ -44,18 +44,18 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'What do you think about the movie?',
-              style: AppStyle.headline1,
+              AppLocalizations.of(context)!.review_movie,
+              style: AppStyle.bodyText1,
             ),
             const RatingWidget(),
             Container(
               padding: const EdgeInsets.all(5.0),
               child: TextField(
                 controller: commentCtl,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Comment',
-                  contentPadding: EdgeInsets.all(10),
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.comment_movie,
+                  contentPadding: const EdgeInsets.all(10),
                 ),
               ),
             ),
@@ -83,13 +83,8 @@ class RatingFeedbackState extends State<RatingFeedbackPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.rating_feedback,
-                      style: const TextStyle(
-                        fontSize: AppFontSize.medium,
-                        color: AppColors.lightTextColor,
-                      ),
-                    ),
+                    child: Text(AppLocalizations.of(context)!.rating_feedback,
+                        style: AppStyle.bannerText),
                   ),
                 ),
               ),
