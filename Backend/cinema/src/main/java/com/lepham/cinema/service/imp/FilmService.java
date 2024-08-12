@@ -9,6 +9,10 @@ import com.lepham.cinema.exception.AppException;
 import com.lepham.cinema.exception.ErrorCode;
 import com.lepham.cinema.repository.FilmRepository;
 import com.lepham.cinema.service.IFilmService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 

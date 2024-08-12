@@ -1,5 +1,6 @@
 import { getAndDisplayCategories } from "./getCategory.js";
 import { getUserToken } from "../authenticate/authenticate.js";
+import { getMessageWithCode } from "../../util/exception/exception.js";
 const tokenUser = await getUserToken();
 export const updateCategory = (id, name) => {
   Swal.fire({
@@ -25,16 +26,16 @@ export const updateCategory = (id, name) => {
           id,
           name,
         }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          Swal.showValidationMessage(`Cập nhật thể loại thất bại: ${error}`);
-        });
+      }).then(async (response) => {
+        if (!response.ok) {
+          const result = await response.json();
+          throw new Error( getMessageWithCode(result.code));
+        }
+        return response.json().code;
+      }).catch((error) => {
+        Swal.showValidationMessage(error);
+      });
+      
     },
     allowOutsideClick: () => !Swal.isLoading(),
   }).then((result) => {

@@ -1,3 +1,4 @@
+import { getMessageWithCode } from "../../util/exception/exception.js";
 import { getUserToken } from "../authenticate/authenticate.js";
 import { getAndDisplayTheater } from "./getTheater.js";
 const tokenUser = await getUserToken();
@@ -32,14 +33,15 @@ export const UpdateTheater = (id, name, address) => {
           address,
         }),
       })
-        .then((response) => {
+        .then( async (response) => {
           if (!response.ok) {
-            throw new Error(response.statusText);
+            const responseData = await response.json();
+            throw new Error(getMessageWithCode(responseData.code));
           }
           return response.json();
         })
         .catch((error) => {
-          Swal.showValidationMessage(`Cập nhật thể loại thất bại: ${error}`);
+          Swal.showValidationMessage(error);
         });
     },
     allowOutsideClick: () => !Swal.isLoading(),
@@ -47,7 +49,7 @@ export const UpdateTheater = (id, name, address) => {
     if (result.isConfirmed) {
       Swal.fire({
         icon: "success",
-        title: `Cập nhật thể loại thành công`,
+        title: `Cập nhật rạp chiếu thành công`,
       });
       getAndDisplayTheater();
     }

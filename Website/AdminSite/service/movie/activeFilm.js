@@ -1,3 +1,4 @@
+import { getMessageWithCode } from "../../util/exception/exception.js";
 import { getUserToken } from "../authenticate/authenticate.js";
 const url = "http://localhost:8083/cinema/activeFilm?id=";
 
@@ -11,11 +12,11 @@ export async function activeFilm(id) {
         Authorization: `Bearer ${token}`,
       },
     });
+    const responseData = await response.json();
     if (response.status == 200) {
-      const responseData = await response.json();
       Swal.fire({
-        title: "Success!",
-        text: responseData.message,
+        title: "Thành công!",
+        text: "Kich hoạt phim thành công",
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {
@@ -23,8 +24,8 @@ export async function activeFilm(id) {
       });
     } else {
       Swal.fire({
-        title: "Error!",
-        text: responseData.message,
+        title: "Thất bại!",
+        text:  getMessageWithCode(responseData.code),
         icon: "error",
         confirmButtonText: "OK",
       }).then(async () => {

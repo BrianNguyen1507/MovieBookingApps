@@ -7,9 +7,15 @@ import { updateData } from "./updateRoomData.js";
 import { updateRoom } from "./updateRoom.js";
 
 $(document).on("click", "#btn-add-room", async function (event) {
+  const dataId = this.getAttribute("data-id");
+  
+  
+  addUpdateRoom(dataId);
+});
+
+async function addUpdateRoom(dataId) {
   try {
     const showForm = async () => {
-      const dataId = this.getAttribute("data-id");
       let action = "Thêm";
       if (dataId != null) {
         action = "Sửa";
@@ -17,7 +23,6 @@ $(document).on("click", "#btn-add-room", async function (event) {
           updateData(dataId);
         });
       }
-
       $(document).ready(function () {
         getTheater();
       });
@@ -62,9 +67,7 @@ $(document).on("click", "#btn-add-room", async function (event) {
           const row = $("#rowInput").val().trim();
           const theaterId = $("#floatingSelectAddForm").val();
           if (!number || !column || !row) {
-            Swal.showValidationMessage(
-              "All fields are required and must be valid."
-            );
+            Swal.showValidationMessage("Vui lòng nhập đầy đủ thông tin.");
             return false;
           }
 
@@ -94,8 +97,8 @@ $(document).on("click", "#btn-add-room", async function (event) {
         let result = await updateRoom(room);
         if (result === true) {
           Swal.fire({
-            title: "Success!",
-            text: "New room has been added.",
+            title: "Thành công!",
+            text: "Sửa phòng thành công.",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -103,12 +106,12 @@ $(document).on("click", "#btn-add-room", async function (event) {
           });
         } else {
           Swal.fire({
-            title: "Error!",
+            title: "Thất bại!",
             text: result,
             icon: "error",
             confirmButtonText: "OK",
           }).then(async () => {
-            await showForm();
+           await addUpdateRoom(dataId);
           });
         }
       } else {
@@ -122,8 +125,8 @@ $(document).on("click", "#btn-add-room", async function (event) {
         let result = await addRoom(room);
         if (result == true) {
           Swal.fire({
-            title: "Success!",
-            text: "New room has been added.",
+            title: "Thành công!",
+            text: "Thêm phòng thành công",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -131,12 +134,12 @@ $(document).on("click", "#btn-add-room", async function (event) {
           });
         } else {
           Swal.fire({
-            title: "Error!",
+            title: "Thất bại!",
             text: result,
             icon: "error",
             confirmButtonText: "OK",
           }).then(async () => {
-            await showForm();
+            await addUpdateRoom(dataId);
           });
         }
       }
@@ -150,4 +153,4 @@ $(document).on("click", "#btn-add-room", async function (event) {
       confirmButtonText: "OK",
     });
   }
-});
+}

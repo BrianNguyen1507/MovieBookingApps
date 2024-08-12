@@ -144,7 +144,7 @@ btnAdd.addEventListener("click", async function (event) {
             !categoriesInput
           ) {
             Swal.showValidationMessage(
-              "All fields are required and must be valid."
+              "Vui lòng nhập đầy đủ thông tin."
             );
             return false;
           }
@@ -201,8 +201,8 @@ btnAdd.addEventListener("click", async function (event) {
 
       if (result === true) {
         Swal.fire({
-          title: "Success!",
-          text: "New movie has been added.",
+          title: "Thành công!",
+          text: "Thêm phim "+movie.title+" thành công",
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
@@ -210,7 +210,7 @@ btnAdd.addEventListener("click", async function (event) {
         });
       } else {
         Swal.fire({
-          title: "Error!",
+          title: "Lỗi!",
           text: result,
           icon: "error",
           confirmButtonText: "OK",

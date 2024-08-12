@@ -22,7 +22,6 @@ export async function searchMovie(keyword) {
     if (movies.code == 1000) {
       return movies.result;
     }
-    console.log(movies);
   } catch (error) {
     console.error("Error fetching:", error);
   }

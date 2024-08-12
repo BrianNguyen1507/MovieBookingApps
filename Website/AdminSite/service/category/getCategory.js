@@ -37,12 +37,11 @@ export async function getAndDisplayCategories() {
       nameCell.style.fontWeight = "bold";
 
       row.appendChild(nameCell);
-
       const actionCell = document.createElement("td");
       actionCell.style.textAlign = "right";
       actionCell.innerHTML = `
-        <button class="btn btn-primary" data-id="${category.id}">Edit</button>
-        <button class="btn btn-danger" data-id="${category.id}">Delete</button>
+        <button class="btn btn-primary" data-id="${category.id}"><i class="fa fa-regular fa-arrow-up"></i></button>
+        <button class="btn btn-danger" data-id="${category.id}"><i class="fa fa-solid fa-trash"></i></button>
       `;
       row.appendChild(actionCell);
 
@@ -52,12 +51,12 @@ export async function getAndDisplayCategories() {
       deleteButton.addEventListener("click", async () => {
         try {
           const confirmation = await Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to delete this category?",
+            title: "Thông báo!",
+            text: "Bạn có chắc muốn xóa "+category.name,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            cancelButtonText: "No, cancel",
+            confirmButtonText: "Xóa",
+            cancelButtonText: "Hủy",
           });
 
           if (confirmation.isConfirmed) {
@@ -65,30 +64,23 @@ export async function getAndDisplayCategories() {
             if (result) {
               tbody.removeChild(row);
               Swal.fire({
-                title: "Deleted!",
-                text: "Category has been deleted.",
+                title: "Thành công!",
+                text: "Thể loại đã được xóa.",
                 icon: "success",
                 confirmButtonText: "OK",
               });
             } else {
               Swal.fire({
-                title: "Error!",
-                text: "Failed to delete the category.",
+                title: "Thất bại!",
+                text: "Xóa thể loại thất bại.",
                 icon: "error",
                 confirmButtonText: "OK",
               });
             }
-          } else {
-            Swal.fire({
-              title: "Cancelled",
-              text: "Category deletion was cancelled.",
-              icon: "info",
-              confirmButtonText: "OK",
-            });
           }
         } catch (error) {
           Swal.fire({
-            title: "Error!",
+            title: "Lỗi!",
             text: error.message,
             icon: "error",
             confirmButtonText: "OK",
@@ -101,7 +93,7 @@ export async function getAndDisplayCategories() {
           const result = updateCategory(category.id, category.name);
           if (result) {
             Swal.fire({
-              title: "Update Success!",
+              title: "Cập nhật thành công!",
               icon: "success",
               confirmButtonText: "OK",
             });

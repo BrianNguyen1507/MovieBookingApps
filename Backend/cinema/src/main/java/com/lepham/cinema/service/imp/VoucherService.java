@@ -58,7 +58,7 @@ public class VoucherService implements IVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     public VoucherResponse updateVoucher(long id, VoucherRequest request) throws ParseException {
         VoucherEntity entity = voucherRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
         voucherConverter.updateVoucher(entity, request);
         return voucherConverter.toResponse(voucherRepository.save(entity));
     }
@@ -67,7 +67,7 @@ public class VoucherService implements IVoucherService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteVoucher(long id) {
         VoucherEntity entity = voucherRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
         if (entity.getAccounts() == null) {
             voucherRepository.delete(entity);
         } else {

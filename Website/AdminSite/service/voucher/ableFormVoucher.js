@@ -3,6 +3,9 @@ import { addVoucher } from "./addVoucher.js";
 import { screenSizeWith } from "../../constant/screenSize.js";
 import { getAndDisplayvoucher } from "./getAllVoucher.js";
 $(document).on("click", "#btn-add-voucher", async function (event) {
+  addVoucherForm();
+});
+async function addVoucherForm(params) {
   try {
     const showForm = async () => {
       return await Swal.fire({
@@ -86,7 +89,7 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
             !expiryDateInput
           ) {
             Swal.showValidationMessage(
-              "All fields are required and must be valid."
+                "Vui lòng nhập đầy đủ thông tin."
             );
             return false;
           }
@@ -97,7 +100,7 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
 
           if (expiryDate <= oneDayFromNow) {
             Swal.showValidationMessage(
-              "Expiry date must be at least one day in the future."
+              "Ngày hết hạn phải cách ít nhất một ngày trong tương lai."
             );
             return false;
           }
@@ -132,8 +135,8 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
 
       if (result === true) {
         Swal.fire({
-          title: "Success!",
-          text: "New voucher has been added.",
+          title: "Thành công!",
+          text: "Ưu đãi đã được thêm.",
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
@@ -141,16 +144,16 @@ $(document).on("click", "#btn-add-voucher", async function (event) {
         });
       } else {
         Swal.fire({
-          title: "Error!",
+          title: "Thất bại!",
           text: result,
           icon: "error",
           confirmButtonText: "OK",
         }).then(async () => {
-          await showForm();
+          await addVoucherForm();
         });
       }
     }
   } catch (error) {
     console.error(error);
   }
-});
+}

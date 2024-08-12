@@ -19,8 +19,8 @@ public interface OrderRepository extends JpaRepository<OrderEntity,Long> {
     @Query(value = "SELECT o from OrderEntity o where function('MONTH',o.date)= :month and  function('YEAR',o.date)= :year")
     List<OrderEntity> findByMonthAndYear(int month, int year);
 
-    @Query(value = "select o from OrderEntity o where Date(o.date) = ?1 and o.movieSchedule is null")
-    List<OrderEntity> MovieScheduleIsNullByDate_Date(LocalDate date);
+    @Query(value = "select o from OrderEntity o where Date(o.date) < ?1 and o.movieSchedule is null and o.status = ?2")
+    List<OrderEntity> MovieScheduleIsNullByDate_Date(LocalDate date,int status);
 
     @Query(value = "select o from OrderEntity o where Date(o.movieSchedule.timeStart) = ?1 and o.movieSchedule is not null")
     @EntityGraph(attributePaths = {"movieSchedule", "movieSchedule.film"})

@@ -10,7 +10,7 @@ import java.net.http.HttpRequest;
 public enum ErrorCode {
     NULL_EXCEPTION(8888, "Object Null", HttpStatus.BAD_REQUEST),
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_kEY(1001,"Uncategorized error", HttpStatus.BAD_REQUEST),
+    INVALID_KEY(1001,"Invalid key", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED(1002, "You do not have permission", HttpStatus.FORBIDDEN),
     INVALID_EMAIL(1003,"Email invalid",HttpStatus.BAD_REQUEST),
     EXISTS_EMAIL(1004,"Email already exists", HttpStatus.BAD_REQUEST),
@@ -55,6 +55,8 @@ public enum ErrorCode {
     HOLD_SEAT_ABOVE_LIMIT(1042,"You can only book a maximum of 10 seats",HttpStatus.BAD_REQUEST),
     VOUCHER_NOT_FOUND(1043,"Voucher not found",HttpStatus.BAD_REQUEST),
     STRING_SEAT_INCORRECT(1044,"String seat format is incorrect",HttpStatus.BAD_REQUEST),
+    THEATER_NOT_FOUND(1045,"Theater not found",HttpStatus.BAD_REQUEST),
+    THEATER_NAME_EXIST(1046,"Theater name is exist",HttpStatus.BAD_REQUEST),
     ;
 
 

@@ -2,6 +2,10 @@ import { screenSizeWith } from "../../constant/screenSize.js";
 import { addTheater } from "./addMovieTheater.js";
 import { getAndDisplayTheater } from "./getTheater.js";
 $(document).on("click", "#btn-add-theater", async function (event) {
+  addTheaterForm();
+});
+
+async function addTheaterForm(){
   try {
     const showForm = async () => {
       await getAndDisplayTheater();
@@ -33,7 +37,7 @@ $(document).on("click", "#btn-add-theater", async function (event) {
 
           if (!nametheater || !addresstheater) {
             Swal.showValidationMessage(
-              "All fields are required and must be valid."
+             "Vui lòng nhập đầy đủ thông tin."
             );
             return false;
           }
@@ -53,8 +57,8 @@ $(document).on("click", "#btn-add-theater", async function (event) {
 
       if (result === true) {
         Swal.fire({
-          title: "Success!",
-          text: "New theater has been added.",
+          title: "Thành công!",
+          text: "Rạp chiếu "+value.nametheater+" đã được thêm.",
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
@@ -67,11 +71,11 @@ $(document).on("click", "#btn-add-theater", async function (event) {
           icon: "error",
           confirmButtonText: "OK",
         }).then(async () => {
-          await showForm();
+          await addTheaterForm();
         });
       }
     }
   } catch (error) {
     console.error(error);
   }
-});
+}

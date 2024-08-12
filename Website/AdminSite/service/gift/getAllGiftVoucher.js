@@ -70,7 +70,7 @@ export async function getAndDisplayGiftVoucher() {
 
       const actionCell = document.createElement('td');
       actionCell.innerHTML = `
-        <button class="btn btn-primary" id="btn-gift-voucher" data-id="${voucherData.id}" data-title ="${voucherData.title}">Tặng voucher</button>
+        <button class="btn btn-primary" id="btn-gift-voucher" data-id="${voucherData.id}" data-title ="${voucherData.title}"><i class="fa fa-solid fa-gift"></i></button>
       `;
       row.appendChild(actionCell);
       tbody.appendChild(row);

@@ -61,7 +61,7 @@ public class RoomService implements IRoomService {
     @PreAuthorize("hasRole('ADMIN')")
     public RoomResponse addRoom(RoomRequest request) {
         MovieTheaterEntity movieTheater = theaterRepository.findById(request.getTheaterId())
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.THEATER_NOT_FOUND));
         RoomEntity entity = roomConverter.toEntity(request, movieTheater);
         if (roomRepository.checkExistsRoom(request.getNumber(), request.getTheaterId()) != null)
             throw new AppException(ErrorCode.ROOM_EXISTS);
@@ -76,7 +76,10 @@ public class RoomService implements IRoomService {
         MovieTheaterEntity movieTheater = theaterRepository.findById(request.getTheaterId())
                 .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
 
-        RoomEntity entity = roomRepository.getReferenceById(roomId);
+        RoomEntity entity = roomRepository.findById(roomId)
+                .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
+        if (roomRepository.checkExistsRoomId(request.getNumber(), request.getTheaterId(),roomId) != null)
+            throw new AppException(ErrorCode.ROOM_EXISTS);
         entity.setRow(request.getRow());
         entity.setColumn(request.getColumn());
         entity.setNumber(request.getNumber());

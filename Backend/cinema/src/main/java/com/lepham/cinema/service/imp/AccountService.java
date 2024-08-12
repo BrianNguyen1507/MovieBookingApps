@@ -49,7 +49,6 @@ public class AccountService implements IAccountService {
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final int OTP_LENGTH =6;
 
-
     AccountRepository accountRepository;
 
     AccountConverter accountConverter;

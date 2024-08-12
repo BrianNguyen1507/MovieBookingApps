@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +37,8 @@ public class MovieTheaterService implements IMovieTheaterService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public MovieTheaterResponse addMovieTheater(MovieTheaterRequest request) {
+        Optional<MovieTheaterEntity> theater = movieTheaterRepository.findByName(request.getName());
+        if(theater.isPresent()) throw new AppException(ErrorCode.THEATER_NAME_EXIST);
         MovieTheaterEntity entity = movieTheaterConverter.toEntity(request);
         entity.setHide(false);
         return movieTheaterConverter.toResponse(movieTheaterRepository.save(entity));
@@ -44,6 +47,8 @@ public class MovieTheaterService implements IMovieTheaterService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public MovieTheaterResponse updateMovieTheater(long id,MovieTheaterRequest request) {
+        Optional<MovieTheaterEntity> theater = movieTheaterRepository.findByNameAndIdNot(request.getName(),id);
+        if(theater.isPresent()) throw new AppException(ErrorCode.THEATER_NAME_EXIST);
         MovieTheaterEntity entity= movieTheaterRepository.getReferenceById(id);
         entity.setAddress(request.getAddress());
         entity.setName(request.getName());
@@ -54,7 +59,7 @@ public class MovieTheaterService implements IMovieTheaterService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteMovieTheater(long id) {
         MovieTheaterEntity entity = movieTheaterRepository.findById(id)
-                .orElseThrow(()->new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(()->new AppException(ErrorCode.THEATER_NOT_FOUND));
         entity.setHide(true);
         movieTheaterRepository.save(entity);
     }

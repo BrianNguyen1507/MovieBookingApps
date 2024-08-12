@@ -3,6 +3,7 @@ import { addSchedule } from "./addScheuleService.js";
 import { truncateText } from "./selectionFilm.js";
 import { swapSchedule } from "./swapScheduleService.js";
 import { deleteSchedule } from "./deleteScheduleService.js";
+import { getMessageWithCode } from "../../util/exception/exception.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   let draggedItem = null;
@@ -125,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
           const dateTable = sessionStorage.getItem("date");
           const roomId = sessionStorage.getItem("roomId");
           Swal.fire({
-            title: "Success!",
-            text: "Swap schedule successful!",
+            title: "Thành công!",
+            text: "Đổi 2 suất chiếu thành công !",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -136,8 +137,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         else{
           Swal.fire({
-            title: "Failed!",
-            text: response.message,
+            title: "Thất bại!",
+            text: getMessageWithCode(response.code),
             icon: "error",
             confirmButtonText: "OK",
           }).then(() => {
@@ -153,8 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const roomId = sessionStorage.getItem("roomId");
         if (result == 1000) {
           Swal.fire({
-            title: "Success!",
-            text: "Delete schedule successful!",
+            title: "Thành công!",
+            text: "Xóa lịch chiếu thành công!",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -163,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
          
         } else {
           Swal.fire({
-            title: "Failed!",
+            title: "Thất bại!",
             text: result,
             icon: "error",
             confirmButtonText: "OK",
@@ -203,8 +204,8 @@ async function checkAddSchedule(roomId, filmId, date) {
     }
     else{
       Swal.fire({
-        title: "Failed!",
-        text: response.message,
+        title: "Thất bại!",
+        text: getMessageWithCode(response.code),
         icon: "error",
         confirmButtonText: "OK",
       }).then(() => {

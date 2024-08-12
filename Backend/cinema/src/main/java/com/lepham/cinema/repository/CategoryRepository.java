@@ -13,5 +13,6 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
 	List<CategoryEntity> findAllByFilmEntityId(long filmId);
 
 	Optional<CategoryEntity> findByName(String name);
+	Optional<CategoryEntity> findByNameAndIdNot(String name,long id);
 	
 }

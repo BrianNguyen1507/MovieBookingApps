@@ -40,12 +40,12 @@ export async function displayFilm(movies) {
   
     const movieclassify = document.createElement("div");
     movieclassify.classList.add("movie-id-classify");
-    movieclassify.textContent = movie.active == 0 ? "Active" : "Inactive";
+    movieclassify.textContent = movie.active == 0 ? "Công chiếu" : "Ngưng chiếu";
     movieItem.appendChild(movieclassify);
   
     const moviePoster = document.createElement("img");
     moviePoster.src = `data:image/png;base64,${movie.poster}`;
-    moviePoster.classList.add("img-fluid");
+    moviePoster.classList.add("img-fluid","h-50","mb-2");
     moviePoster.alt = `${movie.title} Poster`;
     movieItem.appendChild(moviePoster);
   

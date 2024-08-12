@@ -1,5 +1,6 @@
 package com.lepham.cinema.config;
 
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,10 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
 
     CustomJWTDecoder customJWTDecoder;
+
+    @Value("${app.strength}")
+    private  int STRENGTH;
+
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/cinema/register",
@@ -99,8 +104,7 @@ public class SecurityConfig {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(11);
+        return new BCryptPasswordEncoder(STRENGTH);
     }
-
 
 }

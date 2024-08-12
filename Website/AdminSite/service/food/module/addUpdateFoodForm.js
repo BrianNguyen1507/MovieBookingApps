@@ -6,13 +6,19 @@ import { addFood } from "../addFood.js";
 import { updateFoodData } from "../updateFoodData.js";
 import { getAllFoodDisplay } from "../getAllFoodDisplay.js";
 
+
 $(document).on("click", "#btn-add-food", async function (event) {
-  try {
-    const showForm = async () => {
       const dataId = this.getAttribute("data-id");
       const dataName = this.getAttribute("data-name");
       const dataPrice = this.getAttribute("data-price");
       const dataImage = this.getAttribute("data-image");
+      console.log(dataId);
+  addUpdateFood(dataId,dataName,dataPrice,dataImage)
+});
+export async function addUpdateFood(dataId,dataName,dataPrice,dataImage) {
+  try {
+    const showForm = async () => {
+      
       let action = "Thêm";
       if (dataId != null) {
         action = "Sửa";
@@ -27,7 +33,7 @@ $(document).on("click", "#btn-add-food", async function (event) {
       }
       return await Swal.fire({
         width: screenSizeWith(),
-        title: action + " đồ ăn thức uống ",
+        title: action + " thức ăn, nước uống ",
         html: `
           <div class="container d-flex justify-content-center align-items-center min-vh-50">
     <div class="bg-light rounded p-4 w-75">
@@ -94,7 +100,7 @@ $(document).on("click", "#btn-add-food", async function (event) {
           const price = parseInt($("#priceInput").val(), 10);
           if (!imageFood || !name || isNaN(price)) {
             Swal.showValidationMessage(
-              "All fields are required and must be valid."
+              "Vui lòng nhập đầy đủ thông tin."
             );
             return false;
           }
@@ -122,8 +128,8 @@ $(document).on("click", "#btn-add-food", async function (event) {
         let result = await updateFood(food);
         if (result === true) {
           Swal.fire({
-            title: "Success!",
-            text: "New food has been added.",
+            title: "Thành công!",
+            text: "Cập nhật " +value.name +" thành công.",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -131,21 +137,24 @@ $(document).on("click", "#btn-add-food", async function (event) {
           });
         } else {
           Swal.fire({
-            title: "Error!",
+            title: "Thất bại!",
             text: result,
             icon: "error",
             confirmButtonText: "OK",
           }).then(async () => {
-            await showForm();
+            addUpdateFood(value.id,
+              value.name,
+              value.price,
+              value.imageFood)
           });
         }
       } else {
-        const food = new Food(null, value.imageFood, value.name, value.price);
+        const food = new Food(null, value.name, value.price, value.imageFood);
         let result = await addFood(food);
         if (result == true) {
           Swal.fire({
-            title: "Success!",
-            text: "New food has been added.",
+            title: "Thành công!",
+            text: "Thêm " +  value.name +" thành công.",
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
@@ -153,23 +162,22 @@ $(document).on("click", "#btn-add-food", async function (event) {
           });
         } else {
           Swal.fire({
-            title: "Error!",
+            title: "Thất bại!",
             text: result,
             icon: "error",
             confirmButtonText: "OK",
-          }).then(async () => {
-            await showForm();
+          }).then(() => {
+            addUpdateFood(null, value.imageFood, value.name, value.price)
           });
         }
       }
     }
   } catch (error) {
-    console.error(error);
     Swal.fire({
       title: "Error!",
-      text: "An unexpected error occurred.",
+      text: error,
       icon: "error",
       confirmButtonText: "OK",
     });
   }
-});
+}

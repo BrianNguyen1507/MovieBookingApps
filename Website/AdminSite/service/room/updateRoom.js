@@ -1,3 +1,4 @@
+import { getMessageWithCode } from "../../util/exception/exception.js";
 import { getUserToken } from "../authenticate/authenticate.js";
 
 const apiUrl = "http://localhost:8083/cinema/updateRoom?id=";
@@ -15,14 +16,9 @@ export async function updateRoom(room) {
       },
       data: JSON.stringify(room),
     });
-
-    if (response.code !== 1000) {
-      return response.message;
-    }
-
     return true;
   } catch (error) {
     console.error("Exception:", error);
-    return error.responseJSON ? error.responseJSON.message : error.message;
+    return error.responseJSON ? getMessageWithCode(error.responseJSON.code) : error.message;
   }
 }
