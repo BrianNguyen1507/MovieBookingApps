@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+  
+    id 'dev.flutter.flutter-gradle-plugin'
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+android {
+    namespace = 'com.example.movie_booking_app'
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = 'com.example.movie_booking_app'
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig = signingConfigs.debug
+            resValue 'string', 'google_maps_api_key', '"${System.getenv("GOOGLE_MAPS_API_KEY")}"'
+        }
+         debug {
+            // For debug builds, you might want to use a different API key or handle differently
+            resValue "string", 'google_maps_api_key', '"${System.getenv("GOOGLE_MAPS_API_KEY")}"'
+           
+         }
+    }
+}
+
+flutter {
+    source = '../..'
+}
+dependencies {
+    implementation files('zpdk-release-v3.1/zpdk-release-v3.1.aar')
+    implementation 'com.github.momo-wallet:mobile-sdk:1.0.7'
+}
