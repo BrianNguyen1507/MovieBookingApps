@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderCheckResponse {
     long id;
     String seat;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime date;
     double sumTotal;
     boolean allowUse;

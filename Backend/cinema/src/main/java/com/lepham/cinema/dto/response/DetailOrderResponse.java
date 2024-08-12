@@ -18,7 +18,7 @@ public class DetailOrderResponse {
     long id;
     String seat;
     double sumTotal;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime date;
     String paymentMethod;
     String paymentCode;
@@ -29,9 +29,9 @@ public class DetailOrderResponse {
     String theaterName;
     FilmResponse film;
     int roomNumber;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime movieTimeStart;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime movieTimeEnd;
     String orderCode;
 }
