@@ -56,7 +56,7 @@ public class FilmService implements IFilmService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public List<FilmResponse> getAllFilm() {
-        List<FilmEntity> entities = filmRepository.findAllByHide(false, Sort.by(Sort.Direction.ASC, "active"));
+        List<FilmEntity> entities = filmRepository.findAllByHide(false, Sort.by(Sort.Direction.ASC, "active","releaseDate"));
         return entities.stream().map(filmConverter::toFilmResponse).collect(Collectors.toList());
     }
 

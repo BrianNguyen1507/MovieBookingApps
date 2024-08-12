@@ -357,7 +357,6 @@ public class OrderService implements IOrderService {
         List<OrderEntity> orders = orderRepository.findAllByMovieSchedule_TimeStart_Date(LocalDate.now());
         if (!orders.isEmpty()) {
             orders.forEach(order -> {
-                MovieScheduleEntity movieSchedule = order.getMovieSchedule();
                 if (order.getMovieSchedule()
                         .getTimeStart()
                         .plusMinutes(order.getMovieSchedule().getFilm().getDuration())

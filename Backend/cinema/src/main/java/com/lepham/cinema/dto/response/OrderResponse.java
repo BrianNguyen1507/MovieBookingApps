@@ -21,7 +21,7 @@ public class OrderResponse {
     String orderCode;
     String seat;
     double sumTotal;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime date;
     String paymentMethod;
     String paymentCode;
