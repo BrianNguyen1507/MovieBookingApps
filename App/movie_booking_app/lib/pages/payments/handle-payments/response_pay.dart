@@ -46,7 +46,8 @@ class PaymentResult {
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/listOrder',
-        ModalRoute.withName('/'),
+        (Route<dynamic> route) =>
+            route.settings.name == '/profile' || route.isFirst,
       );
     }
   }

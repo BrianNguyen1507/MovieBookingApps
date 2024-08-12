@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/constant/app_style.dart';
 import 'package:movie_booking_app/converter/converter.dart';
+import 'package:movie_booking_app/modules/loading/loading.dart';
 import 'package:movie_booking_app/pages/profile/components/mylist.dart';
 import 'package:movie_booking_app/pages/profile/guest_view.dart';
 import 'package:movie_booking_app/provider/provider.dart';
@@ -25,73 +26,91 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   ValidInput valid = ValidInput();
   Preferences pref = Preferences();
-  int? numMovies = 0;
-  int? numReviews = 0;
-  String? avatar;
-  String? userName = '';
-  dynamic token;
 
+  dynamic token;
+  late Future<Map<String, dynamic>> _userDataFuture;
   @override
   void initState() {
     super.initState();
-    getData();
+    _userDataFuture = getData();
   }
 
-  Future<void> getData() async {
-    token = await pref.getTokenUsers();
+  Future<Map<String, dynamic>> getData() async {
+    dynamic token = await pref.getTokenUsers();
     if (token == null) {
-      setState(() {
-        userName = null;
-      });
-      return;
+      return {
+        'getuserName': null,
+        'getAvatar': null,
+        'numberMovie': null,
+        'numberReview': null,
+      };
     }
 
     String? getuserName = await pref.getUserName();
-    String? getavatar = await pref.getAvatar();
+    String? getAvatar = await pref.getAvatar();
     int? numberMovie = await GetOrderInfo.accountNumberMovieInfo(context);
     int? numberReview = await GetOrderInfo.accountNumberReviewInfo(context);
 
-    if (mounted) {
-      setState(() {
-        numReviews = numberReview;
-        numMovies = numberMovie;
-        userName = getuserName;
-        avatar = getavatar;
-      });
-    }
+    return {
+      'getuserName': getuserName,
+      'getAvatar': getAvatar,
+      'numberMovie': numberMovie,
+      'numberReview': numberReview,
+    };
   }
 
   @override
   Widget build(BuildContext context) {
-    if (token == null && userName == null) {
-      return const GuestPage();
-    } else {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        extendBody: true,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            _buildSliverProfileBar(context, userName!, numMovies, numReviews),
-            Builditem.buildSliverList(context),
-            BuildButton.commonbutton(
-                context,
-                AppLocalizations.of(context)!.logout,
-                () => ShowDialog.showAlertCustom(
+    return FutureBuilder<Map<String, dynamic>>(
+        future: _userDataFuture,
+        builder: (BuildContext context,
+            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: progressLoading);
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (!snapshot.hasData ||
+              (snapshot.data!['getuserName'] == null &&
+                  snapshot.data!['numberMovie'] == null)) {
+            return const GuestPage();
+          }
+
+          final data = snapshot.data!;
+          String avatar = data['getAvatar'];
+          String userName = data['getuserName'];
+          int numberMovie = data['numberMovie'];
+          int numberReview = data['numberReview'];
+          return Scaffold(
+            backgroundColor: Colors.white,
+            extendBody: true,
+            body: CustomScrollView(
+              slivers: <Widget>[
+                _buildSliverProfileBar(
+                    context, avatar, userName, numberMovie, numberReview),
+                Builditem.buildSliverList(context),
+                BuildButton.commonbutton(
                     context,
-                    true,
-                    AppLocalizations.of(context)!.cofirm_logout_q,
-                    AppLocalizations.of(context)!.confirm_logout,
-                    true,
-                    () => _onPressLogout(context),
-                    DialogType.info)),
-          ],
-        ),
-      );
-    }
+                    AppLocalizations.of(context)!.logout,
+                    () => ShowDialog.showAlertCustom(
+                        context,
+                        true,
+                        AppLocalizations.of(context)!.cofirm_logout_q,
+                        AppLocalizations.of(context)!.confirm_logout,
+                        true,
+                        () => _onPressLogout(context),
+                        DialogType.info)),
+              ],
+            ),
+          );
+        });
   }
 
-  Widget _buildSliverProfileBar(BuildContext context, String userEmail,
-      int? numberMovie, int? numberReview) {
+  Widget _buildSliverProfileBar(BuildContext context, String avatar,
+      String userEmail, int? numberMovie, int? numberReview) {
     return SliverAppBar(
       automaticallyImplyLeading: false,
       backgroundColor: AppColors.containerColor,
@@ -107,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColors.containerColor),
-                    child: (avatar ?? "") == ""
+                    child: avatar.isEmpty
                         ? ClipOval(
                             child: Image.asset(
                               'assets/images/avatarDefault.png',
@@ -118,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           )
                         : ClipOval(
                             child: Image.memory(
-                              ConverterUnit.base64ToUnit8(avatar!),
+                              ConverterUnit.base64ToUnit8(avatar),
                               width: 100,
                               height: 100,
                               fit: BoxFit.cover,

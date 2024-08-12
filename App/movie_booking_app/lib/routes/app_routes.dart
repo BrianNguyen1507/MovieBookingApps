@@ -13,6 +13,7 @@ class AppRoutes {
   static const String homeScreen = '/home';
   static const String store = '/store';
   static const String profile = '/profile';
+  static const String profile_pay = "/pay";
   static const String otp = '/otp';
   static const String listOrder = '/listOrder';
   static const String cinema = '/';
@@ -32,5 +33,6 @@ class AppRoutes {
     listOrder: (context) => const ListOrdered(),
     cinema: (context) => const IndexPage(initialIndex: 1),
     food: (context) => const IndexPage(initialIndex: 0),
+    profile_pay: (context) => const IndexPage(initialIndex: 2),
   };
 }
