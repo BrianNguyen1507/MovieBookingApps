@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_ticket_scanner/response/response.dart';
 
 class ConverterData {
   static Future<Uint8List> bytesToImage(String base64String) async {
@@ -39,13 +40,13 @@ class ConverterData {
     );
   }
 
-  static void confirmFail(BuildContext context, String message) {
+  static void confirmFail(BuildContext context, int code) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Xác nhận không thành công!'),
-          content: Text(message),
+          content: Text(ValidReponse.getMessage(code, context)),
           actions: [
             TextButton(
               child: const Text('OK'),
