@@ -1,6 +1,6 @@
 import { getMessageWithCode } from "../../util/exception/exception.js";
 import { getUserToken } from "../authenticate/authenticate.js";
-const apiUrl = "http://localhost:8083/cinema/addCategory";
+const apiUrl = "http://103.200.20.167:8083/cinema/addCategory";
 
 export async function addCategory(categoryName) {
   try {

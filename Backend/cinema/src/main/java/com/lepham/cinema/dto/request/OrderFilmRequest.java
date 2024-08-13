@@ -25,4 +25,5 @@ public class OrderFilmRequest {
     @Builder.Default
     int isUsed = ConstantVariable.ORDER_UNUSED;
     List<FoodOrderRequest> food;
+    String paymentHash;
 }

@@ -58,7 +58,8 @@ public enum ErrorCode {
     THEATER_NOT_FOUND(1045,"Theater not found",HttpStatus.BAD_REQUEST),
     THEATER_NAME_EXIST(1046,"Theater name is exist",HttpStatus.BAD_REQUEST),
     NOT_TIME_TO_USE(1047,"It's not time to use it yet",HttpStatus.BAD_REQUEST),
-    INVALID_FOOD_QUANTITY(1048,"Invalid food quantity",HttpStatus.BAD_REQUEST)
+    INVALID_FOOD_QUANTITY(1048,"Invalid food quantity",HttpStatus.BAD_REQUEST),
+    INCORRECT_PAYMENT_HASH(1049,"Invalid payment hash",HttpStatus.BAD_REQUEST)
     ;
 
 

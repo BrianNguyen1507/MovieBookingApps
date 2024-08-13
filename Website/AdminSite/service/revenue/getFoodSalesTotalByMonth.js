@@ -1,7 +1,7 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
 export async function getFoodSaleTotalByMonth(year) {
-const apiUrl = "http://localhost:8083/cinema/getFoodSaleTotalByMonth?year=";
+const apiUrl = "http://103.200.20.167:8083/cinema/getFoodSaleTotalByMonth?year=";
 
   try {
     const tokenUser = await getUserToken();

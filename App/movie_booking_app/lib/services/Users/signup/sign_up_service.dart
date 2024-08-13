@@ -49,7 +49,7 @@ class SignUpService {
 }
 
 class OTPService {
-  static Future<dynamic> otpService(String email, String otp) async {
+  static Future<dynamic> otpService(String email, String otp, String method) async {
     try {
       final getURL = dotenv.env['GET_OTP_ACTIVE']!;
       final apiUrl = getURL;
@@ -58,8 +58,9 @@ class OTPService {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: json.encode({'email': email, 'otp': otp}),
+        body: json.encode({'email': email, 'otp': otp,'method':method}),
       );
+      print(method);
       final responseData = json.decode(response.body);
 
       if (responseData['code'] != 1000) {

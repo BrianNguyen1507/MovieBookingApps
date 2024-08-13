@@ -13,19 +13,19 @@ export async function fetchingRevenue() {
       labels: dayLable,
       datasets: [
         {
-          label: "Total",
+          label: "Tổng",
           data: data.total,
           backgroundColor: "rgba(0, 156, 255, .7)",
           fill: true,
         },
         {
-          label: "Film",
+          label: "Phim",
           data:  data.film,
           backgroundColor: "rgba(0, 156, 255, .5)",
           fill: true,
         },
         {
-          label: "Food",
+          label: "Thức ăn",
           data: data.food,
           backgroundColor: "rgba(0, 156, 255, .3)",
           fill: true,

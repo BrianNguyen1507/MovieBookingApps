@@ -3,7 +3,7 @@ import { Category } from "../../models/categories.js";
 import { deleteCategoryById } from "./deleteCategory.js";
 import { updateCategory } from "./updateCategory.js";
 
-const url = "http://localhost:8083/cinema/getAllCategory";
+const url = "http://103.200.20.167:8083/cinema/getAllCategory";
 export async function getAndDisplayCategories() {
   try {
     const token = await getUserToken();

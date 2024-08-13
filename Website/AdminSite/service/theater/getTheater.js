@@ -1,5 +1,5 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-const url = "http://localhost:8083/cinema/getAllMovieTheater";
+const url = "http://103.200.20.167:8083/cinema/getAllMovieTheater";
 import { Theater } from "../../models/theater.js";
 import { deleteTheaeterById } from "./deleteMovieTheater.js";
 import { UpdateTheater } from "./updateMovieTheater.js";

@@ -1,5 +1,5 @@
 import { getUserToken } from "../authenticate/authenticate.js";
-const url = "http://localhost:8083/cinema/getAllRoom";
+const url = "http://103.200.20.167:8083/cinema/getAllRoom";
 import { Room } from "../../models/room.js";
 import { deleteRoom } from "./deleteRoom.js";
 

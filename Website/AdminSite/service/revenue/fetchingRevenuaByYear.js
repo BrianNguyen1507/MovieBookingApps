@@ -17,19 +17,19 @@ export async function fetchingRevenueByYear(data,dataFood) {
       labels: saleMoth,
       datasets: [
         {
-          label: "Total",
+          label: "Tổng",
           data: revenueTotal ,
           backgroundColor: "rgba(0, 156, 255, .3)",
           fill: true,
         },
         {
-          label: "Film",
+          label: "Phim",
           data: saleFilm,
           backgroundColor: "rgba(0, 156, 255, .5)",
           fill: true,
         },
         {
-          label: "Food",
+          label: "Thức ăn",
           data: saleTotal,
           backgroundColor: "rgba(0, 156, 255, .7)",
           fill: true,

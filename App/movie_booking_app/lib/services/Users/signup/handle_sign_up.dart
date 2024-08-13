@@ -52,7 +52,7 @@ class HandleSignupState {
   Future<void> validOTP(
       context, String email, String otp, String method) async {
     ShowDialog.showLoadingDialog(context);
-    final result = await OTPService.otpService(email, otp);
+    final result = await OTPService.otpService(email, otp,method);
     if (result != true) {
       valid.showMessage(context, AppLocalizations.of(context)!.code_1010,
           AppColors.errorColor);
