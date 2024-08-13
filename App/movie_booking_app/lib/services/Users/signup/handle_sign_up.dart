@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_booking_app/constant/app_config.dart';
 import 'package:movie_booking_app/models/user/user.dart';
+import 'package:movie_booking_app/pages/forgot-password/reset_password.dart';
 import 'package:movie_booking_app/pages/sign-in-up/otp_pages.dart';
-import 'package:movie_booking_app/pages/sign-in-up/reset_password.dart';
 import 'package:movie_booking_app/services/Users/signup/sign_up_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
@@ -65,8 +65,10 @@ class HandleSignupState {
     if (method == AppStringMethod.register) {
       Navigator.pushReplacementNamed(context, '/login');
     } else {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => ResetPassword(email: email)));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ResetPassword(email: email, otp: otp)));
     }
   }
 }
