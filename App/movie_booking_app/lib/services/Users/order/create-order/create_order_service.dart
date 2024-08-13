@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_app/converter/converter.dart';
 import 'package:movie_booking_app/modules/valid/show_message.dart';
 import 'package:movie_booking_app/provider/shared-preferences/prefs.dart';
 
@@ -19,13 +20,16 @@ class CreateOrderService {
   ) async {
     try {
       final getURL = dotenv.env['CREATE_ORDER']!;
+      final getKey = dotenv.env['PAY_KEY']!;
       final url = getURL;
       final token = await Preferences().getTokenUsers();
+      final hashKey = ConverterUnit.hmacSHA512(getKey, payCode);
       final body = jsonEncode({
         'movieScheduleId': scheduleId,
         'voucherId': voucherId,
         'paymentMethod': payMethod,
         'paymentCode': payCode,
+        'paymentHash': hashKey,
         'seat': seats,
         'food': foods,
         'sumTotal': sumTotal,

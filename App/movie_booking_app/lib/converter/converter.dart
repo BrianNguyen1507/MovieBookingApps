@@ -1,9 +1,19 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_booking_app/models/ratingfeedback/rating_feedback.dart';
 
 class ConverterUnit {
+  static String hmacSHA512(String key, String value) {
+    final keyBytes = utf8.encode(key);
+    final messageBytes = utf8.encode(value);
+    final hmac = Hmac(sha512, keyBytes);
+    final digest = hmac.convert(messageBytes);
+    String encodedHmac = base64.encode(digest.bytes);
+    return encodedHmac;
+  }
+
   static Uint8List getImageFromCache(String base64String) {
     final Map<String, Uint8List> imageCache = {};
     if (!imageCache.containsKey(base64String)) {
