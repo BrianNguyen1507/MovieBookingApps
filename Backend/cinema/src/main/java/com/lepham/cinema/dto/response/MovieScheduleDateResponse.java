@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MovieScheduleDateResponse {
     LocalDate date;

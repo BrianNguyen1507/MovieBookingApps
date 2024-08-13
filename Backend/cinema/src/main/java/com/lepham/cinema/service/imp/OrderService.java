@@ -51,6 +51,7 @@ public class OrderService implements IOrderService {
     QRCodeService qrCodeService;
     FoodConverter foodConverter;
     MovieScheduleConverter movieScheduleConverter;
+    RatingFeedBackRepository ratingFeedBackRepository;
 
     @Override
     @PreAuthorize("hasRole('USER')")
@@ -252,7 +253,8 @@ public class OrderService implements IOrderService {
             detailOrderResponse.setMovieTimeEnd(movieSchedule.getTimeStart().plusMinutes(film.getDuration()));
             LocalDateTime movieTimeEnd = detailOrderResponse.getMovieTimeStart()
                     .plusMinutes(detailOrderResponse.getFilm().getDuration());
-            if (order.getStatus() == ConstantVariable.ORDER_USED) {
+            if (order.getStatus() == ConstantVariable.ORDER_USED
+                    && !ratingFeedBackRepository.existsByOrder(order)) {
                 detailOrderResponse.setAllowedComment(movieTimeEnd.isBefore(LocalDateTime.now()));
             }
 
@@ -332,7 +334,7 @@ public class OrderService implements IOrderService {
                 return;
             }
         }
-        throw new AppException(ErrorCode.ORDER_CAN_NOT_USED);
+        throw new AppException(ErrorCode.NOT_TIME_TO_USE);
     }
 
     @Override
