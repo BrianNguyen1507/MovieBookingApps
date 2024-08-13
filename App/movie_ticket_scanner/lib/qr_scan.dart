@@ -252,7 +252,7 @@ class _QRScannPageState extends State<QRScannPage> {
   Widget _buildNoDataDialog() {
     return AlertDialog(
       backgroundColor: Colors.white,
-      content: const Center(child: Text('MESSAGE: KHÔNG CÓ DỮ LIỆU')),
+      content: const Center(child: Text('KHÔNG CÓ DỮ LIỆU')),
       actions: [_buildCloseButton()],
     );
   }
@@ -285,13 +285,11 @@ class _QRScannPageState extends State<QRScannPage> {
       ),
       child: MaterialButton(
         onPressed: () async {
-          dynamic confirmOrder = await OrderService.confirmOrder(orderId);
-          if (confirmOrder is bool && confirmOrder) {
+          int confirmOrder = await OrderService.confirmOrder(orderId);
+          if (confirmOrder == 1000.toInt()) {
             ConverterData.confirmSuccess(context);
-          } else if (confirmOrder is String) {
-            ConverterData.confirmFail(context, confirmOrder);
           } else {
-            ConverterData.confirmFail(context, 'Unknown error');
+            ConverterData.confirmFail(context, confirmOrder);
           }
         },
         child: const Text(

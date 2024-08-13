@@ -27,7 +27,7 @@ class OrderService {
     return Result.fromJson(result['result']);
   }
 
-  static Future<dynamic> confirmOrder(int id) async {
+  static Future<int> confirmOrder(int id) async {
     final baseUrl = dotenv.env['CONFIRM_ORDER']!;
     final uri = baseUrl + id.toString();
     final responseConfirm = await http.post(
@@ -43,8 +43,9 @@ class OrderService {
     final result = json.decode(responseConfirm.body);
     if (result['code'] != 1000) {
       debugPrint('Error get data order with message: ${result['message']}');
-      return result['message'];
+
+      return result['code'];
     }
-    return true;
+    return result['code'];
   }
 }
