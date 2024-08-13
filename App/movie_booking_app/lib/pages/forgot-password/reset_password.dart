@@ -4,11 +4,12 @@ import 'package:movie_booking_app/constant/app_data.dart';
 import 'package:movie_booking_app/pages/sign-in-up/sign_in_sign_up.dart';
 import 'package:movie_booking_app/services/Users/forgotpassword/reset_password.dart';
 import 'package:movie_booking_app/services/Users/signup/valid_handle.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ResetPassword extends StatefulWidget {
-  const ResetPassword({super.key, required this.email});
+  const ResetPassword({super.key, required this.email, required this.otp});
   final dynamic email;
-
+  final String otp;
   @override
   State<StatefulWidget> createState() {
     return ResetPasswordState();
@@ -166,23 +167,27 @@ class ResetPasswordState extends State<ResetPassword> {
                       if (passwordController.text ==
                           passwordRefController.text) {
                         email = await ResetPasswordService.resetPassword(
-                            widget.email, passwordController.text, context);
+                            widget.email,
+                            passwordController.text,
+                            widget.otp,
+                            context);
+                        print(email);
                       }
-                      if (email != "") {
+                      if (email != null) {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const SignInPage()));
                       }
                     },
-                    child: const SizedBox(
+                    child: SizedBox(
                       width: 300,
                       child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Center(
                           child: Text(
-                            "Continue",
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.submit,
+                            style: const TextStyle(
                               fontSize: AppFontSize.medium,
                               color: Colors.white,
                             ),

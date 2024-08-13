@@ -193,6 +193,7 @@
   "code_1043": "Bạn chỉ có thể đặt tối đa 10 ghế",
   "code_1044": "Không tìm thấy voucher",
   "code_1045": "Định dạng chuỗi ghế không chính xác",
+  "code_1048": "Số lượng thức ăn và nước uống không hợp lệ",
   "code_notmatch": "Mật khẩu không khớp",
   "update_success": "Cập nhật thông tin thành công",
   "otp_send": "Một OTP đã được gửi vào email của bạn",
