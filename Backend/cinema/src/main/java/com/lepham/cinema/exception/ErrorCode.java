@@ -8,7 +8,7 @@ import java.net.http.HttpRequest;
 
 @Getter
 public enum ErrorCode {
-    NULL_EXCEPTION(8888, "Object Null", HttpStatus.BAD_REQUEST),
+    INVALID_JSON_FORMAT(8888, "Invalid Json format", HttpStatus.BAD_REQUEST),
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(1001,"Invalid key", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED(1002, "You do not have permission", HttpStatus.FORBIDDEN),

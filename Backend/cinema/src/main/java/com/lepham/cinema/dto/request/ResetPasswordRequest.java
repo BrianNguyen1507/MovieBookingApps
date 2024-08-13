@@ -10,8 +10,10 @@ import lombok.experimental.FieldDefaults;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)public class ResetPasswordRequest {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ResetPasswordRequest {
     String email;
     @Size(min = 6,message = "PASSWORD_INVALID")
     String password;
+    String otp;
 }
