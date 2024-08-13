@@ -69,6 +69,7 @@ public class OrderService implements IOrderService {
             for (FoodOrderRequest foodRequest : request.getFood()) {
                 FoodEntity foodEntity = foodRepository.findById(foodRequest.getId())
                         .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+                if (foodRequest.getQuantity()<0) throw new AppException(ErrorCode.INVALID_FOOD_QUANTITY);
                 double priceFood = (foodEntity.getPrice() * foodRequest.getQuantity());
                 priceFoodTotal += priceFood;
                 total += priceFood;
@@ -143,6 +144,7 @@ public class OrderService implements IOrderService {
             for (FoodOrderRequest foodOrderRequest : request.getFood()) {
                 FoodEntity food = foodRepository.findById(foodOrderRequest.getId())
                         .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+                if (foodOrderRequest.getQuantity()<0) throw new AppException(ErrorCode.INVALID_FOOD_QUANTITY);
                 FoodOrderEntity foodOrder = new FoodOrderEntity();
                 foodOrder.setOrder(order);
                 foodOrder.setFood(food);
