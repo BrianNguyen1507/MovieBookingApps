@@ -194,6 +194,7 @@
   "code_1043": "You can only book a maximum of 10 seats",
   "code_1044": "Voucher not found",
   "code_1045": "String seat format is incorrect",
+  "code_1048": "Invalid food quantity",
   "code_nomatch": "Passwords do not match",
   "update_success": "Update successfully",
   "otp_send": "An OTP was send in your email",

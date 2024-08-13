@@ -194,102 +194,61 @@ class ResponseCode {
     return ResponseCode._(1044, AppLocalizations.of(context)!.code_1044);
   }
 
+  static final Map<int, Function> _responseCodeMap = {
+    8888: nullException,
+    9999: uncategorizedException,
+    1001: invalidKey,
+    1002: unauthorized,
+    1003: invalidEmail,
+    1004: existsEmail,
+    1005: invalidPhone,
+    1006: invalidDob,
+    1007: accountInactive,
+    1008: expiredTimeOtp,
+    1009: emailPasswordIncorrect,
+    1010: incorrectOtp,
+    1011: passwordInvalid,
+    1012: categoryNotFound,
+    1013: filmNotFound,
+    1014: roomExists,
+    1015: categoryNameInvalid,
+    1016: stringIsEmpty,
+    1017: durationInvalid,
+    1018: unauthenticated,
+    1019: invalidDate,
+    1020: numberNotNegative,
+    1021: invalidPrice,
+    1022: notExistsEmail,
+    1023: categoryNameDuplicate,
+    1024: filmNameDuplicate,
+    1025: seatWasOrdered,
+    1026: voucherNotEnough,
+    1027: seatNotOrdered,
+    1028: accountNotExist,
+    1029: showtimeIsComingSoon,
+    1030: orderNotFound,
+    1031: foodNotFound,
+    1032: orderNotBelongAccount,
+    1033: wasRating,
+    1034: completeInformation,
+    1035: duplicatePassword,
+    1036: startTimeNotToday,
+    1037: roomNotFound,
+    1038: scheduleNotFound,
+    1039: filmNotRelease,
+    1040: dateAfterNow,
+    1041: orderCannotUsed,
+    1042: holdSeatAboveLimit,
+    1043: voucherNotFound,
+    1044: stringSeatIncorrect,
+  };
+
   static ResponseCode? getMessage(int code, context) {
-    switch (code) {
-      case 8888:
-        return nullException(context);
-      case 9999:
-        return uncategorizedException(context);
-      case 1001:
-        return invalidKey(context);
-      case 1002:
-        return unauthorized(context);
-      case 1003:
-        return invalidEmail(context);
-      case 1004:
-        return existsEmail(context);
-      case 1005:
-        return invalidPhone(context);
-      case 1006:
-        return invalidDob(context);
-      case 1007:
-        return accountInactive(context);
-      case 1008:
-        return expiredTimeOtp(context);
-      case 1009:
-        return emailPasswordIncorrect(context);
-      case 1010:
-        return incorrectOtp(context);
-      case 1011:
-        return passwordInvalid(context);
-      case 1012:
-        return categoryNotFound(context);
-      case 1013:
-        return filmNotFound(context);
-      case 1014:
-        return roomExists(context);
-      case 1015:
-        return categoryNameInvalid(context);
-      case 1016:
-        return stringIsEmpty(context);
-      case 1017:
-        return durationInvalid(context);
-      case 1018:
-        return unauthenticated(context);
-      case 1019:
-        return invalidDate(context);
-      case 1020:
-        return numberNotNegative(context);
-      case 1021:
-        return invalidPrice(context);
-      case 1022:
-        return notExistsEmail(context);
-      case 1023:
-        return categoryNameDuplicate(context);
-      case 1024:
-        return filmNameDuplicate(context);
-      case 1025:
-        return seatWasOrdered(context);
-      case 1026:
-        return voucherNotEnough(context);
-      case 1027:
-        return seatNotOrdered(context);
-      case 1028:
-        return accountNotExist(context);
-      case 1029:
-        return showtimeIsComingSoon(context);
-      case 1030:
-        return orderNotFound(context);
-      case 1031:
-        return foodNotFound(context);
-      case 1032:
-        return orderNotBelongAccount(context);
-      case 1033:
-        return wasRating(context);
-      case 1034:
-        return completeInformation(context);
-      case 1035:
-        return duplicatePassword(context);
-      case 1036:
-        return startTimeNotToday(context);
-      case 1037:
-        return roomNotFound(context);
-      case 1038:
-        return scheduleNotFound(context);
-      case 1039:
-        return filmNotRelease(context);
-      case 1040:
-        return dateAfterNow(context);
-      case 1041:
-        return orderCannotUsed(context);
-      case 1042:
-        return holdSeatAboveLimit(context);
-      case 1043:
-        return voucherNotFound(context);
-      case 1044:
-        return stringSeatIncorrect(context);
-      default:
-        return uncategorizedException(context);
+    final responseFunction = _responseCodeMap[code];
+    if (responseFunction != null) {
+      return responseFunction(context);
+    } else {
+      return uncategorizedException(context);
     }
   }
 }

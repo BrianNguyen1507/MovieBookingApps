@@ -241,7 +241,23 @@ class _StorePageState extends State<StorePage> {
                                     ),
                                     onChanged: (value) {
                                       setState(() {
-                                        _values[index] = int.parse(value);
+                                        int parsedValue =
+                                            int.tryParse(value) ?? 0;
+                                        if (parsedValue < 0) {
+                                          ShowDialog.showAlertCustom(
+                                              context,
+                                              true,
+                                              AppLocalizations.of(context)!
+                                                  .code_1048,
+                                              null,
+                                              true,
+                                              null,
+                                              DialogType.error);
+                                          parsedValue = 0;
+                                          _controllers[index].text =
+                                              parsedValue.toString();
+                                        }
+                                        _values[index] = parsedValue;
                                         foodOrder[index]['quantity'] =
                                             _values[index];
                                       });

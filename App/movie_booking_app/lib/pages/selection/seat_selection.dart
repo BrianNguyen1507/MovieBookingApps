@@ -172,20 +172,17 @@ class _SeatSelectionState extends State<SeatSelection>
                     ],
                   ),
                   const SizedBox(width: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 40.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.screen,
-                          style: AppStyle.screenText,
-                        ),
-                        SvgPicture.string(
-                          svgScreen,
-                          height: 50.0,
-                        ),
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.screen,
+                        style: AppStyle.screenText,
+                      ),
+                      SvgPicture.string(
+                        svgScreen,
+                        height: 50.0,
+                      ),
+                    ],
                   ),
                   const SizedBox(width: 20),
                   Column(
