@@ -1,6 +1,6 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 const tokenUser = await getUserToken();
-const apiUrl = "http://localhost:8083/cinema/deleteMovieTheater?id=";
+const apiUrl = "http://103.200.20.167:8083/cinema/deleteMovieTheater?id=";
 
 export async function deleteTheaeterById(theaterId) {
   try {

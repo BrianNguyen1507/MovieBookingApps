@@ -91,7 +91,7 @@ export async function getAllFoodDisplay() {
     tbody.appendChild(row);
   });
   async function deleteFood(id) {
-    const url = "http://localhost:8083/cinema/deleteFood?id=";
+    const url = "http://103.200.20.167:8083/cinema/deleteFood?id=";
     try {
       const token = await getUserToken();
       const response = await fetch(url + id, {

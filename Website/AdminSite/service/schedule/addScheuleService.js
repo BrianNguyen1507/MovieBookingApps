@@ -1,7 +1,7 @@
 import { getUserToken } from "../authenticate/authenticate.js";
 
 export async function addSchedule(roomId, filmId, date) {
-  const uri = "http://localhost:8083/cinema/addSchedule";
+  const uri = "http://103.200.20.167:8083/cinema/addSchedule";
   const body = JSON.stringify({
     roomId: roomId,
     filmId: filmId,

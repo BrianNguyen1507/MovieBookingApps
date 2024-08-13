@@ -15,7 +15,9 @@ import com.lepham.cinema.service.IOrderService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +25,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,6 +59,10 @@ public class OrderService implements IOrderService {
     FoodConverter foodConverter;
     MovieScheduleConverter movieScheduleConverter;
     RatingFeedBackRepository ratingFeedBackRepository;
+
+    @Value("${app.payment_key}")
+    @NonFinal
+    String paymentKey;
 
     @Override
     @PreAuthorize("hasRole('USER')")
@@ -101,7 +112,8 @@ public class OrderService implements IOrderService {
     @Override
     @PreAuthorize("hasRole('USER')")
     @Transactional
-    public OrderResponse order(OrderFilmRequest request) {
+    public OrderResponse order(OrderFilmRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
+        if(!Objects.equals(encodePaymentCode(paymentKey,request.getPaymentCode()),request.getPaymentHash())) throw new AppException(ErrorCode.INCORRECT_PAYMENT_HASH);
         if(request.getSumTotal()<0) throw new AppException(ErrorCode.NUMBER_NOT_NEGATIVE);
 
         OrderEntity order = orderConverter.toEntity(request);
@@ -383,5 +395,18 @@ public class OrderService implements IOrderService {
         if (statusInt == 0) status = "Unused";
         else status = statusInt == 1 ? "Used" : "Expired";
         return status;
+    }
+    String encodePaymentCode(String key, String paymentCode) throws NoSuchAlgorithmException, InvalidKeyException {
+        try {
+            SecretKey secretKey = new SecretKeySpec(key.getBytes(), "HmacSHA512");
+            Mac mac = Mac.getInstance("HmacSHA512");
+            mac.init(secretKey);
+            byte[] hmacSha512Bytes = mac.doFinal(paymentCode.getBytes());
+
+            return Base64.getEncoder().encodeToString(hmacSha512Bytes);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 import { getMessageWithCode } from "../../util/exception/exception.js";
 import { getUserToken } from "../authenticate/authenticate.js";
 
-const apiUrl = "http://localhost:8083/cinema/addVoucher";
+const apiUrl = "http://103.200.20.167:8083/cinema/addVoucher";
 
  export async function addVoucher(voucher) {
   try {

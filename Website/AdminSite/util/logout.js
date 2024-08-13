@@ -23,7 +23,7 @@ $(document).on("click", "#logoutButton", async function (event) {
 });
 
 async function logout() {
-  const url = "http://localhost:8083/cinema/logout";
+  const url = "http://103.200.20.167:8083/cinema/logout";
   try {
     const token = await getUserToken();
     const response = await $.ajax({

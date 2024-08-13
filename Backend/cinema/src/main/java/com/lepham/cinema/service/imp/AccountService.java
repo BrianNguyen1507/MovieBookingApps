@@ -89,8 +89,10 @@ public class AccountService implements IAccountService {
         if(entity.getOtp().equals(request.getOtp()) ){
             if(currentDateTime.isBefore(expiredDateTime)){
                 entity.setActive(1);
-                entity.setOtp(null);
-                entity.setOtpRequestTime(null);
+                if(!request.getMethod().equals(ConstantVariable.FORGOT_PASSWORD)){
+                    entity.setOtp(null);
+                    entity.setOtpRequestTime(null);
+                }
                 accountRepository.save(entity);
             }
             else{
