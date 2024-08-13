@@ -8,7 +8,7 @@ import java.net.http.HttpRequest;
 
 @Getter
 public enum ErrorCode {
-    NULL_EXCEPTION(8888, "Object Null", HttpStatus.BAD_REQUEST),
+    INVALID_JSON_FORMAT(8888, "Invalid Json format", HttpStatus.BAD_REQUEST),
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(1001,"Invalid key", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED(1002, "You do not have permission", HttpStatus.FORBIDDEN),
@@ -57,7 +57,8 @@ public enum ErrorCode {
     STRING_SEAT_INCORRECT(1044,"String seat format is incorrect",HttpStatus.BAD_REQUEST),
     THEATER_NOT_FOUND(1045,"Theater not found",HttpStatus.BAD_REQUEST),
     THEATER_NAME_EXIST(1046,"Theater name is exist",HttpStatus.BAD_REQUEST),
-    NOT_TIME_TO_USE(1047,"It's not time to use it yet",HttpStatus.BAD_REQUEST)
+    NOT_TIME_TO_USE(1047,"It's not time to use it yet",HttpStatus.BAD_REQUEST),
+    INVALID_FOOD_QUANTITY(1048,"Invalid food quantity",HttpStatus.BAD_REQUEST)
     ;
 
 

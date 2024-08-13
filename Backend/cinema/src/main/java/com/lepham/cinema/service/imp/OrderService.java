@@ -58,9 +58,10 @@ public class OrderService implements IOrderService {
     public SumTotalResponse sumTotalOrder(SumTotalRequest request) {
         double total = 0;
         double priceTicket = 0;
-        if (request.getIdFilm() != -1) {
+        if (request.getIdFilm() != -1 && request.getQuantitySeat()>0) {
             FilmEntity filmEntity = filmRepository.findById(request.getIdFilm())
                     .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
+
             priceTicket = (filmEntity.getBasePrice() * request.getQuantitySeat());
         }
         total += priceTicket;
@@ -69,6 +70,7 @@ public class OrderService implements IOrderService {
             for (FoodOrderRequest foodRequest : request.getFood()) {
                 FoodEntity foodEntity = foodRepository.findById(foodRequest.getId())
                         .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+                if (foodRequest.getQuantity()<0) throw new AppException(ErrorCode.INVALID_FOOD_QUANTITY);
                 double priceFood = (foodEntity.getPrice() * foodRequest.getQuantity());
                 priceFoodTotal += priceFood;
                 total += priceFood;
@@ -87,18 +89,21 @@ public class OrderService implements IOrderService {
     public double applyVoucher(double price, long voucherId) {
         VoucherEntity voucher = voucherRepository.findById(voucherId)
                 .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
+        if(price<=0)return 0;
         if (voucher.getTypeDiscount() == ConstantVariable.direct) {
-            return price - voucher.getDiscount();
+            price = price - voucher.getDiscount();
         } else if (voucher.getTypeDiscount() == ConstantVariable.percent) {
-            return price - (price * (voucher.getDiscount() / 100));
+            price = price - (price * (voucher.getDiscount() / 100));
         }
-        return price;
+        return price<0?0:price;
     }
 
     @Override
     @PreAuthorize("hasRole('USER')")
     @Transactional
     public OrderResponse order(OrderFilmRequest request) {
+        if(request.getSumTotal()<0) throw new AppException(ErrorCode.NUMBER_NOT_NEGATIVE);
+
         OrderEntity order = orderConverter.toEntity(request);
         order.setSeat(null);
         if (request.getMovieScheduleId() != -1) {
@@ -143,6 +148,7 @@ public class OrderService implements IOrderService {
             for (FoodOrderRequest foodOrderRequest : request.getFood()) {
                 FoodEntity food = foodRepository.findById(foodOrderRequest.getId())
                         .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+                if (foodOrderRequest.getQuantity()<0) throw new AppException(ErrorCode.INVALID_FOOD_QUANTITY);
                 FoodOrderEntity foodOrder = new FoodOrderEntity();
                 foodOrder.setOrder(order);
                 foodOrder.setFood(food);

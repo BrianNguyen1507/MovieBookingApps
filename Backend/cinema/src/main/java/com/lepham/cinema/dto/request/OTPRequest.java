@@ -10,4 +10,5 @@ import lombok.experimental.FieldDefaults;
 public class OTPRequest {
     String email;
     String otp;
+    String method;
 }

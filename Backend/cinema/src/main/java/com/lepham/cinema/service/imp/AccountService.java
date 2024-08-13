@@ -58,7 +58,7 @@ public class AccountService implements IAccountService {
     JavaMailSender mailSender;
 
     @Override
-    public AccountResponse createAccount(AccountRequest request) throws ParseException, MessagingException, UnsupportedEncodingException {
+    public AccountResponse createAccount(AccountRequest request) throws MessagingException, UnsupportedEncodingException {
         if(!checkEmailValid(request.getEmail())) throw new AppException(ErrorCode.INVALID_EMAIL);
         if(checkEmailExists(request.getEmail())) throw new AppException(ErrorCode.EXISTS_EMAIL);
 
@@ -129,9 +129,11 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountResponse resetPassword(ResetPasswordRequest request) {
+        if(!checkPasswordValid(request.getPassword())) throw new AppException(ErrorCode.PASSWORD_INVALID);
         AccountEntity account = accountRepository.findByEmail(request.getEmail())
                 .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         if(account==null) throw new AppException(ErrorCode.NOT_EXISTS_EMAIL);
+        if(!Objects.equals(account.getOtp(),request.getOtp())) throw new AppException(ErrorCode.INCORRECT_OTP);
         String password = passwordEncoder.encode(request.getPassword());
         account.setPassword(password);
         account.setOtp(null);
@@ -155,6 +157,7 @@ public class AccountService implements IAccountService {
     public AccountResponse updateAccount(AccountRequest accountRequest){
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
+        if(!checkPhoneValid(accountRequest.getPhoneNumber())) throw new AppException(ErrorCode.INVALID_PHONE);
         AccountEntity account = accountRepository.findByEmail(email)
                 .orElseThrow(()->new AppException(ErrorCode.ACCOUNT_NOT_EXIST));
         accountConverter.updateAccount(account,accountRequest);
@@ -164,6 +167,7 @@ public class AccountService implements IAccountService {
     @Override
     @PostAuthorize("returnObject.email == authentication.name")
     public AccountResponse updatePassword(UpdatePwdRequest request) {
+        if(!checkPasswordValid(request.getPassword())) throw new AppException(ErrorCode.PASSWORD_INVALID);
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
         AccountEntity account = accountRepository.findByEmail(email)

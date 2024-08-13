@@ -44,7 +44,7 @@ public class RoomService implements IRoomService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public RoomResponse getRoomById(long id) {
-        RoomEntity room = roomRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        RoomEntity room = roomRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
         return roomConverter.toResponse(room, movieTheaterConverter.toResponse(room.getMovieTheater()));
     }
 
@@ -74,7 +74,7 @@ public class RoomService implements IRoomService {
     @PreAuthorize("hasRole('ADMIN')")
     public RoomResponse updateRoom(long roomId, RoomRequest request) {
         MovieTheaterEntity movieTheater = theaterRepository.findById(request.getTheaterId())
-                .orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+                .orElseThrow(() -> new AppException(ErrorCode.THEATER_NOT_FOUND));
 
         RoomEntity entity = roomRepository.findById(roomId)
                 .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
@@ -91,7 +91,7 @@ public class RoomService implements IRoomService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteRoom(long id) {
-        RoomEntity entity = roomRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.NULL_EXCEPTION));
+        RoomEntity entity = roomRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_FOUND));
         if (entity.getMovieTheater() == null && entity.getSchedules() == null) {
             roomRepository.delete(entity);
         } else {
