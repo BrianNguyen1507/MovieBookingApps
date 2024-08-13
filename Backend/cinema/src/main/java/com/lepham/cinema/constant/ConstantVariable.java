@@ -19,4 +19,5 @@ public class ConstantVariable {
     public static final int SEAT_EMPTY = 0;
     public static final int SEAT_ORDER = 1;
     public static final int SEAT_HOLD = 2;
+    public static final String FORGOT_PASSWORD = "forgotPassword";
 }

@@ -12,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -39,7 +41,7 @@ public class OrderController {
                 .build();
     }
     @PostMapping("/order")
-    APIResponse<OrderResponse> order(@RequestBody @Valid OrderFilmRequest request){
+    APIResponse<OrderResponse> order(@RequestBody @Valid OrderFilmRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
         return APIResponse.<OrderResponse>builder()
                 .result(orderService.order(request))
                 .build();

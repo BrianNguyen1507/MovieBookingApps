@@ -2,7 +2,7 @@ import { getUserToken } from "../authenticate/authenticate.js";
 import { Room } from "../../models/room.js";
 import { deleteRoom } from "./deleteRoom.js";
 
-const url = "http://localhost:8083/cinema/getAllRoomByTheaterId?theaterId=";
+const url = "http://103.200.20.167:8083/cinema/getAllRoomByTheaterId?theaterId=";
 export async function getRoomById(id) {
   try {
     const token = await getUserToken();

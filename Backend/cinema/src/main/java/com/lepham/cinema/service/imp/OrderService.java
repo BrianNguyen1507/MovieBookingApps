@@ -15,7 +15,9 @@ import com.lepham.cinema.service.IOrderService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +25,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,14 +60,19 @@ public class OrderService implements IOrderService {
     MovieScheduleConverter movieScheduleConverter;
     RatingFeedBackRepository ratingFeedBackRepository;
 
+    @Value("${app.payment_key}")
+    @NonFinal
+    String paymentKey;
+
     @Override
     @PreAuthorize("hasRole('USER')")
     public SumTotalResponse sumTotalOrder(SumTotalRequest request) {
         double total = 0;
         double priceTicket = 0;
-        if (request.getIdFilm() != -1) {
+        if (request.getIdFilm() != -1 && request.getQuantitySeat()>0) {
             FilmEntity filmEntity = filmRepository.findById(request.getIdFilm())
                     .orElseThrow(() -> new AppException(ErrorCode.FILM_NOT_FOUND));
+
             priceTicket = (filmEntity.getBasePrice() * request.getQuantitySeat());
         }
         total += priceTicket;
@@ -69,6 +81,7 @@ public class OrderService implements IOrderService {
             for (FoodOrderRequest foodRequest : request.getFood()) {
                 FoodEntity foodEntity = foodRepository.findById(foodRequest.getId())
                         .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+                if (foodRequest.getQuantity()<0) throw new AppException(ErrorCode.INVALID_FOOD_QUANTITY);
                 double priceFood = (foodEntity.getPrice() * foodRequest.getQuantity());
                 priceFoodTotal += priceFood;
                 total += priceFood;
@@ -87,18 +100,22 @@ public class OrderService implements IOrderService {
     public double applyVoucher(double price, long voucherId) {
         VoucherEntity voucher = voucherRepository.findById(voucherId)
                 .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
+        if(price<=0)return 0;
         if (voucher.getTypeDiscount() == ConstantVariable.direct) {
-            return price - voucher.getDiscount();
+            price = price - voucher.getDiscount();
         } else if (voucher.getTypeDiscount() == ConstantVariable.percent) {
-            return price - (price * (voucher.getDiscount() / 100));
+            price = price - (price * (voucher.getDiscount() / 100));
         }
-        return price;
+        return price<0?0:price;
     }
 
     @Override
     @PreAuthorize("hasRole('USER')")
     @Transactional
-    public OrderResponse order(OrderFilmRequest request) {
+    public OrderResponse order(OrderFilmRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
+        if(!Objects.equals(encodePaymentCode(paymentKey,request.getPaymentCode()),request.getPaymentHash())) throw new AppException(ErrorCode.INCORRECT_PAYMENT_HASH);
+        if(request.getSumTotal()<0) throw new AppException(ErrorCode.NUMBER_NOT_NEGATIVE);
+
         OrderEntity order = orderConverter.toEntity(request);
         order.setSeat(null);
         if (request.getMovieScheduleId() != -1) {
@@ -143,6 +160,7 @@ public class OrderService implements IOrderService {
             for (FoodOrderRequest foodOrderRequest : request.getFood()) {
                 FoodEntity food = foodRepository.findById(foodOrderRequest.getId())
                         .orElseThrow(() -> new AppException(ErrorCode.FOOD_NOT_FOUND));
+                if (foodOrderRequest.getQuantity()<0) throw new AppException(ErrorCode.INVALID_FOOD_QUANTITY);
                 FoodOrderEntity foodOrder = new FoodOrderEntity();
                 foodOrder.setOrder(order);
                 foodOrder.setFood(food);
@@ -377,5 +395,18 @@ public class OrderService implements IOrderService {
         if (statusInt == 0) status = "Unused";
         else status = statusInt == 1 ? "Used" : "Expired";
         return status;
+    }
+    String encodePaymentCode(String key, String paymentCode) throws NoSuchAlgorithmException, InvalidKeyException {
+        try {
+            SecretKey secretKey = new SecretKeySpec(key.getBytes(), "HmacSHA512");
+            Mac mac = Mac.getInstance("HmacSHA512");
+            mac.init(secretKey);
+            byte[] hmacSha512Bytes = mac.doFinal(paymentCode.getBytes());
+
+            return Base64.getEncoder().encodeToString(hmacSha512Bytes);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
